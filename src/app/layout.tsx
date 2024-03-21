@@ -1,24 +1,37 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.scss";
 
-const inter = Inter({ subsets: ["latin"] });
+import { Roboto } from "next/font/google";
+import "@styles/globals.scss";
+import Header from "@components/@Header/Header";
+import { getServerSession } from "next-auth";
+import SessionProvider from "@app/providers/SessionProvider";
+
+const roboto = Roboto({
+  weight: "400",
+  subsets: ["latin"],
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Kinder in Hamburg",
   description: "Suche eure nächste Ausflugsziele in Hamburg",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await getServerSession();
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <h1 className="text-3xl text-center font-bold">Kinder in Hamburg</h1>
-        {children}
+      <body
+        className={`${roboto.className} flex flex-col items-center bg-hh-500`}
+      >
+        <SessionProvider session={session}>
+          <Header />
+          {children}
+        </SessionProvider>
       </body>
     </html>
   );
