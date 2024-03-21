@@ -5,7 +5,7 @@ export default function AboutPage() {
     <main className="p-4 w-full sm:w-4/5 md:w-3/4 rounded-lg shadow-lg bg-[hsl(210,20%,55%)] text-[#fefefe]">
       <h1>About Us</h1>
       <p>
-        Welcome to Hamburg with Kids, your go-to source for family-friendly
+        Welcome to Kinder in Hamburg, your go-to source for family-friendly
         activities and events in Hamburg, Germany. Our blog is all about
         exploring the city with your little ones and discovering new and
         exciting things to do together.
