@@ -8,7 +8,7 @@ export default function Links({ linkHref }: { linkHref: string }) {
   return (
     <span
       className={`${
-        pathname === linkHref ? "block w-full h-1 bg-black" : "hidden"
+        pathname === linkHref ? "block w-full h-[2px] bg-black" : "hidden"
       }`}
     ></span>
   );

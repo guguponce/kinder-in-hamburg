@@ -26,33 +26,20 @@ export default async function Header() {
         </Link>
       </div>
       <nav className="hidden lg:flex items-center gap-4">
-        <Link href={"/"}>
-          Home
-          <LinkActive linkHref="/" />
-        </Link>
-        <Link href={"/posts"}>
-          Posts
-          <LinkActive linkHref="/posts" />
-        </Link>
-        <Link href={"/categories"}>
-          Categories
-          <LinkActive linkHref="/categories" />
-        </Link>
+        {[
+          { href: "/", name: "Home" },
+          { href: "/posts", name: "Posts" },
+          { href: "/categories", name: "Categories" },
+          { href: "/bezirke", name: "Bezirke" },
+          { href: "/contact", name: "Contact" },
+          { href: "/about", name: "About" },
+        ].map(({ href, name }) => (
+          <Link key={href} href={href}>
+            {name}
+            <LinkActive linkHref={href} />
+          </Link>
+        ))}
 
-        <Link href={"/bezirke"}>
-          Bezirke
-          <LinkActive linkHref="/bezirke" />
-        </Link>
-
-        <Link href={"/contact"}>
-          Contact
-          <LinkActive linkHref="/contact" />
-        </Link>
-
-        <Link href={"/about"}>
-          About
-          <LinkActive linkHref="/about" />
-        </Link>
         <LoggedLinks />
       </nav>
       <div className="ml-4 flex gap-2 items-center">
