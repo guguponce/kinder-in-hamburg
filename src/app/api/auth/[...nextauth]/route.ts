@@ -1,7 +1,7 @@
-import { signIn } from "next-auth/react";
 import NextAuth from "next-auth/next";
 import GoogleProvider from "next-auth/providers/google";
 import { redirect } from "next/navigation";
+import { Account } from "next-auth";
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_ID || "";
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_SECRET || "";
@@ -14,13 +14,19 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    async signIn(data: any) {
-      console.log("data", data);
-      // if (account.provider === "google" && profile.verified_email === true) {
-      //   redirect("/posts");
-      // } else {
-      //   redirect("/auth/error");
-      // }
+    async signIn(params: unknown) {
+      try {
+        if (
+          (params as { account: Account }).account.provider === "google" &&
+          !!(params as { account: Account }).account.access_token
+        ) {
+          redirect("/");
+        } else {
+          redirect("/auth/error");
+        }
+      } catch (e) {
+        console.error("error", e);
+      }
       return true;
     },
     async jwt({ token, account }: { token: any; account: any }) {

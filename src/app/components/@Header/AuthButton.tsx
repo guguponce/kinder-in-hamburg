@@ -7,7 +7,6 @@ export default function AuthButton({
 }: {
   email: string | undefined | null;
 }) {
-  console.log("email", email);
   if (email) {
     return (
       <button
