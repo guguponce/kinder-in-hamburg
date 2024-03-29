@@ -4,17 +4,16 @@
 import React, { useState } from "react";
 
 import Link from "next/link";
-import { iRetrievedPost } from "@app/utils/types";
+import { type iParsedRetrievedPost } from "@app/utils/types";
 import CardsDisplayArrows from "./CardsDisplayArrows";
+import { getImagesArray } from "@app/utils/functions";
 
 export default function CardsDisplay({
   id,
   cardPosts,
-  cardType,
 }: {
   id: string;
-  cardType?: string;
-  cardPosts: iRetrievedPost[];
+  cardPosts: iParsedRetrievedPost[];
 }) {
   return (
     <div className="w-full h-fit py-2" id={`${id}-card-display-container`}>
@@ -34,12 +33,13 @@ export default function CardsDisplay({
               >
                 <div className="recommendedImg p-0 flex justify-center items-center h-[250px]">
                   <img
-                    id={post.data.title}
+                    id={post.title}
                     className="w-full h-full object-cover rounded-sm"
                     loading="lazy"
-                    src={post.data.image![0]}
-                    alt={post.data.title}
+                    src={post.image ? post.image[0] : "/assets/icons/baby.svg"}
+                    alt={post.title}
                   />
+                  {}
                 </div>
                 <div
                   className="w-full flex flex-col justify-start p-2 overflow-x-hidden flex-grow"
@@ -47,7 +47,7 @@ export default function CardsDisplay({
                 >
                   <div className="cardBody py-1 overflow-hidden">
                     <h3 className="recommendedCardTitle overflow-hidden text-lg font-semibold">
-                      {post.data.title}
+                      {post.title}
                     </h3>
                   </div>
                 </div>

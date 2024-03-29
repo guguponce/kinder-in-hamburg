@@ -1,16 +1,16 @@
 "use client";
 
-import { iRetrievedPost } from "@app/utils/types";
+import { iPost } from "@app/utils/types";
 import Link from "next/link";
 import React, { useState } from "react";
 
 interface Props {
-  cardPosts: iRetrievedPost[];
+  cardPosts: iPost[];
 }
 
 export default function CardsDisplayArrows({ cardPosts }: Props) {
   const [recIndex, setRecIndex] = useState<number>(0);
-  const cardText = /.+()$/.exec(cardPosts[recIndex].data.text)![0];
+  const cardText = /.+()$/.exec(cardPosts[recIndex].text)![0];
   return (
     <div
       id="card-display-container"
@@ -23,10 +23,10 @@ export default function CardsDisplayArrows({ cardPosts }: Props) {
         <div className="p-0 md:min-w-[200px] max-h-[40dvh] aspect-1.33 w-full self-center md:mx-4">
           <img
             className="text-center object-cover max-h-40vh h-full w-full rounded-sm"
-            id={cardPosts[recIndex].data.title + recIndex}
+            id={cardPosts[recIndex].title + recIndex}
             loading="lazy"
-            src={cardPosts[recIndex].data.image![0]}
-            alt={cardPosts[recIndex].data.title}
+            src={cardPosts[recIndex].image![0]}
+            alt={cardPosts[recIndex].title}
           />
         </div>
 
@@ -53,13 +53,10 @@ export default function CardsDisplayArrows({ cardPosts }: Props) {
           >
             <div className="cardBody py-1 overflow-hidden">
               <h3 className="recommendedCardTitle overflow-hidden text-lg font-semibold">
-                {cardPosts[recIndex].data.title}
+                {cardPosts[recIndex].title}
               </h3>
               <p className="cardText md:py-2">
-                {cardPosts[recIndex].data.text
-                  ?.split(" ")
-                  .slice(0, 75)
-                  .join(" ")}
+                {cardPosts[recIndex].text?.split(" ").slice(0, 75).join(" ")}
                 {/* {cardText} */}
               </p>
             </div>
