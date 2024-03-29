@@ -40,7 +40,7 @@ export default async function Header() {
           </Link>
         ))}
 
-        <LoggedLinks />
+        <LoggedLinks email={session?.user?.email} />
       </nav>
       <div className="ml-4 flex gap-2 items-center">
         <AuthButton email={session?.user?.name} />
