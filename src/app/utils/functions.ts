@@ -1,4 +1,6 @@
+import { text } from "stream/consumers";
 import {
+  TypeAndText,
   iAddress,
   iParsedRetrievedPost,
   iStringifiedRetrievedPost,
@@ -16,10 +18,7 @@ export const parsePost = (
   return {
     user_id: post.user_id,
     title: post.title,
-    text:
-      typeof JSON.parse(post.text) === "string"
-        ? ["paragraph", post.text]
-        : JSON.parse(post.text),
+    text: JSON.parse(post.text),
     tags: JSON.parse(post.tags),
     pinnedPost: !!post.pinnedPost,
     minAge: post.minAge,
@@ -33,7 +32,7 @@ export const parsePost = (
     categories: JSON.parse(post.categories),
     bezirk: post.bezirk,
     address: post.address
-      ? typeof JSON.parse(post.address) === "string"
+      ? post.address[0] !== "{"
         ? post.address
         : JSON.parse(post.address)
       : undefined,
@@ -74,4 +73,19 @@ export const filterExtraImages = (images: File[]) => {
     }
   }
   return images.slice(0, maxIndex + 1);
+};
+
+export const getDescription = (text: string) => {
+  const splittedText = text.split(" ");
+  return text.length > 10
+    ? text.split(" ").slice(0, 10).join(" ") + "..."
+    : splittedText.join(" ");
+};
+
+export const getPlainText = (text: TypeAndText[]) =>
+  text.map(([_, val]) => val).join(" ");
+
+export const parseParams = (params: string) => {
+  let parsed = params.replace("-", " ");
+  return decodeURIComponent(parsed);
 };

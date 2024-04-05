@@ -1,3 +1,5 @@
+import { iBezirk, overallCondition } from "./types";
+
 export const RETRIEVED_POSTS = [
   {
     link: ["https://www.mottehuehner.de/"],
@@ -9,9 +11,9 @@ export const RETRIEVED_POSTS = [
       },
     ],
     minAge: 0,
-    categories: ["Outdoor", "Animals", "Easy Access", "Under 2"],
+    categories: ["Outdoor", "Tiere", "Unter 2"],
     id: 1680559200000,
-    tags: ["animals", "chicken"],
+    tags: ["Tiere", "chicken"],
     image: [
       "https://firebasestorage.googleapis.com/v0/b/hamburg-kids.appspot.com/o/04-04-2023%2F2%2F0?alt=media&token=1b024511-b31c-407f-9271-8feec6f6ff7d",
     ],
@@ -23,7 +25,7 @@ export const RETRIEVED_POSTS = [
   },
 
   {
-    categories: ["Indoor", "Gastronomy", "Birthdays", "Easy Access"],
+    categories: ["Indoor", "Essen/Café", "Geburtstage"],
     image: [
       "https://firebasestorage.googleapis.com/v0/b/hamburg-kids.appspot.com/o/04-04-2023%2F3%2F0?alt=media&token=51f8b082-f554-499b-bbce-2302eb34dfff",
       "https://firebasestorage.googleapis.com/v0/b/hamburg-kids.appspot.com/o/04-04-2023%2F3%2F1?alt=media&token=39850823-deb2-4a12-be53-35cf4e7008c6",
@@ -51,11 +53,11 @@ export const RETRIEVED_POSTS = [
     link: [" https://www.diehalle.hamburg/"],
     minAge: 5,
     text: "We’re hoping that not too far from now we can start posting some outdoor recommendations again. Until then, we are happy to share with you this place which is a little bit of both: Die Halle Hamburg (@diehallehamburg) is a parkour and free running spot in Hamburg’s Oberhafenquartier.\n\nThey offer courses and open trainings (indoor and outdoor) for children starting from 5 years. The set-up is - just like the whole area - industrial, creative and inclusive.\n\nInside there’s a comfy seating area with sofas from where you can overlook the training and the Elbe.\n\nDie Halle is close to HafenCity with ok-ish access by public transport (bus). Parking is easy right in front of the building.\n\nIf you prefer to not wait and watch, right next door you’ll find Hobenköök (@hobenkoeoekhamburg), an urban market hall and restaurant that’s just perfect for a coffee break or buy some veggies.",
-    tags: ["diehalle", "mitte", "indoor", "parkour"],
+    tags: ["diehalle", "mitte", "Indoor", "parkour"],
   },
 
   {
-    text: "Wildpark Schwarze Berge (@wildparkschwarzeberge) is probably the most popular park for wild animals so it should not be missing in our list. Here are a few good reasons why a so-called Wildpark is a great alternative to the great Hagenbeck Zoo:\n1) All animals are endemic to our climate.\n2) Many of them can actually be fed with food that is provided by the park.\n3) They have a great playground and a high tower from where you can see all the way to Hamburg.\n4) Entry fee is much lower than for the zoo.\nIt takes around 40 minutes to get there either by car or public transport from the center of Hamburg.",
+    text: "Wildpark Schwarze Berge (@wildparkschwarzeberge) is probably the most popular park for wild Tiere so it should not be missing in our list. Here are a few good reasons why a so-called Wildpark is a great alternative to the great Hagenbeck Zoo:\n1) All Tiere are endemic to our climate.\n2) Many of them can actually be fed with food that is provided by the park.\n3) They have a great playground and a high tower from where you can see all the way to Hamburg.\n4) Entry fee is much lower than for the zoo.\nIt takes around 40 minutes to get there either by car or public transport from the center of Hamburg.",
     bezirk: "",
     tags: [],
     id: 1683151202000,
@@ -66,7 +68,7 @@ export const RETRIEVED_POSTS = [
     ],
     createdAt: 1683151200000,
     address: "",
-    categories: ["Outdoor", "Spielplatz", "Animals", "Weekend getaways"],
+    categories: ["Outdoor", "Spielplatz", "Tiere", "Wochenende Ausflüge"],
 
     link: [],
     title: "Wildpark Schwarze BergeWildpark Schwarze Berge",
@@ -98,7 +100,13 @@ export const RETRIEVED_POSTS = [
     createdAt: 1683151200000,
     link: [],
 
-    categories: ["Gastronomy", "Museum", "Outdoor", "Free", "Weekend getaways"],
+    categories: [
+      "Essen/Café",
+      "Museum",
+      "Outdoor",
+      "Kostenlos",
+      "Wochenende Ausflüge",
+    ],
     address: "",
   },
 
@@ -137,7 +145,7 @@ export const RETRIEVED_POSTS = [
     igAccounts: [],
     id: 1683151205000,
     bezirk: "Wandsbek",
-    categories: ["Outdoor", "Free"],
+    categories: ["Outdoor", "Kostenlos"],
     tags: [],
   },
 
@@ -149,7 +157,7 @@ export const RETRIEVED_POSTS = [
       "https://firebasestorage.googleapis.com/v0/b/hamburg-kids.appspot.com/o/05-04-2023%2F14%2F2?alt=media&token=d413c98e-82ad-49e1-9d73-33607cfd6485",
       "https://firebasestorage.googleapis.com/v0/b/hamburg-kids.appspot.com/o/05-04-2023%2F14%2F1?alt=media&token=7c30b363-788c-47df-b415-38b382ea43f2",
     ],
-    categories: ["Gastronomy", "Outdoor"],
+    categories: ["Essen/Café", "Outdoor"],
     link: [],
     createdAt: 1683151200000,
     tags: [],
@@ -184,16 +192,16 @@ export const RETRIEVED_POSTS = [
 
     bezirk: "Altona",
     link: [],
-    categories: ["Spielplatz", "Outdoor", "Free", "Easy Access", "Under 2"],
+    categories: ["Spielplatz", "Outdoor", "Kostenlos", "Unter 2"],
   },
 
   {
-    text: "Gut Wulfsdorf (@gutwulfsdorf), located at the border of Hamburg to Schleswig-Holstein is an ecological farm that can be visited from Monday to Saturday during their opening times.\nIt’s not allowed to pet the animals but very interesting to walk around the area. They have cows, pigs, sheep, horses and chicken. There is a little organic supermarket selling local food but also coffee and cake and an outdoor seating area with a sandbox and plenty of toys. It’s not easy to access by public transport (closest train station is Buchenkamp). By car it takes around 30 minutes from the center of Hamburg.",
+    text: "Gut Wulfsdorf (@gutwulfsdorf), located at the border of Hamburg to Schleswig-Holstein is an ecological farm that can be visited from Monday to Saturday during their opening times.\nIt’s not allowed to pet the Tiere but very interesting to walk around the area. They have cows, pigs, sheep, horses and chicken. There is a little organic supermarket selling local food but also coffee and cake and an outdoor seating area with a sandbox and plenty of toys. It’s not easy to access by public transport (closest train station is Buchenkamp). By car it takes around 30 minutes from the center of Hamburg.",
 
     bezirk: "Wandsbek",
     title: "Gut Wulfsdorf",
     tags: [],
-    categories: ["Gastronomy", "Shops", "Animals", "Outdoor", "Spielplatz"],
+    categories: ["Essen/Café", "Shops", "Tiere", "Outdoor", "Spielplatz"],
     link: [],
     id: 1683151208000,
     image: [
@@ -253,7 +261,7 @@ export const RETRIEVED_POSTS = [
         name: "youmeanne",
       },
     ],
-    categories: ["Outdoor", "Spielplatz", "Free", "Under 2", "Easy Access"],
+    categories: ["Outdoor", "Spielplatz", "Kostenlos", "Unter 2"],
     tags: [],
     createdAt: 1683151200000,
     bezirk: "Eimsbüttel",
@@ -265,7 +273,7 @@ export const RETRIEVED_POSTS = [
 
     id: 1683151211000,
     bezirk: "Eimsbüttel",
-    categories: ["Outdoor", "Gastronomy", "Animals"],
+    categories: ["Outdoor", "Essen/Café", "Tiere"],
     tags: [],
     igAccounts: [],
     createdAt: 1683151200000,
@@ -302,14 +310,7 @@ export const RETRIEVED_POSTS = [
   },
 
   {
-    categories: [
-      "Indoor",
-      "Gastronomy",
-      "Under 2",
-      "Animals",
-      "Shops",
-      "Easy Access",
-    ],
+    categories: ["Indoor", "Essen/Café", "Unter 2", "Tiere", "Shops", ,],
     title: "Hagenbeck - Tropen-Aquarium",
     bezirk: "Eimsbüttel",
     tags: [],
@@ -334,7 +335,7 @@ export const RETRIEVED_POSTS = [
   },
 
   {
-    text: "Museumsdorf Volksdorf (@museumsdorf_volksdorf) is located at the border to Schleswig-Holstein, around 30 minutes from the center of Hamburg.\nUnless there is an event it’s usually for free for children as well as adults. Besides some cute old houses that display life as it was 100 years ago, there are also plenty of farm animals like cows, sheep, horses and chicken and a tiny shop with pretty toys and accessories.\nAlmost everything takes place outside so better bring shoes that don’t mind some mud. When it’s warm they serve coffee, softdrinks and waffles or cake in the garden. ",
+    text: "Museumsdorf Volksdorf (@museumsdorf_volksdorf) is located at the border to Schleswig-Holstein, around 30 minutes from the center of Hamburg.\nUnless there is an event it’s usually for free for children as well as adults. Besides some cute old houses that display life as it was 100 years ago, there are also plenty of farm Tiere like cows, sheep, horses and chicken and a tiny shop with pretty toys and accessories.\nAlmost everything takes place outside so better bring shoes that don’t mind some mud. When it’s warm they serve coffee, softdrinks and waffles or cake in the garden. ",
     tags: [],
     createdAt: 1683151200000,
 
@@ -347,7 +348,7 @@ export const RETRIEVED_POSTS = [
     id: 1683151214000,
     link: [],
     title: "Museumsdorf Volksdorf",
-    categories: ["Outdoor", "Free", "Animals", "Gastronomy"],
+    categories: ["Outdoor", "Kostenlos", "Tiere", "Essen/Café"],
     minAge: 0,
     address: "",
     igAccounts: [
@@ -363,7 +364,7 @@ export const RETRIEVED_POSTS = [
     lastUpdate: 1683064800000,
     text: "Garten der Schmetterlinge (@gartenderschmetterlinge) is located a little outside of Hamburg in Aumühle and can be reached either by car or public transport (each around 30 minutes from the center of Hamburg, plus around 15 minutes from the train station).\nWhile it says butterflies, it’s actually a bit more than that: A pretty garden area outside with a (tiny) playground and a rabbit hutch, different tropical houses with butterflies, caterpillars, turtles, koi fish and a little café and gift shop. All in all it’s a small but great place to go to with toddlers but also younger school kids as there is a lot to play, see and learn. ",
     title: "Garten der Schmetterlinge",
-    categories: ["Outdoor", "Indoor", "Animals", "Gastronomy", "Under 2"],
+    categories: ["Outdoor", "Indoor", "Tiere", "Essen/Café", "Unter 2"],
     createdAt: 1683151200000,
     image: [
       "https://firebasestorage.googleapis.com/v0/b/hamburg-kids.appspot.com/o/05-04-2023%2F5%2F0?alt=media&token=b4ea0cd9-485a-47b1-9f3a-8ad56af0ee22",
@@ -386,7 +387,7 @@ export const RETRIEVED_POSTS = [
   },
 
   {
-    categories: ["Outdoor", "Gastronomy", "Shops"],
+    categories: ["Outdoor", "Essen/Café", "Shops"],
     tags: [],
     minAge: 2,
     address: "",
@@ -417,7 +418,7 @@ export const RETRIEVED_POSTS = [
       "https://firebasestorage.googleapis.com/v0/b/hamburg-kids.appspot.com/o/05-04-2023%2F3%2F1?alt=media&token=56f77543-c902-492f-b11d-748ad11c398d",
     ],
     minAge: 3,
-    categories: ["Indoor", "Museum", "Free", "Easy Access"],
+    categories: ["Indoor", "Museum", "Kostenlos"],
     id: 1683151217000,
     title: "Zoologisches Museum Hamburg",
     text: "The Zoological Museum (@museumdernatur.hamburg) is a great place to go on a rainy day with kids starting from 3-4 years. It’s located near the University and can be reached by bus, just a few stops from Dammtor train station.\nThere is no entrance fee for either children or adults. So it can get a bit busy in times. But especially during the week it’s perfect for a visit in the afternoon.",
@@ -435,7 +436,7 @@ export const RETRIEVED_POSTS = [
   },
 ];
 
-export const bezirke = [
+export const bezirke: iBezirk[] = [
   "Hamburg-Mitte",
   "Altona",
   "Eimsbüttel",
@@ -459,6 +460,402 @@ export const categoryNames = [
   "Wochenende Ausflüge",
   "Shops",
 ];
+
+export const WEATHER_CODES: {
+  [x: string]: {
+    code: number;
+    day: string;
+    night: string;
+    icon: number;
+    overallCondition: overallCondition;
+    activity: "Outdoor" | "Indoor" | "Both";
+  };
+} = {
+  "1000": {
+    code: 1000,
+    day: "Sunny",
+    night: "Clear",
+    icon: 113,
+    overallCondition: "Sunny",
+    activity: "Outdoor",
+  },
+  "1003": {
+    code: 1003,
+    day: "Partly cloudy",
+    night: "Partly cloudy",
+    icon: 116,
+    overallCondition: "Partly cloudy",
+    activity: "Outdoor",
+  },
+  "1006": {
+    code: 1006,
+    day: "Cloudy",
+    night: "Cloudy",
+    icon: 119,
+    overallCondition: "Cloudy",
+    activity: "Both",
+  },
+  "1009": {
+    code: 1009,
+    day: "Overcast",
+    night: "Overcast",
+    icon: 122,
+    overallCondition: "Cloudy",
+    activity: "Both",
+  },
+  "1030": {
+    code: 1030,
+    day: "Mist",
+    night: "Mist",
+    icon: 143,
+    overallCondition: "Foggy",
+    activity: "Indoor",
+  },
+  "1063": {
+    code: 1063,
+    day: "Patchy rain possible",
+    night: "Patchy rain possible",
+    icon: 176,
+    overallCondition: "Rainy",
+    activity: "Indoor",
+  },
+  "1066": {
+    code: 1066,
+    day: "Patchy snow possible",
+    night: "Patchy snow possible",
+    icon: 179,
+    overallCondition: "Rainy",
+    activity: "Indoor",
+  },
+  "1069": {
+    code: 1069,
+    day: "Patchy sleet possible",
+    night: "Patchy sleet possible",
+    icon: 182,
+    overallCondition: "Rainy",
+    activity: "Indoor",
+  },
+  "1072": {
+    code: 1072,
+    day: "Patchy freezing drizzle possible",
+    night: "Patchy freezing drizzle possible",
+    icon: 185,
+    overallCondition: "Rainy",
+    activity: "Indoor",
+  },
+  "1087": {
+    code: 1087,
+    day: "Thundery outbreaks possible",
+    night: "Thundery outbreaks possible",
+    icon: 200,
+    overallCondition: "Stormy",
+    activity: "Indoor",
+  },
+  "1114": {
+    code: 1114,
+    day: "Blowing snow",
+    night: "Blowing snow",
+    icon: 227,
+    overallCondition: "Snowy",
+    activity: "Indoor",
+  },
+  "1117": {
+    code: 1117,
+    day: "Blizzard",
+    night: "Blizzard",
+    icon: 230,
+    overallCondition: "Snowy",
+    activity: "Indoor",
+  },
+  "1135": {
+    code: 1135,
+    day: "Fog",
+    night: "Fog",
+    icon: 248,
+    overallCondition: "Foggy",
+    activity: "Indoor",
+  },
+  "1147": {
+    code: 1147,
+    day: "Freezing fog",
+    night: "Freezing fog",
+    icon: 260,
+    overallCondition: "Foggy",
+    activity: "Indoor",
+  },
+  "1150": {
+    code: 1150,
+    day: "Patchy light drizzle",
+    night: "Patchy light drizzle",
+    icon: 263,
+    overallCondition: "Rainy",
+    activity: "Indoor",
+  },
+  "1153": {
+    code: 1153,
+    day: "Light drizzle",
+    night: "Light drizzle",
+    icon: 266,
+    overallCondition: "Rainy",
+    activity: "Indoor",
+  },
+  "1168": {
+    code: 1168,
+    day: "Freezing drizzle",
+    night: "Freezing drizzle",
+    icon: 281,
+    overallCondition: "Rainy",
+    activity: "Indoor",
+  },
+  "1171": {
+    code: 1171,
+    day: "Heavy freezing drizzle",
+    night: "Heavy freezing drizzle",
+    icon: 284,
+    overallCondition: "Rainy",
+    activity: "Indoor",
+  },
+  "1180": {
+    code: 1180,
+    day: "Patchy light rain",
+    night: "Patchy light rain",
+    icon: 293,
+    overallCondition: "Rainy",
+    activity: "Indoor",
+  },
+  "1183": {
+    code: 1183,
+    day: "Light rain",
+    night: "Light rain",
+    icon: 296,
+    overallCondition: "Rainy",
+    activity: "Indoor",
+  },
+  "1186": {
+    code: 1186,
+    day: "Moderate rain at times",
+    night: "Moderate rain at times",
+    icon: 299,
+    overallCondition: "Rainy",
+    activity: "Indoor",
+  },
+  "1189": {
+    code: 1189,
+    day: "Moderate rain",
+    night: "Moderate rain",
+    icon: 302,
+    overallCondition: "Rainy",
+    activity: "Indoor",
+  },
+  "1192": {
+    code: 1192,
+    day: "Heavy rain at times",
+    night: "Heavy rain at times",
+    icon: 305,
+    overallCondition: "Rainy",
+    activity: "Indoor",
+  },
+  "1195": {
+    code: 1195,
+    day: "Heavy rain",
+    night: "Heavy rain",
+    icon: 308,
+    overallCondition: "Rainy",
+    activity: "Indoor",
+  },
+  "1198": {
+    code: 1198,
+    day: "Light freezing rain",
+    night: "Light freezing rain",
+    icon: 311,
+    overallCondition: "Rainy",
+    activity: "Indoor",
+  },
+  "1201": {
+    code: 1201,
+    day: "Moderate or heavy freezing rain",
+    night: "Moderate or heavy freezing rain",
+    icon: 314,
+    overallCondition: "Rainy",
+    activity: "Indoor",
+  },
+  "1204": {
+    code: 1204,
+    day: "Light sleet",
+    night: "Light sleet",
+    icon: 317,
+    overallCondition: "Rainy",
+    activity: "Indoor",
+  },
+  "1207": {
+    code: 1207,
+    day: "Moderate or heavy sleet",
+    night: "Moderate or heavy sleet",
+    icon: 320,
+    overallCondition: "Rainy",
+    activity: "Indoor",
+  },
+  "1210": {
+    code: 1210,
+    day: "Patchy light snow",
+    night: "Patchy light snow",
+    icon: 323,
+    overallCondition: "Snowy",
+    activity: "Indoor",
+  },
+  "1213": {
+    code: 1213,
+    day: "Light snow",
+    night: "Light snow",
+    icon: 326,
+    overallCondition: "Snowy",
+    activity: "Indoor",
+  },
+  "1216": {
+    code: 1216,
+    day: "Patchy moderate snow",
+    night: "Patchy moderate snow",
+    icon: 329,
+    overallCondition: "Snowy",
+    activity: "Indoor",
+  },
+  "1219": {
+    code: 1219,
+    day: "Moderate snow",
+    night: "Moderate snow",
+    icon: 332,
+    overallCondition: "Snowy",
+    activity: "Indoor",
+  },
+  "1222": {
+    code: 1222,
+    day: "Patchy heavy snow",
+    night: "Patchy heavy snow",
+    icon: 335,
+    overallCondition: "Snowy",
+    activity: "Indoor",
+  },
+  "1225": {
+    code: 1225,
+    day: "Heavy snow",
+    night: "Heavy snow",
+    icon: 338,
+    overallCondition: "Snowy",
+    activity: "Indoor",
+  },
+  "1237": {
+    code: 1237,
+    day: "Ice pellets",
+    night: "Ice pellets",
+    icon: 350,
+    overallCondition: "Stormy",
+    activity: "Indoor",
+  },
+  "1240": {
+    code: 1240,
+    day: "Light rain shower",
+    night: "Light rain shower",
+    icon: 353,
+    overallCondition: "Snowy",
+    activity: "Indoor",
+  },
+  "1243": {
+    code: 1243,
+    day: "Moderate or heavy rain shower",
+    night: "Moderate or heavy rain shower",
+    icon: 356,
+    overallCondition: "Snowy",
+    activity: "Indoor",
+  },
+  "1246": {
+    code: 1246,
+    day: "Torrential rain shower",
+    night: "Torrential rain shower",
+    icon: 359,
+    overallCondition: "Snowy",
+    activity: "Indoor",
+  },
+  "1249": {
+    code: 1249,
+    day: "Light sleet showers",
+    night: "Light sleet showers",
+    icon: 362,
+    overallCondition: "Snowy",
+    activity: "Indoor",
+  },
+  "1252": {
+    code: 1252,
+    day: "Moderate or heavy sleet showers",
+    night: "Moderate or heavy sleet showers",
+    icon: 365,
+    overallCondition: "Snowy",
+    activity: "Indoor",
+  },
+  "1255": {
+    code: 1255,
+    day: "Light snow showers",
+    night: "Light snow showers",
+    icon: 368,
+    overallCondition: "Snowy",
+    activity: "Indoor",
+  },
+  "1258": {
+    code: 1258,
+    day: "Moderate or heavy snow showers",
+    night: "Moderate or heavy snow showers",
+    icon: 371,
+    overallCondition: "Snowy",
+    activity: "Indoor",
+  },
+  "1261": {
+    code: 1261,
+    day: "Light showers of ice pellets",
+    night: "Light showers of ice pellets",
+    icon: 374,
+    overallCondition: "Snowy",
+    activity: "Indoor",
+  },
+  "1264": {
+    code: 1264,
+    day: "Moderate or heavy showers of ice pellets",
+    night: "Moderate or heavy showers of ice pellets",
+    icon: 377,
+    overallCondition: "Snowy",
+    activity: "Indoor",
+  },
+  "1273": {
+    code: 1273,
+    day: "Patchy light rain with thunder",
+    night: "Patchy light rain with thunder",
+    icon: 386,
+    overallCondition: "Stormy",
+    activity: "Indoor",
+  },
+  "1276": {
+    code: 1276,
+    day: "Moderate or heavy rain with thunder",
+    night: "Moderate or heavy rain with thunder",
+    icon: 389,
+    overallCondition: "Stormy",
+    activity: "Indoor",
+  },
+  "1279": {
+    code: 1279,
+    day: "Patchy light snow with thunder",
+    night: "Patchy light snow with thunder",
+    icon: 392,
+    overallCondition: "Stormy",
+    activity: "Indoor",
+  },
+  "1282": {
+    code: 1282,
+    day: "Moderate or heavy snow with thunder",
+    night: "Moderate or heavy snow with thunder",
+    icon: 395,
+    overallCondition: "Stormy",
+    activity: "Indoor",
+  },
+} as const;
 
 // icons
 // loading

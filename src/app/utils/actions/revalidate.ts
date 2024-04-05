@@ -11,7 +11,6 @@ export async function revalidate() {
 }
 
 export async function revalidateAndRoute(id: string) {
-  console.log("revalidating");
   revalidate().then(() => {
     sleep(2000).then(() => {
       redirect(`/posts/${id}`);
