@@ -1,5 +1,7 @@
 "use server";
 import {
+  categoryName,
+  iBezirk,
   iContributor,
   iParsedRetrievedPost,
   iPost,
@@ -8,6 +10,8 @@ import {
 } from "@app/utils/types";
 import { createClient } from "@supabase/supabase-js";
 import { getServerSession } from "next-auth";
+import { deleteUnusedImages } from "./storageActions";
+import { parsePost } from "@app/utils/functions";
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL || "",
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ""
@@ -30,8 +34,6 @@ export const handleUploadToSupabase = async (
     });
   if (error) {
     console.log("Error uploading file:", error.message);
-  } else {
-    console.log("File uploaded successfully:", data);
   }
   const imageURL = await getImageURL(path, `public/${file.name}`);
   const metadata = {
@@ -42,7 +44,7 @@ export const handleUploadToSupabase = async (
     orientation,
   };
   const insertData = await supabaseAdmin.from(path).insert(metadata);
-  console.log("inserData", insertData);
+
   return insertData;
 };
 
@@ -60,20 +62,19 @@ export const addBulkPosts = async (posts: iPost[]) => {
       user_id: session.user?.email,
     }));
     const { data, error } = await supabaseAdmin
-      .from("kinder-in-hh-blogposts")
+      .from("kih-suggestions")
       .insert(submittedPosts);
     if (error) {
       throw new Error(error.message);
     }
-    console.log("submitted");
     return data;
   } catch (error) {
     throw new Error();
   }
 };
 
+// CONTRIBUTORS
 export const getContributorData = async (email: string) => {
-  console.log(email);
   const { data, error } = await supabaseAdmin
     .from("contributors")
     .select("*")
@@ -110,7 +111,7 @@ export const updateContributor = async (user: iSessionUser, postID: number) => {
       addNewContributor(user, postID);
       return;
     }
-    console.log("contributor", contributor);
+    if (contributor.postSubmitted?.includes(postID)) return;
     const { error } = await supabaseAdmin
       .from("contributors")
       .update({
@@ -138,7 +139,8 @@ export const deleteContributor = async (id: string) => {
   return data;
 };
 
-export const addNewPost = async (post: iParsedRetrievedPost) => {
+// SUGGESTED BLOGPOSTS
+export const addNewSuggestedPost = async (post: iParsedRetrievedPost) => {
   try {
     const session = await getServerSession();
     if (!session?.user) {
@@ -154,13 +156,12 @@ export const addNewPost = async (post: iParsedRetrievedPost) => {
       image: post.image ? JSON.stringify(post.image) : undefined,
     };
     const { data, error } = await supabaseAdmin
-      .from("kinder-in-hh-blogposts")
+      .from("kih-suggestions")
       .insert(submittedPost)
       .select();
     if (error) {
       throw new Error(error.message);
     }
-    console.log("submitted");
 
     return true;
   } catch (error) {
@@ -168,9 +169,9 @@ export const addNewPost = async (post: iParsedRetrievedPost) => {
   }
 };
 
-export const updatePost = async (post: iParsedRetrievedPost) => {
+export const updateSuggestedPost = async (post: iParsedRetrievedPost) => {
   const { data, error } = await supabaseAdmin
-    .from("kinder-in-hh-blogposts")
+    .from("kih-suggestions")
     .update(post)
     .match({ id: post.id });
   if (error) {
@@ -179,9 +180,9 @@ export const updatePost = async (post: iParsedRetrievedPost) => {
   return true;
 };
 
-export const getPostWithID = async (id: string) => {
+export const getSuggestedPostWithID = async (id: string) => {
   const { data, error } = await supabaseAdmin
-    .from("kinder-in-hh-blogposts")
+    .from("kih-suggestions")
     .select("*")
     .match({ id });
   if (error) {
@@ -190,32 +191,123 @@ export const getPostWithID = async (id: string) => {
   return data[0] as iStringifiedRetrievedPost;
 };
 
-export const getPostWithCategory = async (category: string) => {
+export const getAllSuggestedPosts = async () => {
   const { data, error } = await supabaseAdmin
-    .from("kinder-in-hh-blogposts")
+    .from("kih-suggestions")
     .select("*");
-  if (error) {
-    throw new Error(error.message);
-  }
-  return (data as iStringifiedRetrievedPost[]).filter(({ categories }) =>
-    categories.includes(category)
-  );
-};
-
-export const getPostWithBezirk = async (bezirk: string) => {
-  const { data, error } = await supabaseAdmin
-    .from("kinder-in-hh-blogposts")
-    .select("*")
-    .in("bezirk", [bezirk]);
   if (error) {
     throw new Error(error.message);
   }
   return data as iStringifiedRetrievedPost[];
 };
 
-export const getAllPosts = async () => {
+export const getSuggestionsWithCat = async (category: string) => {
   const { data, error } = await supabaseAdmin
-    .from("kinder-in-hh-blogposts")
+    .from("kih-suggestions")
+    .select()
+    .ilike("categories", `%${category}%`);
+  if (error) {
+    throw new Error(error.message);
+  }
+  return data as iStringifiedRetrievedPost[];
+};
+
+export const getSuggestionsWithCatAndBezirk = async (
+  category: categoryName,
+  bezirk: iBezirk
+) => {
+  const { data, error } = await supabaseAdmin
+    .from("kih-suggestions")
+    .select()
+    .ilike("categories", `%${category}%`)
+    .like("bezirk", bezirk);
+  if (error) {
+    throw new Error(error.message);
+  }
+  return data as iStringifiedRetrievedPost[];
+};
+
+export const getSuggestionsWithBezirk = async (bezirk: iBezirk) => {
+  const { data, error } = await supabaseAdmin
+    .from("kih-suggestions")
+    .select("*")
+    .in("bezirk", [bezirk]);
+  if (error) {
+    throw new Error(error.message);
+  }
+  return data.map((post) => parsePost(post)) as iParsedRetrievedPost[];
+};
+
+export const deleteSuggestion = async (id: number) => {
+  const { data, error } = await supabaseAdmin
+    .from("kih-suggestions")
+    .delete()
+    .match({ id });
+  if (error) {
+    throw new Error(error.message);
+  }
+  return data;
+};
+
+export const getUsersSuggestions = async (email: string) => {
+  const { data, error } = await supabaseAdmin
+    .from("kih-suggestions")
+    .select("*")
+    .match({ user_id: email });
+  if (error) {
+    console.error(error.message);
+    return "There was a problem getting your suggestions.";
+  }
+  return data as iStringifiedRetrievedPost[];
+};
+export const updateSuggestionStatus = async (id: number, status: string) => {
+  const { data, error } = await supabaseAdmin
+    .from("kih-suggestions")
+    .update({ status })
+    .match({ id });
+  if (error) {
+    throw new Error(error.message);
+  }
+  return data;
+};
+
+// APPROVED BLOGPOSTS
+export const getApprovedPostWithCat = async (category: string) => {
+  const { data, error } = await supabaseAdmin
+    .from("kih-approved-blogposts")
+    .select()
+    .ilike("categories", `%${category}%`);
+  if (error) {
+    throw new Error(error.message);
+  }
+  return data as iStringifiedRetrievedPost[];
+};
+
+export const getUserApprovedPosts = async (user: iSessionUser) => {
+  const { data, error } = await supabaseAdmin
+    .from("kih-approved-blogposts")
+    .select("*")
+    .match({ user_id: user.email });
+  if (error) {
+    throw new Error(error.message);
+  }
+  return data as iStringifiedRetrievedPost[];
+};
+
+export const getPostWithBezirk = async (bezirk: iBezirk) => {
+  const { data, error } = await supabaseAdmin
+    .from("kih-approved-blogposts")
+    .select("*")
+    .in("bezirk", [bezirk]);
+  if (error) {
+    throw new Error(error.message);
+  }
+  return data.map((post) => parsePost(post)) as iParsedRetrievedPost[];
+};
+
+export const getAllApprovedPosts = async () => {
+  const { data, error } = await supabaseAdmin
+    .from("kih-approved-blogposts")
     .select("*");
   if (error) {
     throw new Error(error.message);
@@ -225,7 +317,7 @@ export const getAllPosts = async () => {
 
 export const getPinnedPosts = async () => {
   const { data, error } = await supabaseAdmin
-    .from("kinder-in-hh-blogposts")
+    .from("kih-approved-blogposts")
     .select("*")
     .match({ pinnedPost: true });
   if (error) {
@@ -234,9 +326,20 @@ export const getPinnedPosts = async () => {
   return data as iStringifiedRetrievedPost[];
 };
 
-export const deletePost = async (id: number) => {
+export const getApprovedPostWithID = async (id: string) => {
   const { data, error } = await supabaseAdmin
-    .from("kinder-in-hh-blogposts")
+    .from("kih-approved-blogposts")
+    .select("*")
+    .match({ id });
+  if (error) {
+    throw new Error(error.message);
+  }
+  return data[0] as iStringifiedRetrievedPost;
+};
+
+export const deleteApprovedPost = async (id: number) => {
+  const { data, error } = await supabaseAdmin
+    .from("kih-approved-blogposts")
     .delete()
     .match({ id });
   if (error) {
@@ -246,12 +349,137 @@ export const deletePost = async (id: number) => {
 };
 
 export const getAllPostsIds = async () => {
-  const { data, error } = await supabaseAdmin
-    .from("kinder-in-hh-blogposts")
-    .select("id");
+  const getIDs = (db: string) => {
+    return supabaseAdmin.from(db).select("id");
+  };
+  try {
+    const data = await Promise.all(
+      ["kih-approved-blogposts", "kih-suggestions"].map((folder) =>
+        getIDs(folder)
+      )
+    );
+    if (data.some((d) => d.error)) {
+      throw new Error(data.find((d) => d.error)?.error?.message);
+    }
+    return data.map((d) => d.data!.map((d) => d.id)).flat();
+  } catch (error) {
+    throw new Error("error getting posts IDs");
+  }
+};
+
+export const approveSuggestedPost = async (post: iParsedRetrievedPost) => {
+  const { error } = await supabaseAdmin
+    .from("kih-approved-blogposts")
+    .insert(post);
   if (error) {
     throw new Error(error.message);
   }
-  const ids = (data as { id: string }[]).map(({ id }) => id);
-  return ids;
+  return true;
 };
+
+export const updateApprovedPost = async (post: iParsedRetrievedPost) => {
+  const { error } = await supabaseAdmin
+    .from("kih-approved-blogposts")
+    .update(post)
+    .match({ id: post.id });
+  if (error) {
+    throw new Error(error.message);
+  }
+  return true;
+};
+
+//POST SUBMIT HANDLES
+export const handleUpdateSuggestion = async (
+  updatedPost: iParsedRetrievedPost,
+  setSubmitError: (
+    value: React.SetStateAction<{
+      isError: boolean;
+      errorMessage: string;
+    }>
+  ) => void
+) => {
+  return updateSuggestedPost(updatedPost)
+    .then(() => {
+      setSubmitError({ isError: false, errorMessage: "" });
+    })
+    .then(() => {
+      deleteUnusedImages();
+    })
+    .then(() => {
+      updateContributor(updatedPost.addedBy, updatedPost.id);
+    })
+    .catch((error) =>
+      setSubmitError({ isError: true, errorMessage: error.message })
+    );
+};
+
+export const handleNewSuggestion = async (
+  suggestion: iParsedRetrievedPost,
+  setSubmitError: (
+    value: React.SetStateAction<{
+      isError: boolean;
+      errorMessage: string;
+    }>
+  ) => void
+) => {
+  return addNewSuggestedPost(suggestion)
+    .then(() => {
+      setSubmitError({ isError: false, errorMessage: "" });
+    })
+    .then(() => {
+      deleteUnusedImages();
+    })
+    .then(() => {
+      addNewContributor(suggestion.addedBy, suggestion.id);
+    })
+    .catch((error) =>
+      setSubmitError({ isError: true, errorMessage: error.message })
+    );
+};
+
+export const handleApproveSuggestion = async (
+  suggestion: iParsedRetrievedPost,
+  setSubmitError: (
+    value: React.SetStateAction<{
+      isError: boolean;
+      errorMessage: string;
+    }>
+  ) => void
+) => {
+  return approveSuggestedPost(suggestion)
+    .then(() => {
+      setSubmitError({ isError: false, errorMessage: "" });
+    })
+    .then(() => {
+      deleteUnusedImages();
+    })
+    .then(() => {
+      addNewContributor(suggestion.addedBy, suggestion.id);
+    })
+    .catch((error) =>
+      setSubmitError({ isError: true, errorMessage: error.message })
+    );
+};
+
+export const handleUpdateApprovedPost = async (
+  updatedPost: iParsedRetrievedPost,
+  setSubmitError: (
+    value: React.SetStateAction<{
+      isError: boolean;
+      errorMessage: string;
+    }>
+  ) => void
+) =>
+  updateApprovedPost(updatedPost)
+    .then(() => {
+      setSubmitError({ isError: false, errorMessage: "" });
+    })
+    .then(() => {
+      deleteUnusedImages();
+    })
+    .then(() => {
+      updateContributor(updatedPost.addedBy, updatedPost.id);
+    })
+    .catch((error) =>
+      setSubmitError({ isError: true, errorMessage: error.message })
+    );
