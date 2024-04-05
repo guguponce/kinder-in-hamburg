@@ -10,5 +10,5 @@ export default function SuccessfulPage({
     revalidate();
   }
 
-  return <SuccessfulSubmit postID={postID} type="suggestion" />;
+  return <SuccessfulSubmit type="suggestion" postID={postID} />;
 }

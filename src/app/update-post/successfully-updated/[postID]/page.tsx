@@ -1,5 +1,5 @@
 import React from "react";
-import { revalidateAndRoute } from "@app/utils/actions/revalidate";
+import { revalidate } from "@app/utils/actions/revalidate";
 import SuccessfulSubmit from "@components/@PostForm/SuccessfulSubmit";
 export default function SuccessfulPage({
   params: { postID },
@@ -7,8 +7,8 @@ export default function SuccessfulPage({
   params: { postID: string };
 }) {
   if (postID) {
-    revalidateAndRoute(postID);
+    revalidate();
   }
 
-  return <SuccessfulSubmit update={true} postID={postID} />;
+  return <SuccessfulSubmit type="update" postID={postID} />;
 }
