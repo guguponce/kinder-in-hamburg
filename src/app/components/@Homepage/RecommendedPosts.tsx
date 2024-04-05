@@ -1,5 +1,5 @@
 import React from "react";
-import CardsDisplay from "../CardsDisplay";
+import CardsDisplay from "../@Cards/CardsDisplay";
 import { iParsedRetrievedPost, iPost } from "@app/utils/types";
 
 export default function RecommendedPosts({
@@ -15,7 +15,7 @@ export default function RecommendedPosts({
       >
         Recommendations of the month
       </h2>
-      <CardsDisplay id="recommendation" cardPosts={recommendedPosts} />
+      <CardsDisplay cardPosts={recommendedPosts} />
     </section>
   );
 }
