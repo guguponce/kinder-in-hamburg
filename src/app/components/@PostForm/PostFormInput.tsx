@@ -38,8 +38,8 @@ export default function PostFormInput({
           {inputLabel}
           {required && (
             <>
-              <span className="text-red-800">*</span>
-              <span className="text-sm text-red-800"> (Required)</span>
+              <span className="text-negative-800">*</span>
+              <span className="text-sm text-negative-800"> (Required)</span>
             </>
           )}
           {inputID === "tags" && (

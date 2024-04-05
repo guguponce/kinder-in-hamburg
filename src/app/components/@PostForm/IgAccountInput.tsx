@@ -12,13 +12,10 @@ export default function IgAccountInput({
   const [igNameError, setIgNameError] = useState<boolean>(false);
 
   const handleAdd = () => {
-    if (igDescription === "") {
-      setigDescriptionError(true);
-    }
     if (igName === "") {
       setIgNameError(true);
     }
-    if (igDescription === "" || igName === "") return;
+    if (igName === "") return;
     handleAddIgAccount({ name: igName, description: igDescription });
     setigDescription("");
     setIgName("");
@@ -51,7 +48,7 @@ export default function IgAccountInput({
             <span className="absulute right-full">@</span>
           </div>
           {igNameError && (
-            <p className="text-red-800">Instagram name is required</p>
+            <p className="text-negative-800">Instagram name is required</p>
           )}
         </div>
         <div className="flex flex-col">
@@ -69,7 +66,7 @@ export default function IgAccountInput({
             value={igDescription}
             onChange={(e) => setigDescription(e.target.value)}
             onBlur={() => {
-              if (igDescription === "" && igName !== "") {
+              if (igName !== "") {
                 setigDescriptionError(true);
               } else {
                 setigDescriptionError(false);
@@ -77,9 +74,6 @@ export default function IgAccountInput({
             }}
             className={`w-60 p-2 mt-1 rounded-md text-gray-900 border border-gray-300 focus:outline-none focus:border-gray-500`}
           />
-          {igDescriptionError && (
-            <p className="text-red-800">Instagram account is required</p>
-          )}
         </div>
       </div>
       <button

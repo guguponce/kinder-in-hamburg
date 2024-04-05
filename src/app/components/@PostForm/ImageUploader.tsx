@@ -9,8 +9,6 @@ import { getImagesURLs, uploadPostImage } from "@app/api/storageActions";
 import { filterExtraImages } from "@app/utils/functions";
 
 interface ImageUploaderProps {
-  mainImage: string | undefined;
-  setMainImage: React.Dispatch<React.SetStateAction<string | undefined>>;
   setImagesUrlsReady: React.Dispatch<
     React.SetStateAction<{
       ready: boolean;
@@ -24,8 +22,6 @@ interface ImageUploaderProps {
 export const ImageUploader = ({
   id,
   setImagesUrlsReady,
-  setMainImage,
-  mainImage,
   email,
 }: ImageUploaderProps) => {
   const [previousImagesURLS, setPreviousImagesURLS] = useState<
@@ -48,10 +44,10 @@ export const ImageUploader = ({
 
   useEffect(() => {
     if (
-      (imagesURLS.length || previousImagesURLS.length) &&
+      (imagesURLS.length ||
+        (!previousImagesURLS.length && !imagesURLS.length)) &&
       !imageFiles.length
     ) {
-      console.log("images changed");
       setImagesUrlsReady({
         ready: true,
         urls: [...imagesURLS, ...previousImagesURLS].map((url) => url.url),
@@ -69,7 +65,6 @@ export const ImageUploader = ({
   };
 
   const handleUpload = async () => {
-    console.log("first");
     Promise.all(
       imageFiles.map((image) => {
         uploadPostImage(
@@ -95,14 +90,15 @@ export const ImageUploader = ({
   return (
     <div
       id="images-upload-container"
-      className="bg-[hsl(31,33%,57%)] p-4 text-gray-900"
+      className="bg-hh-800 p-4 text-gray-900 max-w-[800px] mx-auto text-sm"
     >
       <h2 className="text-xl font-bold text-white underline">
-        Images<span className="ml-2 text-red-600 no-underline">*</span>
-        <span className="text-sm text-red-600 no-underline">
+        Images<span className="ml-2 text-negative-200 no-underline">*</span>
+        <span className="text-sm text-negative-200 no-underline">
           (Max. size for all images together: 10mb)
         </span>
       </h2>
+
       <label htmlFor="images" className="text-sm leading-7 text-gray-100">
         <input
           type="file"
@@ -111,15 +107,16 @@ export const ImageUploader = ({
           multiple
           name="images"
           onChange={handleImageChange}
-          className="mt-4 flex max-w-[300px] flex-wrap rounded  border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-[hsl(35,73%,57%)] focus:bg-white focus:ring-2 focus:ring-[rgb(225,159,65,0.5)]"
+          className="mt-4 flex max-w-[300px] flex-wrap rounded  border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
         />
       </label>
+
       {!!imageFiles.length && (
         <div className="my-4 rounded border-4 border-[hsl(0,0%,100%,0.6)] bg-black bg-opacity-20 p-4 text-white">
           <div className="flex justify-between">
             <h3 className="font-semibold italic">
               Selected Image Files{" "}
-              <span className={filesSize > 10000000 ? "text-red-200" : ""}>
+              <span className={filesSize > 10000000 ? "text-negative-200" : ""}>
                 (full size: {(filesSize / 1000000).toFixed(2)}
                 mb)
               </span>
@@ -135,7 +132,7 @@ export const ImageUploader = ({
           </ol>
           <div className="my-4 flex gap-4">
             <button
-              className="rounded bg-[hsl(31,33%,37%)] px-4 py-2 font-bold text-white hover:bg-yellow-700"
+              className="rounded bg-positive-700 px-4 py-2 font-bold text-white hover:bg-yellow-700"
               disabled={
                 !imageFiles.length ||
                 (uploadStatus !== "await" && uploadStatus !== "success")
@@ -145,7 +142,7 @@ export const ImageUploader = ({
               Upload Images
             </button>
             <button
-              className="flex h-10 w-fit items-center justify-center rounded bg-red-500 px-2 py-2 font-bold text-white hover:bg-red-700 "
+              className="flex h-10 w-fit items-center justify-center rounded bg-negative-500 px-2 py-2 font-bold text-white hover:bg-negative-700 "
               onClick={() => {
                 setImageFiles([]);
                 fileInputRef.current!.value = "";
@@ -167,11 +164,8 @@ export const ImageUploader = ({
               <div className="flex flex-wrap items-stretch justify-stretch gap-4 py-4">
                 {previousImagesURLS.map((imageUrl, imageIndex) => (
                   <div
-                    className={`${
-                      mainImage === imageUrl.url
-                        ? "outline-double outline-2 outline-offset-2 outline-[hsl(31,73%,37%)]"
-                        : ""
-                    } flex min-w-36 flex-col items-center  justify-between rounded bg-[hsla(31,73%,37%,0.6)] p-2`}
+                    className={`
+                         flex min-w-36 flex-col items-center  justify-between rounded border-2 border-green-900 p-2`}
                     key={imageUrl.url}
                   >
                     <UploadImagePreview
@@ -189,20 +183,6 @@ export const ImageUploader = ({
                         imageUrl={imageUrl.url}
                       />
                     </UploadImagePreview>
-                    <button
-                      onClick={() => {
-                        setMainImage(imageUrl.url);
-                      }}
-                      className={`${
-                        mainImage === imageUrl.url
-                          ? "bg-[hsla(31,43%,27%,0.6)] text-white"
-                          : "bg-[hsla(31,73%,87%,0.6)] text-gray-700"
-                      } mt-2  flex w-28 flex-col items-center justify-center rounded p-2  text-sm hover:outline-[hsla(31,73%,87%,0.6)]`}
-                    >
-                      {mainImage === imageUrl.url
-                        ? "Main image"
-                        : "Set as main image"}
-                    </button>
                   </div>
                 ))}
               </div>
@@ -214,11 +194,7 @@ export const ImageUploader = ({
               <div className="wrap flex items-stretch justify-stretch gap-4 py-4">
                 {imagesURLS.map((imageUrl, imageIndex) => (
                   <div
-                    className={`${
-                      mainImage === imageUrl.url
-                        ? "outline-double outline-2 outline-offset-2 outline-[hsl(31,73%,37%)]"
-                        : ""
-                    } flex w-36 flex-col items-center justify-between rounded bg-[hsla(31,73%,37%,0.6)] p-2`}
+                    className={`flex w-36 flex-col items-center justify-between rounded  border-2 border-green-900 p-2`}
                     key={imageUrl.url}
                   >
                     <UploadImagePreview
@@ -232,20 +208,6 @@ export const ImageUploader = ({
                         setImagesArray={setImagesURLS}
                       />
                     </UploadImagePreview>
-                    <button
-                      onClick={() => {
-                        setMainImage(imageUrl.url);
-                      }}
-                      className={`${
-                        mainImage === imageUrl.url
-                          ? "bg-[hsla(31,43%,27%,0.6)] text-white"
-                          : "bg-[hsla(31,73%,87%,0.6)] text-gray-700"
-                      } mt-2  flex flex-col items-center justify-center rounded p-2  text-sm hover:outline-[hsla(31,73%,87%,0.6)]`}
-                    >
-                      {mainImage === imageUrl.url
-                        ? "Main image"
-                        : "Set as main image"}
-                    </button>
                   </div>
                 ))}
               </div>

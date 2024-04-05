@@ -20,7 +20,7 @@ export default function DeleteImageButton({
 }) {
   return (
     <button
-      className="flex h-10 w-10 items-center justify-center rounded bg-red-500 px-2 py-2 font-bold text-white hover:bg-red-700 "
+      className="flex h-10 w-10 mx-auto items-center justify-center rounded bg-negative-500 px-2 py-2 font-bold text-white hover:bg-negative-700 "
       onClick={async () => {
         deleteImage(path, imageName)
           .then(() => {

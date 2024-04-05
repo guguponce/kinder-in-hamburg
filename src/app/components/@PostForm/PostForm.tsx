@@ -1,14 +1,20 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useForm, type FieldValues } from "react-hook-form";
 import {
   addBulkPosts,
   addNewContributor,
-  addNewPost,
-  getContributorData,
+  addNewSuggestedPost,
+  approveSuggestedPost,
+  handleApproveSuggestion,
+  handleNewSuggestion,
+  handleUpdateApprovedPost,
+  handleUpdateSuggestion,
+  updateApprovedPost,
   updateContributor,
-  updatePost,
+  updateSuggestedPost,
+  updateSuggestionStatus,
 } from "@app/api/dbActions";
 import type {
   iAddress,
@@ -22,7 +28,7 @@ import MarkUpForm from "./MarkUpForm";
 import PostFormInput from "./PostFormInput";
 import PostTextTypeButtons from "./PostTextTypeButtons";
 import DisplayDraft from "./DisplayDraft";
-import DeletePost from "./DeletePostButton";
+import DeletePostButton from "../DeletePostButton";
 import { useRouter } from "next/navigation";
 import { bezirke, categoryNames } from "@app/utils/constants";
 import IgAccountInput from "./IgAccountInput";
@@ -31,6 +37,12 @@ import { deleteUnusedImages, getFoldersList } from "@app/api/storageActions";
 interface PostFormProps {
   PostForm: Partial<iParsedRetrievedPost>;
   user: iSessionUser;
+  children?: React.ReactNode;
+  postType:
+    | "new-suggestion"
+    | "update-suggestion"
+    | "suggested-to-approved"
+    | "update-approved-post";
 }
 export default function PostForm({
   PostForm: {
@@ -51,25 +63,25 @@ export default function PostForm({
     pinnedPost,
     user_id,
     addedBy,
+    status,
   },
   user,
+  children,
+  postType,
 }: PostFormProps) {
   const router = useRouter();
   const [userInput, setUserInput] = React.useState<iSessionUser>(user);
-  const [mainImage, setMainImage] = React.useState<string | undefined>(
-    image ? image[0] : undefined
-  );
   const [imagesUrlsReady, setImagesUrlsReady] = React.useState<{
     ready: boolean;
     urls: string[];
-  }>({ ready: false, urls: [] });
+  }>({ ready: true, urls: [] });
 
   const [contentTextType, setContentTextType] = React.useState<
     "paragraph" | "mixed" | null
   >(null);
 
   const [savedPostText, setSavedPostText] = React.useState<TypeAndText[]>(
-    typeof text === "string" ? [["paragraph", text]] : text || []
+    text || []
   );
 
   const [categoriesList, setCategoriesList] = React.useState<string[]>(
@@ -96,6 +108,7 @@ export default function PostForm({
     formState: { errors, isSubmitSuccessful, isDirty, isSubmitting, isLoading },
   } = useForm({
     defaultValues: {
+      status: status || "pending",
       id: id || newID.current,
       createdAt: createdAt,
       title: title,
@@ -104,7 +117,7 @@ export default function PostForm({
       tags: tags?.join("-"),
       user_id: user_id,
       addedBy: addedBy,
-      link: link,
+      link: link ? (link === "[]" ? "" : link) : "",
       street: address?.street || "",
       number: address?.number || "",
       PLZ: address?.PLZ || "",
@@ -118,16 +131,19 @@ export default function PostForm({
     },
   });
 
-  const onSubmitNewPost = (data: FieldValues) => {
-    // if (!imagesUrlsReady.ready) return alert("Images are not ready yet");
+  const onSubmitNewSuggestion = (data: FieldValues) => {
+    if (!imagesUrlsReady.ready) return alert("Images are not ready yet");
     if (!savedPostText.length)
       return alert("Text is required and needs to be saved");
-    if (!userInput.email || !addedBy) return alert("User is required");
-    const post: iParsedRetrievedPost = {
+    if (!userInput.email)
+      return alert(
+        "User is required" + JSON.stringify(userInput) + JSON.stringify(addedBy)
+      );
+    const suggestionPost: iParsedRetrievedPost = {
       id: newID.current,
       createdAt: createdAt || newID.current,
       title: data.title,
-      text: JSON.stringify([...savedPostText]),
+      text: savedPostText,
       categories: categoriesList, // provide categories state with multiple categories
       tags: data.tags ? data.tags.split("-").filter(Boolean) : [data.tags],
       image: imagesUrlsReady.urls,
@@ -142,20 +158,16 @@ export default function PostForm({
           : undefined,
       lastUpdate: newID.current,
       pinnedPost: data.pinnedPost === "true" ? true : false,
-      user_id: user_id || userInput.email,
-      addedBy: addedBy || userInput,
+      user_id: userInput.email,
+      addedBy: userInput,
+      status: data.status || "pending",
     };
-    addNewPost(post)
+    addNewSuggestedPost(suggestionPost)
       .then(() => {
-        console.log("submitted");
-        submitError.isError &&
-          setSubmitError({ isError: false, errorMessage: "" });
+        setSubmitError({ isError: false, errorMessage: "" });
       })
       .then(() => {
         deleteUnusedImages();
-      })
-      .then(() => {
-        addNewContributor(userInput, newID.current);
       })
       .then(() =>
         setTimeout(() => {
@@ -167,8 +179,8 @@ export default function PostForm({
       );
   };
 
-  const onUpdatePost = (data: FieldValues) => {
-    // if (!imagesUrlsReady.ready) return alert("Images are not ready yet");
+  const onUpdateSuggestedPost = (data: FieldValues) => {
+    if (!imagesUrlsReady.ready) return alert("Images are not ready yet");
     if (!savedPostText.length)
       return alert("Text is required and needs to be saved");
 
@@ -189,21 +201,111 @@ export default function PostForm({
       minAge: data.minAge ? parseInt(data.minAge) : 0,
       pinnedPost: data.pinnedPost === "true" ? true : false,
       tags: data.tags ? data.tags.split("-").filter(Boolean) : [data.tags],
-      text: JSON.stringify([...savedPostText]),
+      text: savedPostText,
+      title: data.title,
+      user_id: user_id,
+      status: data.status,
+    };
+    updateSuggestedPost(updatedPost)
+      .then(() => {
+        setSubmitError({ isError: false, errorMessage: "" });
+      })
+      .then(() => {
+        deleteUnusedImages();
+      })
+      .then(() =>
+        setTimeout(() => {
+          router.push(`/update-post/successfully-updated/${data.id}`);
+        }, 1000)
+      )
+      .catch((error) =>
+        setSubmitError({ isError: true, errorMessage: error.message })
+      );
+  };
+
+  const onApproveSuggestion = (data: FieldValues) => {
+    if (!imagesUrlsReady.ready) return alert("Images are not ready yet");
+    if (!savedPostText.length)
+      return alert("Text is required and needs to be saved");
+    if (!user_id || !userInput.email || !addedBy)
+      return alert("User data from creator needed");
+    const suggestionPost: iParsedRetrievedPost = {
+      addedBy: addedBy,
+      address: addressInput,
+      bezirk: data.bezirk,
+      categories: categoriesList,
+      createdAt: createdAt || newID.current,
+      id: data.id,
+      igAccounts: igAccountsInput,
+      image: imagesUrlsReady.urls,
+      lastUpdate: newID.current,
+      link: data.link,
+      maxAge: data.maxAge ? parseInt(data.maxAge) : undefined,
+      minAge: data.minAge ? parseInt(data.minAge) : 0,
+      pinnedPost: data.pinnedPost === "true" ? true : false,
+      tags: data.tags ? data.tags.split("-").filter(Boolean) : [data.tags],
+      text: savedPostText,
       title: data.title,
       user_id: user_id,
     };
-    updatePost(updatedPost)
+    approveSuggestedPost(suggestionPost)
       .then(() => {
-        console.log("updated");
-        submitError.isError &&
-          setSubmitError({ isError: false, errorMessage: "" });
+        setSubmitError({ isError: false, errorMessage: "" });
       })
       .then(() => {
         deleteUnusedImages();
       })
       .then(() => {
-        updateContributor(userInput, data.id);
+        updateSuggestionStatus(data.id, "approved");
+      })
+      .then(() => {
+        addNewContributor(suggestionPost.addedBy, suggestionPost.id);
+      })
+      .then(() =>
+        setTimeout(() => {
+          router.push(`/posts-approval/success/${data.id}`);
+        }, 1000)
+      )
+      .catch((error) =>
+        setSubmitError({ isError: true, errorMessage: error.message })
+      );
+  };
+
+  const onUpdateApprovedPost = (data: FieldValues) => {
+    if (!imagesUrlsReady.ready) return alert("Images are not ready yet");
+    if (!savedPostText.length)
+      return alert("Text is required and needs to be saved");
+    if (!user_id || !userInput.email || !addedBy)
+      return alert("User data from creator needed");
+    const updatedPost: iParsedRetrievedPost = {
+      addedBy: addedBy,
+      address: addressInput,
+      bezirk: data.bezirk,
+      categories: categoriesList,
+      createdAt: createdAt || newID.current,
+      id: data.id,
+      igAccounts: igAccountsInput,
+      image: imagesUrlsReady.urls,
+      lastUpdate: newID.current,
+      link: data.link,
+      maxAge: data.maxAge ? parseInt(data.maxAge) : undefined,
+      minAge: data.minAge ? parseInt(data.minAge) : 0,
+      pinnedPost: data.pinnedPost === "true" ? true : false,
+      tags: data.tags ? data.tags.split("-").filter(Boolean) : [data.tags],
+      text: savedPostText,
+      title: data.title,
+      user_id: user_id,
+      status: data.status,
+    };
+    updateApprovedPost(updatedPost)
+      .then(() => {
+        setSubmitError({ isError: false, errorMessage: "" });
+      })
+      .then(() => {
+        deleteUnusedImages();
+      })
+      .then(() => {
+        updateContributor(updatedPost.addedBy, updatedPost.id);
       })
       .then(() =>
         setTimeout(() => {
@@ -215,47 +317,33 @@ export default function PostForm({
       );
   };
   if (!user) {
-    router.push("/api/auth/signin");
+    router.push("/");
   }
+
+  if (!user.email || !user.name) return;
+
   return (
     <section id="post-form-container">
-      <button
-        onClick={async () => {
-          const a = await getFoldersList();
-          console.log("a", a);
-        }}
-      >
-        get contributor
-      </button>
-      <div className="flex flex-col">
-        {Object.entries(userInput)
-          .filter(([k, v]) => !v && ["email", "name"].includes(k))
-          .map(([key]) => (
-            <PostFormInput
-              inputLabel={key.toUpperCase()}
-              inputID={key as "email" | "name"}
-              required={true}
-              key={key}
-            >
-              <input
-                type={key === "email" ? "email" : "text"}
-                id={key}
-                name={key}
-                className="w-full rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base font-semibold leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-[rgb(225,159,65,0.6)] focus:bg-white focus:ring-2 focus:ring-[rgb(225,159,65,0.5)]"
-              />
-            </PostFormInput>
-          ))}
-      </div>
       <ImageUploader
         email={user.email || ""}
-        setMainImage={setMainImage}
-        mainImage={mainImage}
         setImagesUrlsReady={setImagesUrlsReady}
         id={id ? id : newID.current}
       />
       <form
-        onSubmit={handleSubmit(id ? onUpdatePost : onSubmitNewPost)}
-        className="postForm mx-auto w-full text-gray-900 "
+        onSubmit={handleSubmit(
+          postType === "update-suggestion"
+            ? onUpdateSuggestedPost
+            : postType === "new-suggestion"
+            ? onSubmitNewSuggestion
+            : postType === "suggested-to-approved"
+            ? onApproveSuggestion
+            : postType === "update-approved-post"
+            ? onUpdateApprovedPost
+            : () => {
+                console.error("missing handler");
+              }
+        )}
+        className="postForm mx-auto w-full text-gray-900"
       >
         <div className="mx-auto flex w-full flex-col items-center ">
           <PostFormInput inputLabel="Title" inputID="title" required={true}>
@@ -265,10 +353,10 @@ export default function PostForm({
                 type="text"
                 id="title"
                 name="title"
-                className="w-full rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base font-semibold leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-[rgb(225,159,65,0.6)] focus:bg-white focus:ring-2 focus:ring-[rgb(225,159,65,0.5)]"
+                className="w-full rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base font-semibold leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
               />
               {errors.title && (
-                <p className="text-red-500">{`${errors.title.message}`}</p>
+                <p className="text-negative-500">{`${errors.title.message}`}</p>
               )}
             </>
           </PostFormInput>
@@ -296,7 +384,7 @@ export default function PostForm({
                         }
                       }}
                       defaultValue={savedPostText[0]?.[1]}
-                      className="mx-auto block w-full resize-none self-center rounded border border-gray-100 bg-gray-100 bg-opacity-60 px-3 py-1 text-base leading-6 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-[rgb(225,159,65,0.6)] focus:bg-white focus:ring-2 focus:ring-offset-yellow-200"
+                      className="mx-auto block w-full resize-none self-center rounded border border-gray-100 bg-gray-100 bg-opacity-60 px-3 py-1 text-base leading-6 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-offset-yellow-200"
                     ></textarea>
 
                     {savedPostText.length > 0 && (
@@ -359,10 +447,10 @@ export default function PostForm({
                 id="tags"
                 name="tags"
                 placeholder="wasser-sand-spielplatz"
-                className="w-full rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-[rgb(225,159,65,0.6)] focus:bg-white focus:ring-2 focus:ring-[rgb(225,159,65,0.5)]"
+                className="w-full rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
               />
               {errors.tags && (
-                <p className="text-red-500">{`${errors.tags.message}`}</p>
+                <p className="text-negative-500">{`${errors.tags.message}`}</p>
               )}
             </>
           </PostFormInput>
@@ -372,7 +460,7 @@ export default function PostForm({
               id="link"
               placeholder="https://www.example.com"
               name="link"
-              className="w-full rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-[rgb(225,159,65,0.6)] focus:bg-white focus:ring-2 focus:ring-[rgb(225,159,65,0.5)]"
+              className="w-full rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
             />
           </PostFormInput>
           <PostFormInput inputLabel="Instagram Accounts" inputID="igAccounts">
@@ -397,7 +485,7 @@ export default function PostForm({
                         )
                       );
                     }}
-                    className="bg-red-500 h-8 w-8 text-white rounded-md p-1"
+                    className="bg-negative-500 h-8 w-8 text-white rounded-md p-1"
                   >
                     X
                   </button>
@@ -418,7 +506,7 @@ export default function PostForm({
                   name="minAge"
                   type="number"
                   defaultValue={0}
-                  className="w-16 block rounded border border-gray-300 bg-gray-100 bg-opacity-60 pr-1 pl-2 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-[rgb(225,159,65,0.6)] focus:bg-white focus:ring-2 focus:ring-[rgb(225,159,65,0.5)]"
+                  className="w-16 block rounded border border-gray-300 bg-gray-100 bg-opacity-60 pr-1 pl-2 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
                 />
               </PostFormInput>
             </div>
@@ -429,7 +517,7 @@ export default function PostForm({
                   id="maxAge"
                   name="maxAge"
                   type="number"
-                  className="w-16 block rounded border border-gray-300 bg-gray-100 bg-opacity-60 pr-1 pl-2 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-[rgb(225,159,65,0.6)] focus:bg-white focus:ring-2 focus:ring-[rgb(225,159,65,0.5)]"
+                  className="w-16 block rounded border border-gray-300 bg-gray-100 bg-opacity-60 pr-1 pl-2 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
                 />
               </PostFormInput>
             </div>
@@ -443,7 +531,7 @@ export default function PostForm({
                 <select
                   {...register("bezirk")}
                   defaultValue={bezirk || "Altona"}
-                  className="mx  rounded border border-gray-300 bg-gray-100 bg-opacity-95 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-[rgb(225,159,65,0.6)] focus:bg-white focus:ring-2 focus:ring-[rgb(225,159,65,0.5)]"
+                  className="mx  rounded border border-gray-300 bg-gray-100 bg-opacity-95 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
                 >
                   {bezirke.map((bezirk) => (
                     <option key={bezirk} value={bezirk}>
@@ -468,7 +556,7 @@ export default function PostForm({
                           street: e.target.value,
                         });
                       }}
-                      className="w-40 block rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-[rgb(225,159,65,0.6)] focus:bg-white focus:ring-2 focus:ring-[rgb(225,159,65,0.5)]"
+                      className="w-40 block rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
                     />
                     <input
                       id="numberInput"
@@ -481,7 +569,7 @@ export default function PostForm({
                           number: e.target.value,
                         })
                       }
-                      className="w-24 block rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-[rgb(225,159,65,0.6)] focus:bg-white focus:ring-2 focus:ring-[rgb(225,159,65,0.5)]"
+                      className="w-24 block rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
                     />
                   </div>
                   <div className="flex gap-2 flex-wrap">
@@ -496,7 +584,7 @@ export default function PostForm({
                           PLZ: e.target.value,
                         })
                       }
-                      className="w-24 block rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-[rgb(225,159,65,0.6)] focus:bg-white focus:ring-2 focus:ring-[rgb(225,159,65,0.5)]"
+                      className="w-24 block rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
                     />
                     <input
                       id="cityInput"
@@ -509,7 +597,7 @@ export default function PostForm({
                           city: e.target.value,
                         })
                       }
-                      className="w-40 block rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-[rgb(225,159,65,0.6)] focus:bg-white focus:ring-2 focus:ring-[rgb(225,159,65,0.5)]"
+                      className="w-40 block rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
                     />
                   </div>
                 </div>
@@ -522,60 +610,61 @@ export default function PostForm({
             <select
               {...register("pinnedPost")}
               defaultChecked={pinnedPost}
-              className="mx-4  rounded border border-gray-300 bg-gray-100 bg-opacity-95 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-[rgb(225,159,65,0.6)] focus:bg-white focus:ring-2 focus:ring-[rgb(225,159,65,0.5)]"
+              className="mx-4  rounded border border-gray-300 bg-gray-100 bg-opacity-95 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
             >
               <option value="false">False</option>
               <option value="true">True</option>
             </select>
           </PostFormInput>
 
-          <div className="flex w-full flex-col items-center justify-between gap-8 p-2 sm:flex-row">
-            {id && <DeletePost id={id} title={title || ""} />}
-            {/* {!imagesUrlsReady.ready ? (
+          <div className="flex w-full flex-wrap items-center justify-between gap-8 p-2 sm:flex-row">
+            {id && (
+              <DeletePostButton
+                id={id}
+                title={title || ""}
+                deleteFrom="approved"
+              />
+            )}
+            {!imagesUrlsReady.ready && (
               <a
                 href="#images-upload-container"
                 type="button"
-                className="mr-auto flex w-fit rounded border-0 bg-[rgb(225,159,65,0.6)] px-8 py-2 text-lg text-white transition-colors  duration-200 ease-in-out hover:bg-[rgb(225,159,65,0.9)] hover:shadow-md focus:outline-2 focus:ring-2 focus:ring-[rgb(225,159,65,0.5)] focus:ring-offset-2"
+                className="mr-auto flex w-fit rounded border-0 bg-hh-600 px-8 py-2 text-lg text-white transition-colors  duration-200 ease-in-out hover:bg-green-600 hover:shadow-md focus:outline-2 focus:ring-2 focus:ring-hh-700 focus:ring-offset-2"
               >
-                {!!imagesUrlsReady.urls.length
-                  ? "First upload the image/s"
-                  : "Add one or more images"}{" "}
-                ↑
+                First upload the image/s ↑
               </a>
-            ) : ( */}
+            )}
             <button
               type="submit"
-              disabled={isSubmitSuccessful || isSubmitting || isLoading}
-              //   (!isDirty &&
-              //     JSON.stringify(imagesUrlsReady.urls) ===
-              //       JSON.stringify([images]))
-              // }
+              disabled={
+                // isSubmitSuccessful || isSubmitting || isLoading||
+                !isDirty &&
+                JSON.stringify(imagesUrlsReady.urls) === JSON.stringify([image])
+              }
               className={`${
                 isSubmitSuccessful
                   ? " bg-[hsla(119,23%,47%,1)] hover:bg-[rgba(68,225,65,0.65)] hover:shadow-none"
-                  : "bg-[rgb(225,159,65,0.6)] hover:bg-[rgb(225,159,65,0.9)] hover:shadow-md"
-              } border-0px-8 ml-auto flex rounded p-2 text-lg text-white transition-colors  duration-200 ease-in-out  focus:outline-2 focus:ring-2 focus:ring-[rgb(225,159,65,0.5)] focus:ring-offset-2 disabled:bg-gray-500`}
+                  : "bg-green-700 hover:bg-green-600 hover:shadow-md"
+              } active:scale-[0.99] border-0px-8 ml-auto flex rounded p-2 text-lg text-white transition-colors  duration-200 ease-in-out  focus:outline-2 focus:ring-2 focus:ring-green-600 focus:ring-offset-2 disabled:bg-gray-500`}
             >
-              {isSubmitSuccessful
-                ? id
-                  ? "Successfully Updated ✓"
-                  : "Successfully Submitted ✓"
-                : isDirty ||
-                  JSON.stringify(imagesUrlsReady.urls) !==
-                    JSON.stringify([image])
-                ? id
-                  ? "Update Post"
-                  : "Add New Post"
+              {isDirty ||
+              JSON.stringify(imagesUrlsReady.urls) !== JSON.stringify([image])
+                ? postType === "suggested-to-approved"
+                  ? "Approve Post"
+                  : postType === "update-approved-post"
+                  ? "Update Approved Post"
+                  : postType === "update-suggestion"
+                  ? "Update Suggestion"
+                  : postType === "new-suggestion" && "Add New Suggestion"
                 : "Nothing to submit"}
             </button>
             {/* )} */}
             {submitError.isError && (
-              <p className="mt-4 rounded border-4 border-red-700 p-4 font-semibold text-red-700">{`There was an error while submitting the post. Error message: ${submitError.errorMessage}`}</p>
+              <p className="mt-4 rounded border-4 border-negative-700 p-4 font-semibold text-negative-700">{`There was an error while submitting the post. Error message: ${submitError.errorMessage}`}</p>
             )}
           </div>
         </div>
       </form>
-      <button onClick={() => addBulkPosts([])}>add bulk</button>
     </section>
   );
 }

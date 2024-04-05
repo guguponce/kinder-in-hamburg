@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { deletePost } from "@app/api/dbActions";
+import { deleteApprovedPost, deleteSuggestion } from "@app/api/dbActions";
 import { useRouter } from "next/navigation";
 import { revalidate } from "@app/utils/actions/revalidate";
 
@@ -8,25 +8,34 @@ export default function DeleteModal({
   id,
   title,
   setDeleteModal,
+  deleteFrom,
 }: {
   id: number;
   title: string;
   setDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
+  deleteFrom: "suggested" | "approved" | "all";
 }) {
   const [titleInput, setTitleInput] = React.useState("");
   const router = useRouter();
   const handleDelete = async () => {
     if (titleInput !== title)
       return alert("You didn't write the title correctly");
-    deletePost(id);
+    if (deleteFrom === "suggested") {
+      await deleteSuggestion(id);
+    } else if (deleteFrom === "approved") {
+      await deleteApprovedPost(id);
+    } else if (deleteFrom === "all") {
+      await deleteSuggestion(id);
+      await deleteApprovedPost(id);
+    }
     revalidate().then(() => {
       router.push("/posts");
     });
   };
   return (
-    <div className="fixed left-0 top-0 flex h-screen w-screen items-center justify-center bg-black bg-opacity-50 text-gray-800">
+    <div className="fixed left-0 top-0 flex h-screen w-screen items-center justify-center bg-black bg-opacity-50 text-gray-800 z-[300]">
       <div className="flex h-[30vh] min-h-fit w-full flex-col items-center justify-center">
-        <div className="rounded-lg bg-red-100 p-4">
+        <div className="rounded-lg bg-negative-100 p-4">
           <h1 className="text-xl font-bold">
             If you want to delete this post, write: {title}{" "}
           </h1>
@@ -39,7 +48,7 @@ export default function DeleteModal({
           />
           <div className="flex gap-4">
             <button
-              className="flex h-10 w-fit items-center justify-center rounded bg-red-500 px-2 py-2 font-bold text-white hover:bg-red-700"
+              className="flex h-10 w-fit items-center justify-center rounded bg-negative-500 px-2 py-2 font-bold text-white hover:bg-negative-700"
               onClick={(e) => {
                 e.preventDefault();
                 handleDelete();

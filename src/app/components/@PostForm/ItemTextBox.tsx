@@ -38,7 +38,7 @@ export default function ItemBox({
           <p className=" ml-2 w-32 text-sm font-bold capitalize ">{type}</p>
           <div className={`editButtons flex w-fit items-end gap-2`}>
             <button
-              className="h-12 w-fit min-w-12 rounded-md bg-red-800 px-4 py-2 text-white"
+              className="h-12 w-fit min-w-12 rounded-md bg-negative-800 px-4 py-2 text-white"
               role="button"
               onClick={(e) => {
                 e.preventDefault();
@@ -49,7 +49,7 @@ export default function ItemBox({
             </button>
             <button
               className={`${editItem ? "mt-6" : "mt-2"}  h-12 w-fit min-w-12
-              rounded-md bg-green-800 px-4 py-2 text-white`}
+              rounded-md bg-positive-800 px-4 py-2 text-white`}
               disabled={editItem}
               role="button"
               onClick={(e) => {
