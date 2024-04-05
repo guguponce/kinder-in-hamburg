@@ -11,7 +11,7 @@ export default function AuthButton({
     return (
       <button
         className="px-2 py-1 rounded-md font-semibold border-2 bg-hh-800 text-hh-100 border-hh-800"
-        onClick={() => signOut()}
+        onClick={() => signOut({ redirect: true, callbackUrl: "/" })}
       >
         Sign out
       </button>

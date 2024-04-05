@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 
 export default function BurgerMenu() {
   const pathname = usePathname();
@@ -10,20 +10,42 @@ export default function BurgerMenu() {
     setMenuOpen(!menuOpen);
   };
 
+  const menuList = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const handleOutsideClick = (event: MouseEvent) => {
+      // if (
+      //   menuList.current &&
+      //   !menuList.current.contains(event.target as Node)
+      // ) {
+      setMenuOpen(false); // Close setMenuOpen menu if the click is outside the menu
+      // }
+    };
+
+    if (menuOpen) {
+      document.addEventListener("click", handleOutsideClick);
+    }
+
+    return () => {
+      document.removeEventListener("click", handleOutsideClick);
+    };
+  }, [menuOpen]);
   return (
     <div className="flex w-16 items-center justify-center relative lg:hidden">
       <button
         color="#fefefe"
         aria-label="Options"
-        className="mx-1 py-1 px-2 font-semibold rounded-md bg-[#121212] text-[#fefefe] hover:bg-[#fefefe] hover:text-[#121212] active:bg-[#fefefe] active:text-[#121212]"
+        className={`${
+          menuOpen ? "rounded-[6px_6px_0_0]" : "rounded-md"
+        } mx-1 py-1 px-2 font-semibold bg-[#121212] text-[#fefefe] hover:bg-[#fefefe] hover:text-[#121212] active:bg-[#fefefe] active:text-[#121212]`}
         onClick={toggleMenu}
       >
         Menu
       </button>
       {menuOpen && (
         <nav
+          ref={menuList}
           id="menu-list"
-          className="absolute top-full -left-1  px-2 z-[300] flex flex-col"
+          className="absolute top-[calc(100%+24px)]  -left-3 shadow-lg  z-[300] flex flex-col bg-gradient-to-b from-hh-200 rounded-[0_0_4px_0] to-hh-100"
         >
           {[
             { href: "/", name: "Home" },
@@ -35,10 +57,10 @@ export default function BurgerMenu() {
           ].map(({ name, href }, i) => (
             <Link
               className={`${
-                pathname === href ? "bg-[#ededed]" : "bg-[#fefefe]"
+                pathname === href ? "bg-black bg-opacity-20" : "bg-transparent"
               } ${
-                i !== 0 ? "border-t-2 border-black" : ""
-              } p-1  font-semibold w-full`}
+                i !== 0 ? "border-t-2 border-black rounded-none" : ""
+              } py-1 px-2  font-semibold w-full text-hh-950`}
               key={name}
               href={href}
             >
