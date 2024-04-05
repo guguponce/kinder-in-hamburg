@@ -5,7 +5,7 @@ import React from "react";
 export default async function AdminRoute({
   children,
 }: {
-  children: JSX.Element;
+  children: React.ReactNode;
 }) {
   const session = await getServerSession();
   if (session?.user?.email !== "mockupap@gmail.com") return <></>;

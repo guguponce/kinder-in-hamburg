@@ -9,15 +9,6 @@ export default function Home() {
         Kinder in Hamburg
       </h1>
       <WeatherBox></WeatherBox>
-      {/* <section className="flex flex-wrap justify-end items-start  min-h-[50dvh] my-8 shadow-md md:shadow-none">
-        <img
-          id="img-display"
-          alt="Planetarium"
-          className="object-contain max-h-[70vh] max-w-full m-0 self-center"
-          loading="lazy"
-          src={"/assets/blogPosts/planetarium.jpg"}
-        />
-      </section> */}
     </main>
   );
 }
