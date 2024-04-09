@@ -4,6 +4,7 @@ import SuccessfulSubmit from "@components/@PostForm/SuccessfulSubmit";
 import { getApprovedPostWithID } from "@app/api/dbActions";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
+import PostNotFound from "@app/components/@PostForm/PostNotFound";
 export default async function SuccessfulPage({
   params: { postID },
 }: {
@@ -13,6 +14,8 @@ export default async function SuccessfulPage({
     revalidate();
   }
   const post = await getApprovedPostWithID(postID);
+  if (!post) return <PostNotFound />;
+
   const session = await getServerSession();
   if (session?.user?.email !== process.env.ADMIN_EMAIL || !post.id) {
     redirect("/");
