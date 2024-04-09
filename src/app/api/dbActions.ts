@@ -1,12 +1,11 @@
 "use server";
-import {
+import type {
   categoryName,
   iBezirk,
   iContributor,
   iFlohmarkt,
   iPost,
   iSessionUser,
-  iStringifiedRetrievedPost,
 } from "@app/utils/types";
 import { createClient } from "@supabase/supabase-js";
 import { getServerSession } from "next-auth";

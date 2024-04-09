@@ -1,6 +1,6 @@
 import React from "react";
 import CardsDisplay from "../@Cards/CardsDisplay";
-import { iPost, iPost } from "@app/utils/types";
+import { iPost } from "@app/utils/types";
 
 export default function RecommendedPosts({
   recommendedPosts,
