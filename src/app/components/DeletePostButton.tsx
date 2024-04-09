@@ -14,9 +14,7 @@ export default function DeletePostButton({
   deleteFrom: "suggested" | "approved" | "all";
   size?: "small" | "medium" | "large";
 }) {
-  const session = useSession();
   const [deleteModal, setDeleteModal] = useState(false);
-  if (!(session.data?.user?.email !== process.env.ADMIN_EMAIL)) return null;
 
   return (
     <>
@@ -30,9 +28,11 @@ export default function DeletePostButton({
       )}
       <button
         role="button"
-        className={`flex w-fit items-center justify-center rounded bg-negative-500 px-2 ${
+        className={`flex ${
+          size === "large" ? "w-full max-w-[1000px]" : "w-fit"
+        } items-center justify-center rounded bg-negative-500 px-2 ${
           size === "small" ? "py-1" : "h-10 py-2"
-        } font-bold text-white hover:bg-negative-700 `}
+        } font-bold text-white hover:bg-negative-700 mb-2`}
         onClick={(e) => {
           e.preventDefault();
           setDeleteModal(true);
