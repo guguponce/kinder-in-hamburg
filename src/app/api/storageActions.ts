@@ -118,7 +118,8 @@ export const deleteImage = async (path: string, fileName: string) => {
 
 export const deleteUnusedImages = async () => {
   //Get all active posts IDs in db
-  const activePosts = await getAllPostsIds().then((res) => res);
+  const activePosts = await getAllPostsIds().then((res) => res || []);
+
   //Get all folders names (IDs) in the bucket
   const allImgFolders = await getFoldersList().then((res) => res);
   //Filter out the active posts IDs
