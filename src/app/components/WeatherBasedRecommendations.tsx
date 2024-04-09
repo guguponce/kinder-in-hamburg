@@ -1,11 +1,5 @@
-import type {
-  Current,
-  Forecast,
-  iPost,
-  overallCondition,
-} from "@app/utils/types";
+import type { Forecast, overallCondition } from "@app/utils/types";
 import React from "react";
-import ScrollableCardList from "./@Cards/ScrollableCardList";
 import WeatherIcon from "./@Icons/WeatherIcon";
 import { WEATHER_CODES } from "@app/utils/constants";
 
