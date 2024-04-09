@@ -33,7 +33,7 @@ export default function TextPriorityCard({
   return (
     <Link
       href={link || `/posts/${id}`}
-      className={`${classname.container} w-full singleCard aspect-[0.66] rounded-md shadow-md hover:shadow-2xl flex flex-col items-center  bg-hh-50 overflow-hidden`}
+      className={`${classname.container} w-full singleCard aspect-[0.66] rounded-md shadow-md hover:shadow-lg flex flex-col items-center  bg-hh-50 overflow-hidden`}
       role="link"
       aria-label={`Explore ${title}`}
     >

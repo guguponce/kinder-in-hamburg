@@ -16,6 +16,7 @@ export default async function DashboardPage() {
     redirect("/api/auth/signin");
   }
   const userSuggestions = await getUsersSuggestions(session.user.email);
+
   return (
     <main className="w-[calc(100%-2rem)] w-max-[800px] p-4 bg-hh-100 rounded-md mx-auto flex flex-col items-center">
       <h2 className="text-xl font-semibold self-start">
@@ -39,33 +40,38 @@ export default async function DashboardPage() {
         Suggest a new spot
       </Link>
 
-      <div className="w-full max-w-[800px] flex flex-col">
-        <h3 className="text-lg font-semibold">Your Suggestions</h3>
-        {Object.entries(userSuggestions).map(([status, posts]) =>
-          !!posts.length ? (
-            <section key={status} className="p-2 w-full rounded-sm bg-hh-300 ">
-              <h4 className="text-lg font-semibold ml-6">
-                {status.toUpperCase()}
-              </h4>
-              <div className="flex w-full items-center overflow-hidden pr-4">
-                <div className="flex items-center gap-2 w-fit overflow-x-auto">
-                  <ScrollableCardList
-                    cardType="text-priority"
-                    size="small"
-                    posts={posts}
-                    linkPrefix={
-                      status === "approved" ? "" : "/post-suggestion/"
-                    }
-                    descriptions={true}
-                  />
+      {userSuggestions && Object.values(userSuggestions).some((a) => !!a) && (
+        <div className="w-full max-w-[800px] flex flex-col">
+          <h3 className="text-lg font-semibold">Your Suggestions</h3>
+          {Object.entries(userSuggestions).map(([status, posts]) =>
+            !!posts.length ? (
+              <section
+                key={status}
+                className="p-2 w-full rounded-sm bg-hh-300 "
+              >
+                <h4 className="text-lg font-semibold ml-6">
+                  {status.toUpperCase()}
+                </h4>
+                <div className="flex w-full items-center overflow-hidden pr-4">
+                  <div className="flex items-center gap-2 w-fit overflow-x-auto">
+                    <ScrollableCardList
+                      cardType="text-priority"
+                      size="small"
+                      posts={posts}
+                      linkPrefix={
+                        status === "approved" ? "" : "/post-suggestion/"
+                      }
+                      descriptions={true}
+                    />
+                  </div>
                 </div>
-              </div>
-            </section>
-          ) : (
-            <></>
-          )
-        )}
-      </div>
+              </section>
+            ) : (
+              <></>
+            )
+          )}
+        </div>
+      )}
     </main>
   );
 }

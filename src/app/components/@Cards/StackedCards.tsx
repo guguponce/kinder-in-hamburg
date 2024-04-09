@@ -1,5 +1,5 @@
 import { getPlainText } from "@app/utils/functions";
-import { iParsedRetrievedPost } from "@app/utils/types";
+import { iPost } from "@app/utils/types";
 import Link from "next/link";
 import React from "react";
 
@@ -13,7 +13,7 @@ export default function StackedCards({
   onlyTitle?: boolean;
   size?: "small" | "medium" | "large";
   aspectRatio?: number;
-  posts: iParsedRetrievedPost[];
+  posts: iPost[];
   link: string;
 }) {
   const classnames = {

@@ -3,17 +3,13 @@
 import React, { useState } from "react";
 
 import Link from "next/link";
-import { type iParsedRetrievedPost } from "@app/utils/types";
+import { type iPost } from "@app/utils/types";
 import CardsDisplayArrows from "./CardsDisplayArrows";
 import { getImagesArray, getPlainText } from "@app/utils/functions";
 import Card from "./Card";
 import ImgPriorityCard from "./ImgPriorityCard";
 
-export default function CardsDisplay({
-  cardPosts,
-}: {
-  cardPosts: iParsedRetrievedPost[];
-}) {
+export default function CardsDisplay({ cardPosts }: { cardPosts: iPost[] }) {
   return (
     <div
       className={`${

@@ -1,4 +1,4 @@
-import { iParsedRetrievedPost } from "@app/utils/types";
+import { iPost } from "@app/utils/types";
 import React from "react";
 import ImageCard from "./ImageCard";
 import ImgPriorityCard from "./ImgPriorityCard";
@@ -9,11 +9,15 @@ export default function ScrollableCardList({
   posts,
   size = "small",
   cardType = "text-priority",
+  key,
+  linkPrefix,
 }: {
+  key?: string;
   size: "small" | "medium" | "large";
-  posts: iParsedRetrievedPost[];
+  posts: iPost[];
   cardType: "image" | "img-priority" | "text-priority";
   descriptions?: boolean;
+  linkPrefix?: string;
 }) {
   const Card =
     cardType === "image"
@@ -23,15 +27,15 @@ export default function ScrollableCardList({
       : TextPriorityCard;
   return (
     <div className="flex  items-center w-fit max-w-full overflow-hidden">
-      <div className="horizontalScrollbar overflow-x-auto w-fit max-w-full flex gap-2 items-stretch py-4">
+      <div className="horizontalScrollbar overflow-x-auto w-fit max-w-full flex gap-2 items-stretch px-4 pb-4 pt-2">
         {posts.map(({ id, image, title, text }) => (
-          <React.Fragment key={id}>
+          <React.Fragment key={id + title + (key || "")}>
             {Card({
               id: id,
               image: image ? image[0] : "",
               title: title,
               aspectRatio: 0.66,
-              link: `/posts/${id}`,
+              link: linkPrefix ? `${linkPrefix}${id}` : `/posts/${id}`,
               size: size,
               description: getPlainText(text),
             })}
