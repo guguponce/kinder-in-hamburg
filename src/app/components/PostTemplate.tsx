@@ -1,4 +1,4 @@
-import { iParsedRetrievedPost } from "@app/utils/types";
+import { iPost } from "@app/utils/types";
 import Link from "next/link";
 import React from "react";
 import DisplayTypeText from "./@PostForm/DisplayTypeText";
@@ -24,7 +24,7 @@ export default function PostTemplate({
   },
   children,
 }: {
-  post: iParsedRetrievedPost;
+  post: iPost;
   children?: React.ReactNode;
 }) {
   return (
@@ -88,28 +88,41 @@ export default function PostTemplate({
           <div className="flex flex-col w-1/2">
             <section id="location" className="w-full px-4 my-2">
               <h2 className="text-lg font-semibold">Location:</h2>
-              <h3 id="bezirk" className="font-semibold italic">
-                {bezirk}
-              </h3>
+              {bezirk && (
+                <div className="flex gap-1 items-center">
+                  <PostLogo logo="hamburg" color="#1F262E" />
+
+                  <Link
+                    href={`/bezirke/${encodeURIComponent(bezirk)}`}
+                    id="bezirk"
+                    className="block font-semibold italic hover:underline hover: underline-offset-2"
+                  >
+                    {bezirk}
+                  </Link>
+                </div>
+              )}
               {!!address && (
-                <Link
-                  href={
-                    "https://www.google.com/maps/place/" +
-                    address.street +
-                    "+" +
-                    address.number +
-                    "+" +
-                    address.PLZ +
-                    "+" +
-                    address.city
-                  }
-                  className="italic hover:underline hover:underline-offset-2"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {address.street} {address.number}, {address.PLZ}{" "}
-                  {address.city}
-                </Link>
+                <div className="flex gap-[6px] items-center ml-[2px]">
+                  <PostLogo logo="map" color="#1F262E" size="20px" />
+                  <Link
+                    href={
+                      "https://www.google.com/maps/place/" +
+                      address.street +
+                      "+" +
+                      address.number +
+                      "+" +
+                      address.PLZ +
+                      "+" +
+                      address.city
+                    }
+                    className="italic hover:underline hover:underline-offset-2"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {address.street} {address.number}, {address.PLZ}{" "}
+                    {address.city}
+                  </Link>
+                </div>
               )}
             </section>
 
@@ -125,9 +138,9 @@ export default function PostTemplate({
             )}
           </div>
         )}
-        {(!!link || !!igAccounts) && (
+        {(!!link || !!igAccounts?.length) && (
           <section id="links-box" className="w-1/2 px-4 my-2">
-            <h2 className="text-lg font-semibold">Links:</h2>
+            <h2 className="text-lg font-semibold">Links:</h2>|{" "}
             {igAccounts && igAccounts.length > 0 && (
               <div className="igAccount flex flex-col gap-1">
                 {igAccounts.map(({ name, description }, i) => (
@@ -149,7 +162,6 @@ export default function PostTemplate({
             {!!link && (
               <div className="flex gap-1 items-center">
                 <PostLogo logo="link" color="#1F262E" size="1rem" />
-                {link}
                 <Link
                   className="underline underline-offset-2 mt-1 text-hh-700 italic hover:text-hh-600 active:text-hh-800 visited:text-hh-500"
                   href={link}
