@@ -56,7 +56,6 @@ export const uploadPostImage = async (
         }
       },
       (error) => {
-        console.log(error);
         statusSetter("error");
       },
       // After uploaded get metadata and download URL

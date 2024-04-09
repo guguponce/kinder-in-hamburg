@@ -3,15 +3,20 @@ import {
   categoryName,
   iBezirk,
   iContributor,
-  iParsedRetrievedPost,
+  iFlohmarkt,
   iPost,
   iSessionUser,
   iStringifiedRetrievedPost,
 } from "@app/utils/types";
 import { createClient } from "@supabase/supabase-js";
 import { getServerSession } from "next-auth";
-import { deleteUnusedImages } from "./storageActions";
-import { parsePost } from "@app/utils/functions";
+import {
+  checkBezirk,
+  checkCategory,
+  parseAllPosts,
+  parseFlohmarkt,
+  parsePost,
+} from "@app/utils/functions";
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL || "",
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ""
@@ -50,40 +55,22 @@ export const handleUploadToSupabase = async (
 
 //BLOGPOSTS
 
-export const addBulkPosts = async (posts: iPost[]) => {
+// CONTRIBUTORS
+export const getContributorData = async (email: string) => {
   try {
-    const session = await getServerSession();
-    if (!session?.user?.email) {
-      return "Not logged in";
-    }
-    const submittedPosts = posts.map((post) => ({
-      ...post,
-      addedBy: JSON.stringify(session.user),
-      user_id: session.user?.email,
-    }));
     const { data, error } = await supabaseAdmin
-      .from("kih-suggestions")
-      .insert(submittedPosts);
+      .from("contributors")
+      .select("*")
+      .match({ id: email });
     if (error) {
-      throw new Error(error.message);
+      throw new Error("There was a problem getting the contributor data.");
     }
-    return data;
+    return data[0] as iContributor;
   } catch (error) {
-    throw new Error();
+    return false;
   }
 };
 
-// CONTRIBUTORS
-export const getContributorData = async (email: string) => {
-  const { data, error } = await supabaseAdmin
-    .from("contributors")
-    .select("*")
-    .match({ id: email });
-  if (error) {
-    throw new Error(error.message);
-  }
-  return data[0] as iContributor;
-};
 export const addNewContributor = async (
   contributor: iSessionUser,
   postID: number
@@ -97,10 +84,10 @@ export const addNewContributor = async (
       firstContribution: [postID],
     });
     if (error) {
-      throw new Error(error.message);
+      throw new Error("There was a problem adding the contributor.");
     }
   } catch (error) {
-    throw new Error();
+    throw new Error("There was a problem adding the contributor.");
   }
 };
 
@@ -121,26 +108,32 @@ export const updateContributor = async (user: iSessionUser, postID: number) => {
       })
       .match({ id: contributor.id });
     if (error) {
-      throw new Error(error.message);
+      throw new Error(
+        "There was a problem updating the contributor's postSubmitted."
+      );
     }
   } catch (error) {
-    throw new Error();
+    throw new Error("There was a problem updating the contributor.");
   }
 };
 
 export const deleteContributor = async (id: string) => {
-  const { data, error } = await supabaseAdmin
-    .from("contributors")
-    .delete()
-    .match({ id });
-  if (error) {
-    throw new Error(error.message);
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("contributors")
+      .delete()
+      .match({ id });
+    if (error) {
+      throw new Error("There was a problem deleting the contributor.");
+    }
+    return data;
+  } catch (error) {
+    throw new Error("There was a problem deleting the contributor.");
   }
-  return data;
 };
 
 // SUGGESTED BLOGPOSTS
-export const addNewSuggestedPost = async (post: iParsedRetrievedPost) => {
+export const addNewSuggestedPost = async (post: iPost) => {
   try {
     const session = await getServerSession();
     if (!session?.user) {
@@ -155,7 +148,8 @@ export const addNewSuggestedPost = async (post: iParsedRetrievedPost) => {
       addedBy: post.addedBy ? JSON.stringify(post.addedBy) : undefined,
       image: post.image ? JSON.stringify(post.image) : undefined,
     };
-    const { data, error } = await supabaseAdmin
+
+    const { error } = await supabaseAdmin
       .from("kih-suggestions")
       .insert(submittedPost)
       .select();
@@ -165,187 +159,291 @@ export const addNewSuggestedPost = async (post: iParsedRetrievedPost) => {
 
     return true;
   } catch (error) {
-    throw new Error();
+    throw new Error("There was a problem adding the post.");
   }
 };
 
-export const updateSuggestedPost = async (post: iParsedRetrievedPost) => {
-  const { data, error } = await supabaseAdmin
-    .from("kih-suggestions")
-    .update(post)
-    .match({ id: post.id });
-  if (error) {
-    throw new Error(error.message);
+export const updateSuggestedPost = async (post: iPost) => {
+  try {
+    const { error } = await supabaseAdmin
+      .from("kih-suggestions")
+      .update(post)
+      .match({ id: post.id });
+    if (error) {
+      throw new Error(error.message);
+    }
+    return true;
+  } catch (error) {
+    throw new Error("There was a problem updating the post.");
   }
-  return true;
 };
 
 export const getSuggestedPostWithID = async (id: string) => {
-  const { data, error } = await supabaseAdmin
-    .from("kih-suggestions")
-    .select("*")
-    .match({ id });
-  if (error) {
-    throw new Error(error.message);
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("kih-suggestions")
+      .select("*")
+      .match({ id });
+    if (error) {
+      throw new Error("The post with the id " + id + " was not found.");
+    }
+    return parsePost(data[0]);
+  } catch (error) {
+    return false;
   }
-  return data[0] as iStringifiedRetrievedPost;
 };
 
 export const getAllSuggestedPosts = async () => {
-  const { data, error } = await supabaseAdmin
-    .from("kih-suggestions")
-    .select("*");
-  if (error) {
-    throw new Error(error.message);
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("kih-suggestions")
+      .select("*");
+    if (error) {
+      throw new Error("There was a problem getting the suggested posts.");
+    }
+    return parseAllPosts(data);
+  } catch (error) {
+    return false;
   }
-  return data as iStringifiedRetrievedPost[];
 };
 
 export const getSuggestionsWithCat = async (category: string) => {
-  const { data, error } = await supabaseAdmin
-    .from("kih-suggestions")
-    .select()
-    .ilike("categories", `%${category}%`);
-  if (error) {
-    throw new Error(error.message);
+  try {
+    if (!checkCategory(category))
+      throw new Error("Invalid Category: " + category);
+    const { data, error } = await supabaseAdmin
+      .from("kih-suggestions")
+      .select()
+      .ilike("categories", `%${category}%`);
+    if (error) {
+      throw new Error(
+        "There was a problem getting the posts for this category."
+      );
+    }
+    return parseAllPosts(data);
+  } catch (error) {
+    return false;
   }
-  return data as iStringifiedRetrievedPost[];
 };
 
 export const getSuggestionsWithCatAndBezirk = async (
   category: categoryName,
   bezirk: iBezirk
 ) => {
-  const { data, error } = await supabaseAdmin
-    .from("kih-suggestions")
-    .select()
-    .ilike("categories", `%${category}%`)
-    .like("bezirk", bezirk);
-  if (error) {
-    throw new Error(error.message);
+  if (!checkCategory(category))
+    throw new Error("Invalid Category: " + category);
+  if (!checkBezirk(bezirk)) throw new Error("Invalid Bezirk: " + bezirk);
+
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("kih-suggestions")
+      .select()
+      .ilike("categories", `%${category}%`)
+      .like("bezirk", bezirk);
+    if (error) {
+      throw new Error(
+        "There was a problem getting the posts for this Category and Bezirk."
+      );
+    }
+    return parseAllPosts(data);
+  } catch (error) {
+    return false;
   }
-  return data as iStringifiedRetrievedPost[];
 };
 
 export const getSuggestionsWithBezirk = async (bezirk: iBezirk) => {
-  const { data, error } = await supabaseAdmin
-    .from("kih-suggestions")
-    .select("*")
-    .in("bezirk", [bezirk]);
-  if (error) {
-    throw new Error(error.message);
+  if (!checkBezirk(bezirk)) throw new Error("Invalid Bezirk: " + bezirk);
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("kih-suggestions")
+      .select("*")
+      .in("bezirk", [bezirk]);
+    if (error) {
+      throw new Error("There was a problem getting the posts for this Bezirk.");
+    }
+    return parseAllPosts(data);
+  } catch (error) {
+    return false;
   }
-  return data.map((post) => parsePost(post)) as iParsedRetrievedPost[];
 };
 
 export const deleteSuggestion = async (id: number) => {
-  const { data, error } = await supabaseAdmin
-    .from("kih-suggestions")
-    .delete()
-    .match({ id });
-  if (error) {
-    throw new Error(error.message);
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("kih-suggestions")
+      .delete()
+      .match({ id });
+    if (error) {
+      throw new Error("There was a problem deleting the post: " + id + ".");
+    }
+    return true;
+  } catch (error) {
+    throw new Error("There was a problem deleting the post: " + id + ".");
   }
-  return data;
 };
 
 export const getUsersSuggestions = async (email: string) => {
-  const { data, error } = await supabaseAdmin
-    .from("kih-suggestions")
-    .select("*")
-    .match({ user_id: email });
-  if (error) {
-    console.error(error.message);
-    return "There was a problem getting your suggestions.";
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("kih-suggestions")
+      .select("*")
+      .match({ user_id: email });
+    if (error) {
+      throw new Error("There was a problem getting your suggestions.");
+    }
+    const parsedPosts = parseAllPosts(data);
+
+    return parsedPosts.reduce(
+      (acc, current) => {
+        const { status } = current;
+        if (!status) {
+          acc["approved"].push(current);
+        } else {
+          acc[status].push(current);
+        }
+        return acc;
+      },
+      {
+        approved: [] as iPost[],
+        pending: [] as iPost[],
+        rejected: [] as iPost[],
+      }
+    );
+  } catch (error) {
+    return false;
   }
-  return data as iStringifiedRetrievedPost[];
 };
+
 export const updateSuggestionStatus = async (id: number, status: string) => {
-  const { data, error } = await supabaseAdmin
-    .from("kih-suggestions")
-    .update({ status })
-    .match({ id });
-  if (error) {
-    throw new Error(error.message);
+  try {
+    const { error } = await supabaseAdmin
+      .from("kih-suggestions")
+      .update({ status })
+      .match({ id });
+    if (error) {
+      throw new Error(
+        "There was a problem updating the status of the post: " + id + "."
+      );
+    }
+    return true;
+  } catch (error) {
+    throw new Error(
+      "There was a problem updating the status of the post: " + id + "."
+    );
   }
-  return data;
 };
 
 // APPROVED BLOGPOSTS
 export const getApprovedPostWithCat = async (category: string) => {
-  const { data, error } = await supabaseAdmin
-    .from("kih-approved-blogposts")
-    .select()
-    .ilike("categories", `%${category}%`);
-  if (error) {
-    throw new Error(error.message);
+  if (!checkCategory(category))
+    throw new Error("Invalid Category: " + category);
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("kih-approved-blogposts")
+      .select()
+      .ilike("categories", `%${category}%`);
+    if (error) {
+      throw new Error(
+        "There was a problem getting the posts for this category."
+      );
+    }
+    return parseAllPosts(data);
+  } catch (error) {
+    return false;
   }
-  return data as iStringifiedRetrievedPost[];
 };
 
 export const getUserApprovedPosts = async (user: iSessionUser) => {
-  const { data, error } = await supabaseAdmin
-    .from("kih-approved-blogposts")
-    .select("*")
-    .match({ user_id: user.email });
-  if (error) {
-    throw new Error(error.message);
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("kih-approved-blogposts")
+      .select("*")
+      .match({ user_id: user.email });
+    if (error) {
+      throw new Error("There was a problem getting your approved posts.");
+    }
+    return parseAllPosts(data);
+  } catch (error) {
+    return false;
   }
-  return data as iStringifiedRetrievedPost[];
 };
 
 export const getPostWithBezirk = async (bezirk: iBezirk) => {
-  const { data, error } = await supabaseAdmin
-    .from("kih-approved-blogposts")
-    .select("*")
-    .in("bezirk", [bezirk]);
-  if (error) {
-    throw new Error(error.message);
+  if (!checkBezirk(bezirk)) throw new Error("Invalid Bezirk: " + bezirk);
+
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("kih-approved-blogposts")
+      .select("*")
+      .in("bezirk", [bezirk]);
+    if (error) {
+      throw new Error("There was a problem getting the posts for this Bezirk.");
+    }
+    return parseAllPosts(data);
+  } catch (error) {
+    return false;
   }
-  return data.map((post) => parsePost(post)) as iParsedRetrievedPost[];
 };
 
 export const getAllApprovedPosts = async () => {
-  const { data, error } = await supabaseAdmin
-    .from("kih-approved-blogposts")
-    .select("*");
-  if (error) {
-    throw new Error(error.message);
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("kih-approved-blogposts")
+      .select("*");
+    if (error) {
+      throw new Error("There was a problem getting the approved posts.");
+    }
+    return parseAllPosts(data);
+  } catch (error) {
+    return false;
   }
-  return data as iStringifiedRetrievedPost[];
 };
 
 export const getPinnedPosts = async () => {
-  const { data, error } = await supabaseAdmin
-    .from("kih-approved-blogposts")
-    .select("*")
-    .match({ pinnedPost: true });
-  if (error) {
-    throw new Error(error.message);
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("kih-approved-blogposts")
+      .select("*")
+      .match({ pinnedPost: true });
+    if (error) {
+      throw new Error("There was a problem getting the pinned posts.");
+    }
+    return parseAllPosts(data);
+  } catch (error) {
+    return false;
   }
-  return data as iStringifiedRetrievedPost[];
 };
 
 export const getApprovedPostWithID = async (id: string) => {
-  const { data, error } = await supabaseAdmin
-    .from("kih-approved-blogposts")
-    .select("*")
-    .match({ id });
-  if (error) {
-    throw new Error(error.message);
+  try {
+    const res = await supabaseAdmin
+      .from("kih-approved-blogposts")
+      .select("*")
+      .match({ id });
+    if (res.error) {
+      console.log("asdfasdfafdasfasfd", res);
+      throw new Error("The post with the id " + id + " was not found.");
+    }
+    return parsePost(res.data[0]);
+  } catch (error) {
+    return false;
   }
-  return data[0] as iStringifiedRetrievedPost;
 };
 
 export const deleteApprovedPost = async (id: number) => {
-  const { data, error } = await supabaseAdmin
-    .from("kih-approved-blogposts")
-    .delete()
-    .match({ id });
-  if (error) {
-    throw new Error(error.message);
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("kih-approved-blogposts")
+      .delete()
+      .match({ id });
+    await updateSuggestionStatus(id, "rejected");
+    if (error) {
+      throw new Error("There was a problem deleting the post: " + id + ".");
+    }
+    return data;
+  } catch (error) {
+    throw new Error("There was a problem deleting the post: " + id + ".");
   }
-  return data;
 };
 
 export const getAllPostsIds = async () => {
@@ -359,127 +457,159 @@ export const getAllPostsIds = async () => {
       )
     );
     if (data.some((d) => d.error)) {
-      throw new Error(data.find((d) => d.error)?.error?.message);
+      throw new Error("Error getting posts IDs from a db");
     }
     return data.map((d) => d.data!.map((d) => d.id)).flat();
   } catch (error) {
-    throw new Error("error getting posts IDs");
+    return false;
   }
 };
 
-export const approveSuggestedPost = async (post: iParsedRetrievedPost) => {
-  const { error } = await supabaseAdmin
-    .from("kih-approved-blogposts")
-    .insert(post);
-  if (error) {
-    throw new Error(error.message);
+export const approveSuggestedPost = async (post: iPost) => {
+  try {
+    const { error } = await supabaseAdmin
+      .from("kih-approved-blogposts")
+      .insert(post);
+    const updatedStatus = await updateSuggestionStatus(post.id, "approved");
+    if (error) {
+      throw new Error("There was a problem approving the post.");
+    }
+    console.log("approved");
+    return true;
+  } catch (error) {
+    throw new Error("There was a problem approving the post.");
   }
-  return true;
 };
 
-export const updateApprovedPost = async (post: iParsedRetrievedPost) => {
-  const { error } = await supabaseAdmin
-    .from("kih-approved-blogposts")
-    .update(post)
-    .match({ id: post.id });
-  if (error) {
-    throw new Error(error.message);
+export const updateApprovedPost = async (post: iPost) => {
+  try {
+    const { error } = await supabaseAdmin
+      .from("kih-approved-blogposts")
+      .update(post)
+      .match({ id: post.id });
+    if (error) {
+      throw new Error("There was a problem updating the post.");
+    }
+    return true;
+  } catch (error) {
+    throw new Error("There was a problem updating the post.");
   }
-  return true;
 };
 
-//POST SUBMIT HANDLES
-export const handleUpdateSuggestion = async (
-  updatedPost: iParsedRetrievedPost,
-  setSubmitError: (
-    value: React.SetStateAction<{
-      isError: boolean;
-      errorMessage: string;
-    }>
-  ) => void
-) => {
-  return updateSuggestedPost(updatedPost)
-    .then(() => {
-      setSubmitError({ isError: false, errorMessage: "" });
-    })
-    .then(() => {
-      deleteUnusedImages();
-    })
-    .then(() => {
-      updateContributor(updatedPost.addedBy, updatedPost.id);
-    })
-    .catch((error) =>
-      setSubmitError({ isError: true, errorMessage: error.message })
-    );
+// FLOHMAERKTE
+// GET
+export const getSuggestedFlohmaerkte = async () => {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("flohmaerkte")
+      .select("*")
+      .ilike("status", "pending");
+    if (error) {
+      return false;
+    }
+    return data.map((f) => parseFlohmarkt(f)) as iFlohmarkt[];
+  } catch (error) {
+    return false;
+  }
+};
+export const getFlohmarktWithID = async (id: string) => {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("flohmaerkte")
+      .select("*")
+      .match({ id });
+    if (error) {
+      return false;
+    }
+
+    return parseFlohmarkt(data[0]) as iFlohmarkt;
+  } catch (error) {
+    return false;
+  }
 };
 
-export const handleNewSuggestion = async (
-  suggestion: iParsedRetrievedPost,
-  setSubmitError: (
-    value: React.SetStateAction<{
-      isError: boolean;
-      errorMessage: string;
-    }>
-  ) => void
-) => {
-  return addNewSuggestedPost(suggestion)
-    .then(() => {
-      setSubmitError({ isError: false, errorMessage: "" });
-    })
-    .then(() => {
-      deleteUnusedImages();
-    })
-    .then(() => {
-      addNewContributor(suggestion.addedBy, suggestion.id);
-    })
-    .catch((error) =>
-      setSubmitError({ isError: true, errorMessage: error.message })
-    );
+export const getApprovedFlohmaerkte = async () => {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("flohmaerkte")
+      .select("*")
+      .ilike("status", "approved");
+    if (error) {
+      throw new Error("There was a problem getting the Flea Markets.");
+    }
+    return data.map((f) => parseFlohmarkt(f)) as iFlohmarkt[];
+  } catch (error) {
+    return false;
+  }
 };
 
-export const handleApproveSuggestion = async (
-  suggestion: iParsedRetrievedPost,
-  setSubmitError: (
-    value: React.SetStateAction<{
-      isError: boolean;
-      errorMessage: string;
-    }>
-  ) => void
-) => {
-  return approveSuggestedPost(suggestion)
-    .then(() => {
-      setSubmitError({ isError: false, errorMessage: "" });
-    })
-    .then(() => {
-      deleteUnusedImages();
-    })
-    .then(() => {
-      addNewContributor(suggestion.addedBy, suggestion.id);
-    })
-    .catch((error) =>
-      setSubmitError({ isError: true, errorMessage: error.message })
-    );
+export const getFutureApprovedFlohmaerkte = async () => {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("flohmaerkte")
+      .select("*")
+      .ilike("status", "approved")
+      .gte("date", new Date().getTime());
+    if (error) {
+      throw new Error("There was a problem getting the future Flea Markets.");
+    }
+    return data.map((f) => parseFlohmarkt(f)) as iFlohmarkt[];
+  } catch (error) {
+    return false;
+  }
 };
 
-export const handleUpdateApprovedPost = async (
-  updatedPost: iParsedRetrievedPost,
-  setSubmitError: (
-    value: React.SetStateAction<{
-      isError: boolean;
-      errorMessage: string;
-    }>
-  ) => void
-) =>
-  updateApprovedPost(updatedPost)
-    .then(() => {
-      setSubmitError({ isError: false, errorMessage: "" });
-    })
-    .then(() => {
-      deleteUnusedImages();
-    })
-    .then(() => {
-      updateContributor(updatedPost.addedBy, updatedPost.id);
-    })
-    .catch((error) =>
-      setSubmitError({ isError: true, errorMessage: error.message })
-    );
+// POST
+export const addFlohmarkt = async (flohmarkt: iFlohmarkt) => {
+  try {
+    const session = await getServerSession();
+    if (!session?.user?.email) {
+      return "Not logged in";
+    }
+    const submittedFlohmarkt = {
+      ...flohmarkt,
+      addedBy: JSON.stringify(session.user),
+    };
+    const { error } = await supabaseAdmin
+      .from("flohmaerkte")
+      .insert(submittedFlohmarkt);
+    if (error) {
+      throw new Error("Error adding flohmarkt");
+    }
+    return "Flohmarkt added";
+  } catch (error) {
+    throw new Error("Error adding flohmarkt");
+  }
+};
+
+// DELETE
+export const deleteFlohmarkt = async (id: number) => {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("flohmaerkte")
+      .delete()
+      .match({ id });
+    if (error) {
+      throw new Error("Error deleting flohmarkt");
+    }
+    return data;
+  } catch (error) {
+    throw new Error("Error deleting flohmarkt");
+  }
+};
+
+// UPDATE
+export const updateFlohmarkt = async (flohmarkt: iFlohmarkt) => {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("flohmaerkte")
+      .update(flohmarkt)
+      .match({ id: flohmarkt.id });
+    if (error) {
+      throw new Error("Error updating flohmarkt");
+    }
+    return data;
+  } catch (error) {
+    throw new Error("Error updating flohmarkt");
+  }
+};
