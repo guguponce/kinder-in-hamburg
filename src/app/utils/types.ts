@@ -2,6 +2,10 @@ export interface iPost {
   title: string;
   text: TypeAndText[];
   tags: string[];
+  id: number;
+  createdAt: number;
+  categories: string[];
+  status: "approved" | "pending" | "rejected" | null;
   pinnedPost?: boolean; //
   minAge?: number | undefined;
   maxAge?: number | undefined;
@@ -9,12 +13,10 @@ export interface iPost {
   lastUpdate?: number;
   image?: string[]; //
   igAccounts?: iIgAccount[]; //
-  id: number;
-  createdAt: number;
-  categories: string[];
   bezirk?: string | undefined;
   address?: iAddress | undefined;
-  status?: "approved" | "pending" | "rejected" | null;
+  user_id: string;
+  addedBy: iSessionUser;
 }
 
 export interface iAddress {
@@ -68,11 +70,6 @@ export interface iContributor {
   email: string;
   image: string;
   postSubmitted?: number[] | null;
-}
-
-export interface iParsedRetrievedPost extends iPost {
-  user_id: string;
-  addedBy: iSessionUser;
 }
 
 //FORMS
@@ -216,3 +213,23 @@ export type iBezirk =
   | "Bergedorf"
   | "Harburg"
   | "Außerhalb Hamburg";
+
+// FLOHMARKT
+export interface iFlohmarkt {
+  id: number;
+  createdAt: number;
+  date: number;
+  address: string;
+  bezirk: iBezirk;
+  time?: string;
+  title?: string;
+  image?: string;
+  location?: string;
+  free?: boolean;
+  addedBy: iSessionUser;
+  status: "approved" | "pending" | "rejected" | null;
+}
+
+export interface iStringifiedFlohmarkt extends Omit<iFlohmarkt, "addedBy"> {
+  addedBy: string;
+}
