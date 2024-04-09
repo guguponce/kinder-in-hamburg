@@ -65,7 +65,8 @@ export default function AvatarMenu({
         >
           {[
             { href: "/dashboard", name: "Dashboard" },
-            { href: "/new-post", name: "New Suggestion" },
+            { href: "/new-post", name: "New Place Suggestion" },
+            { href: "/new-flohmarkt", name: "New Flohmarkt" },
           ].map(({ name, href }, i) => (
             <Link
               className={
