@@ -2,9 +2,11 @@ import { text } from "stream/consumers";
 import {
   TypeAndText,
   iAddress,
-  iParsedRetrievedPost,
+  iPost,
+  iStringifiedFlohmarkt,
   iStringifiedRetrievedPost,
 } from "./types";
+import { bezirke, categoryNames } from "./constants";
 
 export const postDate = () => new Date().getTime();
 
@@ -12,10 +14,9 @@ export const getImagesArray = (images: string) => {
   return images.replace("[", "").replace("]", "").split(",");
 };
 
-export const parsePost = (
-  post: iStringifiedRetrievedPost
-): iParsedRetrievedPost => {
+export const parsePost = (post: iStringifiedRetrievedPost): iPost => {
   return {
+    status: post.status,
     user_id: post.user_id,
     title: post.title,
     text: JSON.parse(post.text),
@@ -39,6 +40,9 @@ export const parsePost = (
     addedBy: JSON.parse(post.addedBy),
   };
 };
+
+export const parseAllPosts = (posts: iStringifiedRetrievedPost[]) =>
+  posts.map((p) => parsePost(p));
 
 export const sleep = (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms));
@@ -89,3 +93,65 @@ export const parseParams = (params: string) => {
   let parsed = params.replace("-", " ");
   return decodeURIComponent(parsed);
 };
+
+export function separateAddress(address: string) {
+  const regex = /^(.*?)(\d+),\s*(\d+)\s*(.*?)$/;
+  const match = address.match(regex);
+  if (!match) {
+    return { street: "", number: "", PLZ: "", city: "" };
+  }
+  const [, street, number, PLZ, city] = match;
+  return {
+    street: street.trim(),
+    number: number.trim(),
+    PLZ: PLZ.trim(),
+    city: city.trim(),
+  };
+}
+
+export function joinAddress(addressObj: iAddress) {
+  let parsedAddress = "";
+  if (addressObj.street && addressObj.number) {
+    parsedAddress += `${addressObj.street} ${addressObj.number}`;
+    if (addressObj.PLZ || addressObj.city) {
+      parsedAddress += ", ";
+    }
+  }
+  if (addressObj.PLZ) {
+    parsedAddress += addressObj.PLZ;
+    if (addressObj.city) {
+      parsedAddress += " ";
+    }
+  }
+  if (addressObj.city) {
+    parsedAddress += addressObj.city;
+  }
+  return parsedAddress;
+}
+
+export const parseFlohmarkt = (flohmarkt: iStringifiedFlohmarkt) => {
+  return { ...flohmarkt, addedBy: JSON.parse(flohmarkt.addedBy) };
+};
+
+export const checkBezirk = (bezirk: string) => {
+  const bezirkRegex = new RegExp(bezirk, "i");
+  const parsedBezirk = bezirke.find((b) => {
+    return bezirkRegex.test(b);
+  });
+  return !!parsedBezirk;
+};
+
+export const checkCategory = (category: string) => {
+  const categoryRegex = new RegExp(category, "i");
+  const parsedCategory = categoryNames.find((c) => {
+    return categoryRegex.test(c);
+  });
+  return !!parsedCategory;
+};
+
+export const getDate = (date: number) =>
+  new Date(date).toLocaleDateString("de-DE", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
