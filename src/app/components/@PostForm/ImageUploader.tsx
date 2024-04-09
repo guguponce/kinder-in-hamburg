@@ -80,7 +80,9 @@ export const ImageUploader = ({
         setImageFiles([]);
         fileInputRef.current!.value = "";
       })
-      .catch((error) => console.log("Error in HandleUpload", error));
+      .catch((error) => {
+        throw new Error("Error in HandleUpload", error);
+      });
   };
   const filesSize = useMemo(
     () => imageFiles.reduce((acc, { size }) => acc + size, 0),

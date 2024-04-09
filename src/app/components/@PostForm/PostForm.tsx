@@ -1,16 +1,11 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import { useForm, type FieldValues } from "react-hook-form";
 import {
-  addBulkPosts,
   addNewContributor,
   addNewSuggestedPost,
   approveSuggestedPost,
-  handleApproveSuggestion,
-  handleNewSuggestion,
-  handleUpdateApprovedPost,
-  handleUpdateSuggestion,
   updateApprovedPost,
   updateContributor,
   updateSuggestedPost,
@@ -20,7 +15,7 @@ import type {
   iAddress,
   TypeAndText,
   iIgAccount,
-  iParsedRetrievedPost,
+  iPost,
   iSessionUser,
 } from "../../utils/types";
 import ImageUploader from "./ImageUploader";
@@ -32,10 +27,10 @@ import DeletePostButton from "../DeletePostButton";
 import { useRouter } from "next/navigation";
 import { bezirke, categoryNames } from "@app/utils/constants";
 import IgAccountInput from "./IgAccountInput";
-import { deleteUnusedImages, getFoldersList } from "@app/api/storageActions";
+import { deleteUnusedImages } from "@app/api/storageActions";
 
 interface PostFormProps {
-  PostForm: Partial<iParsedRetrievedPost>;
+  PostForm: Partial<iPost>;
   user: iSessionUser;
   children?: React.ReactNode;
   postType:
@@ -81,9 +76,8 @@ export default function PostForm({
   >(null);
 
   const [savedPostText, setSavedPostText] = React.useState<TypeAndText[]>(
-    text || []
+    text?.filter((p) => !!p[1]) || []
   );
-
   const [categoriesList, setCategoriesList] = React.useState<string[]>(
     categories || []
   );
@@ -139,7 +133,7 @@ export default function PostForm({
       return alert(
         "User is required" + JSON.stringify(userInput) + JSON.stringify(addedBy)
       );
-    const suggestionPost: iParsedRetrievedPost = {
+    const suggestionPost: iPost = {
       id: newID.current,
       createdAt: createdAt || newID.current,
       title: data.title,
@@ -186,7 +180,7 @@ export default function PostForm({
 
     if (!user_id || !userInput.email || !addedBy)
       return alert("User data from creator needed");
-    const updatedPost: iParsedRetrievedPost = {
+    const updatedPost: iPost = {
       addedBy: addedBy,
       address: addressInput,
       bezirk: data.bezirk,
@@ -215,7 +209,7 @@ export default function PostForm({
       })
       .then(() =>
         setTimeout(() => {
-          router.push(`/update-post/successfully-updated/${data.id}`);
+          router.push(`/update-suggestion/successfully-updated/${data.id}`);
         }, 1000)
       )
       .catch((error) =>
@@ -229,7 +223,8 @@ export default function PostForm({
       return alert("Text is required and needs to be saved");
     if (!user_id || !userInput.email || !addedBy)
       return alert("User data from creator needed");
-    const suggestionPost: iParsedRetrievedPost = {
+    const suggestionPost: iPost = {
+      status: data.status,
       addedBy: addedBy,
       address: addressInput,
       bezirk: data.bezirk,
@@ -277,7 +272,7 @@ export default function PostForm({
       return alert("Text is required and needs to be saved");
     if (!user_id || !userInput.email || !addedBy)
       return alert("User data from creator needed");
-    const updatedPost: iParsedRetrievedPost = {
+    const updatedPost: iPost = {
       addedBy: addedBy,
       address: addressInput,
       bezirk: data.bezirk,

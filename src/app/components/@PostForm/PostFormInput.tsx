@@ -12,9 +12,15 @@ type inputLabelType =
   | "name"
   | "minAge"
   | "maxAge"
+  | "email"
   | "image"
   | "igAccounts"
-  | "pinnedPost";
+  | "pinnedPost"
+  | "free"
+  | "date"
+  | "time"
+  | "approved"
+  | "location";
 interface PostFormInputProps {
   inputID: inputLabelType;
   inputLabel: string;
@@ -29,11 +35,11 @@ export default function PostFormInput({
   required,
 }: PostFormInputProps) {
   return (
-    <div className="w-full p-2 lg:w-3/4">
-      <div className="relative ">
+    <div className="w-full max-w-[600px] p-2 rounded bg-hh-100 bg-opacity-20">
+      <div className="relative flex flex-col">
         <label
           htmlFor={inputID}
-          className="text-md mx-auto font-semibold leading-7 lg:w-3/4"
+          className="text-md font-semibold leading-7 w-fit"
         >
           {inputLabel}
           {required && (

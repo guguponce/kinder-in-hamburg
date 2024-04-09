@@ -33,12 +33,12 @@ export default function ItemBox({
           />
         </div>
       )}
-      <div className="">
-        <div className="relative float-right  my-2 ml-2 flex min-h-4  min-w-32 flex-col items-center gap-2 rounded-sm border-2 border-slate-100">
+      <>
+        <div className="relative float-right  my-2 ml-2 flex min-h-4  min-w-32 flex-col items-center gap-2 rounded-sm border-2 border-slate-100 z-[300]">
           <p className=" ml-2 w-32 text-sm font-bold capitalize ">{type}</p>
           <div className={`editButtons flex w-fit items-end gap-2`}>
             <button
-              className="h-12 w-fit min-w-12 rounded-md bg-negative-800 px-4 py-2 text-white"
+              className="h-12 w-fit min-w-12 rounded-md bg-negative-800 px-4 py-2 text-white cursor-pointer"
               role="button"
               onClick={(e) => {
                 e.preventDefault();
@@ -61,10 +61,8 @@ export default function ItemBox({
             </button>
           </div>
         </div>
-        <div className="">
-          <DisplayTypeText type={type} text={text} />
-        </div>
-      </div>
+        <DisplayTypeText type={type} text={text} />
+      </>
     </>
   );
 }
