@@ -1,9 +1,9 @@
-import { getUsersSuggestions } from "@app/api/dbActions";
+import { getAllSuggestedPosts, getUsersSuggestions } from "@app/api/dbActions";
 import RefreshButton from "@app/components/RefreshButton";
 import StackedCards from "@app/components/@Cards/StackedCards";
-import AdminComponents from "@app/providers/AdminComponents";
+import AdminComponents from "@app/providers/AdminServerComponents";
 import { getDescription, getPlainText, parsePost } from "@app/utils/functions";
-import { iParsedRetrievedPost } from "@app/utils/types";
+import { iPost } from "@app/utils/types";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -15,21 +15,7 @@ export default async function DashboardPage() {
   if (!session?.user?.email || !session?.user?.name) {
     redirect("/api/auth/signin");
   }
-
   const userSuggestions = await getUsersSuggestions(session.user.email);
-  const suggestions =
-    typeof userSuggestions === "string"
-      ? userSuggestions
-      : userSuggestions.reduce((acc, curr) => {
-          const status = curr.status || "pending";
-          if (acc[status]) {
-            acc[status].push(parsePost(curr));
-          } else {
-            acc[status] = [parsePost(curr)];
-          }
-          return acc;
-        }, {} as { [key: string]: iParsedRetrievedPost[] });
-
   return (
     <main className="w-[calc(100%-2rem)] w-max-[800px] p-4 bg-hh-100 rounded-md mx-auto flex flex-col items-center">
       <h2 className="text-xl font-semibold self-start">
@@ -53,29 +39,31 @@ export default async function DashboardPage() {
         Suggest a new spot
       </Link>
 
-      <div className="w-full flex flex-col">
+      <div className="w-full max-w-[800px] flex flex-col">
         <h3 className="text-lg font-semibold">Your Suggestions</h3>
-        {typeof suggestions === "string" ? (
-          <article>
-            <h4 className="text-lg font-semibold">{suggestions}</h4>
-            <RefreshButton />
-          </article>
-        ) : (
-          Object.entries(suggestions).map(([status, posts]) => (
+        {Object.entries(userSuggestions).map(([status, posts]) =>
+          !!posts.length ? (
             <section key={status} className="p-2 w-full rounded-sm bg-hh-300 ">
-              <h4 className="text-lg font-semibold">{status.toUpperCase()}</h4>
-              <div className="flex w-full items-center overflow-hidden my-4">
-                <div className="flex items-center gap-2 w-fit overflow-x-auto py-2">
+              <h4 className="text-lg font-semibold ml-6">
+                {status.toUpperCase()}
+              </h4>
+              <div className="flex w-full items-center overflow-hidden pr-4">
+                <div className="flex items-center gap-2 w-fit overflow-x-auto">
                   <ScrollableCardList
                     cardType="text-priority"
                     size="small"
                     posts={posts}
+                    linkPrefix={
+                      status === "approved" ? "" : "/post-suggestion/"
+                    }
                     descriptions={true}
                   />
                 </div>
               </div>
             </section>
-          ))
+          ) : (
+            <></>
+          )
         )}
       </div>
     </main>
