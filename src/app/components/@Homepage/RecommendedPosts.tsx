@@ -1,11 +1,11 @@
 import React from "react";
 import CardsDisplay from "../@Cards/CardsDisplay";
-import { iParsedRetrievedPost, iPost } from "@app/utils/types";
+import { iPost, iPost } from "@app/utils/types";
 
 export default function RecommendedPosts({
   recommendedPosts,
 }: {
-  recommendedPosts: iParsedRetrievedPost[];
+  recommendedPosts: iPost[];
 }) {
   return (
     <section className="w-full lg:w-4/5 max-w-[1000px] p-2 md:p-4 bg-hh-600 shadow-md relative flex flex-col items-center">

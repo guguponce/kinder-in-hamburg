@@ -23,11 +23,15 @@ export default async function WeatherBox() {
     : activity === "Both"
     ? ["Indoor", "Outdoor"][Math.floor(Math.random() * 2)]
     : activity;
-  const suggestions = (await getSuggestionsWithCat(activityType))
+  const retrievedSuggestions = await getSuggestionsWithCat(activityType);
+  if (!retrievedSuggestions)
+    return <div>There was a problem retrieving suggestions</div>;
+
+  const suggestions = retrievedSuggestions
     .filter((s) => !!s.image)
-    .sort(() => 0.5 - Math.random())
-    .map((s) => parsePost(s));
+    .sort(() => 0.5 - Math.random());
   const link = `/categories/${activityType}`;
+  if ((!current || !forecast || !location) && !suggestions.length) return <></>;
   return (
     <aside
       className={`${
@@ -45,21 +49,25 @@ export default async function WeatherBox() {
           <span className="text-xs"></span>
         </h2>
       </div>
-      <article className="w-full">
-        <StackedCards
-          aspectRatio={0.66}
-          size="small"
-          link={link}
-          posts={suggestions.slice(0, 3)}
-          onlyTitle={true}
-        />
-      </article>
-      <Link
-        href={link}
-        className="px-2 py-1 font-semibold capitalize rounded-sm text-white bg-hh-400 hover:bg-hh-500 active:bg-hh-300 break-words w-fit mt-2 text-center"
-      >
-        Find {activityType} activities
-      </Link>
+      {!!suggestions.length && (
+        <>
+          <article className="w-full">
+            <StackedCards
+              aspectRatio={0.66}
+              size="small"
+              link={link}
+              posts={suggestions.slice(0, 3)}
+              onlyTitle={true}
+            />
+          </article>
+          <Link
+            href={link}
+            className="px-2 py-1 font-semibold capitalize rounded-sm text-white bg-hh-400 hover:bg-hh-500 active:bg-hh-300 break-words w-fit mt-2 text-center"
+          >
+            Find {activityType} activities
+          </Link>
+        </>
+      )}
     </aside>
   );
 }

@@ -1,7 +1,7 @@
 import type {
   Current,
   Forecast,
-  iParsedRetrievedPost,
+  iPost,
   overallCondition,
 } from "@app/utils/types";
 import React from "react";
