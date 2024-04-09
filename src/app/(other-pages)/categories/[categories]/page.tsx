@@ -1,5 +1,6 @@
 import { getSuggestionsWithCat } from "@app/api/dbActions";
 import {
+  checkCategory,
   getDescription,
   getPlainText,
   parseParams,
@@ -17,9 +18,11 @@ export default async function CurrentCategoryPage({
 }) {
   const { categories } = params;
   const category = parseParams(categories);
-  if (categoryNames.every((c) => c.toLowerCase() != category.toLowerCase()))
+  if (!checkCategory(category))
     return <>{category} is not one of out Categories</>;
   const categoryPosts = await getSuggestionsWithCat(category);
+  if (!categoryPosts) return <div>There was a problem retrieving posts</div>;
+
   return (
     <main className="w-full  max-w-[1000px] p-4 flex flex-col items-center">
       <h1 className="text-2xl font-bold">{category.toUpperCase()}</h1>

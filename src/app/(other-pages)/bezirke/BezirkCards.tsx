@@ -10,7 +10,8 @@ import React from "react";
 
 export default async function BezirkCards({ bezirk }: { bezirk: iBezirk }) {
   const bezirkPosts = await getSuggestionsWithBezirk(bezirk);
-  if (bezirkPosts.length === 0) return null;
+  if (!bezirkPosts) return <div>There was a problem retrieving posts</div>;
+  if (bezirkPosts.length === 0) return <div>There are no posts to display</div>;
   const bezirkURL = `/bezirke/${bezirk.replace(" ", "-")}`;
   return (
     <article className="rounded-md w-[250px] shadow-md p-2 hover:shadow-2xl">

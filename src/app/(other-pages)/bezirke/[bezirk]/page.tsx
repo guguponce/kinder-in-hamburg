@@ -37,10 +37,10 @@ export default async function BezirkPage({
   const { bezirk } = params;
   const bezirkName = parseParams(bezirk);
 
-  // if (!bezirke.includes(bezirkName as iBezirk)) redirect("/bezirke");
-
   const bezirkPosts = await getSuggestionsWithBezirk(bezirkName as iBezirk);
-  if (bezirkPosts.length === 0) redirect("/bezirke");
+  if (!bezirkPosts) return <div>There was a problem retrieving posts</div>;
+  if (bezirkPosts.length === 0)
+    return <div>There are no posts from {bezirk} to display</div>;
 
   const categorizedPosts = bezirkPosts.reduce((acc, post, i) => {
     post.categories.forEach((category) => {
