@@ -3,6 +3,10 @@ import {
   approveSuggestedFlohmarkt,
   approveSuggestedPost,
 } from "@app/api/dbActions";
+import {
+  revalidateFlohmarkt,
+  revalidatePost,
+} from "@app/utils/actions/revalidate";
 import { sleep } from "@app/utils/functions";
 import { iFlohmarkt, iPost } from "@app/utils/types";
 import { useRouter } from "next/navigation";
@@ -30,6 +34,11 @@ export default function ApproveButton({
         const approveFunction = await (flohmarktID
           ? approveSuggestedFlohmarkt(flohmarktID)
           : post && approveSuggestedPost(post));
+        if (flohmarktID) {
+          revalidateFlohmarkt();
+        } else {
+          revalidatePost();
+        }
         await sleep(500);
         router.push(
           post

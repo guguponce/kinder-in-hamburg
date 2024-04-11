@@ -5,6 +5,10 @@ import {
   restorePost,
   updateFlohmarktStatus,
 } from "@app/api/dbActions";
+import {
+  revalidateFlohmarkt,
+  revalidatePost,
+} from "@app/utils/actions/revalidate";
 import { sleep } from "@app/utils/functions";
 import { iFlohmarkt, iPost } from "@app/utils/types";
 import { useRouter } from "next/navigation";
@@ -29,15 +33,20 @@ export default function RestoreButton({
         size === "small" ? "py-1" : "py-2"
       } font-semibold bg-positive-700 text-white hover:bg-positive-800 active:bg-positive-600`}
       onClick={async () => {
-        const approveFunction = await (flohmarktID
+        await (flohmarktID
           ? updateFlohmarktStatus(flohmarktID, "pending")
           : !!postID && restorePost(postID));
+        if (flohmarktID) {
+          revalidateFlohmarkt();
+        } else {
+          revalidatePost();
+        }
         await sleep(500);
         router.push(
           postID
-            ? `/posts-approval/success/${postID}`
+            ? `/posts-suggestion/${postID}`
             : flohmarktID
-            ? `/flohmaerkte-approval/successfully-approved/${flohmarktID}`
+            ? `/flohmarkt-suggestion/${flohmarktID}`
             : "/"
         );
       }}
