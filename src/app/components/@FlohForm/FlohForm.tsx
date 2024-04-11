@@ -5,12 +5,20 @@ import { useForm, type FieldValues } from "react-hook-form";
 import { addFlohmarkt, updateFlohmarkt } from "@app/api/dbActions";
 import type { iSessionUser, iFlohmarkt } from "../../utils/types";
 import { useRouter } from "next/navigation";
-import { bezirke } from "@app/utils/constants";
-import { joinAddress, separateAddress } from "@app/utils/functions";
-import ImageUploader from "../@PostForm/ImageUploader";
+import { addressPartsArray, bezirke } from "@app/utils/constants";
+import {
+  getEndTime,
+  getStartTime,
+  joinAddress,
+  joinTime,
+  separateAddress,
+  sleep,
+} from "@app/utils/functions";
+import FlohmarktImageUploader from "./FlohmarktImageUploader";
 import PostFormInput from "../@PostForm/PostFormInput";
-import { revalidate } from "@app/utils/actions/revalidate";
+import { revalidatePost } from "@app/utils/actions/revalidate";
 import UserInputBox from "./UserInputBox";
+import DeleteButton from "../DeleteButton";
 
 interface FlohFormProps {
   FlohForm: Partial<iFlohmarkt>;
@@ -33,19 +41,21 @@ export default function FlohForm({
     addedBy,
     status,
     date,
-    free,
     location,
     time,
+    optionalComment,
   },
   user,
   flohFormType,
 }: FlohFormProps) {
   const router = useRouter();
-  const [userInput, setUserInput] = React.useState<iSessionUser>(user);
+  const [userInput, setUserInput] = React.useState<iSessionUser>(
+    addedBy || user
+  );
   const [imagesUrlsReady, setImagesUrlsReady] = React.useState<{
     ready: boolean;
-    urls: string;
-  }>({ ready: true, urls: "" });
+    urls: string[];
+  }>({ ready: false, urls: [] });
   const addressData = address
     ? separateAddress(address)
     : { street: "", number: "", PLZ: "", city: "" };
@@ -59,7 +69,6 @@ export default function FlohForm({
   }>({ isError: false, errorMessage: "" });
 
   const newID = useRef(new Date().getTime());
-
   const {
     register,
     handleSubmit,
@@ -74,22 +83,25 @@ export default function FlohForm({
       addedBy: addedBy,
       bezirk: bezirk,
       date: date,
-      time: time,
-      free: free ? true : false || true,
+      startTime: getStartTime(time),
+      endTime: getEndTime(time),
       street: addressData.street,
       number: addressData.number,
       PLZ: addressData.PLZ,
       city: addressData.city,
       location: location,
-
       image: image,
+      optionalComment: optionalComment || "",
     },
   });
 
   const onSubmitNewFlohmarkt = (data: FieldValues) => {
-    if (!imagesUrlsReady.ready) return alert("Images are not ready yet");
+    if (!imagesUrlsReady.ready) alert("Images are not ready yet");
     if (!userInput.email || !userInput.name)
       return alert("Your name and email are required");
+    if (!data.date) alert("The date of the Flohmarkt is required");
+    if (!data.startTime && data.endTime)
+      alert("Please provide the start and end time of the Flohmarkt");
     const suggestionFloh: iFlohmarkt = {
       id: data.id,
       status: data.status,
@@ -98,25 +110,24 @@ export default function FlohForm({
       addedBy: userInput,
       bezirk: data.bezirk,
       date: data.date,
-      free: data.free,
       address: joinAddress(data),
       location: data.location,
-      time: data.time,
-      image: imagesUrlsReady.urls,
+      time: joinTime(data.startTime, data.endTime),
+      image: imagesUrlsReady.urls[0],
+      optionalComment: data.optionalComment,
     };
     addFlohmarkt(suggestionFloh)
       .then(() => {
-        revalidate();
+        revalidatePost();
         setSubmitError({ isError: false, errorMessage: "" });
       })
       .then(() => {
-        // deleteUnusedImages();
+        // deleteUnusedFlohmaerkteImages();
       })
-      .then(() =>
-        setTimeout(() => {
-          router.push(`/new-flohmarkt/successfully-submitted/${data.id}`);
-        }, 1000)
-      )
+      .then(async () => {
+        sleep(1000);
+        router.push(`/new-flohmarkt/successfully-submitted/${data.id}`);
+      })
       .catch((error) =>
         setSubmitError({ isError: true, errorMessage: error.message })
       );
@@ -124,43 +135,44 @@ export default function FlohForm({
 
   const onUpdateFlohmarkt = (data: FieldValues) => {
     if (!imagesUrlsReady.ready) return alert("Images are not ready yet");
-
     if (!userInput.email || !addedBy)
       return alert("User data from creator needed");
-    const updatedPost: iFlohmarkt = {
+    if (!data.date) alert("The date of the Flohmarkt is required");
+    if (!data.startTime && data.endTime)
+      alert("Please provide the start and end time of the Flohmarkt");
+    const updatedFlohmarkt: iFlohmarkt = {
       id: id || newID.current,
       status: approved ? "approved" : status || "pending",
       createdAt: createdAt || newID.current,
-
+      time: joinTime(data.startTime, data.endTime),
       title: data.title,
       addedBy: userInput,
       bezirk: data.bezirk,
       date: data.date,
-      free: data.free,
       address: `${data.street} ${data.number}, ${data.PLZ} ${data.city}`,
       location: data.location,
-      time: data.time,
-      image: imagesUrlsReady.urls,
+
+      image: imagesUrlsReady.urls[0],
+      optionalComment: data.optionalComment,
     };
-    updateFlohmarkt(updatedPost)
-      .then((res) => {
+    updateFlohmarkt(updatedFlohmarkt)
+      .then(() => {
         setSubmitError({ isError: false, errorMessage: "" });
-        revalidate();
+        revalidatePost();
       })
       // .then(() => {
-      // deleteUnusedImages();
+      // deleteUnusedFlohmaerkteImages();
       // })
-      .then(() =>
-        setTimeout(() => {
-          router.push(
-            flohFormType === "update-flohmarkt"
-              ? `/flohmaerkte/update-post/successfully-updated/${data.id}`
-              : flohFormType === "update-suggestion"
-              ? `//update-suggested-flohmarkt//successfully-updated/${data.id}`
-              : `/flohmaerkte-approval/successfully-approved/${data.id}`
-          );
-        }, 1000)
-      )
+      .then(async () => {
+        await sleep(1000);
+        router.push(
+          flohFormType === "update-flohmarkt"
+            ? `/update-flohmarkt/successfully-submitted/${data.id}`
+            : flohFormType === "update-suggestion"
+            ? `/update-flohmarkt/successfully-submitted/${data.id}`
+            : `/flohmaerkte-approval/successfully-approved/${data.id}`
+        );
+      })
       .catch((error) =>
         setSubmitError({ isError: true, errorMessage: error.message })
       );
@@ -173,15 +185,13 @@ export default function FlohForm({
   if (!user.email || !user.name) return;
 
   return (
-    <section id="post-form-container" className="w-full">
-      {/* {(!user.email || user.name) && ( */}
+    <section id="flohmarkt-form-container" className="w-full">
       <UserInputBox setUserInput={setUserInput} userInput={userInput} />
-      {/* )} */}
-      {/* <ImageUploader
-        email={user.email || ""}
+      <FlohmarktImageUploader
+        user={userInput}
         setImagesUrlsReady={setImagesUrlsReady}
         id={id ? id : newID.current}
-      /> */}
+      />
       <form
         onSubmit={handleSubmit(
           flohFormType === "new-flohmarkt"
@@ -191,11 +201,6 @@ export default function FlohForm({
         className="flohForm mx-auto w-full text-gray-900 lg:w-3/4"
       >
         <div className="mx-auto flex w-full flex-col items-center gap-2 ">
-          {/* day
-month
-year
-hour
-minute */}
           <PostFormInput inputLabel="Title" inputID="title" required={true}>
             <>
               <input
@@ -222,7 +227,7 @@ minute */}
                 required={true}
               >
                 <select
-                  {...register("bezirk")}
+                  {...register("bezirk", { required: "Bezirk is required" })}
                   defaultValue={bezirk || "Altona"}
                   className="mx  rounded border border-gray-300 bg-gray-100 bg-opacity-95 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
                 >
@@ -248,31 +253,65 @@ minute */}
               </PostFormInput>
             </div>
             <div className="addressBox min-w-fit  flex-grow flex flex-col">
-              <PostFormInput inputLabel="Addresse" inputID="address">
-                <div className="flex flex-col flex-wrap gap-4">
-                  {["street", "number", "PLZ", "city"].map((part, i) => (
-                    <div className="flex gap-2 flex-wrap" key={part}>
-                      <input
-                        {...register(
-                          part as "street" | "number" | "PLZ" | "city"
-                        )}
-                        id={part + "Input"}
-                        name={part + i}
-                        placeholder={
-                          part === "street"
-                            ? "Straße"
-                            : part === "number"
-                            ? "Nummer"
-                            : part === "PLZ"
-                            ? "PLZ"
-                            : "Stadt"
-                        }
-                        className="w-full block rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
-                      />
-                    </div>
-                  ))}
+              <PostFormInput
+                inputLabel="Address"
+                inputID="address"
+                required={true}
+              >
+                <div className="flex flex-col flex-wrap gap-2">
+                  <input
+                    {...register("street", {
+                      required: "Full address is required",
+                    })}
+                    id={"street" + "Input"}
+                    name="street"
+                    placeholder="Straße"
+                    className="w-full block rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
+                  />
+
+                  <input
+                    {...register("number", {
+                      required: "Full address is required",
+                    })}
+                    id={"number" + "Input"}
+                    name="number"
+                    placeholder="Nummer"
+                    className="w-full block rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
+                  />
+
+                  <input
+                    {...register("PLZ", {
+                      required: "Full address is required",
+                    })}
+                    id={"PLZ" + "Input"}
+                    name="PLZ"
+                    placeholder="PLZ"
+                    className="w-full block rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
+                  />
+
+                  <input
+                    {...register("city", {
+                      required: "Full address is required",
+                    })}
+                    id={"city" + "Input"}
+                    name={"city"}
+                    placeholder="Stadt"
+                    className="w-full block rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
+                  />
                 </div>
               </PostFormInput>
+              {addressPartsArray
+                .filter((p) => !!errors[p])
+                .slice(0, 1)
+                .map((p) =>
+                  !!errors[p] ? (
+                    <p className="text-negative-500" key={p}>{`${
+                      errors[p]!.message
+                    }`}</p>
+                  ) : (
+                    <React.Fragment key={p}></React.Fragment>
+                  )
+                )}
             </div>{" "}
           </div>
 
@@ -303,51 +342,59 @@ minute */}
               </PostFormInput>
             </div>{" "}
             <div className="timeBox min-w-fit flex-grow flex flex-col">
-              <PostFormInput inputLabel="Uhrzeit" inputID="time">
-                <div className="flex flex-col flex-wrap gap-4">
-                  <div className="flex gap-2 flex-wrap">
+              <div className="w-full max-w-[600px] p-2 rounded bg-hh-100 bg-opacity-20">
+                <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-col gap-1 flex-wrap">
+                    <label
+                      htmlFor="starttime"
+                      className="text-md font-semibold leading-7 w-fit"
+                    >
+                      Startzeit
+                    </label>
                     <input
-                      id={time + "Input"}
-                      name={"time"}
+                      id="starttime"
+                      name="starttime"
                       type="time"
-                      defaultValue={time}
-                      onChange={(e) => setValue("time", e.target.value)}
-                      className="w-40 block rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
+                      defaultValue={getStartTime(time)}
+                      onChange={(e) => setValue("startTime", e.target.value)}
+                      className="w-fit block rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1 flex-wrap">
+                    <label
+                      htmlFor="endtime"
+                      className="text-md font-semibold leading-7 w-fit"
+                    >
+                      Endzeit
+                    </label>
+                    <input
+                      id="endtime"
+                      name="endtime"
+                      type="time"
+                      defaultValue={getEndTime(time)}
+                      onChange={(e) => setValue("endTime", e.target.value)}
+                      className="w-fit block rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
                     />
                   </div>
                 </div>
-              </PostFormInput>
+              </div>
             </div>{" "}
           </div>
 
-          <div className="p-2 rounded bg-hh-100 bg-opacity-20 m-1">
-            <div className="relative flex mx-auto flex-row w-fit items-center gap-4">
-              <label
-                htmlFor={"free"}
-                className="text-md font-semibold leading-7 w-fit"
-              >
-                Kostenlos
-              </label>
-
-              <input
-                onChange={(e) => setValue("free", e.target.checked)}
-                type="checkbox"
-                defaultChecked={flohFormType === "new-flohmarkt" ? true : free}
-                id="free"
-                name="free"
-                className="block w-4 h-4  rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base font-semibold leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
-              />
-            </div>
-          </div>
+          <PostFormInput
+            inputLabel="Optionaler Kommentar"
+            inputID="optionalComment"
+          >
+            <textarea
+              onChange={(e) => setValue("optionalComment", e.target.value)}
+              id="title"
+              defaultValue={optionalComment || ""}
+              name="title"
+              className="w-full rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base font-semibold leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
+            />
+          </PostFormInput>
 
           <div className="flex w-full flex-wrap items-center justify-between gap-8 p-2 sm:flex-row">
-            {/* {id && (
-              <DeletePostButton
-                id={id}
-                title={title || ""}
-                deleteFrom="approved"
-              />
-            )} */}
             {!imagesUrlsReady.ready && (
               <a
                 href="#images-upload-container"
@@ -357,22 +404,18 @@ minute */}
                 First upload the image/s ↑
               </a>
             )}
-
+            {isSubmitSuccessful && <>isSubmitSuccessful</>}
+            {isSubmitting && <>isSubmitting</>}
             <button
               type="submit"
-              disabled={
-                // isSubmitSuccessful || isSubmitting || isLoading||
-                !isDirty &&
-                JSON.stringify(imagesUrlsReady.urls) === JSON.stringify([image])
-              }
+              disabled={isSubmitSuccessful || isSubmitting || isLoading}
               className={`${
                 isSubmitSuccessful
-                  ? " bg-[hsla(119,23%,47%,1)] hover:bg-[rgba(68,225,65,0.65)] hover:shadow-none ml-0"
+                  ? " bg-slate-300 hover:shadow-none"
                   : "bg-green-700 hover:bg-green-600 hover:shadow-md ml-auto"
               } active:scale-[0.99] border-0px-8  flex rounded p-2 text-lg text-white transition-colors  duration-200 ease-in-out  focus:outline-2 focus:ring-2 focus:ring-green-600 focus:ring-offset-2 disabled:bg-gray-500`}
             >
-              {isDirty ||
-              JSON.stringify(imagesUrlsReady.urls) !== JSON.stringify([image])
+              {JSON.stringify(imagesUrlsReady.urls) !== JSON.stringify([image])
                 ? flohFormType === "new-flohmarkt"
                   ? "Submit Flohmarkt Suggestion"
                   : status === "approved"
@@ -384,7 +427,7 @@ minute */}
             </button>
             {/* )} */}
             {submitError.isError && (
-              <p className="mt-4 rounded border-4 border-negative-700 p-4 font-semibold text-negative-700">{`There was an error while submitting the post. Error message: ${submitError.errorMessage}`}</p>
+              <p className="mt-4 rounded border-4 border-negative-700 p-4 font-semibold text-negative-700">{`There was an error while submitting the Flohmarkt. Error message: ${submitError.errorMessage}`}</p>
             )}
           </div>
         </div>
@@ -392,26 +435,3 @@ minute */}
     </section>
   );
 }
-
-// <AdminClientComponent>
-// <div className="border-positive-700 border-2 text-hh-100 flex p-4 rounded">
-//   <label
-//     htmlFor="approved"
-//     className="text-md mx-auto font-semibold leading-7 flex flex-col items-center"
-//   >
-//     Approved
-//     <input
-//       onChange={(e) =>
-//         setValue(
-//           "status",
-//           e.target.checked ? "approved" : status || "pending"
-//         )
-//       }
-//       type="checkbox"
-//       id="approved"
-//       name="approved"
-//       className="w-[2rem] h-[2rem] mt-2 border rounded-full border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1  outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
-//     />
-//   </label>
-// </div>
-// </AdminClientComponent>
