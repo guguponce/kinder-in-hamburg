@@ -1,6 +1,6 @@
 "use client";
-import DisplayTypeText from "@app/components/@PostForm/DisplayTypeText";
-import MinimalPostDisplay from "@app/components/MinimalPostDisplay";
+import DisplayTypeText from "@components/@PostForm/DisplayTypeText";
+import MinimalPostDisplay from "@components/MinimalPostDisplay";
 import { iPost } from "@app/utils/types";
 import React, { useEffect, useState } from "react";
 

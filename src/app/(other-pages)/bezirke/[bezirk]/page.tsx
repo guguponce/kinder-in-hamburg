@@ -1,8 +1,8 @@
 import { getSuggestionsWithBezirk } from "@app/api/dbActions";
 import { getHamburgsWeather } from "@app/api/weatherAPI";
-import TextPriorityCard from "@app/components/@Cards/Card";
-import ScrollableCardList from "@app/components/@Cards/ScrollableCardList";
-import WeatherBasedRecommendations from "@app/components/WeatherBasedRecommendations";
+import TextPriorityCard from "@components/@Cards/Card";
+import ScrollableCardList from "@components/@Cards/ScrollableCardList";
+import WeatherBasedRecommendations from "@components/WeatherBasedRecommendations";
 import { WEATHER_CODES, bezirke } from "@app/utils/constants";
 import { getPlainText, parseParams } from "@app/utils/functions";
 import { iBezirk, iPost } from "@app/utils/types";

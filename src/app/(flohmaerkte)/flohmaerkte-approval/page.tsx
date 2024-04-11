@@ -1,5 +1,5 @@
 import { getSuggestedFlohmaerkte } from "@app/api/dbActions";
-import MinimalFlohmarktDisplay from "@app/components/MinimalFlohmarktDisplay";
+import MinimalFlohmarktDisplay from "@components/MinimalFlohmarktDisplay";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import React from "react";

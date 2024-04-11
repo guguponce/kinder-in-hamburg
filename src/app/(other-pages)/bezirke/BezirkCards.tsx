@@ -2,8 +2,8 @@ import {
   getPostWithBezirk,
   getSuggestionsWithBezirk,
 } from "@app/api/dbActions";
-import CardsDisplay from "@app/components/@Cards/CardsDisplay";
-import StackedCards from "@app/components/@Cards/StackedCards";
+import CardsDisplay from "@components/@Cards/CardsDisplay";
+import StackedCards from "@components/@Cards/StackedCards";
 import { iBezirk } from "@app/utils/types";
 import Link from "next/link";
 import React from "react";

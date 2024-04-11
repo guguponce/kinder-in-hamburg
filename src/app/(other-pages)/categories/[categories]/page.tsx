@@ -6,9 +6,9 @@ import {
   parseParams,
   parsePost,
 } from "@app/utils/functions";
-import CardsDisplay from "@app/components/@Cards/CardsDisplay";
+import CardsDisplay from "@components/@Cards/CardsDisplay";
 import React from "react";
-import Card from "@app/components/@Cards/Card";
+import Card from "@components/@Cards/Card";
 import { categoryNames } from "@app/utils/constants";
 
 export default async function CurrentCategoryPage({

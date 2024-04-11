@@ -1,14 +1,10 @@
-import {
-  approveSuggestedPost,
-  getApprovedPostWithID,
-  getSuggestedPostWithID,
-} from "@app/api/dbActions";
-import ApprovePostButton from "@app/components/@PostForm/ApprovePostButton";
-import PostNotFound from "@app/components/@PostForm/PostNotFound";
-import PostTemplate from "@app/components/PostTemplate";
-import AdminClientComponent from "@app/providers/AdminClientComponents";
+import { getSuggestedPostWithID } from "@app/api/dbActions";
+import ApprovePostButton from "@components/ApproveButton";
+import PostNotFound from "@components/@PostForm/PostNotFound";
+import PostTemplate from "@components/PostTemplate";
 import Link from "next/link";
 import React from "react";
+import AdminServerComponent from "@app/providers/AdminServerComponents";
 
 export default async function CurrentPostPage({
   params,
@@ -50,7 +46,7 @@ export default async function CurrentPostPage({
           </div>
         )}
       </div>
-      <AdminClientComponent>
+      <AdminServerComponent>
         <ApprovePostButton post={post} />
         <Link
           href={`/update-suggestion/${suggestionID}`}
@@ -58,7 +54,7 @@ export default async function CurrentPostPage({
         >
           Update Suggestion
         </Link>
-      </AdminClientComponent>
+      </AdminServerComponent>
     </PostTemplate>
   );
 }
