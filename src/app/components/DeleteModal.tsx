@@ -1,15 +1,22 @@
 "use client";
 import React from "react";
-import { deleteApprovedPost, deleteSuggestion } from "@app/api/dbActions";
+import {
+  deleteApprovedPost,
+  deleteFlohmarkt,
+  deleteSuggestion,
+  rejectFlohmarkt,
+} from "@app/api/dbActions";
 import { useRouter } from "next/navigation";
-import { revalidate } from "@app/utils/actions/revalidate";
+import { revalidatePost } from "@app/utils/actions/revalidate";
 
 export default function DeleteModal({
   id,
   title,
   setDeleteModal,
   deleteFrom,
+  type,
 }: {
+  type: "flohmarkt" | "post";
   id: number;
   title: string;
   setDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -20,15 +27,23 @@ export default function DeleteModal({
   const handleDelete = async () => {
     if (titleInput !== title)
       return alert("You didn't write the title correctly");
-    if (deleteFrom === "suggested") {
-      await deleteSuggestion(id);
-    } else if (deleteFrom === "approved") {
-      await deleteApprovedPost(id);
-    } else if (deleteFrom === "all") {
-      await deleteSuggestion(id);
-      await deleteApprovedPost(id);
+    if (type === "post") {
+      if (deleteFrom === "suggested") {
+        await deleteSuggestion(id);
+      } else if (deleteFrom === "approved") {
+        await deleteApprovedPost(id);
+      } else if (deleteFrom === "all") {
+        await deleteSuggestion(id);
+        await deleteApprovedPost(id);
+      }
+    } else if (type === "flohmarkt") {
+      if (deleteFrom === "all") {
+        await deleteFlohmarkt(id.toString());
+      } else {
+        await rejectFlohmarkt(id.toString());
+      }
     }
-    revalidate().then(() => {
+    revalidatePost().then(() => {
       router.push("/posts");
     });
   };
@@ -37,7 +52,7 @@ export default function DeleteModal({
       <div className="flex h-[30vh] min-h-fit w-full flex-col items-center justify-center">
         <div className="rounded-lg bg-negative-100 p-4">
           <h1 className="text-xl font-bold">
-            If you want to delete this post, write: {title}{" "}
+            If you want to delete this {type}, write: {title}{" "}
           </h1>
           <input
             type="text"

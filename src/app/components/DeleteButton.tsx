@@ -1,15 +1,16 @@
 "use client";
 import React, { useState } from "react";
 import DeleteModal from "./DeleteModal";
-import { useSession } from "next-auth/react";
 
-export default function DeletePostButton({
+export default function DeleteButton({
   id,
   title,
   deleteFrom,
   size,
+  type,
 }: {
   id: number;
+  type: "flohmarkt" | "post";
   title: string;
   deleteFrom: "suggested" | "approved" | "all";
   size?: "small" | "medium" | "large";
@@ -20,6 +21,7 @@ export default function DeletePostButton({
     <>
       {deleteModal && (
         <DeleteModal
+          type={type}
           id={id}
           title={title}
           setDeleteModal={setDeleteModal}
@@ -30,15 +32,20 @@ export default function DeletePostButton({
         role="button"
         className={`flex ${
           size === "large" ? "w-full max-w-[1000px]" : "w-fit"
-        } items-center justify-center rounded bg-negative-500 px-2 ${
-          size === "small" ? "py-1" : "h-10 py-2"
-        } font-bold text-white hover:bg-negative-700 mb-2`}
+        } items-center justify-center rounded  px-2 ${
+          size === "small" ? "py-1" : "py-2"
+        } font-semibold text-white bg-negative-500 hover:bg-negative-700`}
         onClick={(e) => {
           e.preventDefault();
           setDeleteModal(true);
         }}
       >
-        Delete {deleteFrom === "suggested" ? "Suggestion" : "Post"}
+        Delete{" "}
+        {deleteFrom === "suggested"
+          ? "Suggestion"
+          : type === "post"
+          ? "Post"
+          : "Flohmarkt"}
       </button>
     </>
   );
