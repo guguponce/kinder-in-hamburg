@@ -59,9 +59,8 @@ export default function FlohForm({
   const addressData = address
     ? separateAddress(address)
     : { street: "", number: "", PLZ: "", city: "" };
-  const [approved, setApproved] = React.useState<boolean>(
-    status === "approved" ? true : false
-  );
+  const [successfulSubmit, setSuccessfulSubmit] =
+    React.useState<boolean>(false);
 
   const [submitError, setSubmitError] = React.useState<{
     isError: boolean;
@@ -113,13 +112,15 @@ export default function FlohForm({
       address: joinAddress(data),
       location: data.location,
       time: joinTime(data.startTime, data.endTime),
-      image: imagesUrlsReady.urls[0],
+      image: imagesUrlsReady.urls[0] || "",
       optionalComment: data.optionalComment,
     };
+    console.log("suggestionFloh", suggestionFloh);
     addFlohmarkt(suggestionFloh)
       .then(() => {
         revalidatePost();
         setSubmitError({ isError: false, errorMessage: "" });
+        setSuccessfulSubmit(true);
       })
       .then(() => {
         // deleteUnusedFlohmaerkteImages();
@@ -152,13 +153,14 @@ export default function FlohForm({
       address: `${data.street} ${data.number}, ${data.PLZ} ${data.city}`,
       location: data.location,
 
-      image: imagesUrlsReady.urls[0],
+      image: imagesUrlsReady.urls[0] || "",
       optionalComment: data.optionalComment,
     };
     updateFlohmarkt(updatedFlohmarkt)
       .then(() => {
         setSubmitError({ isError: false, errorMessage: "" });
         revalidatePost();
+        setSuccessfulSubmit(true);
       })
       // .then(() => {
       // deleteUnusedFlohmaerkteImages();
@@ -229,6 +231,7 @@ export default function FlohForm({
                 <select
                   {...register("bezirk", { required: "Bezirk is required" })}
                   defaultValue={bezirk || "Altona"}
+                  required
                   className="mx  rounded border border-gray-300 bg-gray-100 bg-opacity-95 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
                 >
                   {bezirke.map((bezirk) => (
@@ -327,7 +330,7 @@ export default function FlohForm({
                       defaultValue={
                         date
                           ? new Date(date).toISOString().split("T")[0]
-                          : new Date().toISOString().split("T")[0]
+                          : undefined
                       }
                       id={date + "Input"}
                       name={"date"}
@@ -406,9 +409,9 @@ export default function FlohForm({
             )}
             <button
               type="submit"
-              disabled={isSubmitSuccessful || isSubmitting || isLoading}
+              disabled={successfulSubmit || isSubmitting || isLoading}
               className={`${
-                isSubmitSuccessful
+                successfulSubmit
                   ? " bg-slate-300 hover:shadow-none"
                   : "bg-green-700 hover:bg-green-600 hover:shadow-md ml-auto"
               } active:scale-[0.99] border-0px-8  flex rounded p-2 text-lg text-white transition-colors  duration-200 ease-in-out  focus:outline-2 focus:ring-2 focus:ring-green-600 focus:ring-offset-2 disabled:bg-gray-500`}
@@ -421,7 +424,7 @@ export default function FlohForm({
                     ? "Update Flohmarkt"
                     : "Approve Flohmarkt"
                   : "Update Flohmarkt Suggestion"
-                : "No changes made"}
+                : "Done"}
             </button>
             {submitError.isError && (
               <p className="mt-4 rounded border-4 border-negative-700 p-4 font-semibold text-negative-700">{`There was an error while submitting the Flohmarkt. Error message: ${submitError.errorMessage}`}</p>

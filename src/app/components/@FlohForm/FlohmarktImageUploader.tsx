@@ -48,7 +48,7 @@ export const ImageUploader = ({
   }, [id]);
 
   useEffect(() => {
-    if ((imageURL.length || previousImage.length) && !imageFile.length) {
+    if (!imageFile.length) {
       setImagesUrlsReady({
         ready: true,
         urls: [...imageURL, ...previousImage].map((url) => url.url),
@@ -115,7 +115,6 @@ export const ImageUploader = ({
           type="file"
           ref={fileInputRef}
           accept="image/*"
-          multiple
           name="images"
           onChange={handleImageChange}
           className="mt-4 flex max-w-[300px] flex-wrap rounded  border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
