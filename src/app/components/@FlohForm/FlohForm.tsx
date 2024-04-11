@@ -55,7 +55,7 @@ export default function FlohForm({
   const [imagesUrlsReady, setImagesUrlsReady] = React.useState<{
     ready: boolean;
     urls: string[];
-  }>({ ready: false, urls: [] });
+  }>({ ready: true, urls: [] });
   const addressData = address
     ? separateAddress(address)
     : { street: "", number: "", PLZ: "", city: "" };
@@ -142,7 +142,7 @@ export default function FlohForm({
       alert("Please provide the start and end time of the Flohmarkt");
     const updatedFlohmarkt: iFlohmarkt = {
       id: id || newID.current,
-      status: approved ? "approved" : status || "pending",
+      status: data.status,
       createdAt: createdAt || newID.current,
       time: joinTime(data.startTime, data.endTime),
       title: data.title,
