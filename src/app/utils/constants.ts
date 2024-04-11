@@ -857,6 +857,13 @@ export const WEATHER_CODES: {
   },
 } as const;
 
+export const addressPartsArray: Array<"street" | "number" | "PLZ" | "city"> = [
+  "street",
+  "number",
+  "PLZ",
+  "city",
+];
+
 // icons
 // loading
 {

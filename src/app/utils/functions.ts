@@ -1,7 +1,8 @@
-import {
+import type {
   TypeAndText,
   iAddress,
   iPost,
+  iSessionUser,
   iStringifiedFlohmarkt,
   iStringifiedRetrievedPost,
 } from "./types";
@@ -64,7 +65,7 @@ export const parseAddress = (address: string | iAddress) => {
 };
 
 export const filterExtraImages = (images: File[]) => {
-  const maxSize = 10000000;
+  const maxSize = 3000000;
   let maxIndex = 0;
   let lastSize = 0;
   for (let i = 0; i < images.length; i++) {
@@ -129,8 +130,14 @@ export function joinAddress(addressObj: iAddress) {
 }
 
 export const parseFlohmarkt = (flohmarkt: iStringifiedFlohmarkt) => {
-  return { ...flohmarkt, addedBy: JSON.parse(flohmarkt.addedBy) };
+  return {
+    ...flohmarkt,
+    addedBy: JSON.parse(flohmarkt.addedBy) as iSessionUser,
+  };
 };
+
+export const parseAllFlohmarkte = (flohmarkte: iStringifiedFlohmarkt[]) =>
+  flohmarkte.map((f) => parseFlohmarkt(f));
 
 export const checkBezirk = (bezirk: string) => {
   const bezirkRegex = new RegExp(bezirk, "i");
@@ -154,3 +161,10 @@ export const getDate = (date: number) =>
     month: "long",
     year: "numeric",
   });
+
+export const getStartTime = (time: string | undefined) =>
+  time?.split("-")[0].trim();
+export const getEndTime = (time: string | undefined) =>
+  time?.split("-")[1]?.trim();
+export const joinTime = (start: string | undefined, end: string | undefined) =>
+  !start ? undefined : !end ? start : `${start} - ${end}`;
