@@ -46,6 +46,7 @@ export default function DeleteButton({
           : type === "post"
           ? "Post"
           : "Flohmarkt"}
+        {deleteFrom === "all" ? " Forever" : ""}
       </button>
     </>
   );

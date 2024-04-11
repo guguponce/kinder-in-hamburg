@@ -481,6 +481,47 @@ export const approveSuggestedPost = async (post: iPost) => {
   }
 };
 
+export const rejectSuggestedPost = async (id: number) => {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("kih-approved-blogposts")
+      .delete()
+      .match({ id });
+    if (error) {
+      throw new Error("There was a problem rejecting the post.");
+    }
+
+    const { error: error2 } = await supabaseAdmin
+      .from("kih-suggestions")
+      .update({ status: "rejected" })
+      .match({ id });
+
+    return data;
+  } catch (error) {
+    throw new Error("There was a problem rejecting the post.");
+  }
+};
+
+export const restorePost = async (id: number) => {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("kih-approved-blogposts")
+      .delete()
+      .match({ id });
+
+    if (error) {
+      throw new Error("There was a problem restoring the post.");
+    }
+    const { error: error2 } = await supabaseAdmin
+      .from("kih-suggestions")
+      .update({ status: "pending" })
+      .match({ id });
+    return data;
+  } catch (error) {
+    throw new Error("There was a problem restoring the post.");
+  }
+};
+
 export const updateApprovedPost = async (post: iPost) => {
   try {
     const { error } = await supabaseAdmin
@@ -674,6 +715,21 @@ export const approveSuggestedFlohmarkt = async (id: string) => {
     return true;
   } catch (error) {
     throw new Error("There was a problem approving the Flea Market.");
+  }
+};
+
+export const updateFlohmarktStatus = async (id: string, status: string) => {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("flohmaerkte")
+      .update({ status })
+      .match({ id });
+    if (error) {
+      throw new Error("There was a problem updating the Flea Market.");
+    }
+    return true;
+  } catch (error) {
+    throw new Error("There was a problem updating the Flea Market.");
   }
 };
 

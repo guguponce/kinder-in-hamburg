@@ -7,7 +7,10 @@ import {
   rejectFlohmarkt,
 } from "@app/api/dbActions";
 import { useRouter } from "next/navigation";
-import { revalidatePost } from "@app/utils/actions/revalidate";
+import {
+  revalidateFlohmarkt,
+  revalidatePost,
+} from "@app/utils/actions/revalidate";
 
 export default function DeleteModal({
   id,
@@ -43,9 +46,16 @@ export default function DeleteModal({
         await rejectFlohmarkt(id.toString());
       }
     }
-    revalidatePost().then(() => {
-      router.push("/posts");
-    });
+    if (type === "post") {
+      revalidatePost().then(() => {
+        router.push("/posts");
+      });
+    }
+    if (type === "flohmarkt") {
+      revalidateFlohmarkt().then(() => {
+        router.push("/flohmaerkte");
+      });
+    }
   };
   return (
     <div className="fixed left-0 top-0 flex h-screen w-screen items-center justify-center bg-black bg-opacity-50 text-gray-800 z-[300]">
