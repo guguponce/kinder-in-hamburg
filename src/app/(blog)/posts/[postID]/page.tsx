@@ -1,7 +1,7 @@
 import { getApprovedPostWithID } from "@app/api/dbActions";
-import PostNotFound from "@app/components/@PostForm/PostNotFound";
-import DeletePostButton from "@app/components/DeletePostButton";
-import PostTemplate from "@app/components/PostTemplate";
+import PostNotFound from "@components/@PostForm/PostNotFound";
+import DeletePostButton from "@app/components/DeleteButton";
+import PostTemplate from "@components/PostTemplate";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
 import Link from "next/link";
 import React from "react";
@@ -19,6 +19,7 @@ export default async function CurrentPostPage({
     <>
       <AdminServerComponent>
         <DeletePostButton
+          type="post"
           deleteFrom="approved"
           id={post.id}
           title={post.title}
