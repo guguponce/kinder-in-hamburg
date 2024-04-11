@@ -216,18 +216,18 @@ export type iBezirk =
 
 // FLOHMARKT
 export interface iFlohmarkt {
-  id: number;
+  title: string;
+  bezirk: iBezirk;
+  addedBy: iSessionUser;
   createdAt: number;
   date: number;
+  id: number;
+  status: "approved" | "pending" | "rejected" | null;
   address: string;
-  bezirk: iBezirk;
-  time?: string;
-  title?: string;
   image?: string;
   location?: string;
-  free?: boolean;
-  addedBy: iSessionUser;
-  status: "approved" | "pending" | "rejected" | null;
+  time?: string;
+  optionalComment?: string;
 }
 
 export interface iStringifiedFlohmarkt extends Omit<iFlohmarkt, "addedBy"> {
