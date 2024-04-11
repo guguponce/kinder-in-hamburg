@@ -125,7 +125,7 @@ export default function FlohForm({
         // deleteUnusedFlohmaerkteImages();
       })
       .then(async () => {
-        sleep(1000);
+        sleep(750);
         router.push(`/new-flohmarkt/successfully-submitted/${data.id}`);
       })
       .catch((error) =>
@@ -164,7 +164,7 @@ export default function FlohForm({
       // deleteUnusedFlohmaerkteImages();
       // })
       .then(async () => {
-        await sleep(1000);
+        await sleep(750);
         router.push(
           flohFormType === "update-flohmarkt"
             ? `/update-flohmarkt/successfully-submitted/${data.id}`
@@ -404,8 +404,6 @@ export default function FlohForm({
                 First upload the image/s ↑
               </a>
             )}
-            {isSubmitSuccessful && <>isSubmitSuccessful</>}
-            {isSubmitting && <>isSubmitting</>}
             <button
               type="submit"
               disabled={isSubmitSuccessful || isSubmitting || isLoading}
@@ -425,7 +423,6 @@ export default function FlohForm({
                   : "Update Flohmarkt Suggestion"
                 : "No changes made"}
             </button>
-            {/* )} */}
             {submitError.isError && (
               <p className="mt-4 rounded border-4 border-negative-700 p-4 font-semibold text-negative-700">{`There was an error while submitting the Flohmarkt. Error message: ${submitError.errorMessage}`}</p>
             )}

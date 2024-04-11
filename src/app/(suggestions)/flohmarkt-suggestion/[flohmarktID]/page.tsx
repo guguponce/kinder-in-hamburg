@@ -10,6 +10,7 @@ import { redirect } from "next/navigation";
 import PostNotFound from "@app/components/@PostForm/PostNotFound";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
 import UserServerComponents from "@app/providers/UserServerComponents";
+import RestoreButton from "@app/components/RestoreButton";
 
 export default async function FlohmarktSuggestionPage({
   params: { flohmarktID },
@@ -55,33 +56,46 @@ export default async function FlohmarktSuggestionPage({
               <small className="text-xs">(You can modify it if you want)</small>
             </div>
           )}
-          <UserServerComponents creator={suggestion.addedBy.email}>
-            <aside className="flex items-center justify-center gap-2 flex-wrap m-4">
-              <UpdateButton
-                id={suggestion.id}
-                status={suggestion.status || "pending"}
-                type="flohmarkt"
-                size="small"
-              />
+          {suggestion.status === "rejected" ? (
+            <AdminServerComponent>
+              <RestoreButton flohmarktID={flohmarktID} size="medium" />
               <DeleteButton
-                deleteFrom={
-                  suggestion.status === "approved" ? "approved" : "suggested"
-                }
+                deleteFrom="all"
                 id={suggestion.id}
                 title={suggestion.title}
                 type="flohmarkt"
                 size="small"
               />
-              {suggestion.status !== "approved" && (
-                <AdminServerComponent>
-                  <ApproveFlohmarktButton
-                    size="small"
-                    flohmarktID={flohmarktID}
-                  />
-                </AdminServerComponent>
-              )}
-            </aside>
-          </UserServerComponents>
+            </AdminServerComponent>
+          ) : (
+            <UserServerComponents creator={suggestion.addedBy.email}>
+              <aside className="flex items-center justify-center gap-2 flex-wrap m-4">
+                <UpdateButton
+                  id={suggestion.id}
+                  status={suggestion.status || "pending"}
+                  type="flohmarkt"
+                  size="small"
+                />
+                <DeleteButton
+                  deleteFrom={
+                    suggestion.status === "approved" ? "approved" : "suggested"
+                  }
+                  id={suggestion.id}
+                  title={suggestion.title}
+                  type="flohmarkt"
+                  size="small"
+                />
+                {suggestion.status !== "approved" && (
+                  <AdminServerComponent>
+                    <ApproveFlohmarktButton
+                      size="small"
+                      flohmarktID={flohmarktID}
+                    />
+                  </AdminServerComponent>
+                )}
+              </aside>
+            </UserServerComponents>
+          )}
         </div>
       </FlohmarktTemplate>
       {/* other flohmarkts in the same bezirk */}

@@ -1,6 +1,6 @@
 import { getFlohmarktWithID } from "@app/api/dbActions";
+import ApproveButton from "@app/components/ApproveButton";
 import DeleteButton from "@app/components/DeleteButton";
-import UpdateButton from "@app/components/UpdateButton";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
 import FlohForm from "@components/@FlohForm/FlohForm";
 import PostNotFound from "@components/@PostForm/PostNotFound";
@@ -55,6 +55,7 @@ export default async function UpdateApprovedFlohmarktPage({
           type="flohmarkt"
           size="large"
         />
+        <ApproveButton flohmarktID={flohmarktID} size="medium" />
       </AdminServerComponent>
       <div className="h-full w-full bg-hh-200 p-5 px-5">
         <h1 className="title-font mb-4 text-center text-xl font-bold text-gray-900 sm:text-3xl">
