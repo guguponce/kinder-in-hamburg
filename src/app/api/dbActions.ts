@@ -12,6 +12,7 @@ import { getServerSession } from "next-auth";
 import {
   checkBezirk,
   checkCategory,
+  parseAllFlohmarkte,
   parseAllPosts,
   parseFlohmarkt,
   parsePost,
@@ -521,7 +522,7 @@ export const getFlohmarktWithID = async (id: string) => {
       return false;
     }
 
-    return parseFlohmarkt(data[0]) as iFlohmarkt;
+    return parseFlohmarkt(data[0]);
   } catch (error) {
     return false;
   }
@@ -558,6 +559,40 @@ export const getFutureApprovedFlohmaerkte = async () => {
   }
 };
 
+export const getUserFlohmaerkte = async (email: string) => {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("flohmaerkte")
+      .select("*")
+      .ilike("addedBy", `%"email":"${email}"%`);
+
+    if (error) {
+      throw new Error(
+        "There was a problem getting your suggested Flea Markets."
+      );
+    }
+    const parsedFlohmaerkte = parseAllFlohmarkte(data);
+    return parsedFlohmaerkte.reduce(
+      (acc, current) => {
+        const { status } = current;
+        if (!status) {
+          acc["approved"].push(current);
+        } else {
+          acc[status].push(current);
+        }
+        return acc;
+      },
+      {
+        approved: [] as iFlohmarkt[],
+        pending: [] as iFlohmarkt[],
+        rejected: [] as iFlohmarkt[],
+      }
+    );
+  } catch (error) {
+    return false;
+  }
+};
+
 // POST
 export const addFlohmarkt = async (flohmarkt: iFlohmarkt) => {
   try {
@@ -582,7 +617,7 @@ export const addFlohmarkt = async (flohmarkt: iFlohmarkt) => {
 };
 
 // DELETE
-export const deleteFlohmarkt = async (id: number) => {
+export const deleteFlohmarkt = async (id: string) => {
   try {
     const { data, error } = await supabaseAdmin
       .from("flohmaerkte")
@@ -594,6 +629,20 @@ export const deleteFlohmarkt = async (id: number) => {
     return data;
   } catch (error) {
     throw new Error("Error deleting flohmarkt");
+  }
+};
+export const rejectFlohmarkt = async (id: string) => {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("flohmaerkte")
+      .update({ status: "rejected" })
+      .match({ id });
+    if (error) {
+      throw new Error("There was a problem rejecting the Flea Market.");
+    }
+    return true;
+  } catch (error) {
+    throw new Error("There was a problem rejecting the Flea Market.");
   }
 };
 
@@ -610,5 +659,34 @@ export const updateFlohmarkt = async (flohmarkt: iFlohmarkt) => {
     return data;
   } catch (error) {
     throw new Error("Error updating flohmarkt");
+  }
+};
+
+export const approveSuggestedFlohmarkt = async (id: string) => {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("flohmaerkte")
+      .update({ status: "approved" })
+      .match({ id });
+    if (error) {
+      throw new Error("There was a problem approving the Flea Market.");
+    }
+    return true;
+  } catch (error) {
+    throw new Error("There was a problem approving the Flea Market.");
+  }
+};
+
+export const getAllFlohmaerkteIds = async () => {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("flohmaerkte")
+      .select("id");
+    if (error) {
+      throw new Error("Error getting posts IDs from a db");
+    }
+    return data.map((d) => d.id);
+  } catch (error) {
+    return false;
   }
 };
