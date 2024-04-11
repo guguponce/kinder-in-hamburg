@@ -78,7 +78,11 @@ export default async function FlohmarktSuggestionPage({
                 />
                 <DeleteButton
                   deleteFrom={
-                    suggestion.status === "approved" ? "approved" : "suggested"
+                    session?.user?.email === suggestion.addedBy.email
+                      ? "all"
+                      : suggestion.status === "approved"
+                      ? "approved"
+                      : "suggested"
                   }
                   id={suggestion.id}
                   title={suggestion.title}

@@ -115,7 +115,7 @@ export default function FlohForm({
       image: imagesUrlsReady.urls[0] || "",
       optionalComment: data.optionalComment,
     };
-    console.log("suggestionFloh", suggestionFloh);
+
     addFlohmarkt(suggestionFloh)
       .then(() => {
         revalidatePost();

@@ -25,7 +25,7 @@ export default function MinimalFlohmarktDisplay({
         <div className="flex gap-4 flex-wrap items-center">
           <Link
             className={`rounded bg-hh-500 px-2 md:py-1 py-2 font-bold text-white hover:bg-hh-700 `}
-            href={`/flohmaerkte-approval/${id}`}
+            href={`/flohmarkt-suggestion/${id}`}
           >
             Check Suggestion
           </Link>
