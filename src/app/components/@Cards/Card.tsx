@@ -16,7 +16,7 @@ export default function TextPriorityCard({
     size === "small"
       ? {
           container: "min-w-[150px] max-w-[180px]",
-          description: "truncate-5  text-xs",
+          description: "truncate-3  text-xs",
           title: "text-sm sm:text-md md:text-base",
         }
       : size === "medium"
@@ -33,7 +33,7 @@ export default function TextPriorityCard({
   return (
     <Link
       href={link || `/posts/${id}`}
-      className={`${classname.container} w-full singleCard aspect-[0.66] rounded-md shadow-md hover:shadow-lg flex flex-col items-center  bg-hh-50 overflow-hidden`}
+      className={`${classname.container} w-1/2 sm:w-1/3 md:w-1/4 singleCard aspect-[0.66] rounded-md shadow-md hover:shadow-lg flex flex-col items-center  bg-hh-50 overflow-hidden`}
       role="link"
       aria-label={`Explore ${title}`}
     >
@@ -50,7 +50,7 @@ export default function TextPriorityCard({
         </h2>
         {description && (
           <p
-            className={`${classname.description} text-hh-700 max-w-full break-words`}
+            className={`${classname.description} text-hh-700 italic max-w-full break-words`}
           >
             {description}
           </p>

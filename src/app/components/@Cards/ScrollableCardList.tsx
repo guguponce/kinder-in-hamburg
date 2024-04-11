@@ -4,6 +4,7 @@ import ImageCard from "./ImageCard";
 import ImgPriorityCard from "./ImgPriorityCard";
 import TextPriorityCard from "./Card";
 import { getPlainText } from "@app/utils/functions";
+import ScrollableContainer from "../ScrollableContainer";
 
 export default function ScrollableCardList({
   posts,
@@ -26,22 +27,20 @@ export default function ScrollableCardList({
       ? ImgPriorityCard
       : TextPriorityCard;
   return (
-    <div className="flex  items-center w-fit max-w-full overflow-hidden">
-      <div className="horizontalScrollbar overflow-x-auto w-fit max-w-full flex gap-2 items-stretch px-4 pb-4 pt-2">
-        {posts.map(({ id, image, title, text }) => (
-          <React.Fragment key={id + title + (key || "")}>
-            {Card({
-              id: id,
-              image: image ? image[0] : "",
-              title: title,
-              aspectRatio: 0.66,
-              link: linkPrefix ? `${linkPrefix}${id}` : `/posts/${id}`,
-              size: size,
-              description: getPlainText(text),
-            })}
-          </React.Fragment>
-        ))}
-      </div>
-    </div>
+    <ScrollableContainer>
+      {posts.map(({ id, image, title, text }) => (
+        <React.Fragment key={id + title + (key || "")}>
+          {Card({
+            id: id,
+            image: image ? image[0] : "",
+            title: title,
+            aspectRatio: 0.66,
+            link: linkPrefix ? `${linkPrefix}${id}` : `/posts/${id}`,
+            size: size,
+            description: getPlainText(text),
+          })}
+        </React.Fragment>
+      ))}
+    </ScrollableContainer>
   );
 }
