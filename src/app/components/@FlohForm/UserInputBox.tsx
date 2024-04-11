@@ -13,7 +13,7 @@ export default function UserInputBox({
   return (
     <section className="userInputBox w-full max-w-[800px] mx-auto justify-center flex flex-wrap items-center gap-2 text-hh-950 mb-2">
       {keys.map((k) => (
-        <div className="w-[calc(50%-1rem)] max-w-[300px]" key={k}>
+        <div className="w-[calc(50%-1rem)] min-w-fit max-w-[300px]" key={k}>
           <PostFormInput
             inputLabel={k === "name" ? "Name" : "Email"}
             inputID={k}
