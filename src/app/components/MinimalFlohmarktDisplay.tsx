@@ -30,7 +30,7 @@ export default function MinimalFlohmarktDisplay({
             Check Suggestion
           </Link>
           <DeleteButton
-            type="post"
+            type="flohmarkt"
             size="small"
             id={id}
             title={title}

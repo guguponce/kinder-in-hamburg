@@ -44,6 +44,7 @@ export default function MinimalPostDisplay({
             Check Suggestion
           </Link>
           <DeletePostButton
+            type="post"
             size="small"
             id={id}
             title={title}
