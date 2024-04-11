@@ -17,6 +17,7 @@ import {
   parseFlohmarkt,
   parsePost,
 } from "@app/utils/functions";
+import { deletePreviousFlohmaerkteImages } from "./storageActions";
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL || "",
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ""
@@ -664,6 +665,7 @@ export const deleteFlohmarkt = async (id: string) => {
       .from("flohmaerkte")
       .delete()
       .match({ id });
+    deletePreviousFlohmaerkteImages(parseInt(id));
     if (error) {
       throw new Error("Error deleting flohmarkt");
     }
