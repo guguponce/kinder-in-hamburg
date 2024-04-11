@@ -1,31 +1,31 @@
 import React from "react";
-import { revalidate } from "@app/utils/actions/revalidate";
+import { revalidatePost } from "@app/utils/actions/revalidate";
 import SuccessfulSubmit from "@components/@PostForm/SuccessfulSubmit";
 import { getFlohmarktWithID } from "@app/api/dbActions";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import PostNotFound from "@app/components/@PostForm/PostNotFound";
+import PostNotFound from "@components/@PostForm/PostNotFound";
 export default async function SuccessfulApprovedFlohmarktPage({
-  params: { flohmarktID },
+  params: { approvedID },
 }: {
-  params: { flohmarktID: string };
+  params: { approvedID: string };
 }) {
-  if (flohmarktID) {
-    revalidate();
+  if (approvedID) {
+    revalidatePost();
   }
   const session = await getServerSession();
   if (!session?.user?.email || session.user.email !== process.env.ADMIN_EMAIL)
-    redirect("/flohmaerkte/" + flohmarktID);
-  const flohmarkt = await getFlohmarktWithID(flohmarktID);
+    redirect("/flohmaerkte/" + approvedID);
+  const flohmarkt = await getFlohmarktWithID(approvedID);
   if (!flohmarkt) return <PostNotFound />;
   if (flohmarkt.status !== "approved")
-    redirect(`/flohmaerkte-approval/${flohmarktID}`);
+    redirect(`/flohmaerkte-approval/${approvedID}`);
 
   return (
     <SuccessfulSubmit
       title={flohmarkt.title}
       type="flohmarkt"
-      postID={flohmarktID}
+      postID={approvedID}
       submitType="approval"
     />
   );

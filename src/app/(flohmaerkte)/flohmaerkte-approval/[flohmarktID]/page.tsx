@@ -1,4 +1,7 @@
 import { getFlohmarktWithID } from "@app/api/dbActions";
+import DeleteButton from "@app/components/DeleteButton";
+import UpdateButton from "@app/components/UpdateButton";
+import AdminServerComponent from "@app/providers/AdminServerComponents";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import React from "react";
@@ -16,7 +19,23 @@ export default async function FlohmarktApprovalPage({
   if (flohmarkt.status === "approved") return <>Flohmarkt already approved</>;
   return (
     <div>
-      {flohmarkt.title}
+      <AdminServerComponent>
+        <aside className="flex flex-wrap justify-center items-center gap-2 p-4">
+          <UpdateButton
+            size="medium"
+            id={flohmarkt.id}
+            status={flohmarkt.status || "pending"}
+            type="flohmarkt"
+          />
+          <DeleteButton
+            deleteFrom="approved"
+            id={flohmarkt.id}
+            title={flohmarkt.title}
+            type="flohmarkt"
+            size="medium"
+          />
+        </aside>
+      </AdminServerComponent>
       <br />
       template aproval
       <br />
