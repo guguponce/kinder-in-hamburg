@@ -16,8 +16,8 @@ export default function SuccessfulSubmit({
 }) {
   return (
     <section className="mx-auto flex h-fit w-full max-w-[400px] flex-col items-center justify-center rounded-md bg-hh-100 p-4 gap-4 text-center">
-      <h2 className="font-semibold">
-        The {type}: {title || postID} <br /> has been successfully{" "}
+      <h2 className="font-semibold flex flex-col gap-1">
+        The {type}:<br /> {title || postID} <br /> has been successfully{" "}
         {submitType === "update"
           ? "updated"
           : submitType === "approval"
@@ -37,7 +37,7 @@ export default function SuccessfulSubmit({
               : `/posts/${postID}`
             : type === "flohmarkt" && submitType === "suggestion"
             ? `/flohmarkt-suggestion/${postID}`
-            : `/flohmarkt/${postID}`
+            : `/flohmaerkte/${postID}`
         }
       >
         Go check it out!
