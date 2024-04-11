@@ -1,14 +1,27 @@
 import { getDate } from "@app/utils/functions";
-import { iFlohmarkt } from "@app/utils/types";
+import Link from "next/link";
 import React from "react";
 
 export default function FlohmarktPoster({
-  flohmarkt: { title, image, date, location, bezirk },
+  title,
+  image,
+  date,
+  bezirk,
+  prefixLink,
+  id,
 }: {
-  flohmarkt: iFlohmarkt;
+  title: string;
+  image?: string;
+  date: number;
+  bezirk: string;
+  prefixLink: string;
+  id: number;
 }) {
   return (
-    <div className="w-full h-full rounded flex flex-col items-center p-2 justify-around">
+    <Link
+      href={!!prefixLink ? `${prefixLink}${id}` : `/flohmaerkte/${id}`}
+      className="w-full min-w-[180px] h-full shadow-md rounded-sm flex flex-col items-center  justify-between text-center hover:scale-[1.01] hover:shadow-xl"
+    >
       {image ? (
         <img
           src={image}
@@ -17,13 +30,15 @@ export default function FlohmarktPoster({
         />
       ) : (
         <>
-          <h2 className="text-lg font-bold">{title}</h2>
-          <div className="flex flex-col items-center p-1">
+          <h2 className="text-lg md:text-xl font-bold px-2 text-negative-400 my-4">
+            {title}
+          </h2>
+          <div className="flex flex-col items-center p-1 mb-4">
+            <h2 className="text-lg font-semibold text-hh-800">{bezirk}</h2>
             <h3 className="text- font-semibold">{getDate(date)}</h3>
-            <h2 className="text-lg font-semibold">{bezirk}</h2>
           </div>
         </>
       )}
-    </div>
+    </Link>
   );
 }
