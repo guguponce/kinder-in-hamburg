@@ -31,15 +31,15 @@ export default async function DashboardPage() {
         Hi, {session.user.name.split(" ")[0]}!{session.user.email}
       </h2>
       <section className=" w-full max-w-[800px] flex justify-between items-center flex-wrap-reverse gap-4 border-2 border-hh-700 p-4 rounded-md">
-        <div className="flex gap-4 flex-wrap">
+        <div className="flex flex-col items-start gap-2">
           <Link
-            className="block mx-auto w-fit p-2 my-4 rounded-md bg-hh-700 text-white font-semibold hover:bg-hh-600 active:bg-hh-800"
+            className="block w-fit p-2  rounded-md bg-positive-700 text-white font-semibold hover:bg-positive-600 active:bg-positive-800"
             href="/new-post"
           >
             Suggest a new spot
           </Link>
           <Link
-            className="block mx-auto w-fit p-2 my-4 rounded-md bg-hh-700 text-white font-semibold hover:bg-hh-600 active:bg-hh-800"
+            className="block w-fit p-2  rounded-md bg-positive-700 text-white font-semibold hover:bg-positive-600 active:bg-positive-800"
             href="/new-flohmarkt"
           >
             Suggest a new Flea Market
@@ -47,12 +47,18 @@ export default async function DashboardPage() {
         </div>
 
         <AdminComponents>
-          <section className="flex flex-col items-center">
+          <section className="flex flex-col items-end gap-2">
             <Link
               href="/posts-approval"
-              className="p-2 rounded-md bg-hh-700 text-white"
+              className="p-2 rounded-md bg-hh-700 hover:bg-hh-600 active:bg-hh-800 text-white"
             >
               Check the Suggested Posts
+            </Link>
+            <Link
+              href="/flohmaerkte-approval"
+              className="p-2 rounded-md bg-hh-700 hover:bg-hh-600 active:bg-hh-800 text-white"
+            >
+              Check the Suggested Flea Markets
             </Link>
           </section>
         </AdminComponents>
