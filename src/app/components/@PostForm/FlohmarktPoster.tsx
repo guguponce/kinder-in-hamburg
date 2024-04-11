@@ -22,7 +22,7 @@ export default function FlohmarktPoster({
       href={!!prefixLink ? `${prefixLink}${id}` : `/flohmaerkte/${id}`}
       className="w-full min-w-[180px] h-full shadow-md rounded-sm flex flex-col items-center  justify-between text-center hover:scale-[1.01] hover:shadow-xl"
     >
-      {image ? (
+      {!!image ? (
         <img
           src={image}
           alt={title}

@@ -113,7 +113,7 @@ export default async function BezirkPage({
                 <TextPriorityCard
                   id={id}
                   title={title}
-                  image={image ? image[0] : ""}
+                  image={!!image ? image[0] : ""}
                   description={getPlainText(text)}
                   categories={categories[0]}
                   link={`/posts/${id}`}

@@ -25,7 +25,7 @@ export default function SuccessfulSubmit({
           : "submitted"}
       </h2>
 
-      {image && (
+      {!!image && (
         <img src={image} alt={title} className="w-[300px] h-auto rounded " />
       )}
       <Link
@@ -35,7 +35,9 @@ export default function SuccessfulSubmit({
             ? submitType === "suggestion"
               ? `/post-suggestion/${postID}`
               : `/posts/${postID}`
-            : type === "flohmarkt" && submitType === "suggestion"
+            : type === "flohmarkt" &&
+              submitType &&
+              ["suggestion", "update"].includes(submitType)
             ? `/flohmarkt-suggestion/${postID}`
             : `/flohmaerkte/${postID}`
         }
