@@ -3,7 +3,7 @@ import { TextType } from "../../utils/types";
 import Link from "next/link";
 
 export default function DisplayTypeText({
-  type,
+  type = "paragraph",
   text,
 }: {
   type: TextType;

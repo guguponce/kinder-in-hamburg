@@ -74,7 +74,9 @@ export default function PostTemplate({
           </div>
         )}
         {text.map(([type, text], i) => (
-          <DisplayTypeText key={text} type={type} text={text} />
+          <React.Fragment key={text + i}>
+            <DisplayTypeText type={type} text={text} />
+          </React.Fragment>
         ))}
 
         <p className="italic text-xs text-hh-500 text-end self-end">

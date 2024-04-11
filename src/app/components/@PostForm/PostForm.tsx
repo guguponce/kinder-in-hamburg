@@ -23,7 +23,7 @@ import MarkUpForm from "./MarkUpForm";
 import PostFormInput from "./PostFormInput";
 import PostTextTypeButtons from "./PostTextTypeButtons";
 import DisplayDraft from "./DisplayDraft";
-import DeletePostButton from "../DeletePostButton";
+import DeletePostButton from "../DeleteButton";
 import { useRouter } from "next/navigation";
 import { bezirke, categoryNames } from "@app/utils/constants";
 import IgAccountInput from "./IgAccountInput";
@@ -249,9 +249,6 @@ export default function PostForm({
       })
       .then(() => {
         deleteUnusedImages();
-      })
-      .then(() => {
-        updateSuggestionStatus(data.id, "approved");
       })
       .then(() => {
         addNewContributor(suggestionPost.addedBy, suggestionPost.id);
@@ -613,13 +610,6 @@ export default function PostForm({
           </PostFormInput>
 
           <div className="flex w-full flex-wrap items-center justify-between gap-8 p-2 sm:flex-row">
-            {id && (
-              <DeletePostButton
-                id={id}
-                title={title || ""}
-                deleteFrom="approved"
-              />
-            )}
             {!imagesUrlsReady.ready && (
               <a
                 href="#images-upload-container"
@@ -632,13 +622,16 @@ export default function PostForm({
             <button
               type="submit"
               disabled={
-                // isSubmitSuccessful || isSubmitting || isLoading||
-                !isDirty &&
-                JSON.stringify(imagesUrlsReady.urls) === JSON.stringify([image])
+                isSubmitSuccessful ||
+                isSubmitting ||
+                isLoading ||
+                (!isDirty &&
+                  JSON.stringify(imagesUrlsReady.urls) ===
+                    JSON.stringify([image]))
               }
               className={`${
                 isSubmitSuccessful
-                  ? " bg-[hsla(119,23%,47%,1)] hover:bg-[rgba(68,225,65,0.65)] hover:shadow-none"
+                  ? " bg-slate-300 hover:shadow-none"
                   : "bg-green-700 hover:bg-green-600 hover:shadow-md"
               } active:scale-[0.99] border-0px-8 ml-auto flex rounded p-2 text-lg text-white transition-colors  duration-200 ease-in-out  focus:outline-2 focus:ring-2 focus:ring-green-600 focus:ring-offset-2 disabled:bg-gray-500`}
             >

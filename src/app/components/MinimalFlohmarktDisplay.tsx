@@ -2,6 +2,7 @@ import type { iFlohmarkt } from "@app/utils/types";
 import React from "react";
 import Link from "next/link";
 import DataDisplay from "./SuggestedDataDisplay";
+import DeleteButton from "./DeleteButton";
 
 export default function MinimalFlohmarktDisplay({
   flohmarkt: { title, date, bezirk, id, addedBy },
@@ -28,12 +29,13 @@ export default function MinimalFlohmarktDisplay({
           >
             Check Suggestion
           </Link>
-          {/* <DeletePostButton
+          <DeleteButton
+            type="post"
             size="small"
             id={id}
             title={title}
             deleteFrom="suggested"
-          /> */}
+          />
         </div>
         <small className="self-end text-xs text-hh-500">
           suggested by: {addedBy.name} - {addedBy.email}

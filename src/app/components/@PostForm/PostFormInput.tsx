@@ -20,6 +20,7 @@ type inputLabelType =
   | "date"
   | "time"
   | "approved"
+  | "optionalComment"
   | "location";
 interface PostFormInputProps {
   inputID: inputLabelType;
@@ -50,8 +51,7 @@ export default function PostFormInput({
           )}
           {inputID === "tags" && (
             <span>
-              (
-              {`separate each tag with a "-". For example: "neck-guitar parts"`}
+              ({`separate each tag with a "-". For example: "park-kleinkinder"`}
               )
             </span>
           )}
