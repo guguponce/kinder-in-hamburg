@@ -32,9 +32,6 @@ export default async function WeatherBox({ full }: { full?: boolean }) {
   // change to getApprovedSuggestions
   const retrievedSuggestions = await getSuggestionsWithCat(activityType).then(
     (res) => {
-      // setTimeout(() => {
-      //   revalidateTag("weather");
-      // }, 1000);
       return res;
     }
   );
