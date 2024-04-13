@@ -11,6 +11,7 @@ import { createClient } from "@supabase/supabase-js";
 import { getServerSession } from "next-auth";
 import {
   checkBezirk,
+  getNextWeekend,
   checkCategory,
   parseAllFlohmarkte,
   parseAllPosts,
@@ -415,6 +416,25 @@ export const getPinnedPosts = async () => {
   }
 };
 
+export const getPinnedPostsWithFilter = async (
+  filter: "category" | "bezirk",
+  value: string
+) => {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("kih-approved-blogposts")
+      .select("*")
+      .match({ pinnedPost: true })
+      .ilike(filter, value);
+    if (error) {
+      throw new Error("There was a problem getting the pinned posts.");
+    }
+    return parseAllPosts(data);
+  } catch (error) {
+    return false;
+  }
+};
+
 export const getApprovedPostWithID = async (id: string) => {
   try {
     const res = await supabaseAdmin
@@ -422,7 +442,6 @@ export const getApprovedPostWithID = async (id: string) => {
       .select("*")
       .match({ id });
     if (res.error) {
-      console.log("asdfasdfafdasfasfd", res);
       throw new Error("The post with the id " + id + " was not found.");
     }
     return parsePost(res.data[0]);
@@ -475,7 +494,6 @@ export const approveSuggestedPost = async (post: iPost) => {
     if (error) {
       throw new Error("There was a problem approving the post.");
     }
-    console.log("approved");
     return true;
   } catch (error) {
     throw new Error("There was a problem approving the post.");
@@ -634,7 +652,23 @@ export const getUserFlohmaerkte = async (email: string) => {
     return false;
   }
 };
-
+export const getNextWeekendFlohmaerkte = async () => {
+  const { nextSaturday, nextMonday } = getNextWeekend();
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("flohmaerkte")
+      .select("*")
+      .match({ status: "approved" })
+      .gte("date", nextSaturday)
+      .lte("date", nextMonday);
+    if (error) {
+      return false;
+    }
+    return parseAllFlohmarkte(data);
+  } catch (error) {
+    return false;
+  }
+};
 // POST
 export const addFlohmarkt = async (flohmarkt: iFlohmarkt) => {
   try {
