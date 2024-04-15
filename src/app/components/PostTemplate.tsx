@@ -52,7 +52,10 @@ export default function PostTemplate({
           ))}
         </section>
       </div>
-      <section id="text" className="w-full p-4 my-6 rounded-md bg-hh-50 ">
+      <section
+        id="text"
+        className="w-full p-4 my-6 rounded-md bg-hh-50 flex flex-col gap-4"
+      >
         <h1 className="text-4xl text-center font-bold">{title}</h1>
         {!!image?.length && (
           <div className="flex justify-center items-center w-full overflow-hidden my-4">
@@ -85,9 +88,9 @@ export default function PostTemplate({
             : `(${new Date(createdAt).toLocaleDateString()})`}
         </p>
       </section>
-      <section className="flex flex-wrap justify-between">
+      <section className="flex flex-wrap flex-col sm:flex-row justify-between">
         {(!!bezirk || !!address) && (
-          <div className="flex flex-col w-1/2">
+          <div className="flex flex-col w-full sm:w-1/2">
             <section id="location" className="w-full px-4 my-2">
               <h2 className="text-lg font-semibold">Location:</h2>
               {bezirk && (
@@ -141,9 +144,9 @@ export default function PostTemplate({
           </div>
         )}
         {(!!link || !!igAccounts?.length) && (
-          <section id="links-box" className="w-1/2 px-4 my-2">
-            <h2 className="text-lg font-semibold">Links:</h2>|{" "}
-            {igAccounts && igAccounts.length > 0 && (
+          <section id="links-box" className="w-full sm:w-1/2 px-4 my-2">
+            <h2 className="text-lg font-semibold">Links:</h2>
+            {!!igAccounts && igAccounts.length > 0 && (
               <div className="igAccount flex flex-col gap-1">
                 {igAccounts.map(({ name, description }, i) => (
                   <div key={i} className="flex flex-col">
@@ -175,7 +178,7 @@ export default function PostTemplate({
           </section>
         )}
       </section>
-      {!!tags.length && (
+      {/* {!!tags.length && (
         <section id="text" className="w-full px-4 my-2">
           <h2 className="text-lg font-semibold">#TAGS</h2>
           <div className="flex flex-wrap gap-2">
@@ -190,7 +193,7 @@ export default function PostTemplate({
             ))}
           </div>
         </section>
-      )}
+      )} */}
 
       <section id="addedBy" className="w-full px-4 my-2">
         <h2 className="text-lg font-semibold">Added by:</h2>

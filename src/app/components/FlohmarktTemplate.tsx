@@ -174,6 +174,7 @@ export default function FlohmarktTemplate({
                 <UserAvatar
                   avatar={addedBy.image}
                   name={addedBy.name}
+                  email={addedBy.email}
                   link={`/posts/suggestedBy/${addedBy.email}`}
                 />
                 <p className="addedByName hidden">{addedBy.name}</p>
