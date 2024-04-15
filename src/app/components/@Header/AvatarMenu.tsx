@@ -43,6 +43,7 @@ export default function AvatarMenu({
       <button
         color="#fefefe"
         aria-label="Options"
+        title={email ? email : ""}
         onClick={toggleMenu}
         className="relative w-8 h-8 flex justify-center items-center text-white font-bold text-sm rounded-full bg-hh-700 bg-contain bg-center"
       >
@@ -61,7 +62,7 @@ export default function AvatarMenu({
         <nav
           ref={menuList}
           id="menu-list"
-          className="absolute top-[calc(100%+24px)] -right-2 sm:-right-3 lg:-right-4  shadow-lg sm:w-fit z-[300] flex flex-col bg-gradient-to-b from-hh-200 rounded-[0_0_4px_0] to-hh-100"
+          className="absolute top-[calc(100%+24px)] -right-2 sm:-right-3 lg:-right-4  shadow-lg sm:w-[33vw] sm:max-w-[150px] z-[300] flex flex-col bg-gradient-to-b from-hh-200 rounded-[0_0_4px_0] to-hh-100"
         >
           {[
             { href: "/dashboard", name: "Dashboard" },
@@ -70,7 +71,7 @@ export default function AvatarMenu({
           ].map(({ name, href }, i) => (
             <Link
               className={
-                "border-b-2 border-black rounded-none py-1 px-2  font-semibold w-full sm:w-fit text-hh-950"
+                "border-b-2 border-black rounded-none py-1 px-2  font-semibold w-full text-center text-hh-950"
               }
               key={name}
               href={href}

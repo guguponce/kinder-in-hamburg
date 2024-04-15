@@ -6,10 +6,12 @@ export default function UserAvatar({
   avatar,
   name,
   link,
+  email,
 }: {
   name: string | undefined | null;
   avatar: string | undefined | null;
   link: string;
+  email?: string | undefined | null;
 }) {
   const [imgDisplay, setImgDisplay] = React.useState(false);
   const imgRef = React.useRef<HTMLImageElement>(null);
@@ -22,6 +24,7 @@ export default function UserAvatar({
   return (
     <Link
       href={link}
+      title={email ? email : ""}
       className="relative w-8 h-8 flex justify-center items-center text-white font-bold text-sm rounded-full bg-hh-700 bg-contain bg-center"
     >
       {initials ? initials : ""}
