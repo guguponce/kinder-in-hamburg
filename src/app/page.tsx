@@ -2,8 +2,9 @@ import React from "react";
 import WeatherBox from "./components/@Homepage/WeatherBox";
 import NextWeekendFlohmaerkte from "./components/@Cards/NextWeekendFlohmaerkte";
 import PinnedPosts from "./components/PinnedPosts";
+import WeatherIcon from "./components/@Icons/WeatherIcon";
 
-export const revalidate = 300;
+export const revalidate = 3600;
 export default function Home() {
   return (
     <main
@@ -15,6 +16,7 @@ export default function Home() {
       </h1>
       <WeatherBox full={true}></WeatherBox>
       <NextWeekendFlohmaerkte></NextWeekendFlohmaerkte>
+
       <PinnedPosts />
     </main>
   );
