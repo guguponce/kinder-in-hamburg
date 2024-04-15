@@ -106,6 +106,24 @@ picture {
   }
 }
 
+@mixin appearCard($i) {
+  @keyframes appear {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  animation: appear 0.5s ease-in-out calc(0.1s * $i) forwards;
+}
+
+@for $i from 1 through 3 {
+  .appearCard-#{$i} {
+    @include appearCard($i);
+  }
+}
+
 .stackedCards:hover {
   z-index: 300;
   .stackedCard-1 {
@@ -152,5 +170,28 @@ picture {
 }
 
 .horizontalScrollbar::-webkit-scrollbar-thumb {
+  background-color: $hh-500;
+}
+
+.verticalScrollbar {
+  scroll-snap-align: start;
+  scroll-snap-type: y mandatory;
+}
+.verticalScrollbar::-webkit-scrollbar-thumb {
+  border-radius: 1rem;
+}
+
+.verticalScrollbar::-webkit-scrollbar {
+  border-radius: 1rem;
+  width: 0.3rem;
+  transition: all 1s ease-in-out;
+  background-color: transparent;
+}
+
+.verticalScrollbar::-webkit-scrollbar {
+  background-color: hsl(60, 0%, 95%);
+}
+
+.verticalScrollbar::-webkit-scrollbar-thumb {
   background-color: $hh-500;
 }
