@@ -25,14 +25,14 @@ export default async function CurrentPostPage({
           title={post.title}
           size="large"
         />
-      </AdminServerComponent>
 
-      <Link
-        href={`/update-post/${postID}`}
-        className="w-full max-w-[1000px] my-2 bg-hh-700 rounded-md text-center flex justify-center p-2 text-white hover:bg-hh-800 active:bg-hh-600"
-      >
-        Update Approved Post
-      </Link>
+        <Link
+          href={`/update-post/${postID}`}
+          className="w-full max-w-[1000px] my-2 bg-hh-700 rounded-md text-center flex justify-center p-2 text-white hover:bg-hh-800 active:bg-hh-600"
+        >
+          Update Approved Post
+        </Link>
+      </AdminServerComponent>
       <PostTemplate post={post} />
     </>
   );
