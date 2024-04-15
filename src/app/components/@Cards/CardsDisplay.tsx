@@ -12,17 +12,16 @@ import ImgPriorityCard from "./ImgPriorityCard";
 export default function CardsDisplay({ cardPosts }: { cardPosts: iPost[] }) {
   return (
     <div
-      className={`${
-        cardPosts.length >= 4 ? "gap-2" : "gap-0"
-      } flex md:flex-row flex-col  items-stretch min-h-[300px] overflow-auto p-2 w-fit`}
+      className={`gap-2 flex md:flex-row justify-center items-start flex-row flex-wrap min-h-[350px] h-full overflow-auto p-2 w-full min-w-fit`}
     >
-      {cardPosts.map(({ id, title, text, image }) => {
+      {cardPosts.map(({ id, title, text, image }, index) => {
         return (
           <React.Fragment key={id}>
             <ImgPriorityCard
               size="small"
               id={id}
               title={title}
+              aspectRatio={0.66}
               image={
                 image
                   ? image[0]
@@ -31,33 +30,6 @@ export default function CardsDisplay({ cardPosts }: { cardPosts: iPost[] }) {
               description={getPlainText(text)}
             />
           </React.Fragment>
-          // <Link
-          //   href={`/posts/${post.id}`}
-          //   key={post.id}
-          //   className="flex flex-col justify-center w-1/3 min-w-[175px] max-w-[225px]  rounded-md shadow-md hover:shadow-2xl"
-          //   // minW={cardType === "bezirke" ? "190px" : "170px"}
-          // >
-          //   <div className="recommendedImg p-0 flex justify-center items-center h-[250px]">
-          //     <img
-          //       id={post.title}
-          //       className="w-full h-full object-cover rounded-sm"
-          //       loading="lazy"
-          //       src={post.image ? post.image[0] : "/assets/icons/baby.svg"}
-          //       alt={post.title}
-          //     />
-          //     {}
-          //   </div>
-          //   <div
-          //     className="w-full flex flex-col justify-start p-2 overflow-x-hidden flex-grow"
-          //     id="text-card-homepage"
-          //   >
-          //     <div className="cardBody py-1 overflow-hidden">
-          //       <h3 className="recommendedCardTitle overflow-hidden text-lg font-semibold">
-          //         {post.title}
-          //       </h3>
-          //     </div>
-          //   </div>
-          // </Link>
         );
       })}
     </div>

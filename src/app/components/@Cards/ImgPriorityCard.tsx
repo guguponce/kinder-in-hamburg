@@ -34,7 +34,7 @@ export default function ImgPriorityCard({
       href={link || `/posts/${id}`}
       className={`${classname.container} singleCard ${
         aspectRatio ? `aspect-[${aspectRatio}]` : "aspect-[0.66]"
-      }  w-full rounded-md shadow-md hover:shadow-2xl flex flex-col items-center  bg-hh-50 overflow-hidden`}
+      } w-full rounded-md shadow-md hover:shadow-2xl flex flex-col items-center  bg-hh-50 overflow-hidden`}
       role="link"
       aria-label={`Explore ${title}`}
     >
