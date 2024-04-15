@@ -233,3 +233,19 @@ export interface iFlohmarkt {
 export interface iStringifiedFlohmarkt extends Omit<iFlohmarkt, "addedBy"> {
   addedBy: string;
 }
+
+export type Filter =
+  | "category"
+  | "bezirk"
+  | "fromAge"
+  | "untilAge"
+  | "pinnedPosts"
+  | "search";
+export interface FilterObject {
+  categories?: string[];
+  bezirk?: string;
+  fromAge?: number;
+  untilAge?: number;
+  pinnedPosts?: boolean;
+  search?: string;
+}
