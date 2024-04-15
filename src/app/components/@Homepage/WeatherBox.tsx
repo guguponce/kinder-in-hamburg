@@ -1,4 +1,7 @@
-import { getSuggestionsWithCat } from "@app/api/dbActions";
+import {
+  getApprovedPostWithCat,
+  getSuggestionsWithCat,
+} from "@app/api/dbActions";
 import { getHamburgsWeather } from "@app/api/weatherAPI";
 import { WEATHER_CODES, bezirke } from "@app/utils/constants";
 import React from "react";
@@ -15,22 +18,23 @@ export default async function WeatherBox({ full }: { full?: boolean }) {
   const { current, forecast, location } = await getHamburgsWeather();
   const { activity, overallCondition } =
     WEATHER_CODES[current.condition.code.toString()];
-
-  const time = location.localtime.match(/\d+:\d+/)![0];
+  const currentTime = new Date();
+  const currentHour = currentTime.getHours();
   // .replace(":", " Uhr");
-  const willRainRestOfDay = forecast.forecastday[0].hour
-    .slice(parseInt(time.split(":")[0].replace(":", "")), 24)
-    .some((h) => h.will_it_rain === 1);
+  const nextRain = forecast.forecastday[0].hour
+    .slice(currentHour, 24)
+    .findIndex((h) => h.will_it_rain === 1);
 
-  const activityType = willRainRestOfDay
-    ? "Indoor"
-    : activity === "Both"
-    ? ["Indoor", "Outdoor"][Math.floor(Math.random() * 2)]
-    : activity;
+  const activityType =
+    nextRain !== -1 && nextRain + 1 + currentHour < 18
+      ? "Indoor"
+      : activity === "Both"
+      ? ["Indoor", "Outdoor"][Math.floor(Math.random() * 2)]
+      : activity;
 
   // -------------------
   // change to getApprovedSuggestions
-  const retrievedSuggestions = await getSuggestionsWithCat(activityType).then(
+  const retrievedSuggestions = await getApprovedPostWithCat(activityType).then(
     (res) => {
       return res;
     }
@@ -59,24 +63,35 @@ export default async function WeatherBox({ full }: { full?: boolean }) {
           imgURL={suggestion.image![0]}
           title={suggestion.title}
           text={getPlainText(suggestion.text)}
+          id={suggestion.id}
         >
-          <article className="weatherSection flex flex-col items-center md:gap-2 gap-1 min-w-[250px] p-4 md:aspect-[0.66] rounded bg-black backdrop-blur-sm bg-opacity-20  justify-center h-full text-white">
-            <WeatherIcon logo={overallCondition} size="100%" color="#141A1F" />
-            <div className="flex flex-col items-center">
-              <h2 className="text-lg font-semibold ">
-                {current.temp_c}°C
-                <span className="ml-1 text-xs">
-                  (
-                  {new Date().toLocaleTimeString("de-DE", {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
-                  )
-                </span>
-              </h2>
-              {willRainRestOfDay && (
-                <small className="text-xs">Today will rain</small>
-              )}
+          <article className="weatherSection flex flex-col items-center md:gap-4 gap-2 min-w-[250px] p-2 md:p-4 md:aspect-[0.66] rounded bg-black backdrop-blur-sm bg-opacity-20  justify-center h-full text-white">
+            {location.localtime}
+            <div className="md:aspect-square flex-grow  flex justify-center items-center flex-col">
+              <WeatherIcon
+                day={!!current.is_day}
+                logo={overallCondition}
+                size="100%"
+                color="#141A1F"
+              />
+              <div className="flex flex-col items-center">
+                <h2 className="text-lg font-semibold ">
+                  {current.temp_c}°C
+                  <span className="ml-1 text-xs">
+                    (
+                    {currentTime.toLocaleTimeString("de-DE", {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                    )
+                  </span>
+                </h2>
+                {nextRain !== -1 && (
+                  <small className="text-xs italic">
+                    It will probably rain at {nextRain + currentHour + 1}:00
+                  </small>
+                )}
+              </div>
             </div>
             {full && (
               <TodayTomorrow
@@ -88,7 +103,7 @@ export default async function WeatherBox({ full }: { full?: boolean }) {
             )}
             <Link
               href={link}
-              className="px-2 py-1 font-semibold capitalize rounded-sm text-white bg-hh-400 hover:bg-hh-500 active:bg-hh-300 break-words w-fit mt-2 text-center"
+              className="px-2 py-1 font-semibold capitalize rounded-sm text-white bg-hh-400 hover:bg-hh-500 active:bg-hh-300 break-words w-fit text-center"
             >
               Find more {activityType} activities
             </Link>
@@ -97,7 +112,7 @@ export default async function WeatherBox({ full }: { full?: boolean }) {
       ) : (
         <aside
           className={`${
-            willRainRestOfDay
+            nextRain !== -1
               ? "bg-hh-700 bg-opacity-25 text-hh-100"
               : "bg-gradient-to-b from-sky to-[hsl(197,27%,80%)]"
           } weatherSection flex flex-col items-center md:gap-2 gap-1 min-w-[250px] p-4 md:aspect-[0.66] rounded  justify-center h-full text-white`}
@@ -108,17 +123,21 @@ export default async function WeatherBox({ full }: { full?: boolean }) {
               {current.temp_c}°C
               <span className="ml-1 text-xs">
                 (
-                {new Date().toLocaleTimeString("de-DE", {
+                {currentTime.toLocaleTimeString("de-DE", {
                   hour: "2-digit",
                   minute: "2-digit",
                 })}
                 )
               </span>
             </h2>
-            {willRainRestOfDay && (
-              <small className="text-xs">Today will rain</small>
+            {nextRain !== -1 && (
+              <small className="text-xs italic">
+                It will probably rain at {nextRain + currentHour + 1}
+                :00
+              </small>
             )}
           </div>
+          {location.localtime}
           {!!suggestion && (
             <article className="w-full flex justify-center">
               <ImageCard
