@@ -2,13 +2,14 @@
 import {
   approveSuggestedFlohmarkt,
   approveSuggestedPost,
+  updateContributor,
 } from "@app/api/dbActions";
 import {
   revalidateFlohmarkt,
   revalidatePost,
 } from "@app/utils/actions/revalidate";
 import { sleep } from "@app/utils/functions";
-import { iFlohmarkt, iPost } from "@app/utils/types";
+import { iFlohmarkt, iPost, iSessionUser } from "@app/utils/types";
 import { useRouter } from "next/navigation";
 import React from "react";
 
@@ -16,9 +17,11 @@ export default function ApproveButton({
   post,
   flohmarktID,
   size = "small",
+  flohmarktContributor,
 }: {
   post?: iPost;
   flohmarktID?: string;
+  flohmarktContributor?: iSessionUser;
   size?: "small" | "medium" | "large";
 }) {
   const router = useRouter();
@@ -35,9 +38,16 @@ export default function ApproveButton({
           ? approveSuggestedFlohmarkt(flohmarktID)
           : post && approveSuggestedPost(post));
         if (flohmarktID) {
-          revalidateFlohmarkt();
-        } else {
-          revalidatePost();
+          await revalidateFlohmarkt();
+          if (flohmarktContributor) {
+            await updateContributor(
+              flohmarktContributor,
+              parseInt(flohmarktID)
+            );
+          }
+        } else if (post) {
+          await revalidatePost();
+          await updateContributor(post?.addedBy, post.id);
         }
         await sleep(500);
         router.push(

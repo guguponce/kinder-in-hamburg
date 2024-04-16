@@ -3,7 +3,6 @@
 import React, { useRef } from "react";
 import { useForm, type FieldValues } from "react-hook-form";
 import {
-  addNewContributor,
   addNewSuggestedPost,
   approveSuggestedPost,
   updateApprovedPost,
@@ -251,7 +250,7 @@ export default function PostForm({
         deleteUnusedImages();
       })
       .then(() => {
-        addNewContributor(suggestionPost.addedBy, suggestionPost.id);
+        updateContributor(suggestionPost.addedBy, suggestionPost.id);
       })
       .then(() =>
         setTimeout(() => {
@@ -295,9 +294,6 @@ export default function PostForm({
       })
       .then(() => {
         deleteUnusedImages();
-      })
-      .then(() => {
-        updateContributor(updatedPost.addedBy, updatedPost.id);
       })
       .then(() =>
         setTimeout(() => {

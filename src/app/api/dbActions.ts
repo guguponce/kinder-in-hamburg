@@ -79,11 +79,12 @@ export const addNewContributor = async (
 ) => {
   try {
     const { error } = await supabaseAdmin.from("contributors").insert({
-      id: contributor.email,
-      name: contributor.name,
-      email: contributor.email,
-      image: contributor.image,
       firstContribution: [postID],
+      name: contributor.name,
+      image: contributor.image,
+      id: contributor.email,
+      email: contributor.email,
+      postsSubmitted: [postID],
     });
     if (error) {
       throw new Error("There was a problem adding the contributor.");
@@ -466,7 +467,7 @@ export const deleteApprovedPost = async (id: number) => {
   }
 };
 
-export const getAllPostsIds = async () => {
+export const getAllPostsIds = async (id: string) => {
   const getIDs = (db: string) => {
     return supabaseAdmin.from(db).select("id");
   };
@@ -479,7 +480,10 @@ export const getAllPostsIds = async () => {
     if (data.some((d) => d.error)) {
       throw new Error("Error getting posts IDs from a db");
     }
-    return data.map((d) => d.data!.map((d) => d.id)).flat();
+    console.log("getpostsid data", data);
+    const ids = [id, ...data.map((d) => d.data!.map((d) => d.id)).flat()];
+    console.log("getpostsid ids", ids);
+    return ids;
   } catch (error) {
     return false;
   }
