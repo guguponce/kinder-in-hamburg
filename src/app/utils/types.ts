@@ -64,7 +64,7 @@ export interface iSessionUser {
 }
 
 export interface iContributor {
-  id: string;
+  id: number;
   firstContribution: number;
   name: string;
   email: string;
@@ -235,7 +235,7 @@ export interface iStringifiedFlohmarkt extends Omit<iFlohmarkt, "addedBy"> {
 }
 
 export type Filter =
-  | "category"
+  | "categories"
   | "bezirk"
   | "fromAge"
   | "untilAge"
