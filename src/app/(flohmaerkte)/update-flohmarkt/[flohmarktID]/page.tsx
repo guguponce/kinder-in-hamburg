@@ -55,7 +55,11 @@ export default async function UpdateApprovedFlohmarktPage({
           type="flohmarkt"
           size="large"
         />
-        <ApproveButton flohmarktID={flohmarktID} size="medium" />
+        <ApproveButton
+          flohmarktID={flohmarktID}
+          size="medium"
+          flohmarktContributor={flohmarkt.addedBy}
+        />
       </AdminServerComponent>
       <div className="h-full w-full bg-hh-200 p-5 px-5">
         <h1 className="title-font mb-4 text-center text-xl font-bold text-gray-900 sm:text-3xl">
