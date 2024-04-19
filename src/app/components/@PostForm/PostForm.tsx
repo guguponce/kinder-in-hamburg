@@ -250,7 +250,7 @@ export default function PostForm({
         deleteUnusedImages(data.id.toString());
       })
       .then(() => {
-        updateContributor(suggestionPost.addedBy, suggestionPost.id);
+        updateContributor("post", suggestionPost.addedBy, suggestionPost.id);
       })
       .then(() =>
         setTimeout(() => {

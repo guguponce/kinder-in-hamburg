@@ -17,6 +17,7 @@ import {
   parseAllPosts,
   parseFlohmarkt,
   parsePost,
+  parseContributor,
 } from "@app/utils/functions";
 import { deletePreviousFlohmaerkteImages } from "./storageActions";
 const supabaseAdmin = createClient(
@@ -59,6 +60,7 @@ export const handleUploadToSupabase = async (
 
 // CONTRIBUTORS
 export const getContributorData = async (email: string) => {
+  console.log(email);
   try {
     const { data, error } = await supabaseAdmin
       .from("contributors")
@@ -67,25 +69,31 @@ export const getContributorData = async (email: string) => {
     if (error) {
       throw new Error("There was a problem getting the contributor data.");
     }
-    return data[0] as iContributor;
+    return parseContributor(data[0]);
   } catch (error) {
     return false;
   }
 };
 
 export const addNewContributor = async (
+  type: "post" | "flohmarkt",
   contributor: iSessionUser,
   postID: number
 ) => {
   try {
-    const { error } = await supabaseAdmin.from("contributors").insert({
-      firstContribution: [postID],
+    const contributorData = {
+      flohmaerkteSubmitted: JSON.stringify(
+        type === "flohmarkt" ? [postID] : []
+      ),
       name: contributor.name,
       image: contributor.image,
       id: contributor.email,
       email: contributor.email,
-      postsSubmitted: [postID],
-    });
+      postsSubmitted: JSON.stringify(type === "post" ? [postID] : []),
+    };
+    const { error } = await supabaseAdmin
+      .from("contributors")
+      .insert(contributorData);
     if (error) {
       throw new Error("There was a problem adding the contributor.");
     }
@@ -94,26 +102,46 @@ export const addNewContributor = async (
   }
 };
 
-export const updateContributor = async (user: iSessionUser, postID: number) => {
+export const updateContributor = async (
+  type: "post" | "flohmarkt",
+  user: iSessionUser,
+  postID: number
+) => {
   try {
     const contributor = await getContributorData(user.email!);
     if (!contributor) {
-      addNewContributor(user, postID);
+      await addNewContributor(type, user, postID);
       return;
     }
-    if (contributor.postSubmitted?.includes(postID)) return;
-    const { error } = await supabaseAdmin
-      .from("contributors")
-      .update({
-        postSubmitted: !!contributor.postSubmitted
-          ? [...contributor.postSubmitted, postID]
-          : [postID],
-      })
-      .match({ id: contributor.id });
-    if (error) {
-      throw new Error(
-        "There was a problem updating the contributor's postSubmitted."
-      );
+    if (contributor.postsSubmitted?.includes(postID)) return;
+    console.log("update contributor");
+    if (type === "flohmarkt") {
+      const { error } = await supabaseAdmin
+        .from("contributors")
+        .update({
+          flohmaerkteSubmitted: [
+            ...(contributor.flohmaerkteSubmitted || []),
+            postID,
+          ],
+        })
+        .match({ id: contributor.id });
+      if (error) {
+        throw new Error(
+          "There was a problem updating the contributor's flohmarktSubmitted."
+        );
+      }
+    } else if (type === "post") {
+      const { error } = await supabaseAdmin
+        .from("contributors")
+        .update({
+          postsSubmitted: [...(contributor.postsSubmitted || []), postID],
+        })
+        .match({ id: contributor.id });
+      if (error) {
+        throw new Error(
+          "There was a problem updating the contributor's postSubmitted."
+        );
+      }
     }
   } catch (error) {
     throw new Error("There was a problem updating the contributor.");

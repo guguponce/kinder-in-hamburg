@@ -2,6 +2,7 @@
 import {
   approveSuggestedFlohmarkt,
   approveSuggestedPost,
+  getContributorData,
   updateContributor,
 } from "@app/api/dbActions";
 import {
@@ -34,20 +35,20 @@ export default function ApproveButton({
         size === "small" ? "py-1" : "py-2"
       } font-semibold bg-positive-700 text-white hover:bg-positive-800 active:bg-positive-600`}
       onClick={async () => {
-        const approveFunction = await (flohmarktID
-          ? approveSuggestedFlohmarkt(flohmarktID)
-          : post && approveSuggestedPost(post));
         if (flohmarktID) {
-          await revalidateFlohmarkt();
+          await approveSuggestedFlohmarkt(flohmarktID);
           if (flohmarktContributor) {
             await updateContributor(
+              "flohmarkt",
               flohmarktContributor,
               parseInt(flohmarktID)
             );
+            await revalidateFlohmarkt();
           }
         } else if (post) {
+          await approveSuggestedPost(post);
           await revalidatePost();
-          await updateContributor(post?.addedBy, post.id);
+          await updateContributor("post", post?.addedBy, post.id);
         }
         await sleep(500);
         router.push(
