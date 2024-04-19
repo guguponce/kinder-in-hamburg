@@ -1,5 +1,5 @@
 import React from "react";
-import WeatherBox from "./components/@Homepage/WeatherBox";
+import WeatherBox from "./components/WeatherBox";
 import NextWeekendFlohmaerkte from "./components/@Cards/NextWeekendFlohmaerkte";
 import PinnedPosts from "./components/PinnedPosts";
 import WeatherIcon from "./components/@Icons/WeatherIcon";
@@ -11,10 +11,9 @@ export default function Home() {
       id="homepage-main"
       className="w-full flex flex-col items-center gap-4"
     >
-      <h1 id="kinder-in-hamburg" className="font-semibold text-white">
-        Kinder in Hamburg
-      </h1>
-      <WeatherBox full={true}></WeatherBox>
+      <section className="max-w-[1000px] w-full">
+        <WeatherBox full={true}></WeatherBox>
+      </section>
       <NextWeekendFlohmaerkte></NextWeekendFlohmaerkte>
 
       <PinnedPosts />
