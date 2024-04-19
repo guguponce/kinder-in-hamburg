@@ -1,20 +1,11 @@
-import {
-  getAllSuggestedPosts,
-  getUserFlohmaerkte,
-  getUsersSuggestions,
-} from "@app/api/dbActions";
-import RefreshButton from "@components/RefreshButton";
-import StackedCards from "@components/@Cards/StackedCards";
+import { getUserFlohmaerkte, getUsersSuggestions } from "@app/api/dbActions";
 import AdminComponents from "@app/providers/AdminServerComponents";
-import { getDescription, getPlainText, parsePost } from "@app/utils/functions";
-import { iPost } from "@app/utils/types";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import React from "react";
 import ScrollableCardList from "@components/@Cards/ScrollableCardList";
 import ScrollableContainer from "@components/ScrollableContainer";
-import FlohmarktPoster from "@components/@PostForm/FlohmarktPoster";
 import FlohPostersList from "@components/FlohPostersList";
 
 export default async function DashboardPage() {
@@ -63,7 +54,7 @@ export default async function DashboardPage() {
           </section>
         </AdminComponents>
       </section>
-      {userFlohs && Object.values(userFlohs).some((a) => !!a) && (
+      {userFlohs && Object.values(userFlohs).some((a) => !!a.length) && (
         <section className="w-full max-w-[800px] flex flex-col gap-2">
           <h3 className="text-lg font-semibold">Your Flea Markets</h3>
           {Object.entries(userFlohs).map(([status, flohs]) =>
@@ -96,7 +87,7 @@ export default async function DashboardPage() {
           )}
         </section>
       )}
-      {userPosts && Object.values(userPosts).some((a) => !!a) && (
+      {userPosts && Object.values(userPosts).some((a) => !!a.length) && (
         <section className="w-full max-w-[800px] flex flex-col gap-2">
           <h3 className="text-lg font-semibold">Your Suggested Posts</h3>
           {Object.entries(userPosts).map(([status, posts]) =>
@@ -131,27 +122,3 @@ export default async function DashboardPage() {
     </main>
   );
 }
-
-// {posts.slice(0,3).map(({ id, title, text, image }) => (
-//   <React.Fragment key={id}>
-//     <ImageCard
-//       aspectRatio={0.5}
-//       size="large"
-//       id={id}
-//       title={title}
-//       description={getPlainText(text)}
-//       image={
-//         image
-//           ? image[0]
-//           : `https://dummyimage.com/200x100/47596b/fff.jpg&text=${title}`
-//       }
-//       link={
-//         status === "pending"
-//           ? `/update-suggestion/${id}`
-//           : status === "approved"
-//           ? `/posts/${id}`
-//           : undefined
-//       }
-//     />
-//   </React.Fragment>
-// ))}
