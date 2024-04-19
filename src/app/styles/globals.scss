@@ -98,6 +98,8 @@ picture {
   bottom: calc(5% * ($i - 1));
   width: calc(95% - $i * 2.5%);
   transition: all 0.2s ease-in-out;
+  background-color: $hh-600;
+  backdrop-filter: opacity(1 - 0.1 * $i);
 }
 
 @for $i from 1 through 3 {
