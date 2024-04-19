@@ -18,6 +18,8 @@ export const metadata: Metadata = {
   description: "Suche eure nächste Ausflugsziele in Hamburg",
 };
 
+export const revalidate = 3600;
+
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -27,7 +29,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${roboto.className} flex flex-col items-center bg-hh-500`}
+        className={`${roboto.className} flex flex-col items-center bg-hh-500 max-w-[1400px] mx-auto`}
       >
         <SessionProvider session={session}>
           <Header />
