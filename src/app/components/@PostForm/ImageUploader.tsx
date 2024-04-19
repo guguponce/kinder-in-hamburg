@@ -43,11 +43,7 @@ export const ImageUploader = ({
   }, [id]);
 
   useEffect(() => {
-    if (
-      (imagesURLS.length ||
-        (!previousImagesURLS.length && !imagesURLS.length)) &&
-      !imageFiles.length
-    ) {
+    if (!imageFiles.length) {
       setImagesUrlsReady({
         ready: true,
         urls: [...imagesURLS, ...previousImagesURLS].map((url) => url.url),
