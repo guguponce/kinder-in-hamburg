@@ -41,12 +41,12 @@ export default function ImagesModal({
         Close
       </button>
       <div
-        className="relative w-full h-[calc(100%-150px)]  aspect-square flex justify-around gap-2 items-center bg-rose-300 px-4"
+        className="relative w-full h-[calc(100%-150px)]  aspect-square flex justify-around gap-2 items-center bg-hh-300 bg-opacity-25 px-4"
         ref={modalRef}
       >
         <button
           onClick={handlePrevImage}
-          className="h-10 w-10 rounded-lg bg-hh-300 backdrop-opacity-20"
+          className="h-10 w-10 rounded-lg bg-hh-800 text-white text-3xl font-bold backdrop-opacity-20"
         >
           {"<"}
         </button>
@@ -57,7 +57,7 @@ export default function ImagesModal({
         />
         <button
           onClick={handleNextImage}
-          className="h-10 w-10 rounded-lg bg-hh-300 backdrop-opacity-20"
+          className="h-10 w-10 rounded-lg bg-hh-800 text-white text-3xl font-bold backdrop-opacity-20"
         >
           {">"}
         </button>

@@ -31,7 +31,7 @@ export default async function PinnedPosts({
             >
               <HorizontalCard
                 id={p.id}
-                image={p.image![0]}
+                image={p.image ? p.image[0] : ""}
                 title={p.title}
                 description={getPlainText(p.text)}
                 aspectRatio={2.5}
