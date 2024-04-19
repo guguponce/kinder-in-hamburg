@@ -22,6 +22,7 @@ export default function FlohmarktTemplate({
     location,
     time,
     optionalComment,
+    stadtteil,
   },
   creator,
   children,
@@ -31,8 +32,9 @@ export default function FlohmarktTemplate({
   creator?: boolean;
 }) {
   const { street, number, PLZ, city } = separateAddress(address);
-  const startTime = getStartTime("10:00 - 15:00");
-  const endTime = getEndTime("10:00 - 15:00");
+  const startTime = getStartTime(time);
+  const endTime = getEndTime(time);
+
   return (
     <>
       {children}
@@ -108,7 +110,17 @@ export default function FlohmarktTemplate({
                         </Link>
                       </div>
                     )}
-                    {}
+                    {!!stadtteil && (
+                      <div className="flex gap-1 items-center">
+                        <PostLogo logo="stadtteil" color="#1F262E" />
+                        <p
+                          id="stadtteil"
+                          className="block font-semibold italic hover:underline hover: underline-offset-2"
+                        >
+                          {stadtteil}
+                        </p>
+                      </div>
+                    )}
                     {!!address && (
                       <div className="flex gap-[6px] ml-[2px]">
                         <div className="min-w-5 mt-1">
