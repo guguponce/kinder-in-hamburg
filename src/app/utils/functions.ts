@@ -2,8 +2,10 @@ import type {
   Hour,
   TypeAndText,
   iAddress,
+  iContributor,
   iPost,
   iSessionUser,
+  iStringifiedContributor,
   iStringifiedFlohmarkt,
   iStringifiedRetrievedPost,
 } from "./types";
@@ -41,7 +43,15 @@ export const parsePost = (post: iStringifiedRetrievedPost): iPost => {
     bezirk: post.bezirk,
   };
 };
-
+export const parseContributor = (contributor: iStringifiedContributor) => {
+  return {
+    ...contributor,
+    flohmaerkteSubmitted: JSON.parse(contributor.postsSubmitted) as
+      | number[]
+      | null,
+    postsSubmitted: JSON.parse(contributor.postsSubmitted) as number[] | null,
+  } as iContributor;
+};
 export const parseAllPosts = (posts: iStringifiedRetrievedPost[]) =>
   posts.map((p) => parsePost(p));
 
