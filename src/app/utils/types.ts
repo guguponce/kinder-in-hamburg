@@ -66,12 +66,20 @@ export interface iSessionUser {
 }
 
 export interface iContributor {
-  id: number;
-  firstContribution: number;
+  id: string;
+  flohmaerkteSubmitted: number[] | null;
   name: string;
   email: string;
   image: string;
-  postSubmitted?: number[] | null;
+  postsSubmitted?: number[] | null;
+}
+export interface iStringifiedContributor {
+  id: string;
+  name: string;
+  email: string;
+  image: string;
+  flohmaerkteSubmitted: string;
+  postsSubmitted: string;
 }
 
 //FORMS
