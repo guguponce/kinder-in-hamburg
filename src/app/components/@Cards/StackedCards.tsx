@@ -5,20 +5,22 @@ import React from "react";
 
 export default function StackedCards({
   posts,
-  aspectRatio = 0.66,
+  horizontal = true,
   link,
   onlyTitle,
   size = "medium",
 }: {
   onlyTitle?: boolean;
   size?: "small" | "medium" | "large";
-  aspectRatio?: number;
+  horizontal?: boolean;
   posts: iPost[];
   link: string;
 }) {
   const classnames = {
-    container: `stackedCards w-full block relative aspect-[${aspectRatio}]`,
-    card: `absolute aspect-[${aspectRatio}] text-${
+    container: `stackedCards  w-full block relative ${
+      horizontal ? "aspect-[1.5]" : "aspect-[0.66]"
+    }`,
+    card: `absolute ${horizontal ? "aspect-[1.5]" : "aspect-[0.66]"} text-${
       size === "small"
         ? "text-[10px]"
         : size === "medium"
