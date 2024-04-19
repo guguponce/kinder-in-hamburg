@@ -1,4 +1,5 @@
 import type {
+  Hour,
   TypeAndText,
   iAddress,
   iPost,
@@ -19,25 +20,25 @@ export const parsePost = (post: iStringifiedRetrievedPost): iPost => {
     status: post.status,
     user_id: post.user_id,
     title: post.title,
-    text: JSON.parse(post.text),
-    tags: JSON.parse(post.tags),
+    text: post.text ? JSON.parse(post.text) : undefined,
+    tags: post.tags ? JSON.parse(post.tags) : undefined,
     pinnedPost: !!post.pinnedPost,
     minAge: post.minAge,
     maxAge: post.maxAge || undefined,
     link: post.link,
     lastUpdate: post.lastUpdate || undefined,
-    image: JSON.parse(post.image),
-    igAccounts: JSON.parse(post.igAccounts),
-    id: post.id,
-    createdAt: post.createdAt,
-    categories: JSON.parse(post.categories),
-    bezirk: post.bezirk,
+    image: post.image ? JSON.parse(post.image) : undefined,
+    igAccounts: post.igAccounts ? JSON.parse(post.igAccounts) : undefined,
+    categories: post.categories ? JSON.parse(post.categories) : [],
     address: post.address
       ? post.address[0] !== "{"
         ? post.address
         : JSON.parse(post.address)
       : undefined,
-    addedBy: JSON.parse(post.addedBy),
+    addedBy: post.addedBy ? JSON.parse(post.addedBy) : undefined,
+    id: post.id,
+    createdAt: post.createdAt,
+    bezirk: post.bezirk,
   };
 };
 
@@ -86,8 +87,12 @@ export const getDescription = (text: string) => {
     : splittedText.join(" ");
 };
 
-export const getPlainText = (text: TypeAndText[]) =>
-  text.map(([_, val]) => val).join(" ");
+export const getPlainText = (text: TypeAndText[], max?: number) => {
+  const textArray = text.map(([_, val]) => val);
+  const plainText = textArray.slice(0, max || textArray.length).join(" ");
+
+  return max && max > textArray.length ? plainText + "..." : plainText;
+};
 
 export const parseParams = (params: string) => {
   let parsed = params.replace("-", " ");
@@ -189,4 +194,30 @@ export const getNextWeekend = () => {
     nextSaturday: nextSaturday.getTime(),
     nextMonday: nextMonday.getTime(),
   };
+};
+
+export const whenWillRainLater = (hours: Hour[], currentHour: number) => {
+  return hours.slice(currentHour, 21).findIndex((h) => h.will_it_rain === 1);
+};
+export const getCurrentTime = () => {
+  const germanyDate = new Date().toLocaleString("en-US", {
+    timeZone: "Europe/Berlin",
+  });
+  return new Date(germanyDate);
+};
+export const getTimeRainAndActivity = (
+  hours: Hour[],
+  activity: "Outdoor" | "Indoor" | "Both"
+) => {
+  const currentTime = getCurrentTime();
+  const currentHour = currentTime.getHours();
+  const nextRain = whenWillRainLater(hours, currentHour);
+
+  const activityType =
+    nextRain !== -1 && nextRain + 1 + currentHour < 18
+      ? "Indoor"
+      : activity === "Both"
+      ? ["Indoor", "Outdoor"][Math.floor(Math.random() * 2)]
+      : activity;
+  return { currentTime, currentHour, nextRain, activityType };
 };
