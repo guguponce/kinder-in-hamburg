@@ -578,7 +578,7 @@ export default function PostForm({
                       id="cityInput"
                       name="city"
                       value={addressInput?.city || ""}
-                      placeholder="Stadt"
+                      placeholder="Stadtteil/Stadt"
                       onChange={(e) =>
                         setAddressInput({
                           ...addressInput,

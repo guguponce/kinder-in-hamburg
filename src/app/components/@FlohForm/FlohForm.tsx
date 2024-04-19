@@ -331,7 +331,7 @@ export default function FlohForm({
                     })}
                     id={"city" + "Input"}
                     name={"city"}
-                    placeholder="Stadt"
+                    placeholder="Stadtteil/Stadt"
                     className="w-full block rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
                   />
                 </div>
@@ -429,6 +429,7 @@ export default function FlohForm({
                 id="title"
                 defaultValue={optionalComment || ""}
                 name="title"
+                rows={6}
                 className="w-full rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base font-semibold leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
               />
             </PostFormInput>
