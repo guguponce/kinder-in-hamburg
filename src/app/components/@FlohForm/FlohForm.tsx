@@ -70,6 +70,9 @@ export default function FlohForm({
     isError: boolean;
     errorMessage: string;
   }>({ isError: false, errorMessage: "" });
+  const [bezirkInput, setBezirkInput] = React.useState<iBezirk>(
+    bezirk || "Altona"
+  );
 
   const newID = useRef(new Date().getTime());
   const {
@@ -245,6 +248,7 @@ export default function FlohForm({
                   {...register("bezirk", { required: "Bezirk is required" })}
                   defaultValue={bezirk || "Altona"}
                   required
+                  onChange={(e) => setBezirkInput(e.target.value as iBezirk)}
                   className="mx  rounded border border-gray-300 bg-gray-100 bg-opacity-95 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
                 >
                   {bezirke.map((bezirk) => (
@@ -254,23 +258,20 @@ export default function FlohForm({
                   ))}
                 </select>
               </PostFormInput>
-              {getValues("bezirk") && (
+              {bezirkInput && (
                 <PostFormInput inputLabel="Stadtteil" inputID="stadtteil">
                   <select
                     {...register("stadtteil")}
                     defaultValue={
-                      stadtteil ||
-                      BEZIRK_TO_STADTTEILE[getValues("bezirk") || "Altona"][0]
+                      stadtteil || BEZIRK_TO_STADTTEILE[bezirkInput][0]
                     }
                     className="mx  rounded border border-gray-300 bg-gray-100 bg-opacity-95 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
                   >
-                    {BEZIRK_TO_STADTTEILE[getValues("bezirk") || "Altona"].map(
-                      (stadtteil) => (
-                        <option key={stadtteil} value={stadtteil}>
-                          {stadtteil}
-                        </option>
-                      )
-                    )}
+                    {BEZIRK_TO_STADTTEILE[bezirkInput].map((stadtteil) => (
+                      <option key={stadtteil} value={stadtteil}>
+                        {stadtteil}
+                      </option>
+                    ))}
                   </select>
                 </PostFormInput>
               )}
