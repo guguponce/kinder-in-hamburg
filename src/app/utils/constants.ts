@@ -1,4 +1,4 @@
-import { iBezirk, overallCondition } from "./types";
+import { categoryName, iBezirk, overallCondition } from "./types";
 
 export const RETRIEVED_POSTS = [
   {
@@ -460,6 +460,19 @@ export const categoryNames = [
   "Wochenende Ausflüge",
   "Shops",
 ];
+
+export const relatedCategories: { [x: string]: categoryName[] } = {
+  Indoor: ["Spielplatz", "Museum", "Essen/Café"],
+  Outdoor: ["Wochenende Ausflüge", "Spielplatz", "Tiere"],
+  Spielplatz: ["Outdoor", "Indoor", "Tiere"],
+  Museum: ["Indoor", "Essen/Café", "Outdoor"],
+  Kostenlos: ["Essen/Café", "Shops", "Wochenende Ausflüge"],
+  "Essen/Café": ["Kostenlos", "Indoor", "Shops"],
+  "Unter 2": ["Spielplatz", "Indoor", "Museum"],
+  Tiere: ["Outdoor", "Spielplatz", "Wochenende Ausflüge"],
+  Geburtstage: ["Shops", "Indoor", "Kostenlos"],
+  "Wochenende Ausflüge": ["Outdoor", "Tiere", "Kostenlos"],
+};
 
 export const WEATHER_CODES: {
   [x: string]: {
