@@ -3,6 +3,8 @@ import { FilterObject, iPost } from "@app/utils/types";
 import React, { useMemo, useRef, useState } from "react";
 import CardsDisplay from "./@Cards/CardsDisplay";
 import PostFilters from "./PostsFilters";
+import { usePathname } from "next/navigation";
+import { parseParams } from "@app/utils/functions";
 
 export default function FilterablePostList({
   children,
@@ -11,20 +13,23 @@ export default function FilterablePostList({
   postsList: iPost[];
   children?: React.ReactNode;
 }) {
+  const params = usePathname();
+  const [type, p] = params.split("/").filter(Boolean) || ["", ""];
+  const param = p ? parseParams(p) : p;
   const [maxDisplay, setMaxDisplay] = useState(10);
   const [maxDisplayable, setMaxDisplayable] = useState(10);
-  const postsListRef = useRef(
-    [
-      ...postsList,
-      // , ...postsList, ...postsList
-    ]
-    //   .map((post) => ({
-    //     ...post,
-    //     id: Math.random(),
-    //   })
-    // )
+  const initialFilter = useRef<FilterObject | null>(
+    (!!param &&
+      (type === "categories"
+        ? { categories: [param] }
+        : type === "bezirke" && { bezirk: param })) ||
+      null
   );
-  const [filters, setFilters] = useState<FilterObject>({});
+
+  const postsListRef = useRef([...postsList]);
+  const [filters, setFilters] = useState<FilterObject>(
+    initialFilter.current || {}
+  );
 
   const setNewFilters = (filters: FilterObject) => {
     setFilters(filters);
@@ -33,7 +38,6 @@ export default function FilterablePostList({
   const handleSetMaxDisplay = () => {
     setMaxDisplay((prev) => prev + 10);
   };
-
   const displayList = useMemo(() => {
     const filteredList = postsListRef.current.filter((post) => {
       const postMinAge = post.minAge || 0;
@@ -43,12 +47,18 @@ export default function FilterablePostList({
 
       const startAge = !!filters.fromAge ? filters.fromAge : 0;
       const endAge = !!filters.untilAge ? filters.untilAge : 0;
-      if (
-        categories &&
-        categories.length &&
-        !categories.find((cat) => post.categories.includes(cat))
-      )
-        return false;
+      if (categories && categories.length) {
+        if (type && param) {
+          return !categories.some(
+            (cat) => !post.categories.includes(parseParams(cat))
+          );
+        } else {
+          return !categories.find((cat) =>
+            post.categories.includes(parseParams(cat))
+          );
+        }
+      }
+
       if (bezirk && post.bezirk !== bezirk) return false;
       if (!postMinAge) {
       } else if (
@@ -67,16 +77,21 @@ export default function FilterablePostList({
 
       return true;
     });
+
     setMaxDisplayable(filteredList.length);
     return filteredList.slice(0, maxDisplay);
-  }, [filters, maxDisplay]);
+  }, [filters, maxDisplay, type, param]);
   if (!postsListRef.current)
     return <div>There was a problem retrieving posts</div>;
   return (
     <section className="flex flex-grow flex-col gap-2 w-full max-w-[1200px] bg-hh-100 rounded py-4">
       <div className="flex flex-col-reverse justify-between gap-2">
-        <aside className="relative w-fit">
-          <PostFilters setNewFilters={setNewFilters} />
+        <aside id="filters-container" className="relative w-fit">
+          <PostFilters
+            initialFilterType={type || ""}
+            setNewFilters={setNewFilters}
+            initialFilterValue={param || ""}
+          />
         </aside>
         {children}
       </div>
