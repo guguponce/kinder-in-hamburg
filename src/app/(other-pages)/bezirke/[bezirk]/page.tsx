@@ -1,129 +1,62 @@
-import { getSuggestionsWithBezirk } from "@app/api/dbActions";
-import { getHamburgsWeather } from "@app/api/weatherAPI";
-import TextPriorityCard from "@components/@Cards/Card";
-import ScrollableCardList from "@components/@Cards/ScrollableCardList";
-import WeatherBasedRecommendations from "@components/WeatherBasedRecommendations";
-import { WEATHER_CODES, bezirke } from "@app/utils/constants";
-import { getPlainText, parseParams } from "@app/utils/functions";
-import { iBezirk, iPost } from "@app/utils/types";
-import Link from "next/link";
+import {
+  getApprovedFlohmaerkteWithBezirk,
+  getSuggestionsWithBezirk,
+} from "@app/api/dbActions";
+import { checkBezirk, getCurrentTime, parseParams } from "@app/utils/functions";
+import { iBezirk } from "@app/utils/types";
 import { redirect } from "next/navigation";
 import React from "react";
+import FilterablePostList from "@app/components/FilterablePostList";
+import PostNotFound from "@app/components/@PostForm/PostNotFound";
+import WeatherBox from "@app/components/WeatherBox";
+import ScrollableFlohmaerkte from "@app/components/ScrollableFlohmaerkte";
+import PointsGallery from "@app/components/@PostForm/PointsGallery";
+import NotFound from "@app/components/NotFound";
 
 export default async function BezirkPage({
-  params,
+  params: { bezirk: bez },
 }: {
   params: { bezirk: string };
 }) {
-  const {
-    current,
-    forecast,
-    location: { localtime },
-  } = await getHamburgsWeather();
-  const { activity, overallCondition } =
-    WEATHER_CODES[current.condition.code.toString()];
+  const bezirk = parseParams(bez);
+  if (!checkBezirk(bezirk)) return <NotFound type="bezirk" />;
+  const bezirkPosts = await getSuggestionsWithBezirk(bezirk as iBezirk);
+  if (!bezirkPosts) return <PostNotFound multiples />;
 
-  const now = new Date(localtime).getHours();
-  const willRainRestOfDay = forecast.forecastday[1].hour
-    .slice(now, 24)
-    .some((h) => h.will_it_rain === 1);
-
-  const activityType = !!willRainRestOfDay
-    ? "Indoor"
-    : activity === "Both"
-    ? ["Indoor", "Outdoor"][Math.floor(Math.random() * 2)]
-    : activity;
-
-  const { bezirk } = params;
-  const bezirkName = parseParams(bezirk);
-
-  const bezirkPosts = await getSuggestionsWithBezirk(bezirkName as iBezirk);
-  if (!bezirkPosts) return <div>There was a problem retrieving posts</div>;
-  if (bezirkPosts.length === 0)
-    return <div>There are no posts from {bezirk} to display</div>;
-
-  const categorizedPosts = bezirkPosts.reduce((acc, post, i) => {
-    post.categories.forEach((category) => {
-      if (acc[category]) {
-        acc[category].push(post);
-      } else {
-        acc[category] = [post];
-      }
-    });
-    if (i === bezirkPosts.length - 1) {
-      Object.keys(acc).forEach((category) => {
-        if (!!acc[category]) {
-          acc[category] = acc[category].sort(() => Math.random() - 0.5);
-        }
-      });
-    }
-    return acc;
-  }, {} as { [key: string]: iPost[] });
-
+  const flohmaerkte = await getApprovedFlohmaerkteWithBezirk(bezirk as iBezirk);
+  const pinnedPosts = bezirkPosts.filter((post) => post.pinnedPost);
   return (
-    <>
-      <Link
-        href={"/bezirke"}
-        className="linkBack block relative text-sm text-hh-700 px-6 hover:underline hover:underline-offset-4 min-w-fit mb-2"
-      >
-        <span className="absolute linkArrow">←</span>All Bezirke
-      </Link>
-      <WeatherBasedRecommendations
-        overallCondition={overallCondition}
-        currentTemp={current.temp_c}
-        willRainRestOfDay={willRainRestOfDay}
-        forecast={forecast}
-      >
-        <div>
-          <h2 className="text-xl font-semibold capitalize">
-            {activity} activities
-          </h2>
-          <small></small>
-          <ScrollableCardList
-            posts={[...categorizedPosts[activityType]]}
-            cardType="text-priority"
-            size="small"
-          />
-        </div>
-      </WeatherBasedRecommendations>
+    <div className="flex flex-col gap-4 items-center justify-center w-full">
+      <h1 className="text-4xl text-white font-bold">{bezirk}</h1>
 
-      {Object.entries(categorizedPosts).map(([category, posts]) => (
-        <section className="rounded-md shadow-md p-2 w-1/2" key={category}>
-          <h2 className="text-lg font-semibold">{category}</h2>
-          <ScrollableCardList
-            posts={posts}
-            size="small"
-            cardType="img-priority"
-            descriptions={true}
+      <section
+        id="bezirk-hero"
+        className="flex flex-wrap-reverse gap-4 justify-center w-full h-fit"
+      >
+        <article className="h-[40dvh] min-h-[425px] aspect-[0.75]">
+          <PointsGallery horizontal={false} posts={pinnedPosts.slice(0, 3)}>
+            <h2 className="text-2xl font-semibold text-hh-50 bg-hh-900 bg-opacity-50 rounded p-1  w-fit">
+              #BestOf
+            </h2>
+          </PointsGallery>
+        </article>
+        <article className="max-h-[40dvh] min-h-[425px] w-[600px] max-w-screen md:aspect-[2.25] aspect-[1.5] bg-black">
+          <WeatherBox full weatherAtRight bezirk={bezirk as iBezirk} />
+        </article>
+      </section>
+      {!!flohmaerkte && (
+        <section className="w-full flex justify-center items-center bg-gradient-to-b from-hh-600 to-hh-500 bg-opacity-25 rounded">
+          <ScrollableFlohmaerkte
+            flohmaerkte={flohmaerkte.sort((a, b) => a.date - b.date)}
+            bezirk={bezirk}
+            title="Flea Markets"
           />
         </section>
-      ))}
-      <section
-        id="all-bezirk-posts"
-        className="relative mt-4 rounded from-hh-600 to-hh-300 bg-gradient-to-b flex flex-col items-center p-4 gap-4"
-      >
-        <h2 className="font-bold text-3xl text-hh-100 p-4 bg-hh-100 bg-opacity-20 rounded-sm">
-          All places in Altona
-        </h2>
-        <div className="filterableList">
-          Filters
-          <div className="filteredList flex flex-wrap items-stretch justify-center gap-4">
-            {bezirkPosts.map(({ id, title, image, text, categories }) => (
-              <React.Fragment key={id}>
-                <TextPriorityCard
-                  id={id}
-                  title={title}
-                  image={!!image ? image[0] : ""}
-                  description={getPlainText(text)}
-                  categories={categories[0]}
-                  link={`/posts/${id}`}
-                  size="small"
-                />
-              </React.Fragment>
-            ))}
-          </div>
-        </div>
+      )}
+
+      <section className="w-full max-w-[1000px]">
+        <FilterablePostList postsList={bezirkPosts} />
       </section>
-    </>
+    </div>
   );
 }

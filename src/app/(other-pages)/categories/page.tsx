@@ -1,5 +1,50 @@
+import { getAllApprovedPosts, getAllSuggestedPosts } from "@app/api/dbActions";
+import StackedCards from "@app/components/@Cards/StackedCards";
+import { categoryNames } from "@app/utils/constants";
+import { iPost } from "@app/utils/types";
+import NotFound from "@components/NotFound";
 import React from "react";
 
-export default function CategoriesPage() {
-  return <div>CategoriesPage</div>;
+export default async function CategoriesPage() {
+  const allPosts = await getAllSuggestedPosts();
+  if (!allPosts) return <NotFound type="categories" multiples={true} />;
+  const categoriesPosts = [...allPosts]
+    .sort(() => 0.5 - Math.random())
+    .reduce((acc, post) => {
+      if (!post.image) return acc;
+      post.categories.forEach((cat) => {
+        if (!acc[cat]) acc[cat] = [];
+        acc[cat].push(post);
+      });
+      return acc;
+    }, {} as { [key: string]: iPost[] });
+
+  return (
+    <main className="rounded-xl w-[calc(100%-1rem)] max-w-[1000px] flex flex-col items-center p-4 gap-2 bg-hh-100">
+      <h1 className="text-3xl font-bold p-4">Categories</h1>
+      <section className="flex w-full flex-wrap gap-4 justify-around">
+        {categoryNames.map((cat) =>
+          categoriesPosts[cat] ? (
+            <article
+              key={cat}
+              className="bg-hh-900 bg-opacity-10 hover:bg-opacity-20 p-4 rounded-md shadow-sm w-full sm:w-1/2 md:1/3 max-w-[350px] sm:max-w-[275px] md:max-w-[300px] flex flex-col items-stretch"
+            >
+              <h2 className="text-2xl font-bold flex-grow align-middle">
+                {cat}
+              </h2>
+              <div className="w-full flex justify-center items-center">
+                <StackedCards
+                  link={`/categories/${cat}`}
+                  posts={categoriesPosts[cat].slice(0, 3)}
+                  horizontal={true}
+                  onlyTitle={true}
+                  size="medium"
+                ></StackedCards>
+              </div>
+            </article>
+          ) : null
+        )}
+      </section>
+    </main>
+  );
 }
