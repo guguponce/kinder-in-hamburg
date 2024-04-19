@@ -1,12 +1,7 @@
-"use client";
+import React from "react";
 
-import React, { useState } from "react";
-
-import Link from "next/link";
 import { type iPost } from "@app/utils/types";
-import CardsDisplayArrows from "./CardsDisplayArrows";
-import { getImagesArray, getPlainText } from "@app/utils/functions";
-import Card from "./Card";
+import { getPlainText } from "@app/utils/functions";
 import ImgPriorityCard from "./ImgPriorityCard";
 
 export default function CardsDisplay({ cardPosts }: { cardPosts: iPost[] }) {
@@ -21,7 +16,7 @@ export default function CardsDisplay({ cardPosts }: { cardPosts: iPost[] }) {
               size="small"
               id={id}
               title={title}
-              aspectRatio={0.66}
+              aspectRatio={0.75}
               image={
                 image
                   ? image[0]

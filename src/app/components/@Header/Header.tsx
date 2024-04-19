@@ -9,12 +9,11 @@ export default async function Header() {
   return (
     <header
       id="header"
-      className="relative h-20 w-full md:mb-8 mb-4 lg:max-w-[1200px] bg-[hsl(11,76%,63%)] p-2 sm:p-4 flex justify-between items-center gap-2"
+      className="relative h-20 w-full md:mb-8 mb-4 lg:max-w-[1200px] bg-negative-300 p-2 sm:p-4 flex justify-between items-center gap-2"
     >
-      <div className="absolute left-1/2 h-full w-4 -translate-x-1/2 bg-black"></div>
       <BurgerMenu />
       <div
-        className="mx-auto h-full px-4 sm:flex-grow md:mr-20 rounded-sm bg-[#fefefe] flex items-center justify-center lg:justify-start  hover:text-[#121212] active:text-[#121212] "
+        className="mx-auto h-full px-4 sm:flex-grow lg:mr-20 rounded-sm bg-[#fefefe] flex items-center justify-center lg:justify-start  hover:text-[#121212] active:text-[#121212] "
         id="logo-text"
       >
         <Link className="text-3xl text-center font-bold text-hh-900" href="/">
