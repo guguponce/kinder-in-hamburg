@@ -14,6 +14,7 @@ export interface iPost {
   image?: string[]; //
   igAccounts?: iIgAccount[]; //
   bezirk?: string | undefined;
+  stadtteil?: string | undefined;
   address?: iAddress | undefined;
   user_id: string;
   addedBy: iSessionUser;
@@ -45,6 +46,7 @@ export interface iStringifiedRetrievedPost {
   image: string;
   link: string;
   bezirk: string;
+  stadtteil: string;
   address: string;
   minAge: number;
   maxAge: null;
@@ -282,6 +284,7 @@ export type iBezirk =
 export interface iFlohmarkt {
   title: string;
   bezirk: iBezirk;
+  stadtteil: string;
   addedBy: iSessionUser;
   createdAt: number;
   date: number;

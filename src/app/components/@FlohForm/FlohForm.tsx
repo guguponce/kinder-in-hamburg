@@ -1,11 +1,15 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import { useForm, type FieldValues } from "react-hook-form";
 import { addFlohmarkt, updateFlohmarkt } from "@app/api/dbActions";
-import type { iSessionUser, iFlohmarkt } from "../../utils/types";
+import type { iSessionUser, iFlohmarkt, iBezirk } from "../../utils/types";
 import { useRouter } from "next/navigation";
-import { addressPartsArray, bezirke } from "@app/utils/constants";
+import {
+  BEZIRK_TO_STADTTEILE,
+  addressPartsArray,
+  bezirke,
+} from "@app/utils/constants";
 import {
   getEndTime,
   getStartTime,
@@ -18,7 +22,6 @@ import FlohmarktImageUploader from "./FlohmarktImageUploader";
 import PostFormInput from "../@PostForm/PostFormInput";
 import { revalidatePost } from "@app/utils/actions/revalidate";
 import UserInputBox from "./UserInputBox";
-import DeleteButton from "../DeleteButton";
 
 interface FlohFormProps {
   FlohForm: Partial<iFlohmarkt>;
@@ -44,6 +47,7 @@ export default function FlohForm({
     location,
     time,
     optionalComment,
+    stadtteil,
   },
   user,
   flohFormType,
@@ -72,6 +76,7 @@ export default function FlohForm({
     register,
     handleSubmit,
     setValue,
+    getValues,
     formState: { errors, isSubmitSuccessful, isDirty, isSubmitting, isLoading },
   } = useForm({
     defaultValues: {
@@ -81,6 +86,7 @@ export default function FlohForm({
       title: title,
       addedBy: addedBy,
       bezirk: bezirk,
+      stadtteil: stadtteil,
       date: date,
       startTime: getStartTime(time),
       endTime: getEndTime(time),
@@ -108,6 +114,7 @@ export default function FlohForm({
       title: data.title,
       addedBy: userInput,
       bezirk: data.bezirk,
+      stadtteil: data.stadtteil,
       date: data.date,
       address: joinAddress(data),
       location: data.location,
@@ -150,6 +157,7 @@ export default function FlohForm({
       title: data.title,
       addedBy: userInput,
       bezirk: data.bezirk,
+      stadtteil: data.stadtteil,
       date: data.date,
       address: `${data.street} ${data.number}, ${data.PLZ} ${data.city}`,
       location: data.location,
@@ -201,29 +209,33 @@ export default function FlohForm({
             ? onSubmitNewFlohmarkt
             : onUpdateFlohmarkt
         )}
-        className="flohForm mx-auto w-full text-gray-900 lg:w-3/4"
+        className="flohForm mx-auto w-full text-gray-900 lg:w-3/4 my-2 flex flex-col gap-2"
       >
         <div className="mx-auto flex w-full flex-col items-center gap-2 ">
-          <PostFormInput inputLabel="Title" inputID="title" required={true}>
-            <>
-              <input
-                {...register("title", { required: "Title is required" })}
-                type="text"
-                id="title"
-                name="title"
-                className="w-full rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base font-semibold leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
-              />
-              {errors.title && (
-                <p className="text-negative-500">{`${errors.title.message}`}</p>
-              )}
-            </>
-          </PostFormInput>
-
+          <div
+            id="date-time-box"
+            className="flex flex-wrap gap-4 w-full max-w-[600px] justify-center items-center bg-hh-300 rounded py-2"
+          >
+            <PostFormInput inputLabel="Title" inputID="title" required={true}>
+              <>
+                <input
+                  {...register("title", { required: "Title is required" })}
+                  type="text"
+                  id="title"
+                  name="title"
+                  className="w-full rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base font-semibold leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
+                />
+                {errors.title && (
+                  <p className="text-negative-500">{`${errors.title.message}`}</p>
+                )}
+              </>
+            </PostFormInput>
+          </div>
           <div
             id="address-box"
-            className=" w-full max-w-[600px] flex flex-wrap gap-4"
+            className=" w-full max-w-[600px] flex flex-wrap gap-4 border-2 border-hh-300 rounded"
           >
-            <div className="bezirkBox min-w-fit w-2/5 flex flex-col">
+            <div className="bezirkBox min-w-fit w-full sm:w-2/5 flex flex-col">
               <PostFormInput
                 inputLabel="Bezirk"
                 inputID="bezirk"
@@ -242,7 +254,26 @@ export default function FlohForm({
                   ))}
                 </select>
               </PostFormInput>
-
+              {getValues("bezirk") && (
+                <PostFormInput inputLabel="Stadtteil" inputID="stadtteil">
+                  <select
+                    {...register("stadtteil")}
+                    defaultValue={
+                      stadtteil ||
+                      BEZIRK_TO_STADTTEILE[getValues("bezirk") || "Altona"][0]
+                    }
+                    className="mx  rounded border border-gray-300 bg-gray-100 bg-opacity-95 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
+                  >
+                    {BEZIRK_TO_STADTTEILE[getValues("bezirk") || "Altona"].map(
+                      (stadtteil) => (
+                        <option key={stadtteil} value={stadtteil}>
+                          {stadtteil}
+                        </option>
+                      )
+                    )}
+                  </select>
+                </PostFormInput>
+              )}
               <PostFormInput inputLabel="Standort" inputID="location">
                 <>
                   <input
@@ -250,7 +281,7 @@ export default function FlohForm({
                     type="text"
                     id="location"
                     name="location"
-                    placeholder="(z.B. Apostolkirche, Schüle, etc.)"
+                    placeholder="(z.B. name der Apostolkirche, Schüle, etc.)"
                     className="w-full rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base font-semibold leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
                   />
                 </>
@@ -321,7 +352,7 @@ export default function FlohForm({
 
           <div
             id="date-time-box"
-            className="flex flex-wrap gap-4 w-full max-w-[600px] justify-center items-center"
+            className="flex flex-wrap gap-4 w-full max-w-[600px] justify-center items-center bg-hh-300 rounded py-2"
           >
             <div className="dateBox min-w-fit flex-grow flex flex-col">
               <PostFormInput inputLabel="Datum" inputID="date" required={true}>
@@ -384,20 +415,23 @@ export default function FlohForm({
               </div>
             </div>{" "}
           </div>
-
-          <PostFormInput
-            inputLabel="Optionaler Kommentar"
-            inputID="optionalComment"
+          <div
+            id="address-box"
+            className=" w-full max-w-[600px] flex flex-wrap gap-4 border-2 border-hh-300 rounded"
           >
-            <textarea
-              onChange={(e) => setValue("optionalComment", e.target.value)}
-              id="title"
-              defaultValue={optionalComment || ""}
-              name="title"
-              className="w-full rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base font-semibold leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
-            />
-          </PostFormInput>
-
+            <PostFormInput
+              inputLabel="Optionaler Kommentar"
+              inputID="optionalComment"
+            >
+              <textarea
+                onChange={(e) => setValue("optionalComment", e.target.value)}
+                id="title"
+                defaultValue={optionalComment || ""}
+                name="title"
+                className="w-full rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base font-semibold leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
+              />
+            </PostFormInput>
+          </div>
           <div className="flex w-full flex-wrap items-center justify-between gap-8 p-2 sm:flex-row">
             {!imagesUrlsReady.ready && (
               <a

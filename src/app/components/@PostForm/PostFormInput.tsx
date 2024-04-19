@@ -21,7 +21,8 @@ type inputLabelType =
   | "time"
   | "approved"
   | "optionalComment"
-  | "location";
+  | "location"
+  | "stadtteil";
 interface PostFormInputProps {
   inputID: inputLabelType;
   inputLabel: string;
