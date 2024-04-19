@@ -9,7 +9,7 @@ export default function ScrollableFlohmaerkte({
   title,
 }: {
   flohmaerkte: iFlohmarkt[];
-  bezirk: string;
+  bezirk?: string;
   title?: string;
 }) {
   return (
@@ -20,23 +20,25 @@ export default function ScrollableFlohmaerkte({
         </h2>
       )}
       <ScrollableContainer>
-        {flohmaerkte.map(({ id, title, date, image }, i) => (
-          <article
-            key={id}
-            className={`overflow-hidden h-[250px] min-w-[180px] ${
-              i === flohmaerkte.length - 1 ? "" : "mr-4"
-            }`}
-          >
-            <FlohmarktPoster
-              bezirk={bezirk}
-              id={id}
-              title={title}
-              date={date}
-              image={image}
-              prefixLink={`/flohmaerkte/${id}`}
-            />
-          </article>
-        ))}
+        {flohmaerkte.map(
+          ({ id, title, date, image, bezirk: flohBezirk }, i) => (
+            <article
+              key={id}
+              className={`overflow-hidden h-[250px] min-w-[180px] ${
+                i === flohmaerkte.length - 1 ? "" : "mr-4"
+              }`}
+            >
+              <FlohmarktPoster
+                bezirk={flohBezirk}
+                id={id}
+                title={title}
+                date={date}
+                image={image}
+                prefixLink={`/flohmaerkte/`}
+              />
+            </article>
+          )
+        )}
       </ScrollableContainer>
     </div>
   );

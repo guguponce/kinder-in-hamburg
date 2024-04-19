@@ -1,5 +1,7 @@
 import { getApprovedFlohmaerkte } from "@app/api/dbActions";
 import PostNotFound from "@app/components/@PostForm/PostNotFound";
+import ScrollableFlohmaerkte from "@app/components/ScrollableFlohmaerkte";
+import { getNextWeekend } from "@app/utils/functions";
 import FlohmarktPoster from "@components/@PostForm/FlohmarktPoster";
 import Link from "next/link";
 import React from "react";
@@ -21,28 +23,29 @@ export default async function FlohmarktPage() {
         </Link>
       </main>
     );
+  const { nextSaturday, nextMonday } = getNextWeekend();
+  const nextWeekendFlohmaerkte = flohmaerkte.filter(
+    ({ date }) => date > nextSaturday && date < nextMonday
+  );
+  const futureFlohmaerkte = flohmaerkte.filter(({ date }) => date > nextMonday);
   return (
     <main className="rounded bg-hh-100 bg-opacity-25 w-full max-w-[1000px] p-4 flex flex-col items-center min-h-[50vh] gap-2">
       <h1 className="text-4xl font-bold my-2 p-2 rounded bg-opacity-50 bg-hh-50">
         Flea Markets
       </h1>
-      <section className="flex flex-wrap items-stretch rounded bg-hh-100 bg-opacity-25 w-full p-4">
-        {flohmaerkte.map(({ title, image, date, bezirk, id }) => (
-          <article
-            className="sm:w-1/2 md:w-1/3 lg:w-1/4 max-w-[300px] md:max-w-[400px] aspect-[0.75] relative"
-            key={id}
-          >
-            <FlohmarktPoster
-              title={title}
-              image={image}
-              date={date}
-              bezirk={bezirk}
-              prefixLink="/flohmaerkte/"
-              id={id}
-            />
-          </article>
-        ))}
-      </section>
+      <ScrollableFlohmaerkte
+        flohmaerkte={nextWeekendFlohmaerkte}
+        title="Next Weekend's"
+      ></ScrollableFlohmaerkte>
+      <ScrollableFlohmaerkte
+        flohmaerkte={futureFlohmaerkte}
+        title="Future Flea Markets"
+      ></ScrollableFlohmaerkte>
+
+      <ScrollableFlohmaerkte
+        flohmaerkte={[...flohmaerkte].sort((a, b) => a.date - b.date)}
+        title="All"
+      ></ScrollableFlohmaerkte>
     </main>
   );
 }
