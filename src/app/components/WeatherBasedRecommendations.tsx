@@ -31,13 +31,14 @@ export default async function WeatherBasedRecommendations({
       <div className="flex-grow w-full">{children}</div>
       <aside className="min-w-[250px] flex flex-col gap-2 md:gap-4 justify-center items-center rounded-md py-4 px-2 shadow-sm bg-sky bg-opacity-25">
         {willRainRestOfDay && (
-          <code className="text-xs text-hh-700">Today it will rain</code>
+          <code className="text-xs text-hh-700">
+            Today it will probably rain
+          </code>
         )}
         <div className="flex flex-wrap gap-2 justify-center items-center w-full">
           <WeatherIcon logo={overallCondition} size="100%" />
           <div className="flex flex-col items-center justify-center">
             <h3 className="font-semibold">Now</h3>
-
             <h2 className="text-lg font-semibold text-hh-600">
               {currentTemp}°C
             </h2>
