@@ -480,9 +480,7 @@ export const getAllPostsIds = async (id: string) => {
     if (data.some((d) => d.error)) {
       throw new Error("Error getting posts IDs from a db");
     }
-    console.log("getpostsid data", data);
     const ids = [id, ...data.map((d) => d.data!.map((d) => d.id)).flat()];
-    console.log("getpostsid ids", ids);
     return ids;
   } catch (error) {
     return false;
@@ -618,6 +616,23 @@ export const getFutureApprovedFlohmaerkte = async () => {
       throw new Error("There was a problem getting the future Flea Markets.");
     }
     return data.map((f) => parseFlohmarkt(f)) as iFlohmarkt[];
+  } catch (error) {
+    return false;
+  }
+};
+
+export const getApprovedFlohmaerkteWithBezirk = async (bezirk: iBezirk) => {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("flohmaerkte")
+      .select("*")
+      // -----------------------
+      // .ilike("status", "approved")
+      .ilike("bezirk", bezirk);
+    if (error) {
+      throw new Error("There was a problem getting the Flea Markets.");
+    }
+    return parseAllFlohmarkte(data);
   } catch (error) {
     return false;
   }
