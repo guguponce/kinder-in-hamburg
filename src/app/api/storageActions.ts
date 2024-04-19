@@ -26,14 +26,15 @@ export const uploadPostImage = async (
     React.SetStateAction<"uploading" | "success" | "error" | "paused" | "await">
   >
 ) => {
-  console.log("u");
   // Create Metadata
   const metadata = {
     contentType: file.type,
     size: file.size,
     name: file.name,
-    postID: id,
-    uploadedBy: userEmail,
+    customMetadata: {
+      postID: id.toString(),
+      uploadedBy: userEmail,
+    },
   };
 
   const storageRef = ref(storage, `postsImages/${id}/${file.name}`);
