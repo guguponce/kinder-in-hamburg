@@ -4,6 +4,7 @@ import React from "react";
 import DisplayTypeText from "./@PostForm/DisplayTypeText";
 import PostLogo from "./@Icons/PostLogo";
 import UserAvatar from "./UserAvatar";
+import ImagesModalGallery from "./ImagesModalGallery";
 
 export default function PostTemplate({
   post: {
@@ -58,21 +59,11 @@ export default function PostTemplate({
       >
         <h1 className="text-4xl text-center font-bold">{title}</h1>
         {!!image?.length && (
-          <div className="flex justify-center items-center w-full overflow-hidden my-4">
-            <div className="flex  gap-2 w-fit overflow-x-auto">
-              {image.map((img, i) => (
-                <div
-                  key={img}
-                  className="min-w-[200px] max-w-[300px] h-auto max-h-[400px]"
-                >
-                  <img
-                    key={"img" + i}
-                    src={img}
-                    alt={title}
-                    className="w-full h-full object-cover rounded-md"
-                  />
-                </div>
-              ))}
+          <div id="posts-images" className="flex items-center gap-2">
+            <div className="flex justify-center items-center w-full overflow-hidden">
+              {/* <div className=" flex  gap-2 w-fit overflow-x-auto"> */}
+              <ImagesModalGallery images={[...image, ...image]} title={title} />
+              {/* </div> */}
             </div>
           </div>
         )}
