@@ -1,7 +1,7 @@
 import React from "react";
 import { categoryName } from "@app/utils/types";
 
-export default function PostLogo({
+export default function CardLogo({
   size = "24px",
   color = "#000",
   logo,
