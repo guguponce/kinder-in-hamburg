@@ -112,7 +112,7 @@ export interface Current {
   temp_c: number;
   is_day: number;
   condition: Condition;
-  precip_in: number;
+  precip_mm: number;
   humidity: number;
   cloud: number;
   feelslike_c: number;
@@ -145,7 +145,7 @@ export interface Day {
   maxtemp_c: number;
   mintemp_c: number;
   avgtemp_c: number;
-  totalprecip_in: number;
+  totalprecip_mm: number;
   avghumidity: number;
   daily_will_it_rain: number;
   daily_chance_of_rain: number;
@@ -160,7 +160,7 @@ export interface Hour {
   temp_c: number;
   is_day: number;
   condition: Condition;
-  precip_in: number;
+  precip_mm: number;
   humidity: number;
   cloud: number;
   feelslike_c: number;
@@ -180,6 +180,70 @@ export interface Location {
   tz_id: string;
   localtime_epoch: number;
   localtime: string;
+}
+
+export interface VisualCrossing {
+  queryCost: number;
+  latitude: number;
+  longitude: number;
+  resolvedAddress: string;
+  address: string;
+  timezone: string;
+  tzoffset: number;
+  days: CurrentConditions[];
+  stations: { [key: string]: Station };
+  currentConditions: CurrentConditions;
+}
+
+export interface CurrentConditions {
+  datetime: string;
+  datetimeEpoch: number;
+  temp: number;
+  feelslike: number;
+  humidity: number;
+  dew: number;
+  precip: number;
+  precipprob: number;
+  snow: number;
+  snowdepth: number;
+  preciptype: string[] | null;
+  windgust: number | null;
+  windspeed: number;
+  winddir: number;
+  pressure: number;
+  visibility: number;
+  cloudcover: number;
+  solarradiation: number;
+  solarenergy: number;
+  uvindex: number;
+  conditions: string;
+  icon: string;
+  stations: string[] | null;
+  source: string;
+  sunrise?: string;
+  sunriseEpoch?: number;
+  sunset?: string;
+  sunsetEpoch?: number;
+  moonphase?: number;
+  tempmax?: number;
+  tempmin?: number;
+  feelslikemax?: number;
+  feelslikemin?: number;
+  precipcover?: number;
+  severerisk?: number;
+  description?: string;
+  hours?: CurrentConditions[];
+}
+
+export interface Station {
+  distance: number;
+  latitude: number;
+  longitude: number;
+  useCount: number;
+  id: string;
+  name: string;
+  quality: number;
+  contribution: number;
 }
 
 export type categoryName =
