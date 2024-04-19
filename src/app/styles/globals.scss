@@ -37,7 +37,8 @@ $hh-950: #141a1f;
 body {
   min-height: 100dvh;
   margin: 0;
-  color: rgb(var(--foreground-rgb));
+  color: $hh-900;
+
   background: linear-gradient(
       to bottom,
       transparent,
