@@ -1,7 +1,4 @@
-import { bezirke } from "@app/utils/constants";
 import React from "react";
-import BezirkCards from "./BezirkCards";
-import { getHamburgsWeather } from "@app/api/weatherAPI";
 import { getAllSuggestedPosts } from "@app/api/dbActions";
 import { iPost } from "@app/utils/types";
 import PostNotFound from "@app/components/@PostForm/PostNotFound";
