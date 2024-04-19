@@ -467,7 +467,7 @@ export const deleteApprovedPost = async (id: number) => {
   }
 };
 
-export const getAllPostsIds = async (id: string) => {
+export const getAllPostsIds = async (id?: string) => {
   const getIDs = (db: string) => {
     return supabaseAdmin.from(db).select("id");
   };
@@ -480,8 +480,8 @@ export const getAllPostsIds = async (id: string) => {
     if (data.some((d) => d.error)) {
       throw new Error("Error getting posts IDs from a db");
     }
-    const ids = [id, ...data.map((d) => d.data!.map((d) => d.id)).flat()];
-    return ids;
+    const ids = [...data.map((d) => d.data!.map((d) => d.id)).flat()];
+    return id ? [...ids, id] : ids;
   } catch (error) {
     return false;
   }

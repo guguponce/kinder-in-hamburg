@@ -118,8 +118,8 @@ export const deleteImage = async (path: string, fileName: string) => {
   }
 };
 
-export const deleteUnusedImages = async () => {
-  const activePosts = await getAllPostsIds().then((res) => res || []);
+export const deleteUnusedImages = async (id?: string) => {
+  const activePosts = await getAllPostsIds(id).then((res) => res || []);
 
   const allImgFolders = await getFoldersList().then((res) => res);
   const deletableFolders = allImgFolders.filter(

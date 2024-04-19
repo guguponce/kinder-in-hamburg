@@ -160,7 +160,7 @@ export default function PostForm({
         setSubmitError({ isError: false, errorMessage: "" });
       })
       .then(() => {
-        deleteUnusedImages();
+        deleteUnusedImages(newID.current.toString());
       })
       .then(() =>
         setTimeout(() => {
@@ -204,7 +204,7 @@ export default function PostForm({
         setSubmitError({ isError: false, errorMessage: "" });
       })
       .then(() => {
-        deleteUnusedImages();
+        deleteUnusedImages(data.id.toString());
       })
       .then(() =>
         setTimeout(() => {
@@ -247,7 +247,7 @@ export default function PostForm({
         setSubmitError({ isError: false, errorMessage: "" });
       })
       .then(() => {
-        deleteUnusedImages();
+        deleteUnusedImages(data.id.toString());
       })
       .then(() => {
         updateContributor(suggestionPost.addedBy, suggestionPost.id);
@@ -293,7 +293,7 @@ export default function PostForm({
         setSubmitError({ isError: false, errorMessage: "" });
       })
       .then(() => {
-        deleteUnusedImages();
+        deleteUnusedImages(data.id.toString());
       })
       .then(() =>
         setTimeout(() => {
