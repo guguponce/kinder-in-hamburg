@@ -93,6 +93,7 @@ export default async function FlohmarktSuggestionPage({
                   <AdminServerComponent>
                     <ApproveFlohmarktButton
                       size="small"
+                      flohmarktContributor={suggestion.addedBy}
                       flohmarktID={flohmarktID}
                     />
                   </AdminServerComponent>

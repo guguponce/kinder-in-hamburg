@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useForm, type FieldValues } from "react-hook-form";
 import { addFlohmarkt, updateFlohmarkt } from "@app/api/dbActions";
 import type { iSessionUser, iFlohmarkt } from "../../utils/types";
@@ -141,6 +141,7 @@ export default function FlohForm({
     if (!data.date) alert("The date of the Flohmarkt is required");
     if (!data.startTime && data.endTime)
       alert("Please provide the start and end time of the Flohmarkt");
+
     const updatedFlohmarkt: iFlohmarkt = {
       id: id || newID.current,
       status: data.status,
