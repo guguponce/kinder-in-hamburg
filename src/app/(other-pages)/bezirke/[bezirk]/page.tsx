@@ -33,13 +33,15 @@ export default async function BezirkPage({
         id="bezirk-hero"
         className="flex flex-wrap-reverse gap-4 justify-center w-full h-fit"
       >
-        <article className="h-[40dvh] min-h-[425px] aspect-[0.75]">
-          <PointsGallery horizontal={false} posts={pinnedPosts.slice(0, 3)}>
-            <h2 className="text-2xl font-semibold text-hh-50 bg-hh-900 bg-opacity-50 rounded p-1  w-fit">
-              #BestOf
-            </h2>
-          </PointsGallery>
-        </article>
+        {!!pinnedPosts.length && (
+          <article className="h-[40dvh] min-h-[425px] aspect-[0.75]">
+            <PointsGallery horizontal={false} posts={pinnedPosts.slice(0, 3)}>
+              <h2 className="text-2xl font-semibold text-hh-50 bg-hh-900 bg-opacity-50 rounded p-1  w-fit">
+                #BestOf
+              </h2>
+            </PointsGallery>
+          </article>
+        )}
         <article className="max-h-[40dvh] min-h-[425px] w-[600px] max-w-screen md:aspect-[2.25] aspect-[1.5] bg-black">
           <WeatherBox full weatherAtRight bezirk={bezirk as iBezirk} />
         </article>

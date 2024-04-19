@@ -4,7 +4,6 @@ import PointsGallery from "@app/components/@PostForm/PointsGallery";
 import FilterablePostList from "@app/components/FilterablePostList";
 import { categoryNames, relatedCategories } from "@app/utils/constants";
 import { parseParams } from "@app/utils/functions";
-import { iPost } from "@app/utils/types";
 import NotFound from "@components/NotFound";
 import React from "react";
 
@@ -20,12 +19,6 @@ export default async function CategoriesPage({
   const highlightedWithImages = categoryPosts.filter(
     (post) => post.image && post.pinnedPost
   );
-  const latestPost = categoryPosts.reduce((acc, post) => {
-    if (!acc) return post;
-    return (post.lastUpdate || post.id) > (acc.lastUpdate || acc.id)
-      ? post
-      : acc;
-  }, categoryPosts[0] as iPost);
 
   const randomCategory =
     relatedCategories[category][
@@ -34,10 +27,7 @@ export default async function CategoriesPage({
   const randomCategoryPosts = categoryPosts
     .filter((post) => post.categories.includes(randomCategory))
     .sort(() => 0.5 - Math.random());
-  const randomCategoryPost =
-    randomCategoryPosts[0].id === latestPost.id && randomCategoryPosts[1]
-      ? randomCategoryPosts[1]
-      : randomCategoryPosts[0];
+
   return (
     <main className="w-full max-w-[1200px] flex flex-col items-center gap-4 ">
       <h1 className="text-4xl text-white font-bold">{category}</h1>
@@ -45,16 +35,18 @@ export default async function CategoriesPage({
         id="category-hero"
         className="flex flex-wrap gap-4 justify-center w-full h-full"
       >
-        <section className="w-full max-w-[600px] aspect-[1.5]">
-          <PointsGallery
-            horizontal={true}
-            posts={highlightedWithImages.slice(0, 3)}
-          >
-            <h2 className=" text-lg md:text-2xl font-semibold text-hh-50 bg-hh-900 bg-opacity-50 rounded p-1 w-fit">
-              #highlights
-            </h2>
-          </PointsGallery>
-        </section>
+        {!!highlightedWithImages.length && (
+          <section className="w-full max-w-[600px] aspect-[1.5]">
+            <PointsGallery
+              horizontal={true}
+              posts={highlightedWithImages.slice(0, 3)}
+            >
+              <h2 className=" text-lg md:text-2xl font-semibold text-hh-50 bg-hh-900 bg-opacity-50 rounded p-1 w-fit">
+                #highlights
+              </h2>
+            </PointsGallery>
+          </section>
+        )}
         <section className="h-full rounded-md flex flex-row flex-wrap justify-center gap-2">
           <RandomRecommendation
             shuffle
