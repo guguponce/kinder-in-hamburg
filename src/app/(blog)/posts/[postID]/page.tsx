@@ -14,7 +14,6 @@ export default async function CurrentPostPage({
   const { postID } = params;
   const post = await getApprovedPostWithID(postID);
   if (!post) return <PostNotFound />;
-
   return (
     <>
       <AdminServerComponent>

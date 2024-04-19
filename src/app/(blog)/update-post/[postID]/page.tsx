@@ -2,11 +2,11 @@ import React from "react";
 import PostForm from "@components/@PostForm/PostForm";
 import { getServerSession } from "next-auth";
 import { getApprovedPostWithID } from "@app/api/dbActions";
-import { parseAddress, parsePost } from "@app/utils/functions";
+import { parseAddress } from "@app/utils/functions";
 import { redirect } from "next/navigation";
 import PostNotFound from "@components/@PostForm/PostNotFound";
 
-export default async function updateSuggestedPostPage({
+export default async function updateApprovedPostPage({
   params,
 }: {
   params: { postID: string };
