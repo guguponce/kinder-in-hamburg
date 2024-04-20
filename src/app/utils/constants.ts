@@ -466,6 +466,7 @@ export const relatedCategories: { [x: string]: categoryName[] } = {
   Outdoor: ["Wochenende Ausflüge", "Spielplatz", "Tiere"],
   Spielplatz: ["Outdoor", "Indoor", "Tiere"],
   Museum: ["Indoor", "Essen/Café", "Outdoor"],
+  Shops: ["Essen/Café", "Museum", "Indoor"],
   Kostenlos: ["Essen/Café", "Shops", "Wochenende Ausflüge"],
   "Essen/Café": ["Kostenlos", "Indoor", "Shops"],
   "Unter 2": ["Spielplatz", "Indoor", "Museum"],
