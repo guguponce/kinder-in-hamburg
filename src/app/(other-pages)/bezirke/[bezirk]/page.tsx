@@ -41,7 +41,7 @@ export default async function BezirkPage({
             posts={
               !!pinnedPosts.length
                 ? pinnedPosts.slice(0, 3)
-                : sortPostsByDate(bezirkPosts)
+                : sortPostsByDate(bezirkPosts).slice(0, 3)
             }
           >
             <h2 className="text-2xl font-semibold text-hh-50 bg-hh-900 bg-opacity-50 rounded p-1  w-fit">

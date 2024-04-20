@@ -3,7 +3,7 @@ import RandomRecommendation from "@app/components/@Cards/RandomRecommendation";
 import PointsGallery from "@app/components/@PostForm/PointsGallery";
 import FilterablePostList from "@app/components/FilterablePostList";
 import { categoryNames, relatedCategories } from "@app/utils/constants";
-import { parseParams } from "@app/utils/functions";
+import { parseParams, sortPostsByDate } from "@app/utils/functions";
 import NotFound from "@components/NotFound";
 import React from "react";
 
@@ -39,10 +39,13 @@ export default async function CategoriesPage({
           <section className="w-full max-w-[600px] aspect-[1.5]">
             <PointsGallery
               horizontal={true}
-              posts={highlightedWithImages.slice(0, 3)}
+              posts={
+                highlightedWithImages.slice(0, 3) ||
+                sortPostsByDate(categoryPosts).slice(0, 3)
+              }
             >
               <h2 className=" text-lg md:text-2xl font-semibold text-hh-50 bg-hh-900 bg-opacity-50 rounded p-1 w-fit">
-                #highlights
+                {!!highlightedWithImages.length ? "#highlights" : "#Latest"}
               </h2>
             </PointsGallery>
           </section>
