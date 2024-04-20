@@ -230,3 +230,6 @@ export const getTimeRainAndActivity = (
       : activity;
   return { currentTime, currentHour, nextRain, activityType };
 };
+
+export const sortPostsByDate = (posts: iPost[]) =>
+  [...posts].sort((a, b) => b.createdAt - a.createdAt);
