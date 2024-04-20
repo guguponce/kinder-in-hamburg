@@ -32,8 +32,22 @@ export default async function WeatherBox({
 
   const retrievedSuggestions = bezirk
     ? // --------------------
-      await getSuggestionsWithCatAndBezirk(activityType as categoryName, bezirk)
-    : await getApprovedPostWithCat(activityType);
+      await getSuggestionsWithCatAndBezirk(
+        activityType as categoryName,
+        bezirk
+      ).then((res) => {
+        if (res && res.length > 0) return res;
+        return getSuggestionsWithCatAndBezirk(
+          activityType === "Indoor" ? "Outdoor" : "Indoor",
+          bezirk
+        );
+      })
+    : await getApprovedPostWithCat(activityType).then((res) => {
+        if (res && res.length > 0) return res;
+        return getApprovedPostWithCat(
+          activityType === "Indoor" ? "Outdoor" : "Indoor"
+        );
+      });
   if (!retrievedSuggestions)
     return <div>There was a problem retrieving suggestions</div>;
 
@@ -55,7 +69,7 @@ export default async function WeatherBox({
     <>
       {full ? (
         <FullImageWeatherBox
-          imgURL={suggestion.image![0]}
+          imgURL={suggestion.image![0] || ""}
           title={suggestion.title}
           text={getPlainText(suggestion.text, 100)}
           id={suggestion.id}
@@ -102,7 +116,8 @@ export default async function WeatherBox({
               href={link}
               className="px-2 py-1 font-semibold capitalize rounded-sm text-white bg-hh-400 hover:bg-hh-500 active:bg-hh-300 break-words w-fit text-center text-sm"
             >
-              <span className="hidden md:inline">Find more</span> {activityType}{" "}
+              <span className="hidden md:inline">Find more</span>{" "}
+              {suggestion.categories.includes(activityType) ? activityType : ""}{" "}
               activities
             </Link>
           </article>

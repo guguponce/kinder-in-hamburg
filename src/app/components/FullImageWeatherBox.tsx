@@ -37,7 +37,9 @@ export default function FullImageWeatherBox({
         )}
         <Link
           href={`${prefixLink || "/posts/"}${id}`}
-          className="self-end px-2 py-1 mt-1 font-semibold capitalize rounded-sm text-white bg-hh-400 hover:bg-hh-500 active:bg-hh-300 break-words w-fit text-center"
+          className={`${
+            weatherAtRight ? "self-start" : "self-end"
+          } px-2 py-1 mt-1 font-semibold capitalize rounded-sm text-white bg-hh-400 hover:bg-hh-500 active:bg-hh-300 break-words w-fit text-center`}
         >
           Read more
         </Link>
