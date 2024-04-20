@@ -105,8 +105,7 @@ export const getPlainText = (text: TypeAndText[], max?: number) => {
 };
 
 export const parseParams = (params: string) => {
-  let parsed = params.replace("-", " ");
-  return decodeURIComponent(parsed);
+  return decodeURIComponent(params);
 };
 
 export function separateAddress(address: string) {
