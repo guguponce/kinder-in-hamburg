@@ -22,6 +22,7 @@ import FlohmarktImageUploader from "./FlohmarktImageUploader";
 import PostFormInput from "../@PostForm/PostFormInput";
 import { revalidatePost } from "@app/utils/actions/revalidate";
 import UserInputBox from "./UserInputBox";
+import { deleteUnusedFlohmaerkteImages } from "@app/api/storageActions";
 
 interface FlohFormProps {
   FlohForm: Partial<iFlohmarkt>;
@@ -133,7 +134,7 @@ export default function FlohForm({
         setSuccessfulSubmit(true);
       })
       .then(() => {
-        // deleteUnusedFlohmaerkteImages();
+        deleteUnusedFlohmaerkteImages();
       })
       .then(async () => {
         sleep(750);

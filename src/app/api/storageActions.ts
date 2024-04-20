@@ -205,7 +205,9 @@ export const uploadFlohmarktImage = async (
 export const getFlohmaerkteFoldersList = async () => {
   const listRef = ref(storage, `/flohmaerkteImages`);
   const imagesList = await listAll(listRef);
-  const imgFoldersNames = imagesList.prefixes.map((item) => item.name);
+  const imgFoldersNames = imagesList.prefixes.map((item) =>
+    parseInt(item.name)
+  );
   return imgFoldersNames;
 };
 
@@ -258,7 +260,7 @@ export const deleteUnusedFlohmaerkteImages = async () => {
     (res) => res || []
   );
 
-  const allImgFolders = await getFlohmaerkteFoldersList().then((res) => res);
+  const allImgFolders = await getFlohmaerkteFoldersList();
   const deletableFolders = allImgFolders.filter(
     (folder) => !activeFlohmaerkte.includes(folder)
   );
