@@ -46,7 +46,7 @@ export default async function BezirkPage({
           <WeatherBox full weatherAtRight bezirk={bezirk as iBezirk} />
         </article>
       </section>
-      {!!flohmaerkte && (
+      {!!flohmaerkte && !!flohmaerkte.length && (
         <section className="w-full flex justify-center items-center bg-gradient-to-b from-hh-600 to-hh-500 bg-opacity-25 rounded">
           <ScrollableFlohmaerkte
             flohmaerkte={flohmaerkte.sort((a, b) => a.date - b.date)}

@@ -17,11 +17,11 @@ export default async function BezirkePage() {
 
   return (
     <>
-      <h1 className="font-bold text-xl">Bezirke</h1>
-      <h2 className="font-bold text-hh-700 text-base">
+      <h1 className="font-bold text-3xl lg:text-4xl text-white">Bezirke</h1>
+      <h2 className="font-bold text-hh-100 text-base">
         Where do you want to go?
       </h2>
-      <section className="flex flex-wrap gap-4 justify-center py-4">
+      <section className="flex flex-wrap gap-4 lg:gap-8 justify-center py-4">
         {Object.entries(bezirkePosts).map(([bezirk, bezirkPosts]) => (
           <article
             key={bezirk}
@@ -37,7 +37,7 @@ export default async function BezirkePage() {
             </RandomRecommendation>
             <Link
               href={`/bezirke/${bezirk}`}
-              className="absolute bottom-16 bg-hh-700 -z-10 translate-y-full px-4 py-1 max-w-[80%] w-fit text-sm text-center  rounded-[0_0_6px_6px] text-white font-semibold hover:bg-hh-800 transition-all duration-200 ease-in-out"
+              className="absolute bottom-16 bg-hh-700 z-[100] translate-y-full px-4 py-1 max-w-[80%] w-fit text-sm text-center  rounded-[0_0_6px_6px] text-white font-semibold hover:bg-hh-800 transition-all duration-200 ease-in-out"
             >
               More in {bezirk}
             </Link>
