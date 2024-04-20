@@ -14,7 +14,7 @@ export default function FlohPostersList({
       {!!flohList.length &&
         flohList.map(({ title, image, date, id, bezirk }) => (
           <React.Fragment key={id}>
-            <article className="w-1/3 min-w-[150px] max-w-[180px] md:min-w-[180px] md:max-w-[200px] md:w-1/5 aspect-[0.66] bg-hh-200 rounded-sm ">
+            <article className="w-full sm:w-1/2 min-w-[150px] max-w-[180px] md:min-w-[180px] md:max-w-[200px] md:w-1/5  h-auto bg-hh-200 rounded-sm ">
               <FlohmarktPoster
                 id={id}
                 title={title}

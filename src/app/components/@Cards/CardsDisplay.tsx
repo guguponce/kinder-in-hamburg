@@ -7,7 +7,7 @@ import ImgPriorityCard from "./ImgPriorityCard";
 export default function CardsDisplay({ cardPosts }: { cardPosts: iPost[] }) {
   return (
     <div
-      className={`gap-2 flex md:flex-row justify-center items-start flex-row flex-wrap min-h-[350px] h-full overflow-auto p-2 w-full min-w-fit`}
+      className={`gap-2 lg:gap-8 flex md:flex-row justify-center items-start flex-row flex-wrap min-h-[350px] h-full overflow-auto p-2 w-full min-w-fit`}
     >
       {cardPosts.map(({ id, title, text, image }, index) => {
         return (

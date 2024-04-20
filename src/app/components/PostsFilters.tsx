@@ -158,7 +158,7 @@ export default function PostFilters({
     <>
       <div className="flex gap-2">
         <button
-          className="block min-w-fit h-fit p-2 bg-hh-700 hover:bg-hh-800 active:bg-hh-600 text-white font-semibold rounded-[0_4px_4px_0] "
+          className="block min-w-fit h-fit p-2 md:px-4 lg:px-8 bg-hh-700 hover:bg-hh-800 active:bg-hh-600 text-white font-semibold rounded-[0_4px_4px_0] "
           onClick={() => {
             setIsOpen((prev) => !prev);
           }}

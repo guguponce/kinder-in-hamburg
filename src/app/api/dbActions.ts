@@ -60,7 +60,6 @@ export const handleUploadToSupabase = async (
 
 // CONTRIBUTORS
 export const getContributorData = async (email: string) => {
-  console.log(email);
   try {
     const { data, error } = await supabaseAdmin
       .from("contributors")
@@ -114,7 +113,6 @@ export const updateContributor = async (
       return;
     }
     if (contributor.postsSubmitted?.includes(postID)) return;
-    console.log("update contributor");
     if (type === "flohmarkt") {
       const { error } = await supabaseAdmin
         .from("contributors")
