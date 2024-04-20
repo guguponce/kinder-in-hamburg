@@ -34,7 +34,7 @@ export default async function CategoriesPage() {
               </h2>
               <div className="w-full flex justify-center items-center">
                 <StackedCards
-                  link={`/categories/${cat}`}
+                  link={`/categories/${encodeURIComponent(cat)}`}
                   posts={categoriesPosts[cat].slice(0, 3)}
                   horizontal={true}
                   onlyTitle={true}

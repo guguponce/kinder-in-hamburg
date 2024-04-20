@@ -29,14 +29,14 @@ export default async function BezirkePage() {
           >
             <RandomRecommendation posts={bezirkPosts} size="medium">
               <Link
-                href={`/bezirke/${bezirk}`}
+                href={`/bezirke/${encodeURIComponent(bezirk)}`}
                 className="block bg-hh-700 bg-opacity-75 hover:bg-opacity-100 backdrop-blur-sm w-full mx-auto max-w-full text-lg font-bold text-white px-2 py-1 text-center -mt-1 p-2 rounded-[6px_6px_0_0]"
               >
                 {bezirk}
               </Link>
             </RandomRecommendation>
             <Link
-              href={`/bezirke/${bezirk}`}
+              href={`/bezirke/${encodeURIComponent(bezirk)}`}
               className="absolute bottom-16 bg-hh-700 z-[100] translate-y-full px-4 py-1 max-w-[80%] w-fit text-sm text-center  rounded-[0_0_6px_6px] text-white font-semibold hover:bg-hh-800 transition-all duration-200 ease-in-out"
             >
               More in {bezirk}
