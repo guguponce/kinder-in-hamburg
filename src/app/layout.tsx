@@ -6,6 +6,7 @@ import Header from "@components/@Header/Header";
 import { getServerSession } from "next-auth";
 import SessionProvider from "@app/providers/SessionProvider";
 import LoggedUserComponents from "@app/providers/LoggedUserComponents";
+import Footer from "./components/@Footer/Footer";
 
 const roboto = Roboto({
   weight: "400",
@@ -29,11 +30,12 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${roboto.className} flex flex-col items-center bg-hh-500 max-w-[1400px] mx-auto`}
+        className={`${roboto.className} flex flex-col items-center bg-hh-500 max-w-[1400px] mx-auto gap-4 md:gap-8`}
       >
         <SessionProvider session={session}>
           <Header />
           <LoggedUserComponents>{children}</LoggedUserComponents>
+          <Footer />
         </SessionProvider>
       </body>
     </html>
