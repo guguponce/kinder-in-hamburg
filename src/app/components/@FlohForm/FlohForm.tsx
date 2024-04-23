@@ -80,7 +80,6 @@ export default function FlohForm({
     register,
     handleSubmit,
     setValue,
-    getValues,
     formState: { errors, isSubmitSuccessful, isDirty, isSubmitting, isLoading },
   } = useForm({
     defaultValues: {

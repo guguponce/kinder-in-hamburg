@@ -14,6 +14,7 @@ export default function PostTemplate({
     createdAt,
     lastUpdate,
     bezirk,
+    stadtteil,
     address,
     minAge,
     maxAge,
@@ -97,6 +98,17 @@ export default function PostTemplate({
                   >
                     {bezirk}
                   </Link>
+                </div>
+              )}
+              {!!stadtteil && (
+                <div className="ml-6 flex gap-1 items-center">
+                  {/* <PostLogo logo="stadtteil" color="#1F262E" /> */}
+                  <p
+                    id="stadtteil"
+                    className="ml-1 block font-semibold italic hover:underline hover: underline-offset-2"
+                  >
+                    {stadtteil}
+                  </p>
                 </div>
               )}
               {!!address && (

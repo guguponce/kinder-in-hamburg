@@ -41,6 +41,7 @@ export const parsePost = (post: iStringifiedRetrievedPost): iPost => {
     id: post.id,
     createdAt: post.createdAt,
     bezirk: post.bezirk,
+    stadtteil: post.stadtteil,
   };
 };
 export const parseContributor = (contributor: iStringifiedContributor) => {

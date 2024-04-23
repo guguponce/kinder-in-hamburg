@@ -111,11 +111,11 @@ export default function FlohmarktTemplate({
                       </div>
                     )}
                     {!!stadtteil && (
-                      <div className="flex gap-1 items-center">
-                        <PostLogo logo="stadtteil" color="#1F262E" />
+                      <div className="ml-6 flex gap-1 items-center">
+                        {/* <PostLogo logo="stadtteil" color="#1F262E" /> */}
                         <p
                           id="stadtteil"
-                          className="block font-semibold italic hover:underline hover: underline-offset-2"
+                          className="ml-1 block font-semibold italic hover:underline hover: underline-offset-2"
                         >
                           {stadtteil}
                         </p>

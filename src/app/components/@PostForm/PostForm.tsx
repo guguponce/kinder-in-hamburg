@@ -8,7 +8,6 @@ import {
   updateApprovedPost,
   updateContributor,
   updateSuggestedPost,
-  updateSuggestionStatus,
 } from "@app/api/dbActions";
 import type {
   iAddress,
@@ -16,17 +15,23 @@ import type {
   iIgAccount,
   iPost,
   iSessionUser,
+  iBezirk,
 } from "../../utils/types";
 import ImageUploader from "./ImageUploader";
 import MarkUpForm from "./MarkUpForm";
 import PostFormInput from "./PostFormInput";
 import PostTextTypeButtons from "./PostTextTypeButtons";
 import DisplayDraft from "./DisplayDraft";
-import DeletePostButton from "../DeleteButton";
 import { useRouter } from "next/navigation";
-import { bezirke, categoryNames } from "@app/utils/constants";
+import {
+  BEZIRK_TO_STADTTEILE,
+  bezirke,
+  categoryNames,
+} from "@app/utils/constants";
 import IgAccountInput from "./IgAccountInput";
 import { deleteUnusedImages } from "@app/api/storageActions";
+import AdminClientComponent from "@app/providers/AdminClientComponents";
+import { revalidatePost } from "@app/utils/actions/revalidate";
 
 interface PostFormProps {
   PostForm: Partial<iPost>;
@@ -50,6 +55,7 @@ export default function PostForm({
     link,
     address,
     bezirk,
+    stadtteil,
     minAge,
     maxAge,
     igAccounts,
@@ -65,6 +71,9 @@ export default function PostForm({
 }: PostFormProps) {
   const router = useRouter();
   const [userInput, setUserInput] = React.useState<iSessionUser>(user);
+  const [bezirkInput, setBezirkInput] = React.useState<iBezirk>(
+    (bezirk as iBezirk) || "Altona"
+  );
   const [imagesUrlsReady, setImagesUrlsReady] = React.useState<{
     ready: boolean;
     urls: string[];
@@ -97,6 +106,7 @@ export default function PostForm({
 
   const {
     register,
+    setValue,
     handleSubmit,
     formState: { errors, isSubmitSuccessful, isDirty, isSubmitting, isLoading },
   } = useForm({
@@ -116,6 +126,7 @@ export default function PostForm({
       PLZ: address?.PLZ || "",
       city: address?.city || "",
       bezirk: bezirk,
+      stadtteil: stadtteil,
       minAge: minAge,
       maxAge: maxAge,
       igAccounts: igAccounts,
@@ -142,6 +153,7 @@ export default function PostForm({
       image: imagesUrlsReady.urls,
       link: data.link,
       bezirk: data.bezirk,
+      stadtteil: data.stadtteil,
       minAge: data.minAge ? parseInt(data.minAge) : 0,
       maxAge: data.maxAge ? parseInt(data.maxAge) : undefined,
       igAccounts: igAccountsInput,
@@ -162,11 +174,12 @@ export default function PostForm({
       .then(() => {
         deleteUnusedImages(newID.current.toString());
       })
-      .then(() =>
+      .then(() => {
+        revalidatePost();
         setTimeout(() => {
           router.push(`/new-post/successfully-submitted/${data.id}`);
-        }, 1000)
-      )
+        }, 300);
+      })
       .catch((error) =>
         setSubmitError({ isError: true, errorMessage: error.message })
       );
@@ -180,9 +193,10 @@ export default function PostForm({
     if (!user_id || !userInput.email || !addedBy)
       return alert("User data from creator needed");
     const updatedPost: iPost = {
-      addedBy: addedBy,
+      addedBy: addedBy!,
       address: addressInput,
       bezirk: data.bezirk,
+      stadtteil: data.stadtteil,
       categories: categoriesList,
       createdAt: createdAt || newID.current,
       id: data.id,
@@ -196,7 +210,7 @@ export default function PostForm({
       tags: data.tags ? data.tags.split("-").filter(Boolean) : [data.tags],
       text: savedPostText,
       title: data.title,
-      user_id: user_id,
+      user_id: user_id!,
       status: data.status,
     };
     updateSuggestedPost(updatedPost)
@@ -206,11 +220,12 @@ export default function PostForm({
       .then(() => {
         deleteUnusedImages(data.id.toString());
       })
-      .then(() =>
+      .then(() => {
+        revalidatePost();
         setTimeout(() => {
           router.push(`/update-suggestion/successfully-updated/${data.id}`);
-        }, 1000)
-      )
+        }, 300);
+      })
       .catch((error) =>
         setSubmitError({ isError: true, errorMessage: error.message })
       );
@@ -227,6 +242,7 @@ export default function PostForm({
       addedBy: addedBy,
       address: addressInput,
       bezirk: data.bezirk,
+      stadtteil: data.stadtteil,
       categories: categoriesList,
       createdAt: createdAt || newID.current,
       id: data.id,
@@ -254,8 +270,9 @@ export default function PostForm({
       })
       .then(() =>
         setTimeout(() => {
+          revalidatePost();
           router.push(`/posts-approval/success/${data.id}`);
-        }, 1000)
+        }, 300)
       )
       .catch((error) =>
         setSubmitError({ isError: true, errorMessage: error.message })
@@ -272,6 +289,7 @@ export default function PostForm({
       addedBy: addedBy,
       address: addressInput,
       bezirk: data.bezirk,
+      stadtteil: data.stadtteil,
       categories: categoriesList,
       createdAt: createdAt || newID.current,
       id: data.id,
@@ -295,11 +313,12 @@ export default function PostForm({
       .then(() => {
         deleteUnusedImages(data.id.toString());
       })
-      .then(() =>
+      .then(() => {
+        revalidatePost();
         setTimeout(() => {
           router.push(`/update-post/successfully-updated/${data.id}`);
-        }, 1000)
-      )
+        }, 300);
+      })
       .catch((error) =>
         setSubmitError({ isError: true, errorMessage: error.message })
       );
@@ -425,23 +444,25 @@ export default function PostForm({
               ))}
             </div>
           </PostFormInput>
-          <PostFormInput
-            inputLabel='Tags (separate each tag with a "-". For example: "spielplatz-pferde")'
-            inputID="tags"
-          >
-            <>
-              <input
-                {...register("tags", { required: "At least a tag required" })}
-                id="tags"
-                name="tags"
-                placeholder="wasser-sand-spielplatz"
-                className="w-full rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
-              />
-              {errors.tags && (
-                <p className="text-negative-500">{`${errors.tags.message}`}</p>
-              )}
-            </>
-          </PostFormInput>
+          <AdminClientComponent>
+            <PostFormInput
+              inputLabel='Tags (separate each tag with a "-". For example: "spielplatz-pferde")'
+              inputID="tags"
+            >
+              <>
+                <input
+                  {...register("tags", { required: "At least a tag required" })}
+                  id="tags"
+                  name="tags"
+                  placeholder="wasser-sand-spielplatz"
+                  className="w-full rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
+                />
+                {errors.tags && (
+                  <p className="text-negative-500">{`${errors.tags.message}`}</p>
+                )}
+              </>
+            </PostFormInput>
+          </AdminClientComponent>
           <PostFormInput inputLabel="Link" inputID="link">
             <input
               {...register("link")}
@@ -519,6 +540,13 @@ export default function PostForm({
                 <select
                   {...register("bezirk")}
                   defaultValue={bezirk || "Altona"}
+                  onChange={(e) => {
+                    setBezirkInput(e.target.value as iBezirk);
+                    setValue(
+                      "stadtteil",
+                      BEZIRK_TO_STADTTEILE[e.target.value as iBezirk][0]
+                    );
+                  }}
                   className="mx  rounded border border-gray-300 bg-gray-100 bg-opacity-95 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
                 >
                   {bezirke.map((bezirk) => (
@@ -528,6 +556,26 @@ export default function PostForm({
                   ))}
                 </select>
               </PostFormInput>
+              {bezirkInput && (
+                <PostFormInput inputLabel="Stadtteil" inputID="stadtteil">
+                  <select
+                    {...register("stadtteil")}
+                    defaultValue={
+                      stadtteil &&
+                      BEZIRK_TO_STADTTEILE[bezirkInput].includes(stadtteil)
+                        ? stadtteil
+                        : BEZIRK_TO_STADTTEILE[bezirkInput][0]
+                    }
+                    className="mx  rounded border border-gray-300 bg-gray-100 bg-opacity-95 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
+                  >
+                    {BEZIRK_TO_STADTTEILE[bezirkInput].map((stadtteil) => (
+                      <option key={stadtteil} value={stadtteil}>
+                        {stadtteil}
+                      </option>
+                    ))}
+                  </select>
+                </PostFormInput>
+              )}
             </div>
             <div className="addressBox min-w-fit flex-grow flex flex-col">
               <PostFormInput inputLabel="Addresse" inputID="address">
