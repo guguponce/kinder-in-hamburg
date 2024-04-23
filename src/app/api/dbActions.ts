@@ -236,6 +236,21 @@ export const getAllSuggestedPosts = async () => {
   }
 };
 
+export const getPendingPosts = async () => {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("kih-suggestions")
+      .select("*")
+      .ilike("status", "pending");
+    if (error) {
+      throw new Error("There was a problem getting the pending posts.");
+    }
+    return parseAllPosts(data);
+  } catch (error) {
+    return false;
+  }
+};
+
 export const getSuggestionsWithCat = async (category: string) => {
   try {
     if (!checkCategory(category))
