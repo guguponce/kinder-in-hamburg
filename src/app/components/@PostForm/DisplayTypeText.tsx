@@ -16,9 +16,9 @@ export default function DisplayTypeText({
           {text}
         </pre>
       ) : type === "subtitle1" ? (
-        <h2 className="my-6 text-lg font-bold">{text}</h2>
+        <h2 className="mt-6 mb-4 text-lg font-bold">{text}</h2>
       ) : type === "subtitle2" ? (
-        <h2 className="my-4 text-lg font-semibold">{text}</h2>
+        <h2 className="mt-4 mb-1 text-lg font-semibold">{text}</h2>
       ) : type === "quote" ? (
         <div className="quote mx-auto w-[80%]">
           {" "}
@@ -48,7 +48,7 @@ export default function DisplayTypeText({
         <Link
           passHref={true}
           href={text}
-          className="text-purple-500 underline outline-offset-2 hover:text-purple-600 focus:border-0 focus:outline-2 focus:outline-purple-600 active:text-purple-400"
+          className="break-words block w-full text-hh-500 underline outline-offset-2 hover:text-hh-600 focus:border-0 focus:outline-2 focus:outline-hh-600 active:text-hh-400"
           target="_blank"
         >
           {text}
