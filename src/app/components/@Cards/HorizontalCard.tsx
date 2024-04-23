@@ -8,9 +8,7 @@ export default function HorizontalCard({
   title,
   image,
   description,
-  categories = "Indoor",
   link,
-  aspectRatio,
 }: iCard) {
   return (
     <Link

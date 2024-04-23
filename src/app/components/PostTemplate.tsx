@@ -67,11 +67,13 @@ export default function PostTemplate({
             </div>
           </div>
         )}
-        {text.map(([type, text], i) => (
-          <React.Fragment key={text + i}>
-            <DisplayTypeText type={type} text={text} />
-          </React.Fragment>
-        ))}
+        <article className="flex flex-col break-words">
+          {text.map(([type, text], i) => (
+            <React.Fragment key={text + i}>
+              <DisplayTypeText type={type} text={text} />
+            </React.Fragment>
+          ))}
+        </article>
 
         <p className="italic text-xs text-hh-500 text-end self-end">
           {lastUpdate && lastUpdate === createdAt
@@ -156,10 +158,12 @@ export default function PostTemplate({
               </div>
             )}
             {!!link && (
-              <div className="flex gap-1 items-center">
-                <PostLogo logo="link" color="#1F262E" size="1rem" />
+              <div className="flex gap-1 mt-1">
+                <div className="min-w-6 mt-1 flex justify-center">
+                  <PostLogo logo="link" color="#1F262E" size="1rem" />
+                </div>
                 <Link
-                  className="underline underline-offset-2 mt-1 text-hh-700 italic hover:text-hh-600 active:text-hh-800 visited:text-hh-500"
+                  className="underline underline-offset-2 text-hh-700 italic hover:text-hh-600 active:text-hh-800 visited:text-hh-500"
                   href={link}
                 >
                   {link}
@@ -186,9 +190,9 @@ export default function PostTemplate({
         </section>
       )} */}
 
-      <section id="addedBy" className="w-full px-4 my-2">
+      <section id="addedBy" className="w-fit px-4 my-2 ml-auto self-end">
         <h2 className="text-lg font-semibold">Added by:</h2>
-        <div className="flex items-center transition-all">
+        <div className="flex items-center justify-end transition-all">
           <UserAvatar
             avatar={addedBy.image}
             name={addedBy.name}

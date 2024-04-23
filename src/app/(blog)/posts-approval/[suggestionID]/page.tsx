@@ -41,7 +41,7 @@ export default async function ApproveSuggestedPostPage({
             </h3>
             <Link
               className="px-2 py-1 rounded-md font-semibold bg-hh-700 text-white hover:bg-hh-600"
-              href={`/update-suggestion/${suggestionID}`}
+              href={`/update-post/${suggestionID}`}
             >
               Update the approved post
             </Link>
