@@ -5,7 +5,7 @@ import ScrollableContainer from "../ScrollableContainer";
 
 export default async function NextWeekendFlohmaerkte() {
   const nextWeek = await getNextWeekendFlohmaerkte();
-  if (!nextWeek) return null;
+  if (!nextWeek || !nextWeek.length) return <></>;
   return (
     <section className="nextWeekendFlohmarkt bg-hh-100 bg-opacity-10 p-2 w-full flex justify-center gap-2 items-center">
       <ScrollableContainer>

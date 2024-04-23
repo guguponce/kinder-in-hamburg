@@ -36,7 +36,7 @@ export default function BurgerMenu() {
         aria-label="Options"
         className={`${
           menuOpen ? "rounded-[6px_6px_0_0]" : "rounded-md"
-        } mx-1 py-1 px-2 font-semibold bg-[#121212] text-[#fefefe] hover:bg-[#fefefe] hover:text-[#121212] active:bg-[#fefefe] active:text-[#121212]`}
+        } mx-1 py-1 px-2 font-semibold bg-[#121212] text-white hover:bg-white hover:text-[#121212] active:bg-white active:text-[#121212]`}
         onClick={toggleMenu}
       >
         Menu
@@ -50,10 +50,9 @@ export default function BurgerMenu() {
           {[
             { href: "/", name: "Home" },
             { href: "/posts", name: "Posts" },
+            { href: "/flohmaerkte", name: "Flohmärkte" },
             { href: "/categories", name: "Categories" },
             { href: "/bezirke", name: "Bezirke" },
-            { href: "/contact", name: "Contact" },
-            { href: "/about", name: "About" },
           ].map(({ name, href }, i) => (
             <Link
               className={`${
