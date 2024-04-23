@@ -21,25 +21,22 @@ export default async function PinnedPosts({
   if (!post) return null;
   const { id, image, title, text } = post;
   return (
-    <section className="w-full p-4 ">
-      <div className="w-full bg-negative-400 mx-auto flex justify-center">
-        <ScrollableContainer>
-          {pinnedPosts.slice(0, 3).map((p) => (
-            <article
-              className="min-w-[400px] max-w-[400px] aspect-[2.5] md:aspect-[2.5] mr-2"
-              key={p.id}
-            >
-              <HorizontalCard
-                id={p.id}
-                image={p.image ? p.image[0] : ""}
-                title={p.title}
-                description={getPlainText(p.text)}
-                aspectRatio={2.5}
-              />
-            </article>
-          ))}
-        </ScrollableContainer>
-      </div>
+    <section className="w-fit max-w-full p-4 bg-negative-400 bg-opacity-75 mx-auto flex justify-center">
+      <ScrollableContainer>
+        {pinnedPosts.slice(0, 3).map((p) => (
+          <article
+            className="min-w-[300px] max-w-[300px] aspect-[2] sm:min-w-[400px] sm:max-w-[400px] sm:aspect-[2.5] mr-2"
+            key={p.id}
+          >
+            <HorizontalCard
+              id={p.id}
+              image={p.image ? p.image[0] : ""}
+              title={p.title}
+              description={getPlainText(p.text)}
+            />
+          </article>
+        ))}
+      </ScrollableContainer>
     </section>
   );
 }
