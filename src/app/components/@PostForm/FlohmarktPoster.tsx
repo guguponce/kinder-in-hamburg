@@ -14,7 +14,7 @@ export default function FlohmarktPoster({
   image?: string;
   date: number;
   bezirk: string;
-  prefixLink: string;
+  prefixLink?: string;
   id: number;
 }) {
   return (

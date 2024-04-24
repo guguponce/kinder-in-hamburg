@@ -76,10 +76,10 @@ export default function FlohmarktTemplate({
             </aside>
           )}
           <section className="w-full md:w-1/2 flex-grow flex flex-col justify-between">
-            <div className="w-full">
+            <div className="w-full flex-grow flex flex-col">
               <div
                 id="flohmarkt-hero"
-                className="w-full p-4 my-4 rounded-md bg-hh-50 "
+                className="w-full p-4 my-4 rounded-md bg-hh-50 w-h-[50%] flex-grow"
               >
                 <h1 className="text-4xl text-center font-bold">{title}</h1>
 
@@ -180,7 +180,7 @@ export default function FlohmarktTemplate({
               </div>
             </div>
 
-            <div id="addedBy" className="w-full px-4 mb-2 mt-auto lg:ml-auto">
+            <div id="addedBy" className="w-full px-4 mb-4  lg:ml-auto">
               <h2 className="text-lg font-semibold">Hinzugefügt von:</h2>
               <div className="flex items-center transition-all">
                 <UserAvatar
