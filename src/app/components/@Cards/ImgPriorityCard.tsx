@@ -45,7 +45,7 @@ export default function ImgPriorityCard({
           alt={title}
         />
       </div>
-      <div className="cardContent w-full overflow-hidden flex-grow flex flex-col p-2">
+      <div className="cardContent w-full overflow-hidden flex-grow flex flex-col py-1 px-2">
         <h2
           className={`${classname.title} truncate-2 break-words cardTitle font-bold text-hh-950 w-full`}
         >
