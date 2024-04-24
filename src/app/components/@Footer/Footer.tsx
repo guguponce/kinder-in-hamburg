@@ -30,7 +30,7 @@ export default function Footer() {
         <div className="flex gap-4 flex-col sm:flex-row sm:text-center text-start min-w-24">
           {[
             { href: "/impressum", name: "Impressum" },
-            { href: "/datenschuetz", name: "Datenschütz" },
+            { href: "/datenschutz", name: "Datenschutz" },
           ].map(({ href, name }) => (
             <Link
               key={href}

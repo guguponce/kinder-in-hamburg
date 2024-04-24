@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth";
 import React from "react";
 
-export default async function AdminServerComponent({
+export default async function LoggedUserComponents({
   children,
 }: {
   children: React.ReactNode;

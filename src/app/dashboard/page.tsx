@@ -18,8 +18,9 @@ export default async function DashboardPage() {
 
   return (
     <main className="w-[calc(100%-2rem)] max-w-[1000px] p-4 bg-hh-100 rounded-md mx-auto flex flex-col items-center gap-8">
-      <h2 className="text-2xl font-semibold">
-        Hi, {session.user.name.split(" ")[0]}!{session.user.email}
+      <h2 className="text-2xl font-semibold text-center">
+        Hi, {session.user.name.split(" ")[0]}!
+        <span className="block text-sm">({session.user.email})</span>
       </h2>
       <section className=" w-full max-w-[800px] flex justify-between items-center flex-wrap-reverse gap-4 border-2 border-hh-700 p-4 rounded-md">
         <div className="flex flex-col items-start gap-2">
