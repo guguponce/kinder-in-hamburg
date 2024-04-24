@@ -14,7 +14,7 @@ export default async function ApprovalPage() {
   if (flohmaerkte.length === 0)
     return <div>There are no flohmaerkte to display</div>;
   return (
-    <div>
+    <div className="flex flex-col gap-4">
       {flohmaerkte.map((flo) => (
         <React.Fragment key={flo.id}>
           <MinimalFlohmarktDisplay flohmarkt={flo} />

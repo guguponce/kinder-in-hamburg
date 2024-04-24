@@ -2,9 +2,9 @@ import { getApprovedFlohmaerkte } from "@app/api/dbActions";
 import PostNotFound from "@app/components/@PostForm/PostNotFound";
 import ScrollableFlohmaerkte from "@app/components/ScrollableFlohmaerkte";
 import { getNextWeekend } from "@app/utils/functions";
-import FlohmarktPoster from "@components/@PostForm/FlohmarktPoster";
 import Link from "next/link";
 import React from "react";
+import BezirkableFlohmaerkteList from "./BezirkableFlohmaerkteList";
 
 export default async function FlohmarktPage() {
   const flohmaerkte = await getApprovedFlohmaerkte();
@@ -34,18 +34,13 @@ export default async function FlohmarktPage() {
         Flea Markets
       </h1>
       <ScrollableFlohmaerkte
-        flohmaerkte={nextWeekendFlohmaerkte}
         title="Next Weekend's"
+        flohmaerkte={nextWeekendFlohmaerkte}
       ></ScrollableFlohmaerkte>
-      <ScrollableFlohmaerkte
-        flohmaerkte={futureFlohmaerkte}
+      <BezirkableFlohmaerkteList
         title="Future Flea Markets"
-      ></ScrollableFlohmaerkte>
-
-      <ScrollableFlohmaerkte
-        flohmaerkte={[...flohmaerkte].sort((a, b) => a.date - b.date)}
-        title="All"
-      ></ScrollableFlohmaerkte>
+        flohList={futureFlohmaerkte}
+      ></BezirkableFlohmaerkteList>
     </main>
   );
 }
