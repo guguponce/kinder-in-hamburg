@@ -7,8 +7,12 @@ export default async function PostsPage() {
   const postsList = await getAllApprovedPosts();
   if (!postsList) return <div>There was a problem retrieving posts</div>;
   return (
-    <FilterablePostList postsList={postsList}>
-      <h1 className="font-bold min-w-fit text-center   text-3xl ">All posts</h1>
-    </FilterablePostList>
+    <main className="w-full max-w-[1000px]">
+      <FilterablePostList postsList={postsList}>
+        <h1 className="font-bold min-w-fit text-center   text-3xl ">
+          All posts
+        </h1>
+      </FilterablePostList>
+    </main>
   );
 }
