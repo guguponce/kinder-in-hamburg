@@ -12,6 +12,20 @@ export default function ScrollableFlohmaerkte({
   bezirk?: string;
   title?: string;
 }) {
+  const bezirke = Array.from(
+    new Set(flohmaerkte.map((floh) => floh.bezirk))
+  ).sort();
+  const reducedFlohmaerkte = flohmaerkte.reduce((acc, floh) => {
+    if (!acc[floh.bezirk]) {
+      acc[floh.bezirk] = [floh];
+    } else {
+      acc[floh.bezirk] = [...acc[floh.bezirk], floh];
+    }
+    return acc;
+  }, {} as { [key: string]: iFlohmarkt[] });
+  const filteredList = bezirk
+    ? flohmaerkte.filter((floh) => floh.bezirk === bezirk)
+    : flohmaerkte;
   return (
     <div className="w-fit max-w-full rounded">
       {title && (
@@ -20,25 +34,55 @@ export default function ScrollableFlohmaerkte({
         </h2>
       )}
       <ScrollableContainer>
-        {flohmaerkte.map(
-          ({ id, title, date, image, bezirk: flohBezirk }, i) => (
-            <article
-              key={id}
-              className={`overflow-hidden h-[250px] min-w-[180px] ${
-                i === flohmaerkte.length - 1 ? "" : "mr-4"
-              }`}
-            >
-              <FlohmarktPoster
-                bezirk={flohBezirk}
-                id={id}
-                title={title}
-                date={date}
-                image={image}
-                prefixLink={`/flohmaerkte/`}
-              />
-            </article>
-          )
-        )}
+        {bezirk
+          ? filteredList.map(
+              ({ id, title, date, image, bezirk: flohBezirk }, i) => (
+                <article
+                  key={id}
+                  className={`overflow-hidden h-[250px] min-w-[180px] ${
+                    i === flohmaerkte.length - 1 ? "" : "mr-4"
+                  }`}
+                >
+                  <FlohmarktPoster
+                    bezirk={flohBezirk}
+                    id={id}
+                    title={title}
+                    date={date}
+                    image={image}
+                    prefixLink={`/flohmaerkte/`}
+                  />
+                </article>
+              )
+            )
+          : bezirke.map((bezirk) => (
+              <div
+                key={bezirk}
+                className="flex flex-col gap-2 rounded bg-hh-600 p-2 min-w-fit"
+              >
+                <h3 className="text-xl font-semibold text-white text-center">
+                  {bezirk}
+                </h3>
+                <div className="flex gap-2 overflow-x-auto">
+                  {reducedFlohmaerkte[bezirk].map(
+                    ({ id, title, date, image, bezirk: flohBezirk }, i) => (
+                      <article
+                        key={id}
+                        className="overflow-hidden h-[250px] min-w-[180px] "
+                      >
+                        <FlohmarktPoster
+                          bezirk={flohBezirk}
+                          id={id}
+                          title={title}
+                          date={date}
+                          image={image}
+                          prefixLink={`/flohmaerkte/`}
+                        />
+                      </article>
+                    )
+                  )}
+                </div>
+              </div>
+            ))}
       </ScrollableContainer>
     </div>
   );
