@@ -40,7 +40,7 @@ export default function DeleteButton({
           setDeleteModal(true);
         }}
       >
-        {deleteFrom === "all" ? "Reject " : "Delete "}
+        {deleteFrom === "all" ? "Delete " : "Reject "}
         {deleteFrom === "suggested"
           ? "Suggestion"
           : type === "post"
