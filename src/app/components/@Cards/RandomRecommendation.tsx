@@ -37,7 +37,7 @@ export default function RandomRecommendation({
   // if(currentPost === null) return <>NO MORE RECOMMENDATIONS</>
   return (
     <div
-      className={`relative flex flex-col items-center rounded-md h-full aspect-[0.625] w-fit gap-2 ${
+      className={`relative flex flex-col items-center rounded-md h-full aspect-[0.625] w-fit max-w-full gap-2 ${
         shuffle ? "pb-12" : ""
       }`}
     >
