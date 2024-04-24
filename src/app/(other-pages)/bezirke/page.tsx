@@ -16,16 +16,18 @@ export default async function BezirkePage() {
   }, {} as { [key: string]: iPost[] });
 
   return (
-    <>
-      <h1 className="font-bold text-3xl lg:text-4xl text-white">Bezirke</h1>
-      <h2 className="font-bold text-hh-100 text-base">
-        Where do you want to go?
-      </h2>
+    <main className="flex flex-col gap-2">
+      <div className="flex flex-col items-center">
+        <h1 className="font-bold text-3xl lg:text-4xl text-white">Bezirke</h1>
+        <h2 className="font-bold text-hh-100 text-base">
+          Where do you want to go?
+        </h2>
+      </div>
       <section className="flex flex-wrap gap-4 lg:gap-8 justify-center py-4">
         {Object.entries(bezirkePosts).map(([bezirk, bezirkPosts]) => (
           <article
             key={bezirk}
-            className="relative flex flex-col items-center h-[375px] pb-16"
+            className="relative flex flex-col items-center h-[375px] pb-16 w-[200px]"
           >
             <RandomRecommendation posts={bezirkPosts} size="medium">
               <Link
@@ -44,6 +46,6 @@ export default async function BezirkePage() {
           </article>
         ))}
       </section>
-    </>
+    </main>
   );
 }
