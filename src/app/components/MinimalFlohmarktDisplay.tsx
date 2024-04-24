@@ -10,11 +10,11 @@ export default function MinimalFlohmarktDisplay({
   flohmarkt: iFlohmarkt;
 }) {
   return (
-    <article className="rounded-md p-4 flex flex-wrap w-full">
-      <div className="h-[200px] w-full bg-hh-200 rounded-md">
+    <article className="rounded-md p-4 flex flex-wrap w-full bg-hh-100 bg-opacity-80 gap-2">
+      <div className="h-[200px] aspect-square bg-hh-200 rounded-md">
         <img src={image} alt={title} className="object-cover h-full w-full" />
       </div>
-      <div className="flex flex-col">
+      <div className="flex flex-col justify-center items-center">
         <DataDisplay keyName={"Title"}>
           <h2 className="font-semibold">{title}</h2>
         </DataDisplay>
