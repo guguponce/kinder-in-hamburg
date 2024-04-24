@@ -1,7 +1,7 @@
 export interface iPost {
   title: string;
   text: TypeAndText[];
-  tags: string[];
+  tags?: string[];
   id: number;
   createdAt: number;
   categories: string[];

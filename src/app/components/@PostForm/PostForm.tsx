@@ -30,7 +30,7 @@ import {
 } from "@app/utils/constants";
 import IgAccountInput from "./IgAccountInput";
 import { deleteUnusedImages } from "@app/api/storageActions";
-import AdminClientComponent from "@app/providers/AdminClientComponents";
+import AdminClientComponents from "@app/providers/AdminClientComponents";
 import { revalidatePost } from "@app/utils/actions/revalidate";
 
 interface PostFormProps {
@@ -136,6 +136,7 @@ export default function PostForm({
   });
 
   const onSubmitNewSuggestion = (data: FieldValues) => {
+    console.log("submitting");
     if (!imagesUrlsReady.ready) return alert("Images are not ready yet");
     if (!savedPostText.length)
       return alert("Text is required and needs to be saved");
@@ -149,7 +150,7 @@ export default function PostForm({
       title: data.title,
       text: savedPostText,
       categories: categoriesList, // provide categories state with multiple categories
-      tags: data.tags ? data.tags.split("-").filter(Boolean) : [data.tags],
+      tags: data.tags ? data.tags.split("-").filter(Boolean) : [],
       image: imagesUrlsReady.urls,
       link: data.link,
       bezirk: data.bezirk,
@@ -167,6 +168,8 @@ export default function PostForm({
       addedBy: userInput,
       status: data.status || "pending",
     };
+    console.log(suggestionPost);
+
     addNewSuggestedPost(suggestionPost)
       .then(() => {
         setSubmitError({ isError: false, errorMessage: "" });
@@ -207,7 +210,7 @@ export default function PostForm({
       maxAge: data.maxAge ? parseInt(data.maxAge) : undefined,
       minAge: data.minAge ? parseInt(data.minAge) : 0,
       pinnedPost: data.pinnedPost === "true" ? true : false,
-      tags: data.tags ? data.tags.split("-").filter(Boolean) : [data.tags],
+      tags: data.tags ? data.tags.split("-").filter(Boolean) : [],
       text: savedPostText,
       title: data.title,
       user_id: user_id!,
@@ -253,7 +256,7 @@ export default function PostForm({
       maxAge: data.maxAge ? parseInt(data.maxAge) : undefined,
       minAge: data.minAge ? parseInt(data.minAge) : 0,
       pinnedPost: data.pinnedPost === "true" ? true : false,
-      tags: data.tags ? data.tags.split("-").filter(Boolean) : [data.tags],
+      tags: data.tags ? data.tags.split("-").filter(Boolean) : [],
       text: savedPostText,
       title: data.title,
       user_id: user_id,
@@ -300,7 +303,7 @@ export default function PostForm({
       maxAge: data.maxAge ? parseInt(data.maxAge) : undefined,
       minAge: data.minAge ? parseInt(data.minAge) : 0,
       pinnedPost: data.pinnedPost === "true" ? true : false,
-      tags: data.tags ? data.tags.split("-").filter(Boolean) : [data.tags],
+      tags: data.tags ? data.tags.split("-").filter(Boolean) : [],
       text: savedPostText,
       title: data.title,
       user_id: user_id,
@@ -350,351 +353,347 @@ export default function PostForm({
                 console.error("missing handler");
               }
         )}
-        className="postForm mx-auto w-full text-gray-900"
+        className="postForm mx-auto flex w-full flex-col items-center text-gray-900"
       >
-        <div className="mx-auto flex w-full flex-col items-center ">
-          <PostFormInput inputLabel="Title" inputID="title" required={true}>
+        <PostFormInput inputLabel="Title" inputID="title" required={true}>
+          <>
+            <input
+              {...register("title", { required: "Title is required" })}
+              type="text"
+              id="title"
+              name="title"
+              className="w-full rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base font-semibold leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
+            />
+            {errors.title && (
+              <p className="text-negative-500">{`${errors.title.message}`}</p>
+            )}
+          </>
+        </PostFormInput>
+        <PostFormInput inputLabel="Text" inputID="text" required={true}>
+          {savedPostText.length <= 1 ? (
+            <div>
+              <PostTextTypeButtons
+                setContentTextType={setContentTextType}
+                contentTextType={contentTextType}
+              />
+              {contentTextType === "paragraph" ? (
+                <>
+                  <textarea
+                    autoFocus
+                    rows={20}
+                    id="postText"
+                    name="postText"
+                    ref={postTextAreaRef}
+                    spellCheck="true"
+                    onBlur={(e) => {
+                      if (e.currentTarget.value !== savedPostText[0]?.[1]) {
+                        setSavedPostText([
+                          ["paragraph", e.currentTarget.value],
+                        ]);
+                      }
+                    }}
+                    defaultValue={savedPostText[0]?.[1]}
+                    className="mx-auto block w-full resize-none self-center rounded border border-gray-100 bg-gray-100 bg-opacity-60 px-3 py-1 text-base leading-6 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-offset-yellow-200"
+                  ></textarea>
+
+                  {savedPostText.length > 0 && (
+                    <div className="mt-4 max-w-full">
+                      <DisplayDraft savedPostText={savedPostText} />
+                    </div>
+                  )}
+                </>
+              ) : (
+                contentTextType === "mixed" && (
+                  <MarkUpForm
+                    setSavedPostText={setSavedPostText}
+                    savedPostText={savedPostText}
+                  />
+                )
+              )}
+            </div>
+          ) : (
+            <MarkUpForm
+              setSavedPostText={setSavedPostText}
+              savedPostText={savedPostText}
+            />
+          )}
+        </PostFormInput>
+        <PostFormInput
+          inputLabel="Categories"
+          inputID="categories"
+          required={true}
+        >
+          <div id="categories-box" className="flex flex-wrap gap-4">
+            {categoryNames.map((category) => (
+              <label key={category} className="flex items-center">
+                <input
+                  type="checkbox"
+                  value={category}
+                  defaultChecked={categoriesList.includes(category)}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setCategoriesList([...categoriesList, category]);
+                    } else {
+                      setCategoriesList(
+                        categoriesList.filter((cat) => cat !== category)
+                      );
+                    }
+                  }}
+                  className="mr-2"
+                />
+                {category}
+              </label>
+            ))}
+          </div>
+        </PostFormInput>
+        <AdminClientComponents>
+          <PostFormInput
+            inputLabel='Tags (separate each tag with a "-". For example: "spielplatz-pferde")'
+            inputID="tags"
+          >
             <>
               <input
-                {...register("title", { required: "Title is required" })}
-                type="text"
-                id="title"
-                name="title"
-                className="w-full rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base font-semibold leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
+                {...register("tags")}
+                id="tags"
+                name="tags"
+                placeholder="wasser-sand-spielplatz"
+                className="w-full rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
               />
-              {errors.title && (
-                <p className="text-negative-500">{`${errors.title.message}`}</p>
+              {errors.tags && (
+                <p className="text-negative-500">{`${errors.tags.message}`}</p>
               )}
             </>
           </PostFormInput>
-          <PostFormInput inputLabel="Text" inputID="text" required={true}>
-            {savedPostText.length <= 1 ? (
-              <div>
-                <PostTextTypeButtons
-                  setContentTextType={setContentTextType}
-                  contentTextType={contentTextType}
-                />
-                {contentTextType === "paragraph" ? (
-                  <>
-                    <textarea
-                      autoFocus
-                      rows={20}
-                      id="postText"
-                      name="postText"
-                      ref={postTextAreaRef}
-                      spellCheck="true"
-                      onBlur={(e) => {
-                        if (e.currentTarget.value !== savedPostText[0]?.[1]) {
-                          setSavedPostText([
-                            ["paragraph", e.currentTarget.value],
-                          ]);
-                        }
-                      }}
-                      defaultValue={savedPostText[0]?.[1]}
-                      className="mx-auto block w-full resize-none self-center rounded border border-gray-100 bg-gray-100 bg-opacity-60 px-3 py-1 text-base leading-6 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-offset-yellow-200"
-                    ></textarea>
-
-                    {savedPostText.length > 0 && (
-                      <div className="mt-4 max-w-full">
-                        <DisplayDraft savedPostText={savedPostText} />
-                      </div>
-                    )}
-                  </>
-                ) : (
-                  contentTextType === "mixed" && (
-                    <MarkUpForm
-                      setSavedPostText={setSavedPostText}
-                      savedPostText={savedPostText}
-                    />
-                  )
-                )}
-              </div>
-            ) : (
-              <MarkUpForm
-                setSavedPostText={setSavedPostText}
-                savedPostText={savedPostText}
-              />
-            )}
-          </PostFormInput>
-          <PostFormInput
-            inputLabel="Categories"
-            inputID="categories"
-            required={true}
-          >
-            <div id="categories-box" className="flex flex-wrap gap-4">
-              {categoryNames.map((category) => (
-                <label key={category} className="flex items-center">
-                  <input
-                    type="checkbox"
-                    value={category}
-                    defaultChecked={categoriesList.includes(category)}
-                    onChange={(e) => {
-                      if (e.target.checked) {
-                        setCategoriesList([...categoriesList, category]);
-                      } else {
-                        setCategoriesList(
-                          categoriesList.filter((cat) => cat !== category)
-                        );
-                      }
-                    }}
-                    className="mr-2"
-                  />
-                  {category}
-                </label>
-              ))}
-            </div>
-          </PostFormInput>
-          <AdminClientComponent>
-            <PostFormInput
-              inputLabel='Tags (separate each tag with a "-". For example: "spielplatz-pferde")'
-              inputID="tags"
-            >
-              <>
-                <input
-                  {...register("tags", { required: "At least a tag required" })}
-                  id="tags"
-                  name="tags"
-                  placeholder="wasser-sand-spielplatz"
-                  className="w-full rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
-                />
-                {errors.tags && (
-                  <p className="text-negative-500">{`${errors.tags.message}`}</p>
-                )}
-              </>
-            </PostFormInput>
-          </AdminClientComponent>
-          <PostFormInput inputLabel="Link" inputID="link">
-            <input
-              {...register("link")}
-              id="link"
-              placeholder="https://www.example.com"
-              name="link"
-              className="w-full rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
+        </AdminClientComponents>
+        <PostFormInput inputLabel="Link" inputID="link">
+          <input
+            {...register("link")}
+            id="link"
+            placeholder="https://www.example.com"
+            name="link"
+            className="w-full rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
+          />
+        </PostFormInput>
+        <PostFormInput inputLabel="Instagram Accounts" inputID="igAccounts">
+          <div className="flex flex-col gap-4">
+            <IgAccountInput
+              handleAddIgAccount={(account: iIgAccount) => {
+                setIgAccountsInput((prev) =>
+                  prev ? [...prev, account] : [account]
+                );
+              }}
             />
-          </PostFormInput>
-          <PostFormInput inputLabel="Instagram Accounts" inputID="igAccounts">
-            <div className="flex flex-col gap-4">
-              <IgAccountInput
-                handleAddIgAccount={(account: iIgAccount) => {
-                  setIgAccountsInput((prev) =>
-                    prev ? [...prev, account] : [account]
-                  );
-                }}
-              />
-              {igAccountsInput?.map((igAccount) => (
-                <div
-                  className="flex gap-2 items-center"
-                  key={igAccount.name + Math.random()}
-                >
-                  <button
-                    onClick={() => {
-                      setIgAccountsInput(
-                        igAccountsInput?.filter(
-                          (account) => account.name !== igAccount.name
-                        )
-                      );
-                    }}
-                    className="bg-negative-500 h-8 w-8 text-white rounded-md p-1"
-                  >
-                    X
-                  </button>
-                  <div className="accountData">
-                    <p className="text-sm font-semibold">@{igAccount.name}</p>
-                    <small className="text-xs">{igAccount.description}</small>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </PostFormInput>
-          <div id="minmax-box" className="flex flex-wrap gap-4">
-            <div className="minAgeBox w-32">
-              <PostFormInput inputLabel="Min. Alter?" inputID="minAge">
-                <input
-                  {...register("minAge")}
-                  id="minAge"
-                  name="minAge"
-                  type="number"
-                  defaultValue={0}
-                  className="w-16 block rounded border border-gray-300 bg-gray-100 bg-opacity-60 pr-1 pl-2 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
-                />
-              </PostFormInput>
-            </div>
-            <div className="maxAgeBox w-32">
-              <PostFormInput inputLabel="Max. Alter?" inputID="maxAge">
-                <input
-                  {...register("maxAge")}
-                  id="maxAge"
-                  name="maxAge"
-                  type="number"
-                  className="w-16 block rounded border border-gray-300 bg-gray-100 bg-opacity-60 pr-1 pl-2 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
-                />
-              </PostFormInput>
-            </div>
-          </div>
-          <div
-            id="location-box"
-            className="flex flex-wrap gap-4 w-full lg:w-3/4"
-          >
-            <div className="bezirkBox min-w-fit w-2/5 flex flex-col">
-              <PostFormInput inputLabel="Bezirk" inputID="bezirk">
-                <select
-                  {...register("bezirk")}
-                  defaultValue={bezirk || "Altona"}
-                  onChange={(e) => {
-                    setBezirkInput(e.target.value as iBezirk);
-                    setValue(
-                      "stadtteil",
-                      BEZIRK_TO_STADTTEILE[e.target.value as iBezirk][0]
+            {igAccountsInput?.map((igAccount) => (
+              <div
+                className="flex gap-2 items-center"
+                key={igAccount.name + Math.random()}
+              >
+                <button
+                  onClick={() => {
+                    setIgAccountsInput(
+                      igAccountsInput?.filter(
+                        (account) => account.name !== igAccount.name
+                      )
                     );
                   }}
+                  className="bg-negative-500 h-8 w-8 text-white rounded-md p-1"
+                >
+                  X
+                </button>
+                <div className="accountData">
+                  <p className="text-sm font-semibold">@{igAccount.name}</p>
+                  <small className="text-xs">{igAccount.description}</small>
+                </div>
+              </div>
+            ))}
+          </div>
+        </PostFormInput>
+        <div id="minmax-box" className="flex flex-wrap gap-4">
+          <div className="minAgeBox w-32">
+            <PostFormInput inputLabel="Min. Alter?" inputID="minAge">
+              <input
+                {...register("minAge")}
+                id="minAge"
+                name="minAge"
+                type="number"
+                defaultValue={0}
+                className="w-16 block rounded border border-gray-300 bg-gray-100 bg-opacity-60 pr-1 pl-2 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
+              />
+            </PostFormInput>
+          </div>
+          <div className="maxAgeBox w-32">
+            <PostFormInput inputLabel="Max. Alter?" inputID="maxAge">
+              <input
+                {...register("maxAge")}
+                id="maxAge"
+                name="maxAge"
+                type="number"
+                className="w-16 block rounded border border-gray-300 bg-gray-100 bg-opacity-60 pr-1 pl-2 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
+              />
+            </PostFormInput>
+          </div>
+        </div>
+        <div id="location-box" className="flex flex-wrap gap-4 w-full lg:w-3/4">
+          <div className="bezirkBox min-w-fit w-2/5 flex flex-col">
+            <PostFormInput inputLabel="Bezirk" inputID="bezirk">
+              <select
+                {...register("bezirk")}
+                defaultValue={bezirk || "Altona"}
+                onChange={(e) => {
+                  setBezirkInput(e.target.value as iBezirk);
+                  setValue(
+                    "stadtteil",
+                    BEZIRK_TO_STADTTEILE[e.target.value as iBezirk][0]
+                  );
+                }}
+                className="mx  rounded border border-gray-300 bg-gray-100 bg-opacity-95 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
+              >
+                {bezirke.map((bezirk) => (
+                  <option key={bezirk} value={bezirk}>
+                    {bezirk}
+                  </option>
+                ))}
+              </select>
+            </PostFormInput>
+            {bezirkInput && (
+              <PostFormInput inputLabel="Stadtteil" inputID="stadtteil">
+                <select
+                  {...register("stadtteil")}
+                  defaultValue={
+                    stadtteil &&
+                    BEZIRK_TO_STADTTEILE[bezirkInput].includes(stadtteil)
+                      ? stadtteil
+                      : BEZIRK_TO_STADTTEILE[bezirkInput][0]
+                  }
                   className="mx  rounded border border-gray-300 bg-gray-100 bg-opacity-95 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
                 >
-                  {bezirke.map((bezirk) => (
-                    <option key={bezirk} value={bezirk}>
-                      {bezirk}
+                  {BEZIRK_TO_STADTTEILE[bezirkInput].map((stadtteil) => (
+                    <option key={stadtteil} value={stadtteil}>
+                      {stadtteil}
                     </option>
                   ))}
                 </select>
               </PostFormInput>
-              {bezirkInput && (
-                <PostFormInput inputLabel="Stadtteil" inputID="stadtteil">
-                  <select
-                    {...register("stadtteil")}
-                    defaultValue={
-                      stadtteil &&
-                      BEZIRK_TO_STADTTEILE[bezirkInput].includes(stadtteil)
-                        ? stadtteil
-                        : BEZIRK_TO_STADTTEILE[bezirkInput][0]
+            )}
+          </div>
+          <div className="addressBox min-w-fit flex-grow flex flex-col">
+            <PostFormInput inputLabel="Addresse" inputID="address">
+              <div className="flex flex-col flex-wrap gap-4">
+                <div className="flex gap-2 flex-wrap">
+                  <input
+                    id="streetInput"
+                    name="street"
+                    placeholder="Straße"
+                    value={addressInput?.street || ""}
+                    onChange={(e) => {
+                      setAddressInput({
+                        ...addressInput,
+                        street: e.target.value,
+                      });
+                    }}
+                    className="w-40 block rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
+                  />
+                  <input
+                    id="numberInput"
+                    name="number"
+                    placeholder="Nummer"
+                    value={addressInput?.number || ""}
+                    onChange={(e) =>
+                      setAddressInput({
+                        ...addressInput,
+                        number: e.target.value,
+                      })
                     }
-                    className="mx  rounded border border-gray-300 bg-gray-100 bg-opacity-95 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
-                  >
-                    {BEZIRK_TO_STADTTEILE[bezirkInput].map((stadtteil) => (
-                      <option key={stadtteil} value={stadtteil}>
-                        {stadtteil}
-                      </option>
-                    ))}
-                  </select>
-                </PostFormInput>
-              )}
-            </div>
-            <div className="addressBox min-w-fit flex-grow flex flex-col">
-              <PostFormInput inputLabel="Addresse" inputID="address">
-                <div className="flex flex-col flex-wrap gap-4">
-                  <div className="flex gap-2 flex-wrap">
-                    <input
-                      id="streetInput"
-                      name="street"
-                      placeholder="Straße"
-                      value={addressInput?.street || ""}
-                      onChange={(e) => {
-                        setAddressInput({
-                          ...addressInput,
-                          street: e.target.value,
-                        });
-                      }}
-                      className="w-40 block rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
-                    />
-                    <input
-                      id="numberInput"
-                      name="number"
-                      placeholder="Nummer"
-                      value={addressInput?.number || ""}
-                      onChange={(e) =>
-                        setAddressInput({
-                          ...addressInput,
-                          number: e.target.value,
-                        })
-                      }
-                      className="w-24 block rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
-                    />
-                  </div>
-                  <div className="flex gap-2 flex-wrap">
-                    <input
-                      id="PLZInput"
-                      value={addressInput?.PLZ || ""}
-                      name="PLZ"
-                      placeholder="PLZ"
-                      onChange={(e) =>
-                        setAddressInput({
-                          ...addressInput,
-                          PLZ: e.target.value,
-                        })
-                      }
-                      className="w-24 block rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
-                    />
-                    <input
-                      id="cityInput"
-                      name="city"
-                      value={addressInput?.city || ""}
-                      placeholder="Stadtteil/Stadt"
-                      onChange={(e) =>
-                        setAddressInput({
-                          ...addressInput,
-                          city: e.target.value,
-                        })
-                      }
-                      className="w-40 block rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
-                    />
-                  </div>
+                    className="w-24 block rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
+                  />
                 </div>
-              </PostFormInput>
-            </div>{" "}
-          </div>
-          {/* falta iglocation, address  */}
+                <div className="flex gap-2 flex-wrap">
+                  <input
+                    id="PLZInput"
+                    value={addressInput?.PLZ || ""}
+                    name="PLZ"
+                    placeholder="PLZ"
+                    onChange={(e) =>
+                      setAddressInput({
+                        ...addressInput,
+                        PLZ: e.target.value,
+                      })
+                    }
+                    className="w-24 block rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
+                  />
+                  <input
+                    id="cityInput"
+                    name="city"
+                    value={addressInput?.city || ""}
+                    placeholder="Stadtteil/Stadt"
+                    onChange={(e) =>
+                      setAddressInput({
+                        ...addressInput,
+                        city: e.target.value,
+                      })
+                    }
+                    className="w-40 block rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
+                  />
+                </div>
+              </div>
+            </PostFormInput>
+          </div>{" "}
+        </div>
+        {/* falta iglocation, address  */}
 
-          <PostFormInput inputLabel="Pinned Post?" inputID="pinnedPost">
-            <select
-              {...register("pinnedPost")}
-              defaultChecked={pinnedPost}
-              className="mx-4  rounded border border-gray-300 bg-gray-100 bg-opacity-95 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
-            >
-              <option value="false">False</option>
-              <option value="true">True</option>
-            </select>
-          </PostFormInput>
+        <PostFormInput inputLabel="Pinned Post?" inputID="pinnedPost">
+          <select
+            {...register("pinnedPost")}
+            defaultChecked={pinnedPost}
+            className="mx-4  rounded border border-gray-300 bg-gray-100 bg-opacity-95 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
+          >
+            <option value="false">False</option>
+            <option value="true">True</option>
+          </select>
+        </PostFormInput>
 
-          <div className="flex w-full flex-wrap items-center justify-between gap-8 p-2 sm:flex-row">
-            {!imagesUrlsReady.ready && (
-              <a
-                href="#images-upload-container"
-                type="button"
-                className="mr-auto flex w-fit rounded border-0 bg-hh-600 px-8 py-2 text-lg text-white transition-colors  duration-200 ease-in-out hover:bg-green-600 hover:shadow-md focus:outline-2 focus:ring-2 focus:ring-hh-700 focus:ring-offset-2"
-              >
-                First upload the image/s ↑
-              </a>
-            )}
-            <button
-              type="submit"
-              disabled={
-                isSubmitSuccessful ||
-                isSubmitting ||
-                isLoading ||
-                (!isDirty &&
-                  JSON.stringify(imagesUrlsReady.urls) ===
-                    JSON.stringify([image]))
-              }
-              className={`${
-                isSubmitSuccessful
-                  ? " bg-slate-300 hover:shadow-none"
-                  : "bg-green-700 hover:bg-green-600 hover:shadow-md"
-              } active:scale-[0.99] border-0px-8 ml-auto flex rounded p-2 text-lg text-white transition-colors  duration-200 ease-in-out  focus:outline-2 focus:ring-2 focus:ring-green-600 focus:ring-offset-2 disabled:bg-gray-500`}
+        <div className="flex w-full flex-wrap items-center justify-between gap-8 p-2 sm:flex-row">
+          {!imagesUrlsReady.ready && (
+            <a
+              href="#images-upload-container"
+              type="button"
+              className="mr-auto flex w-fit rounded border-0 bg-hh-600 px-8 py-2 text-lg text-white transition-colors  duration-200 ease-in-out hover:bg-green-600 hover:shadow-md focus:outline-2 focus:ring-2 focus:ring-hh-700 focus:ring-offset-2"
             >
-              {isDirty ||
-              JSON.stringify(imagesUrlsReady.urls) !== JSON.stringify([image])
-                ? postType === "suggested-to-approved"
-                  ? "Approve Post"
-                  : postType === "update-approved-post"
-                  ? "Update Approved Post"
-                  : postType === "update-suggestion"
-                  ? "Update Suggestion"
-                  : postType === "new-suggestion" && "Add New Suggestion"
-                : "Nothing to submit"}
-            </button>
-            {/* )} */}
-            {submitError.isError && (
-              <p className="mt-4 rounded border-4 border-negative-700 p-4 font-semibold text-negative-700">{`There was an error while submitting the post. Error message: ${submitError.errorMessage}`}</p>
-            )}
-          </div>
+              First upload the image/s ↑
+            </a>
+          )}
+
+          <button
+            type="submit"
+            disabled={
+              isSubmitSuccessful ||
+              isSubmitting ||
+              isLoading ||
+              (!isDirty &&
+                JSON.stringify(imagesUrlsReady.urls) ===
+                  JSON.stringify([image]))
+            }
+            className={`${
+              isSubmitSuccessful
+                ? " bg-slate-300 hover:shadow-none"
+                : "bg-green-700 hover:bg-green-600 hover:shadow-md"
+            } active:scale-[0.99] border-0px-8 ml-auto flex rounded p-2 text-lg text-white transition-colors  duration-200 ease-in-out  focus:outline-2 focus:ring-2 focus:ring-green-600 focus:ring-offset-2 disabled:bg-gray-500`}
+          >
+            {isDirty ||
+            JSON.stringify(imagesUrlsReady.urls) !== JSON.stringify([image])
+              ? postType === "suggested-to-approved"
+                ? "Approve Post"
+                : postType === "update-approved-post"
+                ? "Update Approved Post"
+                : postType === "update-suggestion"
+                ? "Update Suggestion"
+                : postType === "new-suggestion" && "Add New Suggestion"
+              : "Nothing to submit"}
+          </button>
+          {/* )} */}
+          {submitError.isError && (
+            <p className="mt-4 rounded border-4 border-negative-700 p-4 font-semibold text-negative-700">{`There was an error while submitting the post. Error message: ${submitError.errorMessage}`}</p>
+          )}
         </div>
       </form>
     </section>
