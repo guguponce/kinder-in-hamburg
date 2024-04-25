@@ -11,7 +11,7 @@ export default function Home() {
       id="homepage-main"
       className="w-full flex flex-col items-center gap-4"
     >
-      <section className="max-w-[1000px] w-full">
+      <section className="max-w-[1000px] w-full p-2">
         <WeatherBox full={true}></WeatherBox>
       </section>
       <NextWeekendFlohmaerkte></NextWeekendFlohmaerkte>
