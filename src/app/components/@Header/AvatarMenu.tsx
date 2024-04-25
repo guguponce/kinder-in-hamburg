@@ -47,7 +47,7 @@ export default function AvatarMenu({
         onClick={toggleMenu}
         className="relative w-8 h-8 flex justify-center items-center text-white font-bold text-sm rounded-full bg-hh-700 bg-contain bg-center"
       >
-        {initials ? initials : ""}
+        <span className="mt-[1px]">{initials ? initials : ""}</span>
         {imgDisplay && (
           <img
             src={avatar || ""}
@@ -75,6 +75,11 @@ export default function AvatarMenu({
               }
               key={name}
               href={href}
+              onClick={() =>
+                setTimeout(() => {
+                  setMenuOpen(false);
+                }, 100)
+              }
             >
               {name}
             </Link>

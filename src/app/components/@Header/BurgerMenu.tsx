@@ -34,9 +34,7 @@ export default function BurgerMenu() {
       <button
         color="#fefefe"
         aria-label="Options"
-        className={`${
-          menuOpen ? "rounded-[6px_6px_0_0]" : "rounded-md"
-        } mx-1 py-1 px-2 font-semibold bg-[#121212] text-white hover:bg-white hover:text-[#121212] active:bg-white active:text-[#121212]`}
+        className="rounded-md mx-1 py-1 px-2 font-semibold bg-hh-700 text-white hover:bg-hh-600 active:bg-hh-700"
         onClick={toggleMenu}
       >
         Menu
