@@ -75,7 +75,7 @@ export default function FlohmarktTemplate({
               />
             </aside>
           )}
-          <section className="w-full md:w-1/2 flex-grow flex flex-col justify-between">
+          <section className="w-full md:w-1/2 flex-grow flex flex-col justify-between pb-4">
             <div className="w-full flex-grow flex flex-col">
               <div
                 id="flohmarkt-hero"
@@ -90,76 +90,75 @@ export default function FlohmarktTemplate({
                 )}
               </div>
 
-              <div className="flex flex-wrap justify-between gap-2 w-full max-w-[800px] mx-auto">
+              <div
+                id="location-date"
+                className="flex flex-col sm:flex-row flex-wrap flex-grow  justify-between gap-2 w-full max-w-[800px] mx-auto rounded"
+              >
                 <div
                   id="location"
-                  className="flex flex-col w-full max-w-[calc(50%-4px)]"
+                  className="flex flex-col w-full sm:max-w-[calc(50%-4px)]  h-fit rounded bg-hh-300 bg-opacity-25 py-2 px-4"
                 >
-                  <div className="w-full pl-4 my-2">
-                    <h2 className="text-lg font-semibold">Standort:</h2>
-                    {bezirk && (
-                      <div className="flex gap-1 items-center">
-                        <PostLogo logo="hamburg" color="#1F262E" />
+                  <h2 className="text-lg font-semibold">Standort:</h2>
+                  {bezirk && (
+                    <div className="flex gap-1 items-center">
+                      <PostLogo logo="hamburg" color="#1F262E" />
 
-                        <Link
-                          href={`/bezirke/${encodeURIComponent(bezirk)}`}
-                          id="bezirk"
-                          className="block font-semibold italic hover:underline hover: underline-offset-2"
-                        >
-                          {bezirk}
-                        </Link>
+                      <Link
+                        href={`/bezirke/${encodeURIComponent(bezirk)}`}
+                        id="bezirk"
+                        className="block font-semibold italic hover:underline hover: underline-offset-2"
+                      >
+                        {bezirk}
+                      </Link>
+                    </div>
+                  )}
+                  {!!stadtteil && (
+                    <div className="ml-6 flex gap-1 items-center">
+                      {/* <PostLogo logo="stadtteil" color="#1F262E" /> */}
+                      <p
+                        id="stadtteil"
+                        className="ml-1 block font-semibold italic hover:underline hover: underline-offset-2"
+                      >
+                        {stadtteil}
+                      </p>
+                    </div>
+                  )}
+                  {!!address && (
+                    <div className="flex gap-[6px] ml-[2px]">
+                      <div className="min-w-5 mt-1">
+                        <PostLogo logo="map" color="#1F262E" size="20px" />
                       </div>
-                    )}
-                    {!!stadtteil && (
-                      <div className="ml-6 flex gap-1 items-center">
-                        {/* <PostLogo logo="stadtteil" color="#1F262E" /> */}
-                        <p
-                          id="stadtteil"
-                          className="ml-1 block font-semibold italic hover:underline hover: underline-offset-2"
-                        >
-                          {stadtteil}
-                        </p>
-                      </div>
-                    )}
-                    {!!address && (
-                      <div className="flex gap-[6px] ml-[2px]">
-                        <div className="min-w-5 mt-1">
-                          <PostLogo logo="map" color="#1F262E" size="20px" />
-                        </div>
-                        <Link
-                          href={
-                            "https://www.google.com/maps/place/" +
-                            street +
-                            "+" +
-                            number +
-                            "+" +
-                            PLZ +
-                            "+" +
-                            city
-                          }
-                          className="italic hover:underline hover:underline-offset-2 flex flex-col flex-grow"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <span className="block font-semibold">
-                            {location}
+                      <Link
+                        href={
+                          "https://www.google.com/maps/place/" +
+                          street +
+                          "+" +
+                          number +
+                          "+" +
+                          PLZ +
+                          "+" +
+                          city
+                        }
+                        className="italic hover:underline hover:underline-offset-2 flex flex-col flex-grow"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <span className="block font-semibold">{location}</span>
+                        <span className="flex flex-wrap gap-1">
+                          <span className="block">
+                            {street} {number},
                           </span>
-                          <span className="flex flex-wrap gap-1">
-                            <span className="block">
-                              {street} {number},
-                            </span>
-                            <span className="block">
-                              {PLZ} {city}
-                            </span>
+                          <span className="block">
+                            {PLZ} {city}
                           </span>
-                        </Link>
-                      </div>
-                    )}
-                  </div>
+                        </span>
+                      </Link>
+                    </div>
+                  )}
                 </div>
                 <div
                   id="date"
-                  className="w-full max-w-[calc(50%-4px)] px-4 my-2"
+                  className="w-full sm:max-w-[calc(50%-4px)] py-2 px-4 h-fit rounded bg-hh-300 bg-opacity-25"
                 >
                   <h2 className="text-lg font-semibold">Datum:</h2>
                   <div className="flex flex-wrap gap-1 items-center">
@@ -179,19 +178,20 @@ export default function FlohmarktTemplate({
                 </div>
               </div>
             </div>
-
-            <div id="addedBy" className="w-full px-4 mb-4  lg:ml-auto">
-              <h2 className="text-lg font-semibold">Hinzugefügt von:</h2>
-              <div className="flex items-center transition-all">
-                <UserAvatar
-                  avatar={addedBy.image}
-                  name={addedBy.name}
-                  email={addedBy.email}
-                  link={`/posts/suggestedBy/${addedBy.email}`}
-                />
-                <p className="addedByName hidden">{addedBy.name}</p>
+            {"Augusto Ponce" !== addedBy.name && (
+              <div id="addedBy" className="w-fit px-4 lg:ml-auto self-end">
+                <h2 className="text-lg font-semibold">Hinzugefügt von:</h2>
+                <div className="flex items-center justify-end transition-all">
+                  <UserAvatar
+                    avatar={addedBy.image}
+                    name={addedBy.name}
+                    email={addedBy.email}
+                    link={`/posts/suggestedBy/${addedBy.email}`}
+                  />
+                  <p className="addedByName hidden">{addedBy.name}</p>
+                </div>
               </div>
-            </div>
+            )}
           </section>
         </div>
       </main>
