@@ -712,14 +712,14 @@ export const getUserFlohmaerkte = async (email: string) => {
     return false;
   }
 };
-export const getNextWeekendFlohmaerkte = async () => {
-  const { nextSaturday, nextMonday } = getNextWeekend();
+export const getThisWeekFlohmaerkte = async () => {
+  const { today, nextMonday } = getNextWeekend();
   try {
     const { data, error } = await supabaseAdmin
       .from("flohmaerkte")
       .select("*")
       .match({ status: "approved" })
-      .gte("date", nextSaturday)
+      .gte("date", today)
       .lte("date", nextMonday);
     if (error) {
       return false;
