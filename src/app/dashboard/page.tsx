@@ -7,6 +7,7 @@ import React from "react";
 import ScrollableCardList from "@components/@Cards/ScrollableCardList";
 import ScrollableContainer from "@components/ScrollableContainer";
 import FlohPostersList from "@components/FlohPostersList";
+import DeleteUnusedImages from "@app/components/DeleteUnusedImages";
 
 export default async function DashboardPage() {
   const session = await getServerSession();
@@ -52,6 +53,7 @@ export default async function DashboardPage() {
             >
               Check the Suggested Flea Markets
             </Link>
+            <DeleteUnusedImages />
           </section>
         </AdminComponents>
       </section>
