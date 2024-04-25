@@ -1011,11 +1011,13 @@ export const BEZIRK_TO_STADTTEILE: { [key in iBezirk]: string[] } = {
     "Ellerbek",
     "Halstenbek",
     "Norderstedt",
+    "Lüneburg",
     "Pinneberg",
     "Quickborn",
     "Rellingen",
     "Schenefeld",
     "Tangstedt",
+    "Andere Orte",
   ],
 };
 
