@@ -1,11 +1,11 @@
 import AdminRoute from "@app/providers/AdminRoute";
 import React from "react";
 import PostsApproval from "./PostsApproval";
-import { getAllSuggestedPosts } from "@app/api/dbActions";
+import { getPendingPosts } from "@app/api/dbActions";
 import { parsePost } from "@app/utils/functions";
 
 export default async function PostsApprovalPage() {
-  const postsList = await getAllSuggestedPosts();
+  const postsList = await getPendingPosts();
   if (!postsList) return <div>There was a problem retrieving posts</div>;
   return (
     <main className="flex flex-col p-6 items-center bg-hh-50 bg-opacity-20 w-[90%] rounded-md">
