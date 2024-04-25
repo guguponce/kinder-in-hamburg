@@ -85,8 +85,8 @@ export default function FilterablePostList({
     return <div>There was a problem retrieving posts</div>;
   return (
     <section className="flex flex-grow flex-col gap-2 w-full max-w-[1200px] bg-hh-100 rounded py-4">
-      <div className="flex flex-col-reverse justify-between gap-2">
-        <aside id="filters-container" className="relative w-fit">
+      <div className="flex flex-col-reverse justify-between gap-2 h-full">
+        <aside id="filters-container" className="relative w-fit h-full">
           <PostFilters
             initialFilterType={type || ""}
             setNewFilters={setNewFilters}
