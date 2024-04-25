@@ -2,9 +2,9 @@ import Link from "next/link";
 import React from "react";
 export default function Impressum() {
   return (
-    <main className="rounded-lg p-4 w-full max-w-[800px] bg-hh-100 text-hh-900 bg-opacity-90 flex flex-col gap-2">
+    <main className="rounded-lg p-4 w-full max-w-[800px] bg-hh-200 text-hh-900 flex flex-col gap-2">
       <h1 className="text-3xl font-bold">Impressum</h1>
-      <div className="rounded p-2">
+      <div className="rounded p-2 bg-hh-100 bg-opacity-75">
         <h2 className="text-xl font-semibold p-1">Angaben gemäß § 5 TMG:</h2>
         <div className="px-2">
           <p>Kinder in Hamburg</p>
@@ -13,30 +13,30 @@ export default function Impressum() {
           <p>20259, Hamburg</p>
           <a
             href="mailto:kinder.in.hamburg.hh@gmail.com"
-            className="mt-1 text-hh-800"
+            className="mt-1 text-hh-800 underline underline-offset-4"
           >
             kinder.in.hamburg.hh@gmail.com
           </a>
         </div>
       </div>
-      <div className="rounded p-2">
+      <div className="rounded p-2 bg-hh-100 bg-opacity-75">
         <h2 className="text-xl font-semibold p-1">Vertreten durch:</h2>
         <p className="px-2">Augusto Ponce</p>
       </div>
-      <div className="rounded p-2">
+      <div className="rounded p-2 bg-hh-100 bg-opacity-75">
         <h2 className="text-xl font-semibold p-1">Kontakt:</h2>
         <a
           href="mailto:kinder.in.hamburg.hh@gmail.com"
-          className="mt-1 px-2 text-hh-800"
+          className="px-2 mt-1 text-hh-800 underline underline-offset-4"
         >
           kinder.in.hamburg.hh@gmail.com
         </a>
       </div>
-      <div className="rounded p-2">
+      <div className="rounded p-2 bg-hh-100 bg-opacity-75">
         <h3 className="text-lg font-semibold p-1">
           Haftungsausschluss (Disclaimer):
         </h3>
-        <div className="rounded p-2">
+        <div className="rounded p-2 bg-hh-100 bg-opacity-75">
           <h3 className="text-lg font-semibold p-1">Haftung für Inhalte</h3>
           <p className="px-2">
             Als Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte
@@ -52,7 +52,7 @@ export default function Impressum() {
             Rechtsverletzungen werden wir diese Inhalte umgehend entfernen.
           </p>
         </div>
-        <div className="rounded p-2">
+        <div className="rounded p-2 bg-hh-100 bg-opacity-75">
           <h3 className="text-lg font-semibold p-1">Haftung für Links</h3>
           <p className="px-2">
             Unser Angebot enthält Links zu externen Websites Dritter, auf deren
@@ -68,7 +68,7 @@ export default function Impressum() {
             derartige Links umgehend entfernen.
           </p>
         </div>
-        <div className="rounded p-2">
+        <div className="rounded p-2 bg-hh-100 bg-opacity-75">
           <h3 className="text-lg font-semibold p-1">Urheberrecht</h3>
           <p className="px-2">
             Die durch die Seitenbetreiber erstellten Inhalte und Werke auf
@@ -86,7 +86,7 @@ export default function Impressum() {
             werden wir derartige Inhalte umgehend entfernen.
           </p>
         </div>
-        <div className="rounded p-2">
+        <div className="rounded p-2 bg-hh-100 bg-opacity-75">
           <h3 className="text-lg font-semibold p-1">Datenschutzerklärung</h3>
           <p className="px-2">
             Sie können unsere{" "}

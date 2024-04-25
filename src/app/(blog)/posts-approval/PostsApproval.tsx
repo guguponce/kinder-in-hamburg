@@ -8,7 +8,7 @@ export default function PostsApproval({ postsList }: { postsList: iPost[] }) {
   const [selectedPost, setSelectedPost] = useState<number | null>(null);
   const handleSelectPost = (postID: number) => setSelectedPost(postID);
   return (
-    <main className="w-full">
+    <main className="w-full flex flex-wrap gap-2">
       {postsList.map((post) =>
         post.id === selectedPost ? (
           <article
@@ -20,7 +20,7 @@ export default function PostsApproval({ postsList }: { postsList: iPost[] }) {
         ) : (
           <article
             key={post.id}
-            className="relative my-2 w-full rounded-sm bg-white mx-auto p-4 flex flex-col"
+            className="relative my-2 w-full lg:w-[45%] rounded-sm bg-white mx-auto p-4 flex flex-col"
           >
             <button
               className="absolute right-2 top-3 bg-hh-800 text-white rounded-md p-1"

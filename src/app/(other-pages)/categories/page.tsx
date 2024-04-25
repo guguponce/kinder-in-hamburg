@@ -20,8 +20,10 @@ export default async function CategoriesPage() {
     }, {} as { [key: string]: iPost[] });
 
   return (
-    <main className="rounded-xl w-[calc(100%-1rem)] max-w-[1000px] flex flex-col items-center p-4 gap-2 bg-hh-100">
-      <h1 className="text-3xl font-bold p-4">Categories</h1>
+    <main className="rounded-xl w-[calc(100%-1rem)] max-w-[1000px] flex flex-col items-center gap-2 text-white">
+      <h1 className="font-bold text-3xl lg:text-4xl text-white mb-4">
+        Categories
+      </h1>
       <section className="flex w-full flex-wrap gap-4 justify-around">
         {categoryNames.map((cat) =>
           categoriesPosts[cat] ? (
