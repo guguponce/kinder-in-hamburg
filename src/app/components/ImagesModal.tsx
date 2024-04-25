@@ -1,5 +1,6 @@
 "use client";
 import React, { useMemo, useRef } from "react";
+import PostLogo from "./@Icons/PostLogo";
 
 export default function ImagesModal({
   images,
@@ -46,9 +47,9 @@ export default function ImagesModal({
       >
         <button
           onClick={handlePrevImage}
-          className="h-10 w-10 rounded-lg bg-hh-800 text-white text-3xl font-bold backdrop-opacity-20"
+          className="h-10 w-10 aspect-square rounded-lg bg-hh-800 text-white text-3xl font-bold backdrop-opacity-20 -rotate-90 flex justify-center items-center"
         >
-          {"<"}
+          <PostLogo logo="triangle" color="#fefefe" size="1.5rem" />
         </button>
         <img
           src={imageList.current[currentImage]}
@@ -57,9 +58,9 @@ export default function ImagesModal({
         />
         <button
           onClick={handleNextImage}
-          className="h-10 w-10 rounded-lg bg-hh-800 text-white text-3xl font-bold backdrop-opacity-20"
+          className="h-10 w-10 aspect-square rounded-lg bg-hh-800 text-white text-3xl font-bold backdrop-opacity-20 rotate-90 flex justify-center items-center"
         >
-          {">"}
+          <PostLogo logo="triangle" color="#fefefe" size="1.5rem" />
         </button>
       </div>
     </div>

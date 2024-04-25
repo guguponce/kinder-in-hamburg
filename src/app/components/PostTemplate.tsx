@@ -56,19 +56,19 @@ export default function PostTemplate({
       </div>
       <section
         id="text"
-        className="w-full p-4 my-6 rounded-md bg-hh-50 flex flex-col gap-4"
+        className="w-full lg:w-4/5 lg:self-center p-4 my-6 rounded-md bg-hh-50 flex flex-col gap-4"
       >
         <h1 className="text-4xl text-center font-bold">{title}</h1>
         {!!image?.length && (
           <div id="posts-images" className="flex items-center gap-2">
             <div className="flex justify-center items-center w-full overflow-hidden">
               {/* <div className=" flex  gap-2 w-fit overflow-x-auto"> */}
-              <ImagesModalGallery images={[...image, ...image]} title={title} />
+              <ImagesModalGallery images={image} title={title} />
               {/* </div> */}
             </div>
           </div>
         )}
-        <article className="flex flex-col break-words">
+        <article className="flex flex-col break-words w-fit self-center max-w-full">
           {text.map(([type, text], i) => (
             <React.Fragment key={text + i}>
               <DisplayTypeText type={type} text={text} />
@@ -82,7 +82,13 @@ export default function PostTemplate({
             : `(${new Date(createdAt).toLocaleDateString()})`}
         </p>
       </section>
-      <section className="flex flex-wrap flex-col sm:flex-row justify-between">
+      <section
+        className={`w-full lg:w-4/5 mx-auto flex flex-wrap flex-col sm:flex-row ${
+          (!!bezirk || !!address) && (!!link || !!igAccounts?.length)
+            ? "justify-center sm:justify-between"
+            : "justify-center"
+        }`}
+      >
         {(!!bezirk || !!address) && (
           <div className="flex flex-col w-full sm:w-1/2">
             <section id="location" className="w-full px-4 my-2">
@@ -185,34 +191,20 @@ export default function PostTemplate({
           </section>
         )}
       </section>
-      {/* {!!tags.length && (
-        <section id="text" className="w-full px-4 my-2">
-          <h2 className="text-lg font-semibold">#TAGS</h2>
-          <div className="flex flex-wrap gap-2">
-            {tags.map((tag) => (
-              <Link
-                key={tag}
-                href={`/tags/${tag}`}
-                className="px-2 italic border-2 border-hh-700 py-1 h-fit leading-tight rounded-md align-middle font-semibold bg-transparent transition-all text-hh-700 hover:text-white hover:bg-hh-700"
-              >
-                #{tag}
-              </Link>
-            ))}
+
+      {"Augusto Ponce" !== addedBy.name && (
+        <section id="addedBy" className="w-fit px-4 my-2 ml-auto self-end">
+          <h2 className="text-lg font-semibold">Added by:</h2>
+          <div className="flex items-center justify-end transition-all">
+            <UserAvatar
+              avatar={addedBy.image}
+              name={addedBy.name}
+              link={`/posts/suggestedBy/${addedBy.email}`}
+            />
+            <p className="addedByName hidden">{addedBy.name}</p>
           </div>
         </section>
-      )} */}
-
-      <section id="addedBy" className="w-fit px-4 my-2 ml-auto self-end">
-        <h2 className="text-lg font-semibold">Added by:</h2>
-        <div className="flex items-center justify-end transition-all">
-          <UserAvatar
-            avatar={addedBy.image}
-            name={addedBy.name}
-            link={`/posts/suggestedBy/${addedBy.email}`}
-          />
-          <p className="addedByName hidden">{addedBy.name}</p>
-        </div>
-      </section>
+      )}
     </main>
   );
 }
