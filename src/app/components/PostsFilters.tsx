@@ -136,6 +136,7 @@ export default function PostFilters({
       setNewFilters(wishedFilters);
       setAppliedFilters(wishedFilters);
     }
+    setIsOpen(false);
   };
 
   useEffect(() => {
@@ -219,209 +220,208 @@ export default function PostFilters({
       <div
         className={`${
           isOpen ? "flex absolute mt-2" : "hidden"
-        } flex-col min-w-[200px] items-center z-[300] p-1 bg-hh-300 gap-2 rounded-[0_4px_4px_0] text-xs min-h-[50dvh] h-fit flex-grow shadow-2xl`}
+        } flex-col min-w-[200px] items-center z-[300] p-1 bg-hh-300 gap-2 rounded-[0_4px_4px_0] text-xs min-h-[50dvh] h-full flex-grow shadow-2xl`}
       >
         <article className="flex relative flex-col items-center w-full h-4/5  overflow-y-auto flex-grow shadow-inner">
           <button
             onClick={() => setIsOpen(false)}
-            className="bg-negative-600 hover:bg-negative-700 active:bg-negative-500 text-white font-semibold w-4 h-4 aspect-square rounded-full leading-none flex justify-center items-center  self-end m-1 mb-0 "
+            className="bg-negative-600 hover:bg-negative-700 active:bg-negative-500 text-white font-semibold aspect-square h-4  rounded-full leading-none flex justify-center items-center  self-end m-1"
           >
-            <span className="aspect-square w-fit leading-tight text-center">
+            <span className="aspect-square mt-[1px] leading-none text-center">
               ×
             </span>
           </button>
           <ScrollableContainer vertical={true}>
-            <div className="flex flex-col items-center p-1 gap-1">
-              <div className="w-full max-w-[300px] rounded bg-hh-100 bg-opacity-25 relative flex flex-col gap-1 p-2">
-                <label
-                  htmlFor="search"
-                  className="text-xs font-semibold leading-none w-fit"
-                >
-                  Search
-                </label>
-                <input
-                  type="text"
-                  name="search"
-                  id="search"
-                  className="w-full rounded p-1"
-                  placeholder="(z.B. Flohmarkt, Kindergeburtstag)"
-                  onChange={(e) => handleAddFilter("search", e.target.value)}
-                />
-              </div>
-              {["categories", "bezirk", "jahren"].map((filter) => (
-                <React.Fragment key={filter}>
-                  {initialFilterType === "bezirke" &&
-                  filter === "bezirk" ? null : (
-                    <FiltersInput inputID={filter} inputLabel={filter}>
-                      {filter === "jahren" ? (
-                        <div className="w-full flex gap-2 flex-wrap justify-center items-center">
-                          {/* <div className="flex-grow flex flex-col items-center"> */}
-                          <input
-                            type="number"
-                            className="flex-grow rounded p-1 text-end"
-                            id="minAge"
-                            min={0}
-                            max={100}
-                            ref={abJahrRef}
-                            placeholder="0"
-                            onChange={(e) => {
+            <div className="w-full max-w-[300px] rounded bg-hh-100 bg-opacity-25 relative flex flex-col gap-1 p-2">
+              <label
+                htmlFor="search"
+                className="text-xs font-semibold leading-none w-fit"
+              >
+                Search
+              </label>
+              <input
+                type="text"
+                name="search"
+                id="search"
+                className="w-full rounded p-1"
+                placeholder="(z.B. Flohmarkt, Kindergeburtstag)"
+                onChange={(e) => handleAddFilter("search", e.target.value)}
+              />
+            </div>
+            {["categories", "bezirk", "jahren"].map((filter) => (
+              <React.Fragment key={filter}>
+                {initialFilterType === "bezirke" &&
+                filter === "bezirk" ? null : (
+                  <FiltersInput inputID={filter} inputLabel={filter}>
+                    {filter === "jahren" ? (
+                      <div className="w-full flex gap-2 flex-wrap justify-center items-center">
+                        {/* <div className="flex-grow flex flex-col items-center"> */}
+                        <input
+                          type="number"
+                          className="flex-grow rounded p-1 text-end"
+                          id="minAge"
+                          min={0}
+                          max={100}
+                          ref={abJahrRef}
+                          placeholder="0"
+                          onChange={(e) => {
+                            if (
+                              abJahrRef.current &&
+                              bisJahrRef.current &&
+                              parseInt(e.target.value) >
+                                parseInt(bisJahrRef.current.value)
+                            ) {
+                              const value = bisJahrRef.current.value;
+                              abJahrRef.current.value = value;
+                              handleAddFilter("fromAge", value);
+                              handleAddFilter("untilAge", value);
+                            } else {
+                              handleAddFilter("fromAge", e.target.value);
                               if (
-                                abJahrRef.current &&
                                 bisJahrRef.current &&
-                                parseInt(e.target.value) >
-                                  parseInt(bisJahrRef.current.value)
+                                parseInt(bisJahrRef.current.value) <
+                                  parseInt(e.target.value)
                               ) {
-                                const value = bisJahrRef.current.value;
-                                abJahrRef.current.value = value;
-                                handleAddFilter("fromAge", value);
-                                handleAddFilter("untilAge", value);
-                              } else {
-                                handleAddFilter("fromAge", e.target.value);
-                                if (
-                                  bisJahrRef.current &&
-                                  parseInt(bisJahrRef.current.value) <
-                                    parseInt(e.target.value)
-                                ) {
-                                  bisJahrRef.current.value = e.target.value;
-                                }
+                                bisJahrRef.current.value = e.target.value;
                               }
-                            }}
-                          />
-                          {/* <label
+                            }
+                          }}
+                        />
+                        {/* <label
                               htmlFor="minAge"
                               className="text-xs font-semibold leading-7 w-fit"
                             >
                               Min.
                             </label>
                           </div> */}
-                          <p className="w-fit">bis</p>
-                          {/* <div className="flex-grow flex flex-col items-center"> */}
-                          <input
-                            min={0}
-                            max={100}
-                            placeholder="100"
-                            type="number"
-                            className="flex-grow rounded p-1"
-                            id="maxAge"
-                            ref={bisJahrRef}
-                            onChange={(e) => {
+                        <p className="w-fit">bis</p>
+                        {/* <div className="flex-grow flex flex-col items-center"> */}
+                        <input
+                          min={0}
+                          max={100}
+                          placeholder="100"
+                          type="number"
+                          className="flex-grow rounded p-1"
+                          id="maxAge"
+                          ref={bisJahrRef}
+                          onChange={(e) => {
+                            if (
+                              abJahrRef.current &&
+                              parseInt(e.target.value) <
+                                parseInt(abJahrRef.current.value) &&
+                              bisJahrRef.current
+                            ) {
+                              const value = abJahrRef.current.value;
+                              bisJahrRef.current.value = value;
+                              handleAddFilter("fromAge", value);
+                              handleAddFilter("untilAge", value);
+                            } else {
+                              handleAddFilter("untilAge", e.target.value);
                               if (
                                 abJahrRef.current &&
-                                parseInt(e.target.value) <
-                                  parseInt(abJahrRef.current.value) &&
-                                bisJahrRef.current
+                                parseInt(abJahrRef.current.value) >
+                                  parseInt(e.target.value)
                               ) {
-                                const value = abJahrRef.current.value;
-                                bisJahrRef.current.value = value;
-                                handleAddFilter("fromAge", value);
-                                handleAddFilter("untilAge", value);
-                              } else {
-                                handleAddFilter("untilAge", e.target.value);
-                                if (
-                                  abJahrRef.current &&
-                                  parseInt(abJahrRef.current.value) >
-                                    parseInt(e.target.value)
-                                ) {
-                                  abJahrRef.current.value = e.target.value;
-                                }
+                                abJahrRef.current.value = e.target.value;
                               }
-                            }}
-                          />
-                          {/* <label
+                            }
+                          }}
+                        />
+                        {/* <label
                               htmlFor="maxAge"
                               className="text-xs font-semibold leading-7 w-fit"
                             >
                               Max.
                             </label>
                           </div> */}
+                      </div>
+                    ) : filter === "categories" ? (
+                      <div className="flex flex-col gap-1">
+                        {categoryNames.map((category) =>
+                          category === initialFilterValue ? null : (
+                            <div key={category} className="flex gap-2">
+                              <input
+                                key={category}
+                                type="checkbox"
+                                id={category}
+                                name="categories"
+                                checked={categoriesFilter.includes(category)}
+                                onChange={() => {
+                                  handleAddFilter("category", category);
+                                }}
+                              />
+                              <label className="capitalize" htmlFor={category}>
+                                {category}
+                              </label>
+                            </div>
+                          )
+                        )}
+                      </div>
+                    ) : filter === "bezirk" ? (
+                      <div className="flex flex-col gap-1">
+                        <div className="flex gap-2">
+                          <input
+                            type="radio"
+                            name="bezirk"
+                            id="none"
+                            checked={bezirkeFilter === ""}
+                            className="w-fit"
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                handleAddFilter("bezirk", "");
+                              }
+                            }}
+                          />
+                          <label htmlFor="none" className="w-fit capitalize">
+                            Egal wo
+                          </label>
                         </div>
-                      ) : filter === "categories" ? (
-                        <div className="flex flex-col gap-1">
-                          {categoryNames.map((category) =>
-                            category === initialFilterValue ? null : (
-                              <div key={category} className="flex gap-2">
-                                <input
-                                  key={category}
-                                  type="checkbox"
-                                  id={category}
-                                  name="categories"
-                                  checked={categoriesFilter.includes(category)}
-                                  onChange={() => {
-                                    handleAddFilter("category", category);
-                                  }}
-                                />
-                                <label
-                                  className="capitalize"
-                                  htmlFor={category}
-                                >
-                                  {category}
-                                </label>
-                              </div>
-                            )
-                          )}
-                        </div>
-                      ) : filter === "bezirk" ? (
-                        <div className="flex flex-col gap-1">
-                          <div className="flex gap-2">
+                        {bezirke.map((bezirk) => (
+                          <div key={bezirk} className="flex gap-2">
                             <input
                               type="radio"
                               name="bezirk"
-                              id="none"
-                              className="w-fit"
+                              id={bezirk}
+                              checked={bezirk === bezirkeFilter}
                               onChange={(e) => {
                                 if (e.target.checked) {
-                                  handleAddFilter("bezirk", "");
+                                  handleAddFilter("bezirk", bezirk);
                                 }
                               }}
+                              className="w-fit"
                             />
-                            <label htmlFor="none" className="w-fit capitalize">
-                              Anywhere
+                            <label
+                              htmlFor={bezirk}
+                              className="w-fit capitalize"
+                            >
+                              {bezirk}
                             </label>
                           </div>
-                          {bezirke.map((bezirk) => (
-                            <div key={bezirk} className="flex gap-2">
-                              <input
-                                type="radio"
-                                name="bezirk"
-                                id={bezirk}
-                                onChange={(e) => {
-                                  if (e.target.checked) {
-                                    handleAddFilter("bezirk", bezirk);
-                                  }
-                                }}
-                                className="w-fit"
-                              />
-                              <label
-                                htmlFor={bezirk}
-                                className="w-fit capitalize"
-                              >
-                                {bezirk}
-                              </label>
-                            </div>
-                          ))}
-                        </div>
-                      ) : (
-                        filter === "pinnedPosts" && (
-                          <input
-                            type="checkbox"
-                            name="pinnedPosts"
-                            onChange={(e) =>
-                              handleAddFilter("pinnedPosts", e.target.value)
-                            }
-                          />
-                        )
-                      )}
-                    </FiltersInput>
-                  )}
-                </React.Fragment>
-              ))}
-            </div>
+                        ))}
+                      </div>
+                    ) : (
+                      filter === "pinnedPosts" && (
+                        <input
+                          type="checkbox"
+                          name="pinnedPosts"
+                          onChange={(e) =>
+                            handleAddFilter("pinnedPosts", e.target.value)
+                          }
+                        />
+                      )
+                    )}
+                  </FiltersInput>
+                )}
+              </React.Fragment>
+            ))}
           </ScrollableContainer>
         </article>
         <div className="flex flex-col items-center gap-2">
           <button
             className="w-full p-2 rounded bg-hh-700 hover:bg-hh-800 active:bg-hh-600 text-white font-semibold"
-            onClick={() => handleSetFilters()}
+            onClick={() => {
+              handleSetFilters();
+            }}
           >
             SET FILTERS
           </button>
