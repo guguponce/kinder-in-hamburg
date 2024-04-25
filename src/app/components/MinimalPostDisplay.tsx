@@ -25,15 +25,17 @@ export default function MinimalPostDisplay({
         </>
       </DataDisplay>
 
-      <DataDisplay keyName={"Tags"}>
-        <div className="flex flex-wrap">
-          {tags.map((tag) => (
-            <span key={tag} className="bg-hh-300 px-2 rounded-md m-1">
-              {tag}
-            </span>
-          ))}
-        </div>
-      </DataDisplay>
+      {tags && (
+        <DataDisplay keyName={"Tags"}>
+          <div className="flex flex-wrap">
+            {tags.map((tag) => (
+              <span key={tag} className="bg-hh-300 px-2 rounded-md m-1">
+                {tag}
+              </span>
+            ))}
+          </div>
+        </DataDisplay>
+      )}
 
       <div className="flex justify-between items-end mt-2">
         <div className="flex gap-4 flex-wrap items-center">
