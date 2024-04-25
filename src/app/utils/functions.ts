@@ -200,7 +200,9 @@ export const getNextWeekend = () => {
     currentDate.getTime() + millisecondsUntilNextMonday
   );
   nextMonday.setHours(0, 0, 0, 1);
+  currentDate.setHours(0, 0, 0, 1);
   return {
+    today: currentDate.getTime(),
     nextSaturday: nextSaturday.getTime(),
     nextMonday: nextMonday.getTime(),
   };
