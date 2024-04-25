@@ -61,7 +61,7 @@ export default async function DashboardPage() {
           {Object.entries(userFlohs).map(([status, flohs]) =>
             !!flohs.length ? (
               <div
-                key={status}
+                key={status + "flohmaerkte"}
                 className="p-2 w-full rounded-sm bg-hh-600 text-hh-50"
               >
                 <h4 className="text-lg font-semibold ml-6">
@@ -82,9 +82,7 @@ export default async function DashboardPage() {
                   </div>
                 </div>
               </div>
-            ) : (
-              <></>
-            )
+            ) : null
           )}
         </section>
       )}
@@ -94,7 +92,7 @@ export default async function DashboardPage() {
           {Object.entries(userPosts).map(([status, posts]) =>
             !!posts.length ? (
               <div
-                key={status}
+                key={status + "posts"}
                 className="p-2 w-full rounded-sm bg-hh-600 text-hh-50"
               >
                 <h4 className="text-lg font-semibold ml-6">
@@ -114,9 +112,7 @@ export default async function DashboardPage() {
                   </div>
                 </div>
               </div>
-            ) : (
-              <></>
-            )
+            ) : null
           )}
         </section>
       )}
