@@ -15,14 +15,16 @@ export default function ScrollableFlohmaerkte({
   const bezirke = Array.from(
     new Set(flohmaerkte.map((floh) => floh.bezirk))
   ).sort();
-  const reducedFlohmaerkte = flohmaerkte.reduce((acc, floh) => {
-    if (!acc[floh.bezirk]) {
-      acc[floh.bezirk] = [floh];
-    } else {
-      acc[floh.bezirk] = [...acc[floh.bezirk], floh];
-    }
-    return acc;
-  }, {} as { [key: string]: iFlohmarkt[] });
+  const reducedFlohmaerkte = [...flohmaerkte]
+    .sort((a, b) => a.date - b.date)
+    .reduce((acc, floh) => {
+      if (!acc[floh.bezirk]) {
+        acc[floh.bezirk] = [floh];
+      } else {
+        acc[floh.bezirk] = [...acc[floh.bezirk], floh];
+      }
+      return acc;
+    }, {} as { [key: string]: iFlohmarkt[] });
   const filteredList = bezirk
     ? flohmaerkte.filter((floh) => floh.bezirk === bezirk)
     : flohmaerkte;
@@ -33,7 +35,8 @@ export default function ScrollableFlohmaerkte({
           {title}{" "}
         </h2>
       )}
-      <ScrollableContainer>
+
+      <div className="overflow-x-auto w-fit max-w-full px-4 pb-4 pt-2 flex justify-center flex-wrap gap-2 lg:gap-4 items-stretch">
         {bezirk
           ? filteredList.map(
               ({ id, title, date, image, bezirk: flohBezirk }, i) => (
@@ -57,17 +60,17 @@ export default function ScrollableFlohmaerkte({
           : bezirke.map((bezirk) => (
               <div
                 key={bezirk}
-                className="flex flex-col gap-2 rounded bg-hh-600 p-2 min-w-fit"
+                className="flex items-center flex-col gap-2 rounded bg-hh-600 bgop75 p-2 w-[275px] sm:w-fit"
               >
                 <h3 className="text-xl font-semibold text-white text-center">
                   {bezirk}
                 </h3>
-                <div className="flex gap-2 overflow-x-auto">
+                <ScrollableContainer>
                   {reducedFlohmaerkte[bezirk].map(
                     ({ id, title, date, image, bezirk: flohBezirk }, i) => (
                       <article
                         key={id}
-                        className="overflow-hidden h-[250px] min-w-[180px] "
+                        className="overflow-hidden h-[250px] min-w-[180px]"
                       >
                         <FlohmarktPoster
                           bezirk={flohBezirk}
@@ -80,10 +83,10 @@ export default function ScrollableFlohmaerkte({
                       </article>
                     )
                   )}
-                </div>
+                </ScrollableContainer>
               </div>
             ))}
-      </ScrollableContainer>
+      </div>
     </div>
   );
 }
