@@ -18,8 +18,8 @@ export default async function updateSuggestedPostPage({
   const post = await getSuggestedPostWithID(postID);
   if (!post) return <PostNotFound />;
   return (
-    <section className="relative mb-10 mt-6 max-w-[1000px] bg-[hsl(35,73%,57%,0.9)] p-4 text-gray-200 lg:mx-8">
-      <div className="h-full w-full bg-[rgb(255,255,255,0.6)] p-5 px-5">
+    <main className="relative mb-10 mt-6 max-w-[1000px] bg-hh-100 rounded-xl p-4 text-gray-200 lg:mx-8">
+      <section className="h-full w-full bg-hh-200 p-5 px-5">
         <h1 className="title-font mb-4 text-center text-2xl font-medium text-gray-900 sm:text-3xl">
           APPROVE POST
         </h1>
@@ -31,7 +31,7 @@ export default async function updateSuggestedPostPage({
           }}
           user={session.user}
         />
-      </div>
-    </section>
+      </section>
+    </main>
   );
 }

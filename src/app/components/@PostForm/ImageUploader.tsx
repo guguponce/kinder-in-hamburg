@@ -88,7 +88,7 @@ export const ImageUploader = ({
   return (
     <div
       id="images-upload-container"
-      className="bg-hh-800 p-4 text-gray-900 max-w-[800px] mx-auto text-sm"
+      className="bg-hh-800 p-4 text-gray-900 max-w-[800px] mx-auto text-sm w-full"
     >
       <h2 className="text-xl font-bold text-white underline">
         Images<span className="ml-2 text-negative-200 no-underline">*</span>

@@ -26,7 +26,10 @@ export default function IgAccountInput({
     <div className="flex items-center">
       <div className="flex flex-wrap gap-4 p-2">
         <div className="flex flex-col">
-          <label htmlFor="igName" className="text-md font-semibold leading-7">
+          <label
+            htmlFor="igName"
+            className="text-md font-semibold leading-7 text-hh-800"
+          >
             Name
           </label>
           <div className="relative">

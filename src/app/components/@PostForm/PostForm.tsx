@@ -154,7 +154,7 @@ export default function PostForm({
       image: imagesUrlsReady.urls,
       link: data.link,
       bezirk: data.bezirk,
-      stadtteil: data.stadtteil,
+      stadtteil: data.stadtteil === "Andere Orte" ? "" : data.stadtteil,
       minAge: data.minAge ? parseInt(data.minAge) : 0,
       maxAge: data.maxAge ? parseInt(data.maxAge) : undefined,
       igAccounts: igAccountsInput,
@@ -199,7 +199,7 @@ export default function PostForm({
       addedBy: addedBy!,
       address: addressInput,
       bezirk: data.bezirk,
-      stadtteil: data.stadtteil,
+      stadtteil: data.stadtteil === "Andere Orte" ? "" : data.stadtteil,
       categories: categoriesList,
       createdAt: createdAt || newID.current,
       id: data.id,
@@ -245,7 +245,7 @@ export default function PostForm({
       addedBy: addedBy,
       address: addressInput,
       bezirk: data.bezirk,
-      stadtteil: data.stadtteil,
+      stadtteil: data.stadtteil === "Andere Orte" ? "" : data.stadtteil,
       categories: categoriesList,
       createdAt: createdAt || newID.current,
       id: data.id,
@@ -292,7 +292,7 @@ export default function PostForm({
       addedBy: addedBy,
       address: addressInput,
       bezirk: data.bezirk,
-      stadtteil: data.stadtteil,
+      stadtteil: data.stadtteil === "Andere Orte" ? "" : data.stadtteil,
       categories: categoriesList,
       createdAt: createdAt || newID.current,
       id: data.id,
@@ -333,7 +333,7 @@ export default function PostForm({
   if (!user.email || !user.name) return;
 
   return (
-    <section id="post-form-container">
+    <section id="post-form-container" className="flex-col flex gap-1">
       <ImageUploader
         email={user.email || ""}
         setImagesUrlsReady={setImagesUrlsReady}
@@ -353,7 +353,7 @@ export default function PostForm({
                 console.error("missing handler");
               }
         )}
-        className="postForm mx-auto flex w-full flex-col items-center text-gray-900"
+        className="postForm mx-auto flex w-full flex-col items-center gap-1 text-gray-900"
       >
         <PostFormInput inputLabel="Title" inputID="title" required={true}>
           <>
@@ -425,7 +425,7 @@ export default function PostForm({
         >
           <div id="categories-box" className="flex flex-wrap gap-4">
             {categoryNames.map((category) => (
-              <label key={category} className="flex items-center">
+              <label key={category} className="flex items-center  text-hh-800">
                 <input
                   type="checkbox"
                   value={category}
@@ -508,33 +508,9 @@ export default function PostForm({
             ))}
           </div>
         </PostFormInput>
-        <div id="minmax-box" className="flex flex-wrap gap-4">
-          <div className="minAgeBox w-32">
-            <PostFormInput inputLabel="Min. Alter?" inputID="minAge">
-              <input
-                {...register("minAge")}
-                id="minAge"
-                name="minAge"
-                type="number"
-                defaultValue={0}
-                className="w-16 block rounded border border-gray-300 bg-gray-100 bg-opacity-60 pr-1 pl-2 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
-              />
-            </PostFormInput>
-          </div>
-          <div className="maxAgeBox w-32">
-            <PostFormInput inputLabel="Max. Alter?" inputID="maxAge">
-              <input
-                {...register("maxAge")}
-                id="maxAge"
-                name="maxAge"
-                type="number"
-                className="w-16 block rounded border border-gray-300 bg-gray-100 bg-opacity-60 pr-1 pl-2 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
-              />
-            </PostFormInput>
-          </div>
-        </div>
-        <div id="location-box" className="flex flex-wrap gap-4 w-full lg:w-3/4">
-          <div className="bezirkBox min-w-fit w-2/5 flex flex-col">
+
+        <div id="location-box" className="flex flex-wrap gap-4 sm:w-full w-fit">
+          <div className="bezirkBox min-w-fit w-2/5 flex flex-col sm:flex-grow">
             <PostFormInput inputLabel="Bezirk" inputID="bezirk">
               <select
                 {...register("bezirk")}
@@ -576,9 +552,9 @@ export default function PostForm({
               </PostFormInput>
             )}
           </div>
-          <div className="addressBox min-w-fit flex-grow flex flex-col">
+          <div className="addressBox w-fit flex-grow flex flex-col">
             <PostFormInput inputLabel="Addresse" inputID="address">
-              <div className="flex flex-col flex-wrap gap-4">
+              <div className="flex flex-col flex-wrap gap-4 w-fit">
                 <div className="flex gap-2 flex-wrap">
                   <input
                     id="streetInput"
@@ -639,11 +615,44 @@ export default function PostForm({
             </PostFormInput>
           </div>{" "}
         </div>
-        {/* falta iglocation, address  */}
+        <div
+          id="minmax-box"
+          className="p-2 rounded bg-hh-100 bg-opacity-20 flex flex-col gap-1 self-start"
+        >
+          <h3 className="text-md font-semibold leading-7 w-fit  text-hh-800">
+            Alter Empfehlung
+          </h3>
+          <div id="minmax-box" className="flex flex-wrap gap-4">
+            <div className="minAgeBox w-32">
+              <PostFormInput inputLabel="Min. Alter?" inputID="minAge">
+                <input
+                  {...register("minAge")}
+                  id="minAge"
+                  name="minAge"
+                  type="number"
+                  defaultValue={0}
+                  className="w-16 block rounded border border-gray-300 bg-gray-100 bg-opacity-60 pr-1 pl-2 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
+                />
+              </PostFormInput>
+            </div>
+            <div className="maxAgeBox w-32">
+              <PostFormInput inputLabel="Max. Alter?" inputID="maxAge">
+                <input
+                  {...register("maxAge")}
+                  id="maxAge"
+                  name="maxAge"
+                  type="number"
+                  className="w-16 block rounded border border-gray-300 bg-gray-100 bg-opacity-60 pr-1 pl-2 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
+                />
+              </PostFormInput>
+            </div>
+          </div>
+        </div>
 
         <PostFormInput inputLabel="Pinned Post?" inputID="pinnedPost">
           <select
             {...register("pinnedPost")}
+            defaultValue={pinnedPost ? "true" : "false"}
             defaultChecked={pinnedPost}
             className="mx-4  rounded border border-gray-300 bg-gray-100 bg-opacity-95 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
           >
