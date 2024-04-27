@@ -6,6 +6,8 @@ import Link from "next/link";
 import React from "react";
 import BezirkableFlohmaerkteList from "./BezirkableFlohmaerkteList";
 
+export const revalidate = 120;
+
 export default async function FlohmarktPage() {
   const flohmaerkte = await getApprovedFlohmaerkte();
   if (!flohmaerkte) return <PostNotFound multiples={true} type="flohmarkt" />;
