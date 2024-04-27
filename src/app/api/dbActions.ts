@@ -630,6 +630,18 @@ export const getFlohmarktWithID = async (id: string) => {
   }
 };
 
+export const getAllFlohmaerkte = async () => {
+  try {
+    const { data, error } = await supabaseAdmin.from("flohmaerkte").select("*");
+    if (error) {
+      throw new Error("There was a problem getting the Flea Markets.");
+    }
+    return data.map((f) => parseFlohmarkt(f)) as iFlohmarkt[];
+  } catch (error) {
+    return false;
+  }
+};
+
 export const getApprovedFlohmaerkte = async () => {
   try {
     const { data, error } = await supabaseAdmin
