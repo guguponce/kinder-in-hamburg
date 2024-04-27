@@ -9,6 +9,7 @@ import { parseAddress, parsePost } from "@app/utils/functions";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import PostNotFound from "@components/@PostForm/PostNotFound";
+import AdminRoute from "@app/providers/AdminRoute";
 
 export default async function updateSuggestedPostPage({
   params,
@@ -49,22 +50,24 @@ export default async function updateSuggestedPostPage({
     redirect("/");
 
   return (
-    <main className="relative mb-10 mt-6 max-w-[1000px] bg-hh-100 rounded-xl p-4 text-gray-200 lg:mx-8">
-      <section className="h-full w-full bg-hh-300 p-5 px-5">
-        <h1 className="title-font mb-4 text-center text-xl font-bold text-gray-900 sm:text-3xl">
-          UPDATE SUGGESTION
-        </h1>
-        <PostForm
-          postType="update-suggestion"
-          PostForm={{
-            ...suggestedPost,
-            address: suggestedPost.address
-              ? parseAddress(suggestedPost.address)
-              : undefined,
-          }}
-          user={session.user}
-        />
-      </section>
-    </main>
+    <AdminRoute>
+      <main className="relative mb-10 mt-6 max-w-[1000px] bg-hh-100 rounded-xl p-4 text-gray-200 lg:mx-8">
+        <section className="h-full w-full bg-hh-300 p-5 px-5">
+          <h1 className="title-font mb-4 text-center text-xl font-bold text-gray-900 sm:text-3xl">
+            UPDATE SUGGESTION
+          </h1>
+          <PostForm
+            postType="update-suggestion"
+            PostForm={{
+              ...suggestedPost,
+              address: suggestedPost.address
+                ? parseAddress(suggestedPost.address)
+                : undefined,
+            }}
+            user={session.user}
+          />
+        </section>
+      </main>
+    </AdminRoute>
   );
 }

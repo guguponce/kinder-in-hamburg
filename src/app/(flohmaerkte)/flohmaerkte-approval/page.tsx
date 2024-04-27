@@ -1,4 +1,5 @@
 import { getSuggestedFlohmaerkte } from "@app/api/dbActions";
+import AdminRoute from "@app/providers/AdminRoute";
 import MinimalFlohmarktDisplay from "@components/MinimalFlohmarktDisplay";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
@@ -14,12 +15,14 @@ export default async function ApprovalPage() {
   if (flohmaerkte.length === 0)
     return <div>There are no flohmaerkte to display</div>;
   return (
-    <div className="flex flex-col gap-4">
-      {flohmaerkte.map((flo) => (
-        <React.Fragment key={flo.id}>
-          <MinimalFlohmarktDisplay flohmarkt={flo} />
-        </React.Fragment>
-      ))}
-    </div>
+    <AdminRoute>
+      <div className="flex flex-col gap-4">
+        {flohmaerkte.map((flo) => (
+          <React.Fragment key={flo.id}>
+            <MinimalFlohmarktDisplay flohmarkt={flo} />
+          </React.Fragment>
+        ))}
+      </div>
+    </AdminRoute>
   );
 }

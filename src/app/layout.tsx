@@ -34,7 +34,10 @@ export default async function RootLayout({
       >
         <SessionProvider session={session}>
           <Header />
-          <LoggedUserComponents>{children}</LoggedUserComponents>
+          {/* <LoggedUserComponents> */}
+          {children}
+          {/* </LoggedUserComponents> */}
+
           <Footer />
         </SessionProvider>
       </body>

@@ -1,7 +1,6 @@
 "use server";
 
 import { WeatherAPI } from "@app/utils/types";
-import { revalidateTag } from "next/cache";
 
 export const getHamburgsWeather = async () => {
   // revalidateTag("weather");

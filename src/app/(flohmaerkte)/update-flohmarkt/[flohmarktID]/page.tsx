@@ -1,6 +1,7 @@
 import { getFlohmarktWithID } from "@app/api/dbActions";
 import ApproveButton from "@app/components/ApproveButton";
 import DeleteButton from "@app/components/DeleteButton";
+import AdminRoute from "@app/providers/AdminRoute";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
 import FlohForm from "@components/@FlohForm/FlohForm";
 import PostNotFound from "@components/@PostForm/PostNotFound";
@@ -44,34 +45,36 @@ export default async function UpdateApprovedFlohmarktPage({
       </main>
     );
   return (
-    <main className="relative mb-10 mt-6 max-w-[1000px] w-full bg-hh-100 rounded-xl p-4 text-gray-200 lg:mx-8">
-      <AdminServerComponent>
-        <DeleteButton
-          deleteFrom={
-            flohmarkt.status === "approved" ? "approved" : "suggested"
-          }
-          id={flohmarkt.id}
-          title={flohmarkt.title}
-          type="flohmarkt"
-          size="large"
-        />
-        <ApproveButton
-          flohmarktID={flohmarktID}
-          size="medium"
-          flohmarktContributor={flohmarkt.addedBy}
-        />
-      </AdminServerComponent>
-      <div className="h-full w-full bg-hh-200 p-5 px-5">
-        <h1 className="title-font mb-4 text-center text-xl font-bold text-gray-900 sm:text-3xl">
-          UPDATE {flohmarkt.status === "approved" ? "APPROVED" : "SUGGESTED"}{" "}
-          FLOHMARKT
-        </h1>
-        <FlohForm
-          flohFormType="update-flohmarkt"
-          FlohForm={flohmarkt}
-          user={session.user}
-        />
-      </div>
-    </main>
+    <AdminRoute>
+      <main className="relative mb-10 mt-6 max-w-[1000px] w-full bg-hh-100 rounded-xl p-4 text-gray-200 lg:mx-8">
+        <AdminServerComponent>
+          <DeleteButton
+            deleteFrom={
+              flohmarkt.status === "approved" ? "approved" : "suggested"
+            }
+            id={flohmarkt.id}
+            title={flohmarkt.title}
+            type="flohmarkt"
+            size="large"
+          />
+          <ApproveButton
+            flohmarktID={flohmarktID}
+            size="medium"
+            flohmarktContributor={flohmarkt.addedBy}
+          />
+        </AdminServerComponent>
+        <div className="h-full w-full bg-hh-200 p-5 px-5">
+          <h1 className="title-font mb-4 text-center text-xl font-bold text-gray-900 sm:text-3xl">
+            UPDATE {flohmarkt.status === "approved" ? "APPROVED" : "SUGGESTED"}{" "}
+            FLOHMARKT
+          </h1>
+          <FlohForm
+            flohFormType="update-flohmarkt"
+            FlohForm={flohmarkt}
+            user={session.user}
+          />
+        </div>
+      </main>
+    </AdminRoute>
   );
 }

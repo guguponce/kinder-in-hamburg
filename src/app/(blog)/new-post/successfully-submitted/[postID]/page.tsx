@@ -5,6 +5,7 @@ import { getSuggestedPostWithID } from "@app/api/dbActions";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import PostNotFound from "@components/@PostForm/PostNotFound";
+import AdminRoute from "@app/providers/AdminRoute";
 export default async function SuccessfulPage({
   params: { postID },
 }: {
@@ -19,5 +20,9 @@ export default async function SuccessfulPage({
   if (!session?.user?.email || post.user_id !== session.user.email) {
     redirect("/");
   }
-  return <SuccessfulSubmit postID={postID} submitType="suggestion" />;
+  return (
+    <AdminRoute>
+      <SuccessfulSubmit postID={postID} submitType="suggestion" />
+    </AdminRoute>
+  );
 }

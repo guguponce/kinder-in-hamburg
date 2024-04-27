@@ -1,11 +1,9 @@
-import { deleteFlohmarkt, getFlohmarktWithID } from "@app/api/dbActions";
+import { getFlohmarktWithID } from "@app/api/dbActions";
 import PostNotFound from "@app/components/@PostForm/PostNotFound";
 import DeleteButton from "@app/components/DeleteButton";
 import FlohmarktTemplate from "@app/components/FlohmarktTemplate";
 import UpdateButton from "@app/components/UpdateButton";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
-import UserServerComponents from "@app/providers/UserServerComponents";
-import { redirect } from "next/navigation";
 import React from "react";
 
 export default async function FlohmarktPage({
