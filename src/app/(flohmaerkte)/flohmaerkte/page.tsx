@@ -39,11 +39,11 @@ export default async function FlohmarktPage() {
         Flea Markets
       </h1>
       <ScrollableFlohmaerkte
-        title="This Week's"
+        title="Diese Woche"
         flohmaerkte={thisWeekFlohmaerkte}
       ></ScrollableFlohmaerkte>
       <BezirkableFlohmaerkteList
-        title="Future Flea Markets"
+        title="Ab nächster Woche"
         flohList={futureFlohmaerkte}
       ></BezirkableFlohmaerkteList>
     </main>
