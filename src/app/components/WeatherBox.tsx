@@ -25,8 +25,10 @@ export default async function WeatherBox({
   const { current, forecast, location } = await getHamburgsWeather();
   const { activity, overallCondition } =
     WEATHER_CODES[current.condition.code.toString()];
-  const { currentTime, nextRain, currentHour, activityType } =
-    getTimeRainAndActivity(forecast.forecastday[0].hour, activity);
+  const { currentTime, nextRain, activityType } = getTimeRainAndActivity(
+    forecast.forecastday[0].hour,
+    activity
+  );
   // -------------------
   // change to getApprovedSuggestions
 
