@@ -24,7 +24,7 @@ export default async function FlohmarktPage() {
       </main>
     );
   const { today, nextMonday } = getNextWeekend();
-  const nextWeekendFlohmaerkte = flohmaerkte.filter(
+  const thisWeekFlohmaerkte = flohmaerkte.filter(
     ({ date }) => date > today && date < nextMonday
   );
   const futureFlohmaerkte = flohmaerkte
@@ -38,7 +38,7 @@ export default async function FlohmarktPage() {
       </h1>
       <ScrollableFlohmaerkte
         title="This Week's"
-        flohmaerkte={nextWeekendFlohmaerkte}
+        flohmaerkte={thisWeekFlohmaerkte}
       ></ScrollableFlohmaerkte>
       <BezirkableFlohmaerkteList
         title="Future Flea Markets"
