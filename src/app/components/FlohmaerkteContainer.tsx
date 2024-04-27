@@ -4,6 +4,7 @@ import BezirkableFlohmaerkteList from "../(flohmaerkte)/flohmaerkte/BezirkableFl
 import { getNextWeekend } from "@app/utils/functions";
 import { getApprovedFlohmaerkte } from "@app/api/dbActions";
 
+export const revalidate = 0;
 export default async function FlohmaerkteContainer() {
   const flohmaerkte = await getApprovedFlohmaerkte();
   if (!flohmaerkte) return <div>Keine Flohmärkte gefunden</div>;

@@ -1,4 +1,5 @@
 "use client";
+import AdminClientComponent from "@app/providers/AdminClientComponents";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -55,8 +56,7 @@ export default function BurgerMenu() {
           ].map(({ name, href, auth }, i) =>
             auth ? (
               <React.Fragment key={href}>
-                <AdminServerComponent>
-                  (
+                <AdminClientComponent>
                   <Link
                     className={`${
                       pathname === href
@@ -70,8 +70,7 @@ export default function BurgerMenu() {
                   >
                     {name}
                   </Link>
-                  )
-                </AdminServerComponent>
+                </AdminClientComponent>
               </React.Fragment>
             ) : (
               <Link
