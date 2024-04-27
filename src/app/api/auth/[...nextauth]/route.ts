@@ -1,7 +1,7 @@
 import NextAuth from "next-auth/next";
 import GoogleProvider from "next-auth/providers/google";
 import { redirect } from "next/navigation";
-import { Account } from "next-auth";
+import { Account, User } from "next-auth";
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_ID || "";
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_SECRET || "";
@@ -20,12 +20,20 @@ const authOptions = {
           (params as { account: Account }).account.provider === "google" &&
           !!(params as { account: Account }).account.access_token
         ) {
+          if (
+            (params as { user: User }).user.email !== process.env.ADMIN_EMAIL
+          ) {
+            console.log("signIn", (params as { user: User }).user.email);
+            return false;
+          }
           redirect("/");
         } else {
           redirect("/auth/error");
         }
       } catch (e) {
-        console.error("error", e);
+        if ((e as any).message !== "NEXT_REDIRECT") {
+          console.error("error", e);
+        }
       }
       return true;
     },
