@@ -110,7 +110,7 @@ export const parseParams = (params: string) => {
 };
 
 export function separateAddress(address: string) {
-  const regex = /^(.*?)(\d+),\s*(\d+)\s*(.*?)$/;
+  const regex = /^(.*?)(\d+|\s+),\s*(\d+|\s+)\s*(.*?|\s+)$/;
   const match = address.match(regex);
   if (!match) {
     return { street: "", number: "", PLZ: "", city: "" };
