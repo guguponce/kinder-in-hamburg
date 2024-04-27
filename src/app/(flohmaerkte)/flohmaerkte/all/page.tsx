@@ -16,12 +16,25 @@ export default async function page() {
       {(
         [allFlohs, allApprovedFlohs, suggestedFlohs] as (iFlohmarkt[] | false)[]
       ).map((flohList, i) =>
-        flohList === false || !flohList.length ? (
-          <div key={i}>{i + 1} not retrieved</div>
+        flohList === false ? (
+          <div className="p-2 my-2 bg-positive-200" key={i}>
+            {i + 1} not retrieved
+          </div>
+        ) : !flohList.length ? (
+          <div className="p-2 my-2 bg-positive-200" key={i}>
+            {i + 1} empty
+          </div>
         ) : (
-          <div key={i}>
-            {flohList.map((floh) => (
-              <div key={floh.title}>{floh.title}</div>
+          <div className="p-2 my-2 bg-positive-300" key={i}>
+            {i === 0
+              ? "All Flohmaerkte"
+              : i === 1
+              ? "Approved Flohmaerkte"
+              : "Suggested Flohmaerkte"}
+            {flohList.map((floh, j) => (
+              <div className="p-2 bg-positive-400" key={floh.title}>
+                {j + 1} - {floh.title}
+              </div>
             ))}
           </div>
         )
