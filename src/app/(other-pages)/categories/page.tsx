@@ -1,4 +1,4 @@
-import { getAllApprovedPosts, getAllSuggestedPosts } from "@app/api/dbActions";
+import { getAllApprovedPosts } from "@app/api/dbActions";
 import StackedCards from "@app/components/@Cards/StackedCards";
 import AdminRoute from "@app/providers/AdminRoute";
 import { categoryNames } from "@app/utils/constants";
@@ -7,7 +7,7 @@ import NotFound from "@components/NotFound";
 import React from "react";
 
 export default async function CategoriesPage() {
-  const allPosts = await getAllSuggestedPosts();
+  const allPosts = await getAllApprovedPosts();
   if (!allPosts) return <NotFound type="categories" multiples={true} />;
   const categoriesPosts = [...allPosts]
     .sort(() => 0.5 - Math.random())

@@ -1,5 +1,5 @@
 import React from "react";
-import { getAllSuggestedPosts } from "@app/api/dbActions";
+import { getAllApprovedPosts } from "@app/api/dbActions";
 import { iPost } from "@app/utils/types";
 import PostNotFound from "@app/components/@PostForm/PostNotFound";
 import RandomRecommendation from "@app/components/@Cards/RandomRecommendation";
@@ -7,7 +7,7 @@ import Link from "next/link";
 import AdminRoute from "@app/providers/AdminRoute";
 
 export default async function BezirkePage() {
-  const allPosts = await getAllSuggestedPosts();
+  const allPosts = await getAllApprovedPosts();
   if (!allPosts) return <PostNotFound multiples={true} type="post" />;
   const bezirkePosts = allPosts.reduce((acc, post) => {
     if (!post.bezirk) return acc;
