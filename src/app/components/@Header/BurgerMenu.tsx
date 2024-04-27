@@ -1,4 +1,5 @@
 "use client";
+import AdminServerComponent from "@app/providers/AdminServerComponents";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useRef } from "react";
@@ -46,24 +47,48 @@ export default function BurgerMenu() {
           className="absolute top-[calc(100%+24px)]  -left-3 shadow-lg  z-[300] flex flex-col bg-gradient-to-b from-hh-200 rounded-[0_0_4px_0] to-hh-100"
         >
           {[
-            { href: "/", name: "Home" },
-            { href: "/posts", name: "Posts" },
-            { href: "/flohmaerkte", name: "Flohmärkte" },
-            { href: "/categories", name: "Categories" },
-            { href: "/bezirke", name: "Bezirke" },
-          ].map(({ name, href }, i) => (
-            <Link
-              className={`${
-                pathname === href ? "bg-black bg-opacity-20" : "bg-transparent"
-              } ${
-                i !== 0 ? "border-t-2 border-black rounded-none" : ""
-              } py-1 px-2  font-semibold w-full text-hh-950`}
-              key={name}
-              href={href}
-            >
-              {name}
-            </Link>
-          ))}
+            { href: "/", name: "Home", auth: true },
+            { href: "/posts", name: "Posts", auth: true },
+            { href: "/flohmaerkte", name: "Flohmärkte", auth: true },
+            { href: "/categories", name: "Categories", auth: true },
+            { href: "/bezirke", name: "Bezirke", auth: true },
+          ].map(({ name, href, auth }, i) =>
+            auth ? (
+              <React.Fragment key={href}>
+                <AdminServerComponent>
+                  (
+                  <Link
+                    className={`${
+                      pathname === href
+                        ? "bg-black bg-opacity-20"
+                        : "bg-transparent"
+                    } ${
+                      i !== 0 ? "border-t-2 border-black rounded-none" : ""
+                    } py-1 px-2  font-semibold w-full text-hh-950`}
+                    key={name}
+                    href={href}
+                  >
+                    {name}
+                  </Link>
+                  )
+                </AdminServerComponent>
+              </React.Fragment>
+            ) : (
+              <Link
+                className={`${
+                  pathname === href
+                    ? "bg-black bg-opacity-20"
+                    : "bg-transparent"
+                } ${
+                  i !== 0 ? "border-t-2 border-black rounded-none" : ""
+                } py-1 px-2  font-semibold w-full text-hh-950`}
+                key={name}
+                href={href}
+              >
+                {name}
+              </Link>
+            )
+          )}
         </nav>
       )}
     </div>

@@ -5,7 +5,7 @@ import { signIn, signOut } from "next-auth/react";
 export default function AuthButton({
   email,
 }: {
-  email: string | undefined | null;
+  email?: string | undefined | null;
 }) {
   if (email) {
     return (

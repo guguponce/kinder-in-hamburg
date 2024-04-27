@@ -4,20 +4,21 @@ import LinkActive from "./LinkActive";
 import Link from "next/link";
 import BurgerMenu from "./BurgerMenu";
 import UserButtons from "./UserButtons";
+import AdminServerComponent from "@app/providers/AdminServerComponents";
 
 export default async function Header() {
   return (
     <header
       id="header"
-      className="relative h-20 w-full lg:max-w-[1200px] bg-negative-500 p-2 sm:p-4 flex justify-between items-center gap-2 text-white"
+      className="relative h-20 w-full lg:max-w-[1200px] bg-negative-500 p-2 sm:p-4 flex justify-between lg:justify-center items-center gap-2 text-white"
     >
       <BurgerMenu />
       <div
-        className="mx-auto h-full px-4 sm:flex-grow lg:mr-20 rounded-sm bg-white flex items-center justify-center lg:justify-start  hover:text-[#121212] active:text-[#121212] "
+        className="mx-auto h-full px-4 flex-grow  rounded-sm bg-white flex items-center  justify-end lg:justify-center   hover:text-[#121212] active:text-[#121212] "
         id="logo-text"
       >
         <Link
-          className="text-3xl text-center font-bold text-hh-900 flex items-center gap-4"
+          className="text-3xl text-end lg:text-center font-bold text-hh-900 flex items-end bg-red-300 gap-4"
           href="/"
         >
           Kinder in HH
@@ -25,20 +26,33 @@ export default async function Header() {
       </div>
       <nav className="hidden font-semibold lg:flex items-center gap-4">
         {[
-          { href: "/posts", name: "Posts" },
-          { href: "/flohmaerkte", name: "Flohmärkte" },
-          { href: "/categories", name: "Categories" },
-          { href: "/bezirke", name: "Bezirke" },
-        ].map(({ href, name }) => (
-          <Link key={href} href={href}>
-            {name}
-            <LinkActive linkHref={href} />
-          </Link>
-        ))}
+          { href: "/posts", name: "Posts", auth: true },
+          { href: "/flohmaerkte", name: "Flohmärkte", auth: true },
+          { href: "/categories", name: "Categories", auth: true },
+          { href: "/bezirke", name: "Bezirke", auth: true },
+        ].map(({ href, name, auth }) =>
+          auth ? (
+            <React.Fragment key={href}>
+              <AdminServerComponent>
+                <Link key={href} href={href}>
+                  {name}
+                  <LinkActive linkHref={href} />
+                </Link>
+              </AdminServerComponent>
+            </React.Fragment>
+          ) : (
+            <Link key={href} href={href}>
+              {name}
+              <LinkActive linkHref={href} />
+            </Link>
+          )
+        )}
       </nav>
-      <div className="lg:ml-4 flex gap-2 items-center">
-        <UserButtons />
-      </div>
+      <AdminServerComponent>
+        <div className="lg:ml-4 flex gap-2 items-center">
+          <UserButtons />
+        </div>
+      </AdminServerComponent>
     </header>
   );
 }
