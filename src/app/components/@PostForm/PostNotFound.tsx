@@ -21,7 +21,7 @@ export default function PostNotFound({
         className="p-2 rounded-md bg-hh-800 hover:bg-hh-700 active:bg-hh-600 text-white"
         href={type === "flohmarkt" ? "/flohmaerkte" : "/posts"}
       >
-        {type === "flohmarkt" ? "All Flea Markets" : "All Posts"}
+        {type === "flohmarkt" ? "Alle Flohmärkte" : "All Posts"}
       </Link>
     </main>
   );

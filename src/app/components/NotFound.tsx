@@ -12,7 +12,7 @@ export default function NotFound({
     flohmarkt: {
       title: "Flea market",
       text: "Check out our active flea markets",
-      linkText: "All Flea Markets",
+      linkText: "Alle Flohmärkte",
       link: "/flohmaerkte",
     },
     post: {

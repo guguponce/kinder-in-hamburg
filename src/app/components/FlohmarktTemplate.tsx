@@ -48,7 +48,7 @@ export default function FlohmarktTemplate({
             href={creator ? "/dashboard" : "/flohmaerkte"}
             className="text-sm text-hh-700 px-2 py-1 hover:underline hover:underline-offset-4 min-w-fit"
           >
-            ← {creator ? "Dashboard" : "All Flea Markets"}
+            ← {creator ? "Dashboard" : "Alle Flohmärkte"}
           </Link>
           <div
             id="categories"

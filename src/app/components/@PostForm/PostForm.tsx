@@ -168,7 +168,6 @@ export default function PostForm({
       addedBy: userInput,
       status: data.status || "pending",
     };
-    console.log(suggestionPost);
 
     addNewSuggestedPost(suggestionPost)
       .then(() => {

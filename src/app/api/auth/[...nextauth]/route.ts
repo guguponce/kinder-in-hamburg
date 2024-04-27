@@ -23,7 +23,6 @@ const authOptions = {
           if (
             (params as { user: User }).user.email !== process.env.ADMIN_EMAIL
           ) {
-            console.log("signIn", (params as { user: User }).user.email);
             return false;
           }
           redirect("/");
