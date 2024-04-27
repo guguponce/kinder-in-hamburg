@@ -31,7 +31,8 @@ export default function FlohmarktTemplate({
   children?: React.ReactNode;
   creator?: boolean;
 }) {
-  const { street, number, PLZ, city } = separateAddress(address);
+  const separated = separateAddress(address);
+  const { street, number, PLZ, city } = separated;
   const startTime = getStartTime(time);
   const endTime = getEndTime(time);
 
@@ -128,31 +129,52 @@ export default function FlohmarktTemplate({
                       <div className="min-w-5 mt-1">
                         <PostLogo logo="map" color="#1F262E" size="20px" />
                       </div>
-                      <Link
-                        href={
-                          "https://www.google.com/maps/place/" +
-                          street +
-                          "+" +
-                          number +
-                          "+" +
-                          PLZ +
-                          "+" +
-                          city
-                        }
-                        className="italic hover:underline hover:underline-offset-2 flex flex-col flex-grow"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <span className="block font-semibold">{location}</span>
-                        <span className="flex flex-wrap gap-1">
-                          <span className="block">
-                            {street} {number},
+                      {Object.values(separated).some(Boolean) ? (
+                        <Link
+                          href={
+                            "https://www.google.com/maps/place/" +
+                            street +
+                            "+" +
+                            number +
+                            "+" +
+                            PLZ +
+                            "+" +
+                            city
+                          }
+                          className="italic hover:underline hover:underline-offset-2 flex flex-col flex-grow"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <span className="block font-semibold">
+                            {location}
                           </span>
-                          <span className="block">
-                            {PLZ} {city}
+                          <span className="flex flex-wrap gap-1">
+                            <span className="block">
+                              {street} {number},
+                            </span>
+                            <span className="block">
+                              {PLZ} {city}
+                            </span>
                           </span>
-                        </span>
-                      </Link>
+                        </Link>
+                      ) : (
+                        <Link
+                          href={
+                            "https://www.google.com/maps/place/" +
+                            address.split(/[ \.\-\,]+/gi).join("+")
+                          }
+                          className="italic hover:underline hover:underline-offset-2 flex flex-col flex-grow"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <span className="block font-semibold">
+                            {location}
+                          </span>
+                          <span className="flex flex-wrap gap-1">
+                            {address}
+                          </span>
+                        </Link>
+                      )}
                     </div>
                   )}
                 </div>
