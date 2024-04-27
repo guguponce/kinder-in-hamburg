@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="relative min-h-20 w-full mt-auto  bg-negative-300 p-2 sm:p-4 flex sm:flex-wrap sm:flex-row flex-col justify-center sm:justify-between items-center gap-2">
+    <footer className="relative min-h-20 w-full mt-auto  bg-negative-400 p-2 sm:p-4 flex sm:flex-wrap sm:flex-row flex-col justify-center sm:justify-between items-center gap-2">
       <div className="flex justify-center items-center">
         <PostLogo logo="hh" color="#fefefe" size="4rem" />
         <h1 className="text-xl hidden sm:block text-center font-bold text-white">

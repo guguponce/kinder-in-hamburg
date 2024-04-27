@@ -21,7 +21,7 @@ export default async function Header() {
         id="logo-text"
       >
         <Link
-          className="text-3xl text-end lg:text-center font-bold text-hh-900 flex items-end bg-red-300 gap-4"
+          className="text-3xl text-end lg:text-center font-bold text-hh-800 flex items-end gap-4"
           href="/"
         >
           Kinder in HH
