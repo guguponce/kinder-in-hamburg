@@ -39,10 +39,13 @@ export default function ScrollableFlohmaerkte({
       <div className="overflow-x-auto w-fit max-w-full px-4 pb-4 pt-2 flex justify-center flex-wrap gap-2 lg:gap-4 items-stretch">
         {bezirk
           ? filteredList.map(
-              ({ id, title, date, image, bezirk: flohBezirk }, i) => (
+              (
+                { id, title, date, image, bezirk: flohBezirk, stadtteil },
+                i
+              ) => (
                 <article
                   key={id}
-                  className={`overflow-hidden h-[250px] min-w-[180px] ${
+                  className={`overflow-hidden h-[270px] min-w-[180px] ${
                     i === flohmaerkte.length - 1 ? "" : "mr-4"
                   }`}
                 >
@@ -54,6 +57,9 @@ export default function ScrollableFlohmaerkte({
                     image={image}
                     prefixLink={`/flohmaerkte/`}
                   />
+                  <h3 className="h-[20px] w-full font-semibold text-xs truncate-1">
+                    {stadtteil}
+                  </h3>
                 </article>
               )
             )
@@ -67,19 +73,27 @@ export default function ScrollableFlohmaerkte({
                 </h3>
                 <ScrollableContainer>
                   {reducedFlohmaerkte[bezirk].map(
-                    ({ id, title, date, image, bezirk: flohBezirk }, i) => (
+                    (
+                      { id, title, date, image, bezirk: flohBezirk, stadtteil },
+                      i
+                    ) => (
                       <article
                         key={id}
-                        className="overflow-hidden h-[250px] min-w-[180px]"
+                        className="relative flex flex-col items-center overflow-hidden h-[275px] min-w-[180px] gap-1"
                       >
-                        <FlohmarktPoster
-                          bezirk={flohBezirk}
-                          id={id}
-                          title={title}
-                          date={date}
-                          image={image}
-                          prefixLink={`/flohmaerkte/`}
-                        />
+                        <div className="overflow-hidden h-[250px] min-w-[180px]">
+                          <FlohmarktPoster
+                            bezirk={flohBezirk}
+                            id={id}
+                            title={title}
+                            date={date}
+                            image={image}
+                            prefixLink={`/flohmaerkte/`}
+                          />
+                        </div>
+                        <h3 className="text-white text-center h-[20px] w-full font-semibold text-sm truncate-1">
+                          {stadtteil}
+                        </h3>
                       </article>
                     )
                   )}
