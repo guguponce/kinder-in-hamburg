@@ -6,6 +6,8 @@ import UpdateButton from "@app/components/UpdateButton";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
 import React from "react";
 
+export const revalidate = 0;
+
 export default async function FlohmarktPage({
   params: { flohmarktID },
 }: {
