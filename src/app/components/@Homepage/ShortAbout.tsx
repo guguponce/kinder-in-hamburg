@@ -6,8 +6,23 @@ export default function ShortAbout() {
       <h3 className="font-semibold">
         Herzlich willkommen bei Kinder in Hamburg!
       </h3>
-
       <p>
+        Hier findet ihr verschiedenen Flohmärkten aus verschiedenen
+        WhatsApp-Gruppen zusammengestellt.
+      </p>
+      <p>
+        Wenn ihr einen kennt, der hier nicht aufgeführt ist, könnt ihr ihn gerne
+        per <a href="kinder.in.hamburg.hh@gmail.com">E-Mail</a> vorschlagen.
+        (Bald könnt ihr sie auch direkt auf dieser Seite hochladen, wenn ihr
+        wollt). Wir freuen uns auch über Empfehlungen oder Links zu
+        WhatsApp-Gruppen, um mehr Märkte zu entdecken.
+      </p>
+      <p>
+        Wir wollen euch helfen, euren nächsten Flohmarkt zu finden, und bald
+        auch eure nächsten Familienausflüge in Hamburg.
+        {/* Einen schönen Tag euch allen! */}
+      </p>
+      {/* <p>
         Entdeckt mit uns familienfreundliche Aktivitäten in der Stadt. Von
         Museen und Parks bis hin zu Restaurants und Flohmärkten - wir versuchen
         alles abzudecken.
@@ -18,11 +33,11 @@ export default function ShortAbout() {
         Aktivität für unsere Kinder zu suchen. Deshalb haben wir diese Website
         erstellt, um praktische Filter und Kategorien anzubieten, um die idealen
         Aktivitäten schnell zu finden.
-      </p>
-      <p>
+      </p> */}
+      {/* <p>
         Wir hoffen, dass wir Menschen mit Kindern inspirieren können, ihr
         nächstes Erlebnis in Hamburg zu finden.
-      </p>
+      </p> */}
       <p>Viel Spaß dabei!</p>
     </article>
   );
