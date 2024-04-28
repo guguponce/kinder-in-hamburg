@@ -192,15 +192,15 @@ export const getNextWeekend = () => {
   const nextSaturday = new Date(
     currentDate.getTime() + millisecondsUntilNextSaturday
   );
-  nextSaturday.setHours(0, 0, 0, 1);
+  nextSaturday.setHours(0, 1, 0, 1);
 
   const millisecondsUntilNextMonday =
     ((8 - currentDayOfWeek + 7) % 7) * 24 * 60 * 60 * 1000;
   const nextMonday = new Date(
     currentDate.getTime() + millisecondsUntilNextMonday
   );
-  nextMonday.setHours(0, 0, 0, 1);
-  currentDate.setHours(0, 0, 0, 1);
+  nextMonday.setHours(0, 1, 0, 1);
+  currentDate.setHours(0, 1, 0, 1);
   return {
     today: currentDate.getTime(),
     nextSaturday: nextSaturday.getTime(),
