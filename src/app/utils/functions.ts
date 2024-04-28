@@ -187,23 +187,17 @@ export const joinTime = (start: string | undefined, end: string | undefined) =>
 export const getTodayNexMonday = () => {
   const currentDate = new Date();
   const currentDayOfWeek = currentDate.getDay();
-  const millisecondsUntilNextSaturday =
-    ((6 - currentDayOfWeek + 7) % 7) * 24 * 60 * 60 * 1000;
-  const nextSaturday = new Date(
-    currentDate.getTime() + millisecondsUntilNextSaturday
-  );
-  nextSaturday.setHours(5, 0, 0, 1);
-
+  const daysUntilNextMonday = (1 - currentDayOfWeek + 7) % 7;
   const millisecondsUntilNextMonday =
-    ((8 - currentDayOfWeek + 7) % 7) * 24 * 60 * 60 * 1000;
+    (daysUntilNextMonday || 7) * 24 * 60 * 60 * 1000;
   const nextMonday = new Date(
     currentDate.getTime() + millisecondsUntilNextMonday
   );
+
   nextMonday.setHours(5, 0, 0, 1);
   currentDate.setHours(0, 0, 0, 1);
   return {
     today: currentDate.getTime() - 120 * 60000,
-    nextSaturday: nextSaturday.getTime(),
     nextMonday: nextMonday.getTime(),
   };
 };
