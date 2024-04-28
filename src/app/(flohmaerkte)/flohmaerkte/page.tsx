@@ -39,28 +39,6 @@ export default async function FlohmarktPage() {
       <h1 className="text-4xl font-bold my-2 p-2 rounded bg-opacity-50 bg-hh-50">
         Flohmärkte
       </h1>
-      <p>Today: {new Date(today).toLocaleString()}</p>
-      <p>Next Monday: {new Date(nextMonday).toLocaleString()}</p>
-      {
-        [...flohmaerkte]
-          .sort((a, b) => a.date - b.date)
-          .find((f) => f.date > today)?.title
-      }
-      {
-        [...flohmaerkte]
-          .sort((a, b) => b.date - a.date)
-          .find((f) => f.date < nextMonday)?.title
-      }
-      <div>
-        Ab heute:
-        {[...flohmaerkte]
-          .sort((a, b) => a.date - b.date)
-          .filter((f) => f.date > today)
-          .slice(0, 10)
-          .map((f) => (
-            <p key={f.id}>{f.title}</p>
-          ))}
-      </div>
       <ScrollableFlohmaerkte
         title="Diese Woche"
         flohmaerkte={thisWeekFlohmaerkte}
