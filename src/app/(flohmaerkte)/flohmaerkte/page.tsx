@@ -1,7 +1,7 @@
 import { getApprovedFlohmaerkte } from "@app/api/dbActions";
 import PostNotFound from "@app/components/@PostForm/PostNotFound";
 import ScrollableFlohmaerkte from "@app/components/ScrollableFlohmaerkte";
-import { getNextWeekend } from "@app/utils/functions";
+import { getTodayNexMonday } from "@app/utils/functions";
 import Link from "next/link";
 import React from "react";
 import BezirkableFlohmaerkteList from "./BezirkableFlohmaerkteList";
@@ -25,7 +25,7 @@ export default async function FlohmarktPage() {
         </Link>
       </main>
     );
-  const { today, nextMonday } = getNextWeekend();
+  const { today, nextMonday } = getTodayNexMonday();
 
   const thisWeekFlohmaerkte = flohmaerkte.filter(
     ({ date }) => date > today && date < nextMonday

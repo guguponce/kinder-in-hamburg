@@ -10,7 +10,7 @@ import { createClient } from "@supabase/supabase-js";
 import { getServerSession } from "next-auth";
 import {
   checkBezirk,
-  getNextWeekend,
+  getTodayNexMonday,
   checkCategory,
   parseAllFlohmarkte,
   parseAllPosts,
@@ -724,7 +724,7 @@ export const getUserFlohmaerkte = async (email: string) => {
   }
 };
 export const getThisWeekFlohmaerkte = async () => {
-  const { today, nextMonday } = getNextWeekend();
+  const { today, nextMonday } = getTodayNexMonday();
   try {
     const { data, error } = await supabaseAdmin
       .from("flohmaerkte")
