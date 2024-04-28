@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 export default function ShortAbout() {
@@ -39,6 +40,13 @@ export default function ShortAbout() {
         nächstes Erlebnis in Hamburg zu finden.
       </p> */}
       <p>Viel Spaß dabei!</p>
+
+      <Link
+        href={"/about"}
+        className="self-end font-semibold italic underline underline-offset-4"
+      >
+        Mehr lesen
+      </Link>
     </article>
   );
 }
