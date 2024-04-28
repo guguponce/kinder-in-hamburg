@@ -58,7 +58,7 @@ export default async function FlohmarktPage() {
           .filter((f) => f.date > today)
           .slice(0, 10)
           .map((f) => (
-            <p>{f.title}</p>
+            <p key={f.id}>{f.title}</p>
           ))}
       </div>
       <ScrollableFlohmaerkte
