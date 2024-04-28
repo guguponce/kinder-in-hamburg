@@ -197,7 +197,7 @@ export const getTodayNexMonday = () => {
   nextMonday.setHours(5, 0, 0, 1);
   currentDate.setHours(0, 0, 0, 1);
   return {
-    today: currentDate.getTime() - 120 * 60000,
+    today: currentDate.getTime() - 60000,
     nextMonday: nextMonday.getTime(),
   };
 };
