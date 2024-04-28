@@ -54,7 +54,7 @@ export default function BezirkableFlohmaerkteList({
             ({ id, title, date, image, bezirk: flohBezirk }, i) => (
               <article
                 key={id}
-                className={`overflow-hidden h-[250px] min-w-[180px] ${
+                className={`overflow-hidden h-[250px] min-w-[180px] shadow-lg ${
                   i === filteredList.length - 1 ? "" : "mr-4"
                 }`}
               >

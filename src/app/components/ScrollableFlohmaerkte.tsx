@@ -36,7 +36,7 @@ export default function ScrollableFlohmaerkte({
         </h2>
       )}
 
-      <div className="overflow-x-auto w-fit max-w-full px-4 pb-4 pt-2 flex justify-center flex-wrap gap-2 lg:gap-4 items-stretch">
+      <div className="overflow-x-auto w-fit max-w-full flex justify-center flex-wrap gap-2 lg:gap-4 items-stretch">
         {bezirk
           ? filteredList.map(
               (
@@ -58,7 +58,12 @@ export default function ScrollableFlohmaerkte({
                     prefixLink={`/flohmaerkte/`}
                   />
                   <h3 className="h-[20px] w-full font-semibold text-xs truncate-1">
-                    {stadtteil}
+                    <span>
+                      {new Date(date)
+                        .toLocaleDateString("de-DE")
+                        .replace(".2024", " - ")}
+                    </span>
+                    <span> {stadtteil}</span>{" "}
                   </h3>
                 </article>
               )
@@ -66,7 +71,7 @@ export default function ScrollableFlohmaerkte({
           : bezirke.map((bezirk) => (
               <div
                 key={bezirk}
-                className="flex items-center flex-col gap-2 rounded bg-hh-600 bgop75 p-2 w-[275px] sm:w-fit"
+                className="flex items-center flex-col gap-2 rounded bg-hh-600 bgop75 p-2 w-fit max-w-full"
               >
                 <h3 className="text-xl font-semibold text-white text-center">
                   {bezirk}
@@ -92,7 +97,12 @@ export default function ScrollableFlohmaerkte({
                           />
                         </div>
                         <h3 className="text-white text-center h-[20px] w-full font-semibold text-sm truncate-1">
-                          {stadtteil}
+                          <span>
+                            {new Date(date)
+                              .toLocaleDateString("de-DE")
+                              .replace(".2024", " - ")}
+                          </span>
+                          <span> {stadtteil}</span>{" "}
                         </h3>
                       </article>
                     )

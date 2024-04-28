@@ -3,7 +3,7 @@ import React from "react";
 
 export default function ShortAbout() {
   return (
-    <article className="p-4 w-full sm:w-4/5 md:w-3/4 max-w-[800px] rounded-lg shadow-lg bg-hh-800 bg-opacity-50 text-white flex flex-col gap-4">
+    <article className="p-4 w-full sm:w-4/5 md:w-3/4 max-w-[600px] rounded-lg shadow-lg bg-hh-800 bg-opacity-50 text-white flex flex-col gap-4">
       <h3 className="font-semibold">
         Herzlich willkommen bei Kinder in Hamburg!
       </h3>
