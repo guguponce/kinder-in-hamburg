@@ -214,19 +214,23 @@ export const getCurrentTime = () => {
 };
 export const getTimeRainAndActivity = (
   hours: Hour[],
-  activity: "Outdoor" | "Indoor" | "Both"
+  activity: "Outdoor" | "Indoor" | "Both",
+  sunset: string
 ) => {
   const currentTime = getCurrentTime();
   const currentHour = currentTime.getHours();
   const nextRain = whenWillRainLater(hours, currentHour);
+  const sunsetIndex = sunset.match(/\d+/)
+    ? parseInt(sunset.match(/\d+/)![0]) + 12
+    : 19;
 
   const activityType =
-    nextRain !== -1 && nextRain + 1 + currentHour < 18
+    nextRain !== -1 && nextRain + 1 + currentHour < sunsetIndex
       ? "Indoor"
       : activity === "Both"
       ? ["Indoor", "Outdoor"][Math.floor(Math.random() * 2)]
       : activity;
-  return { currentTime, currentHour, nextRain, activityType };
+  return { currentTime, currentHour, nextRain, activityType, sunsetIndex };
 };
 
 export const sortPostsByDate = (posts: iPost[]) =>
