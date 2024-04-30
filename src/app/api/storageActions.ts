@@ -118,6 +118,15 @@ export const deleteImage = async (path: string, fileName: string) => {
   }
 };
 
+export const deleteAllImagesFromPost = async (id: string) => {
+  const images = await getImagesURLs(`postsImages/${id}`);
+  await Promise.all(
+    images.map(async (image) => {
+      return deleteImage(`postsImages/${id}`, image.fileName);
+    })
+  );
+};
+
 export const deleteUnusedImages = async (id?: string) => {
   const activePosts = await getAllPostsIds(id).then((res) => res || []);
 
