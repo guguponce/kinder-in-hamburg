@@ -14,7 +14,6 @@ export default function StatusSetter({
   const [currentStatus, setCurrentStatus] = useState(status);
   const handleSetStatus = async () => {
     if (status === currentStatus) return;
-    console.log("status", status, "currentStatus", currentStatus);
     await updatePostStatus(post, post.id, status, currentStatus);
   };
 

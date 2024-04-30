@@ -387,15 +387,12 @@ export const updatePostStatus = async <
 ) => {
   if (oldStatus === "approved") {
     if (newStatus === "rejected" || newStatus === "pending") {
-      console.log(1, oldStatus, newStatus);
       await deleteApprovedPost(id, newStatus);
     }
   } else {
     if (newStatus === "approved") {
-      console.log(2, oldStatus, newStatus);
       await approveSuggestedPost(post);
     } else {
-      console.log(3, oldStatus, newStatus);
       await updateSuggestionStatus(id, newStatus);
     }
   }

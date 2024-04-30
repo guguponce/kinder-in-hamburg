@@ -19,7 +19,7 @@ export default function AboutPage() {
           Wenn ihr einen kennt, der hier nicht aufgeführt ist, könnt ihr ihn
           gerne per{" "}
           <a
-            href="kinder.in.hamburg.hh@gmail.com"
+            href="mailto:admin@kinder-in-hamburg.de"
             className="w-fit underline underline-offset-4 text-negative-100 font-bold"
           >
             E-Mail

@@ -30,10 +30,13 @@ export default function ContactPage() {
           Wir arbeiten gerade an einem Formular für Vorschläge auf der Website.
         </span>{" "}
         Bis dahin könnt ihr uns gerne eine{" "}
-        <span className="font-semibold">E-Mail</span> schicken.
+        <a href="mailto:admin@kinder-in-hamburg.de" className="font-semibold">
+          E-Mail
+        </a>{" "}
+        schicken.
       </p>
       <a
-        href="mailto:kinder.in.hamburg.hh@gmail.com"
+        href="mailto:admin@kinder-in-hamburg.de"
         className="flex items-center gap-2 self-center p-4 bg-hh-800 text-hh-100 font-semibold rounded-lg mt-4 w-max hover:bg-hh-700 transition-colors duration-300 ease-in-out"
       >
         <PaperPlane />

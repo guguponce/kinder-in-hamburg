@@ -11,24 +11,25 @@ export default async function AllPostsPage() {
   if (!allPosts) return <PostNotFound multiples type="post" />;
   return (
     <AdminRoute>
-      <main>
-        <h1>All Posts</h1>
+      <main className="flex flex-col gap-4">
         {Object.entries(allPosts).map(([status, posts]) => (
           <section
             key={status}
-            className="w-full gap-2 bg-hh-100 bg-opacity-50 text-white rounded-md"
+            className="w-full gap-2 bg-hh-400 text-white rounded-md p-4"
           >
-            <h2 className="font-semibold">{status}</h2>
+            <h2 className="font-semibold text-center text-2xl p-2 capitalize">
+              {status}
+            </h2>
             <article className="flex flex-wrap gap-2 justify-center">
               {posts.map((p) => (
                 <div
                   key={p.id}
                   className={`${
                     status === "approved"
-                      ? "bg-positive-200"
+                      ? "bg-positive-300"
                       : status === "rejected"
-                      ? "bg-negative-200"
-                      : "bg-hh-200"
+                      ? "bg-negative-300"
+                      : "bg-hh-300"
                   } p-2 rounded-md flex  justify-around gap-4 items-center w-[400px] lg:w-[600px]  h-[200px]`}
                 >
                   <div className="w-[275px] lg:w-[450px] flex-grow h-full">
