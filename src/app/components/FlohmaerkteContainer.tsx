@@ -20,7 +20,7 @@ export default async function FlohmaerkteContainer() {
       <h1 className="text-4xl font-bold my-2 p-2 rounded bg-opacity-50 bg-hh-50">
         Flohmärkte
       </h1>
-      <div className="flex flex-col items-center gap-4 lg:gap-8">
+      <div className="flex flex-col items-center gap-4 lg:gap-8 max-w-full">
         <ScrollableFlohmaerkte
           title="Diese Woche"
           flohmaerkte={thisWeekFlohmaerkte}
