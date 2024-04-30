@@ -17,7 +17,13 @@ export default function AboutPage() {
         </p>
         <p>
           Wenn ihr einen kennt, der hier nicht aufgeführt ist, könnt ihr ihn
-          gerne per <a href="kinder.in.hamburg.hh@gmail.com">E-Mail</a>{" "}
+          gerne per{" "}
+          <a
+            href="kinder.in.hamburg.hh@gmail.com"
+            className="w-fit underline underline-offset-4 text-negative-100 font-bold"
+          >
+            E-Mail
+          </a>{" "}
           vorschlagen. (Bald könnt ihr sie auch direkt auf dieser Seite
           hochladen, wenn ihr wollt). Wir freuen uns auch über Empfehlungen oder
           Links zu WhatsApp-Gruppen, um mehr Märkte zu entdecken.
@@ -45,54 +51,56 @@ export default function AboutPage() {
           Erlebnis noch bereichernder und angenehmer machen werden:
         </p>
         <ul>
-          <li className="my-1 rounded p-1 bg-astronaut-800 bg-opacity-50">
-            <span className="font-semibold text-lg text-hh-100">Beiträge:</span>{" "}
-            Entdecke Beiträge von Orten, die wir im Laufe der Jahre erkundet
-            haben oder die von Freunden empfohlen wurden, um authentische
-            Einblicke und echte Erfahrungen zu bieten. Und auch von kuratierten
-            Empfehlungen und Inspirationen, die aus verschiedenen Internetseiten
-            und Influencern stammen.
+          <li className="my-1 rounded p-1 bg-astronaut-800 bg-opacity-75">
+            <span className="font-semibold text-lg text-positive-200">
+              Posts:
+            </span>{" "}
+            Beiträge von Orten, die wir im Laufe der Jahre erkundet haben oder
+            die von Freunden empfohlen wurden, um authentische Einblicke und
+            echte Erfahrungen zu bieten. Und auch von kuratierten Empfehlungen
+            und Inspirationen, die aus verschiedenen Internetseiten und
+            Influencern stammen.
           </li>
-          <li className="my-1 rounded p-1 bg-astronaut-800 bg-opacity-50">
-            <span className="font-semibold text-lg text-hh-100">
+          <li className="my-1 rounded p-1 bg-astronaut-800 bg-opacity-75">
+            <span className="font-semibold text-lg text-positive-200">
               Kategorien und Standortorganisation:
             </span>{" "}
             Navigiere problemlos durch verschiedene Kategorien von Beiträgen und
             Bezirken.
           </li>
-          <li className="my-1 rounded p-1 bg-astronaut-800 bg-opacity-50">
-            <span className="font-semibold text-lg text-hh-100">
+          <li className="my-1 rounded p-1 bg-astronaut-800 bg-opacity-75">
+            <span className="font-semibold text-lg text-positive-200">
               Erweiterte Filterung:
             </span>{" "}
             Passe deine Suche nach Standort, Kategorien und empfohlenem Alter
             an, um sicherzustellen, dass der Inhalt deinen Vorlieben und
             Interessen entspricht.
           </li>
-          <li className="my-1 rounded p-1 bg-astronaut-800 bg-opacity-50">
-            <span className="font-semibold text-lg text-hh-100">
+          <li className="my-1 rounded p-1 bg-astronaut-800 bg-opacity-75">
+            <span className="font-semibold text-lg text-positive-200">
               Neue Orte und Flohmärkte vorschlagen:
             </span>{" "}
             Du kannst deine Lieblingsflohmärkte und familienfreundlichen Orte
             über unsere Vorschlagsformulare teilen, um das kollektive Wissen
             unserer Community zu erweitern.
           </li>
-          <li className="my-1 rounded p-1 bg-astronaut-800 bg-opacity-50">
-            <span className="font-semibold text-lg text-hh-100">
+          <li className="my-1 rounded p-1 bg-astronaut-800 bg-opacity-75">
+            <span className="font-semibold text-lg text-positive-200">
               Spielplatz-Erkundung:
             </span>{" "}
             Tauche ein in die Welt der Spielplätze in Hamburg, mit umfassender
             Abdeckung der besten in jedem Stadtviertel, perfekt für endlosen
             Spaß mit deinen Kindern.
           </li>
-          <li className="my-1 rounded p-1 bg-astronaut-800 bg-opacity-50">
-            <span className="font-semibold text-lg text-hh-100">
+          <li className="my-1 rounded p-1 bg-astronaut-800 bg-opacity-75">
+            <span className="font-semibold text-lg text-positive-200">
               Interaktive Karten:
             </span>{" "}
             Wir werden versuchen, eine Karte mit den Standorten der Orte der
             Beiträge in jedem Bezirk zu erstellen.
           </li>
-          <li className="my-1 rounded p-1 bg-astronaut-800 bg-opacity-50">
-            <span className="font-semibold text-lg text-hh-100">
+          <li className="my-1 rounded p-1 bg-astronaut-800 bg-opacity-75">
+            <span className="font-semibold text-lg text-positive-200">
               Persönliche Erfahrung:
             </span>{" "}
             Genieße eine personalisierte Erfahrung mit Login-Optionen, mit denen
@@ -104,8 +112,8 @@ export default function AboutPage() {
 
         <h3 className="font-bold text-xl mt-2 text-hh-800">Einschränkungen:</h3>
         <ul>
-          <li className="my-1 rounded p-1 bg-astronaut-800 bg-opacity-50">
-            <span className="font-semibold text-lg text-hh-100">
+          <li className="my-1 rounded p-1 bg-astronaut-800 bg-opacity-75">
+            <span className="font-semibold text-lg text-negative-200">
               Bildrechte:
             </span>{" "}
             Aufgrund von Urheberrechtsbeschränkungen werden wir schrittweise
@@ -115,8 +123,8 @@ export default function AboutPage() {
             interessiert bist, deine Instagram-Bilder zu teilen, würden wir uns
             freuen, dein Konto auf unserer Website zu bewerben.
           </li>
-          <li className="my-1 rounded p-1 bg-astronaut-800 bg-opacity-50">
-            <span className="font-semibold text-lg text-hh-100">
+          <li className="my-1 rounded p-1 bg-astronaut-800 bg-opacity-75">
+            <span className="font-semibold text-lg text-negative-200">
               Web-Wartungskosten:
             </span>{" "}
             Wenn wir den Punkt erreichen, an dem viele Menschen die Website
@@ -125,8 +133,8 @@ export default function AboutPage() {
             Premium-Konten, um auf einige Funktionen zuzugreifen, oder Werbung
             auf der Website.
           </li>
-          <li className="my-1 rounded p-1 bg-astronaut-800 bg-opacity-50">
-            <span className="font-semibold text-lg text-hh-100">
+          <li className="my-1 rounded p-1 bg-astronaut-800 bg-opacity-75">
+            <span className="font-semibold text-lg text-negative-200">
               Zeitaufwand:
             </span>{" "}
             Als Eltern verstehen wir die Herausforderungen bei der

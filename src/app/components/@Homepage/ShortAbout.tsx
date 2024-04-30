@@ -13,9 +13,15 @@ export default function ShortAbout() {
       </p>
       <p>
         Wenn ihr einen kennt, der hier nicht aufgeführt ist, könnt ihr ihn gerne
-        per <a href="kinder.in.hamburg.hh@gmail.com">E-Mail</a> vorschlagen.
-        (Bald könnt ihr sie auch direkt auf dieser Seite hochladen, wenn ihr
-        wollt). Wir freuen uns auch über Empfehlungen oder Links zu
+        per{" "}
+        <a
+          href="kinder.in.hamburg.hh@gmail.com"
+          className="w-fit underline underline-offset-4 text-negative-100 font-bold"
+        >
+          E-Mail
+        </a>{" "}
+        vorschlagen. (Bald könnt ihr sie auch direkt auf dieser Seite hochladen,
+        wenn ihr wollt). Wir freuen uns auch über Empfehlungen oder Links zu
         WhatsApp-Gruppen, um mehr Märkte zu entdecken.
       </p>
       <p>
@@ -43,7 +49,7 @@ export default function ShortAbout() {
 
       <Link
         href={"/about"}
-        className="self-end font-semibold italic underline underline-offset-4"
+        className="self-end font-semibold italic underline underline-offset-4 w-fit"
       >
         Mehr lesen
       </Link>

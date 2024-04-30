@@ -45,7 +45,7 @@ export default function ScrollableFlohmaerkte({
               ) => (
                 <article
                   key={id}
-                  className={`overflow-hidden h-[270px] min-w-[180px] ${
+                  className={`overflow-hidden h-[270px] min-w-[180px] shadow-md ${
                     i === flohmaerkte.length - 1 ? "" : "mr-4"
                   }`}
                 >
@@ -71,7 +71,7 @@ export default function ScrollableFlohmaerkte({
           : bezirke.map((bezirk) => (
               <div
                 key={bezirk}
-                className="flex items-center flex-col gap-2 rounded bg-hh-600 bgop75 p-2 w-fit max-w-full"
+                className="flex items-center flex-col gap-2 rounded bg-hh-600 bgop75 p-2 w-fit max-w-full shadow-md"
               >
                 <h3 className="text-xl font-semibold text-white text-center">
                   {bezirk}
