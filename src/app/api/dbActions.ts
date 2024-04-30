@@ -17,6 +17,7 @@ import {
   parseFlohmarkt,
   parsePost,
   parseContributor,
+  separateByStatus,
 } from "@app/utils/functions";
 import { deletePreviousFlohmaerkteImages } from "./storageActions";
 const supabaseAdmin = createClient(
@@ -376,6 +377,30 @@ export const updateSuggestionStatus = async (id: number, status: string) => {
   }
 };
 
+export const updatePostStatus = async <
+  T extends "rejected" | "approved" | "pending"
+>(
+  post: iPost,
+  id: number,
+  oldStatus: T,
+  newStatus: T
+) => {
+  if (oldStatus === "approved") {
+    if (newStatus === "rejected" || newStatus === "pending") {
+      console.log(1, oldStatus, newStatus);
+      await deleteApprovedPost(id, newStatus);
+    }
+  } else {
+    if (newStatus === "approved") {
+      console.log(2, oldStatus, newStatus);
+      await approveSuggestedPost(post);
+    } else {
+      console.log(3, oldStatus, newStatus);
+      await updateSuggestionStatus(id, newStatus);
+    }
+  }
+};
+
 // APPROVED BLOGPOSTS
 export const getApprovedPostWithCat = async (category: string) => {
   if (!checkCategory(category))
@@ -476,6 +501,21 @@ export const getPinnedPostsWithFilter = async (
   }
 };
 
+export const getAllPostsSeparatedByStatus = async () => {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("kih-suggestions")
+      .select("*");
+    if (error) {
+      throw new Error("There was a problem getting the approved posts.");
+    }
+    const parsedPosts = parseAllPosts(data);
+    return separateByStatus(parsedPosts);
+  } catch (error) {
+    return false;
+  }
+};
+
 export const getApprovedPostWithID = async (id: string) => {
   try {
     const res = await supabaseAdmin
@@ -491,13 +531,16 @@ export const getApprovedPostWithID = async (id: string) => {
   }
 };
 
-export const deleteApprovedPost = async (id: number) => {
+export const deleteApprovedPost = async (
+  id: number,
+  newStatus: "pending" | "rejected" = "rejected"
+) => {
   try {
     const { data, error } = await supabaseAdmin
       .from("kih-approved-blogposts")
       .delete()
       .match({ id });
-    await updateSuggestionStatus(id, "rejected");
+    await updateSuggestionStatus(id, newStatus);
     if (error) {
       throw new Error("There was a problem deleting the post: " + id + ".");
     }
@@ -532,7 +575,7 @@ export const approveSuggestedPost = async (post: iPost) => {
     const { error } = await supabaseAdmin
       .from("kih-approved-blogposts")
       .insert(post);
-    const updatedStatus = await updateSuggestionStatus(post.id, "approved");
+    await updateSuggestionStatus(post.id, "approved");
     if (error) {
       throw new Error("There was a problem approving the post.");
     }
@@ -703,22 +746,8 @@ export const getUserFlohmaerkte = async (email: string) => {
       );
     }
     const parsedFlohmaerkte = parseAllFlohmarkte(data);
-    return parsedFlohmaerkte.reduce(
-      (acc, current) => {
-        const { status } = current;
-        if (!status) {
-          acc["approved"].push(current);
-        } else {
-          acc[status].push(current);
-        }
-        return acc;
-      },
-      {
-        approved: [] as iFlohmarkt[],
-        pending: [] as iFlohmarkt[],
-        rejected: [] as iFlohmarkt[],
-      }
-    );
+
+    return separateByStatus(parsedFlohmaerkte);
   } catch (error) {
     return false;
   }

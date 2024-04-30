@@ -3,6 +3,7 @@ import type {
   TypeAndText,
   iAddress,
   iContributor,
+  iFlohmarkt,
   iPost,
   iSessionUser,
   iStringifiedContributor,
@@ -230,3 +231,22 @@ export const getTimeRainAndActivity = (
 
 export const sortPostsByDate = (posts: iPost[]) =>
   [...posts].sort((a, b) => b.createdAt - a.createdAt);
+
+export const separateByStatus = <T extends iFlohmarkt | iPost>(array: T[]) => {
+  return array.reduce(
+    (acc, current) => {
+      const { status } = current;
+      if (!status) {
+        acc["pending"].push(current);
+      } else {
+        acc[status].push(current);
+      }
+      return acc;
+    },
+    {
+      approved: [] as T[],
+      pending: [] as T[],
+      rejected: [] as T[],
+    }
+  );
+};
