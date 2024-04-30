@@ -8,7 +8,9 @@ export default function DeleteButton({
   deleteFrom,
   size,
   type,
+  callbackURL,
 }: {
+  callbackURL?: string;
   id: number;
   type: "flohmarkt" | "post";
   title: string;
@@ -26,6 +28,7 @@ export default function DeleteButton({
           title={title}
           setDeleteModal={setDeleteModal}
           deleteFrom={deleteFrom}
+          callbackURL={callbackURL}
         />
       )}
       <button

@@ -11,6 +11,7 @@ import {
   revalidateFlohmarkt,
   revalidatePost,
 } from "@app/utils/actions/revalidate";
+import { deleteAllImagesFromPost } from "@app/api/storageActions";
 
 export default function DeleteModal({
   id,
@@ -18,7 +19,9 @@ export default function DeleteModal({
   setDeleteModal,
   deleteFrom,
   type,
+  callbackURL,
 }: {
+  callbackURL?: string;
   type: "flohmarkt" | "post";
   id: number;
   title: string;
@@ -38,6 +41,7 @@ export default function DeleteModal({
       } else if (deleteFrom === "all") {
         await deleteSuggestion(id);
         await deleteApprovedPost(id);
+        await deleteAllImagesFromPost(id.toString());
       }
     } else if (type === "flohmarkt") {
       if (deleteFrom === "all") {
@@ -48,12 +52,12 @@ export default function DeleteModal({
     }
     if (type === "post") {
       revalidatePost().then(() => {
-        router.push("/posts");
+        router.push(callbackURL || "/posts");
       });
     }
     if (type === "flohmarkt") {
       revalidateFlohmarkt().then(() => {
-        router.push("/flohmaerkte");
+        router.push(callbackURL || "/flohmaerkte");
       });
     }
   };
