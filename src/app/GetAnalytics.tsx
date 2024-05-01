@@ -13,19 +13,11 @@ export default async function AnalyticsComponent() {
       }
       beforeSend={(e) => {
         "use server";
-        if (
-          [
-            "https://kinder-in-hamburg.vercel.app/",
-            "https://kinder-in-hamburg.de/",
-          ].includes(e.url)
-        ) {
-          if (!kihcookie) {
-            return e;
-          } else {
-            return null;
-          }
+        if (!kihcookie) {
+          return e;
+        } else {
+          return null;
         }
-        return null;
       }}
     />
   );
