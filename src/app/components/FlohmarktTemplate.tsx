@@ -10,6 +10,7 @@ import {
   getStartTime,
   separateAddress,
 } from "@app/utils/functions";
+import AdminServerComponent from "@app/providers/AdminServerComponents";
 
 export default function FlohmarktTemplate({
   flohmarkt: {
@@ -55,12 +56,14 @@ export default function FlohmarktTemplate({
             id="categories"
             className="flex justify-end gap-1 h-fit flex-wrap"
           >
-            <Link
-              className="px-2 py-1 h-fit leading-tight rounded-md align-middle font-semibold bg-transparent transition-all text-hh-700 hover:text-white hover:bg-hh-700"
-              href={`/bezirke/${encodeURIComponent(bezirk)}`}
-            >
-              {bezirk}
-            </Link>
+            <AdminServerComponent>
+              <Link
+                className="px-2 py-1 h-fit leading-tight rounded-md align-middle font-semibold bg-transparent transition-all text-hh-700 hover:text-white hover:bg-hh-700"
+                href={`/bezirke/${encodeURIComponent(bezirk)}`}
+              >
+                {bezirk}
+              </Link>
+            </AdminServerComponent>
           </div>
         </div>
         <div className="flex gap-4 flex-wrap justify-center  w-full min-h-[40vh] ">
