@@ -58,6 +58,81 @@ export default function page() {
             </p>
           </div>
         </div>
+        <div className="rounded p-2 bg-hh-100 bg-opacity-75">
+          <h3 className="text-lg font-semibold p-1">
+            1.3 Analyse-Tools und Tools von Drittanbietern
+          </h3>
+          <div
+            id="vercel-container"
+            className="rounded p-2 bg-hh-100 bg-opacity-75"
+          >
+            <h4 className="text-lg font-semibold p-1">Vercel Web Analytics</h4>
+            <div className="rounded p-2 bg-hh-100 bg-opacity-75">
+              <p className="px-2">
+                Wir verwenden Vercel Web Analytics, um Einblicke in die Nutzung
+                unserer Website zu erhalten. Vercel Web Analytics arbeitet in
+                Übereinstimmung mit führenden Datenschutzstandards und erfasst
+                keine personenbezogenen Daten (PII) und verwendet keine Cookies
+                von Drittanbietern zu Tracking-Zwecken.
+              </p>
+              <h5 className="text-base font-semibold p-1">Datensammlung</h5>
+              <p className="px-2">
+                Vercel Web Analytics erfasst anonyme, aggregierte Datenpunkte,
+                einschließlich:
+              </p>
+              <ul className="ml-4">
+                <li className="list-disc">Ereigniszeitstempel</li>
+                <li className="list-disc">URL</li>
+                <li className="list-disc">Dynamischer Pfad</li>
+                <li className="list-disc">Referrer</li>
+                <li className="list-disc">Abgefilterte Abfrageparameter</li>
+                <li className="list-disc">Geolokation</li>
+                <li className="list-disc">Gerätebetriebssystem & Version</li>
+                <li className="list-disc">Browser & Version</li>
+                <li className="list-disc">Gerätetyp</li>
+                <li className="list-disc">Web Analytics Skriptversion</li>
+              </ul>
+              <h5 className="text-base font-semibold p-1">
+                Besucheridentifizierung und Datenspeicherung
+              </h5>
+              <p className="px-2">
+                Besuchersitzungen werden durch einen Hash generiert aus dem
+                eingehenden Request identifiziert, und Sitzungsdaten werden
+                automatisch nach 24 Stunden verworfen. Es werden keine
+                personenbezogenen Daten gespeichert oder an Vercel-Server
+                übertragen.
+              </p>
+              <h5 className="text-base font-semibold p-1">Konformität</h5>
+              <p className="px-2">
+                Unsere Verwendung von Vercel Web Analytics entspricht relevanten
+                Datenschutzbestimmungen, wie z. B. der DSGVO. Wir legen Wert auf
+                den Schutz der Privatsphäre und Transparenz bei der
+                Datensammlung.
+              </p>
+              <h5 className="text-base font-semibold p-1">Anpassung</h5>
+              <p className="px-2">
+                Um die Benutzerprivatsphäre weiter zu gewährleisten, haben wir
+                Vercel Web Analytics so konfiguriert, dass sensible oder
+                personenbezogene Daten aus Datenpunkten ausgeschlossen sind.
+                Dazu gehört die Schwärzung von URLs und Abfrageparametern, die
+                identifizierbare Daten enthalten.
+              </p>
+              <p className="px-2">
+                Für weitere Informationen zu Vercel Web Analytics und seinen
+                Datenschutzfunktionen, lesen Sie bitte die{" "}
+                <a
+                  href="https://vercel.com/docs/analytics/privacy-policy"
+                  target="_blank"
+                  referrerPolicy="no-referrer"
+                  className="underline underline-offset-4 text-hh-600 hover:text-hh-500"
+                >
+                  Datenschutzrichtlinie von Vercel
+                </a>
+                .
+              </p>
+            </div>{" "}
+          </div>{" "}
+        </div>
       </div>
       <div className="rounded p-2 bg-hh-100 bg-opacity-75">
         <h2 className="text-xl font-semibold p-1">
@@ -196,6 +271,16 @@ export default function page() {
               Interesse an der technisch fehlerfreien und optimierten
               Bereitstellung seiner Dienste.
             </p>
+
+            <p>
+              Unser Analysetool, Vercel Analytics, legt großen Wert auf den
+              Schutz der Privatsphäre der Nutzer und erfasst keine persönlichen
+              Informationen oder setzt Cookies zu Tracking-Zwecken. Weitere
+              Details finden Sie im folgenden Abschnitt:
+            </p>
+            <a href="#vercel-container" className="text-hh-600">
+              Erfahren Sie mehr über Vercel Analytics
+            </a>
           </div>
         </div>
         <div className="rounded p-2 bg-hh-100 bg-opacity-75">
