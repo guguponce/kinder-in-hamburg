@@ -5,8 +5,8 @@ import "@styles/globals.scss";
 import Header from "@components/@Header/Header";
 import { getServerSession } from "next-auth";
 import SessionProvider from "@app/providers/SessionProvider";
-import LoggedUserComponents from "@app/providers/LoggedUserComponents";
 import Footer from "./components/@Footer/Footer";
+import AnalyticsComponent from "./GetAnalytics";
 
 const roboto = Roboto({
   weight: "400",
@@ -54,6 +54,7 @@ export default async function RootLayout({
 
           <Footer />
         </SessionProvider>
+        <AnalyticsComponent></AnalyticsComponent>
       </body>
     </html>
   );
