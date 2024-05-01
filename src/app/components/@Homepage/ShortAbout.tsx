@@ -8,8 +8,8 @@ export default function ShortAbout() {
         Herzlich willkommen bei Kinder in Hamburg!
       </h3>
       <p>
-        Hier findet ihr verschiedenen Flohmärkten aus verschiedenen
-        WhatsApp-Gruppen zusammengestellt.
+        Hier findet ihr Flohmärkten aus verschiedenen Teilen der Stadt
+        zusammengestellt.
       </p>
       <p>
         Wenn ihr einen kennt, der hier nicht aufgeführt ist, könnt ihr ihn gerne

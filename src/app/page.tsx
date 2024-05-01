@@ -18,7 +18,7 @@ export default function Home() {
 
       <AdminServerComponent>
         <section className="max-w-[1000px] w-full p-2">
-          <WeatherBox full={true}></WeatherBox>
+          {/* <WeatherBox full={true}></WeatherBox> */}
         </section>
         <NextWeekendFlohmaerkte></NextWeekendFlohmaerkte>
 
