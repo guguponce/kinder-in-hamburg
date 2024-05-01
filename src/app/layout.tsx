@@ -16,7 +16,21 @@ const roboto = Roboto({
 
 export const metadata: Metadata = {
   title: "Kinder in Hamburg",
-  description: "Suche eure nächste Ausflugsziele in Hamburg",
+  description:
+    "Hier findet ihr Flohmärkten aus verschiedenen Orten in Hamburg zusammengestellt.",
+  keywords: [
+    "hamburg",
+    "flohmarkt",
+    "kinder",
+    "familie",
+    "ausflug",
+    "flohmarkt hamburg",
+    "flohmarkt kinder",
+    "flohmarkt familie",
+    "flohmarkt hamburg kinder",
+    "flohmarkt hamburg familie",
+    "flea market",
+  ],
 };
 
 export const revalidate = 3600;
