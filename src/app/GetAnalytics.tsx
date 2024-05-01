@@ -1,5 +1,5 @@
 "use server";
-import { Analytics } from "@vercel/analytics/react";
+import { Analytics } from "@vercel/analytics/next";
 import { cookies } from "next/headers";
 
 export default async function AnalyticsComponent() {
