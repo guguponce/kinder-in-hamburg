@@ -670,6 +670,26 @@ export const getFlohmarktWithID = async (id: string) => {
   }
 };
 
+export const getFlohmarktMetadata = async (id: string) => {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("flohmaerkte")
+      .select("title,bezirk,optionalComment")
+      .match({ id });
+    if (error) {
+      return false;
+    }
+    const { title, bezirk, optionalComment } = data[0] as {
+      title: string;
+      bezirk: iBezirk;
+      optionalComment: string;
+    };
+    return { title, bezirk, optionalComment };
+  } catch (error) {
+    return false;
+  }
+};
+
 export const getAllFlohmaerkte = async () => {
   try {
     const { data, error } = await supabaseAdmin.from("flohmaerkte").select("*");
