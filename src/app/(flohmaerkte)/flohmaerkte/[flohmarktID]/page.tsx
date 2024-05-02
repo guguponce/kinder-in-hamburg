@@ -18,7 +18,6 @@ export async function generateMetadata({
   params,
 }: FlohmarktPageProps): Promise<Metadata> {
   const flohInfo = await getFlohmarktMetadata(params.flohmarktID);
-  console.log(flohInfo);
   if (!flohInfo)
     return {
       title: "Flohmarkt nicht gefunden",
