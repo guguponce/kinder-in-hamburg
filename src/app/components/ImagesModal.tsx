@@ -1,6 +1,6 @@
 "use client";
 import React, { useMemo, useRef } from "react";
-import PostLogo from "./@Icons/PostLogo";
+import PostLogo from "./@Icons/@PostLogo/PostLogo";
 
 export default function ImagesModal({
   images,
@@ -37,9 +37,9 @@ export default function ImagesModal({
     >
       <button
         onClick={handleCloseModal}
-        className="rounded-full hover:bg-white hover:text-hh-800 flex justify-center items-center -translate-x-1/2 right-0 top-4 text-white border-2 border-white font-semibold hover:font-bold p-2 absolute"
+        className="h-10 w-10 text-3xl rounded-full hover:bg-white hover:text-hh-800 flex justify-center items-center -translate-x-1/2 right-0 top-4 text-white border-2 border-white font-semibold hover:font-bold p-1 absolute transition-all"
       >
-        Close
+        <span className="mb-[1px]">×</span>
       </button>
       <div
         className="relative w-full h-[calc(100%-150px)]  aspect-square flex justify-around gap-2 items-center bg-hh-300 bg-opacity-25 px-4"
@@ -47,7 +47,9 @@ export default function ImagesModal({
       >
         <button
           onClick={handlePrevImage}
-          className="h-10 w-10 aspect-square rounded-lg bg-hh-800 text-white text-3xl font-bold backdrop-opacity-20 -rotate-90 flex justify-center items-center"
+          className={`${
+            images.length > 1 ? "flex" : "hidden"
+          } h-10 w-10 aspect-square rounded-lg bg-hh-800 text-white text-3xl font-bold backdrop-opacity-20 -rotate-90 justify-center items-center`}
         >
           <PostLogo logo="triangle" color="#fefefe" size="1.5rem" />
         </button>
@@ -58,7 +60,9 @@ export default function ImagesModal({
         />
         <button
           onClick={handleNextImage}
-          className="h-10 w-10 aspect-square rounded-lg bg-hh-800 text-white text-3xl font-bold backdrop-opacity-20 rotate-90 flex justify-center items-center"
+          className={`${
+            images.length > 1 ? "flex" : "hidden"
+          } h-10 w-10 aspect-square rounded-lg bg-hh-800 text-white text-3xl font-bold backdrop-opacity-20 rotate-90 justify-center items-center`}
         >
           <PostLogo logo="triangle" color="#fefefe" size="1.5rem" />
         </button>

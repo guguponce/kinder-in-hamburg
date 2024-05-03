@@ -2,7 +2,7 @@ import { iFlohmarkt, iPost } from "@app/utils/types";
 import Link from "next/link";
 import React from "react";
 import DisplayTypeText from "./@PostForm/DisplayTypeText";
-import PostLogo from "./@Icons/PostLogo";
+import PostLogo from "./@Icons/@PostLogo/PostLogo";
 import UserAvatar from "./UserAvatar";
 import {
   getDate,

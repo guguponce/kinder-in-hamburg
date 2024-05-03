@@ -2,7 +2,7 @@ import { iPost } from "@app/utils/types";
 import Link from "next/link";
 import React from "react";
 import DisplayTypeText from "./@PostForm/DisplayTypeText";
-import PostLogo from "./@Icons/PostLogo";
+import PostLogo from "./@Icons/@PostLogo/PostLogo";
 import UserAvatar from "./UserAvatar";
 import ImagesModalGallery from "./ImagesModalGallery";
 
@@ -77,8 +77,8 @@ export default function PostTemplate({
         </article>
 
         <p className="italic text-xs text-hh-500 text-end self-end">
-          {lastUpdate && lastUpdate === createdAt
-            ? `(Last updated: ${new Date(lastUpdate).toLocaleDateString()})`
+          {lastUpdate && lastUpdate !== createdAt
+            ? `(Letztes Update): ${new Date(lastUpdate).toLocaleDateString()})`
             : `(${new Date(createdAt).toLocaleDateString()})`}
         </p>
       </section>

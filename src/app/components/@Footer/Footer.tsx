@@ -1,5 +1,5 @@
 import React from "react";
-import PostLogo from "../@Icons/PostLogo";
+import PostLogo from "../@Icons/@PostLogo/PostLogo";
 import Link from "next/link";
 
 export default function Footer() {

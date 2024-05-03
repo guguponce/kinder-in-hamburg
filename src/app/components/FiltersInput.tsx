@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import PostLogo from "./@Icons/PostLogo";
+import PostLogo from "./@Icons/@PostLogo/PostLogo";
 
 type inputLabelType =
   | "categories"

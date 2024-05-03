@@ -1,5 +1,5 @@
 import React from "react";
-import WeatherIcon from "./@Icons/WeatherIcon";
+import WeatherIcon from "./@Icons/@WeatherIcon/WeatherIcon";
 import { WEATHER_CODES } from "@app/utils/constants";
 
 export default function TodayTomorrow({

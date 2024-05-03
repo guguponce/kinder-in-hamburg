@@ -2,7 +2,7 @@
 import { iPost } from "@app/utils/types";
 import React, { useMemo, useRef } from "react";
 import Recommendation from "./Recommendation";
-import PostLogo from "../@Icons/PostLogo";
+import PostLogo from "../@Icons/@PostLogo/PostLogo";
 
 export default function RandomRecommendation({
   children,

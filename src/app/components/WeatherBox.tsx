@@ -6,7 +6,7 @@ import { getHamburgsWeather } from "@app/api/weatherAPI";
 import { WEATHER_CODES, bezirke } from "@app/utils/constants";
 import React from "react";
 import { getPlainText, getTimeRainAndActivity } from "@app/utils/functions";
-import WeatherIcon from "./@Icons/WeatherIcon";
+import WeatherIcon from "./@Icons/@WeatherIcon/WeatherIcon";
 import Link from "next/link";
 import ImageCard from "./@Cards/ImageCard";
 import TodayTomorrow from "./TodayTomorrow";
