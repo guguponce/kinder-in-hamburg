@@ -38,6 +38,11 @@ export default async function AllPostsPage() {
                       image={p.image ? p.image[0] : ""}
                       title={p.title}
                       description={getPlainText(p.text)}
+                      link={
+                        p.status === "approved"
+                          ? `/posts/${p.id}`
+                          : `/post-suggestion/${p.id}`
+                      }
                     />
                   </div>
                   <div className="h-full flex flex-col items-center justify-center gap-4 text-hh-800 w-[100px]">
