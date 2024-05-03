@@ -52,7 +52,8 @@ export default function PostFormInput({
           )}
           {inputID === "tags" && (
             <span>
-              ({`separate each tag with a "-". For example: "park-kleinkinder"`}
+              (
+              {`separate each tag with a "--". For example: "park-kleinkinder"`}
               )
             </span>
           )}

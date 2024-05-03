@@ -56,7 +56,7 @@ export default function DisplayTypeText({
       ) : type === "numbered-list" ? (
         <ol className="ml-6 list-decimal">
           {text
-            .split("-")
+            .split("--")
             .filter(Boolean)
             .map((line) => (
               <li key={line + Math.random()}>{line.trim()}</li>
@@ -65,7 +65,7 @@ export default function DisplayTypeText({
       ) : type === "points-list" ? (
         <ul className="ml-6 list-disc">
           {text
-            .split("-")
+            .split("--")
             .filter(Boolean)
             .map((line) => (
               <li key={line + Math.random()}>{line.trim()}</li>
