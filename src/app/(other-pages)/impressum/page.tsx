@@ -12,10 +12,10 @@ export default function Impressum() {
           <p>Eimsbütteler Chaussee</p>
           <p>20259, Hamburg</p>
           <a
-            href="mailto:kinder.in.hamburg.hh@gmail.com"
+            href="mailto:admin@kinder-in-hamburg.de"
             className="mt-1 text-hh-800 underline underline-offset-4"
           >
-            kinder.in.hamburg.hh@gmail.com
+            admin@kinder-in-hamburg.de
           </a>
         </div>
       </div>
@@ -26,10 +26,10 @@ export default function Impressum() {
       <div className="rounded p-2 bg-hh-100 bg-opacity-75">
         <h2 className="text-xl font-semibold p-1">Kontakt:</h2>
         <a
-          href="mailto:kinder.in.hamburg.hh@gmail.com"
+          href="mailto:admin@kinder-in-hamburg.de"
           className="px-2 mt-1 text-hh-800 underline underline-offset-4"
         >
-          kinder.in.hamburg.hh@gmail.com
+          admin@kinder-in-hamburg.de
         </a>
       </div>
       <div className="rounded p-2 bg-hh-100 bg-opacity-75">

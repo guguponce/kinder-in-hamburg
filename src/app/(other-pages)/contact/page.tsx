@@ -40,7 +40,7 @@ export default function ContactPage() {
         className="flex items-center gap-2 self-center p-4 bg-hh-800 text-hh-100 font-semibold rounded-lg mt-4 w-max hover:bg-hh-700 transition-colors duration-300 ease-in-out"
       >
         <PaperPlane />
-        kinder.in.hamburg.hh@gmail.com
+        admin@kinder-in-hamburg.de
       </a>
     </main>
   );

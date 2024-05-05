@@ -154,10 +154,10 @@ export default function page() {
             <p>Eimsbütteler Chaussee</p>
             <p>20259, Hamburg</p>
             <a
-              href="mailto:kinder.in.hamburg.hh@gmail.com"
+              href="mailto:admin@kinder-in-hamburg.de"
               className="mt-1 text-hh-800 underline underline-offset-4"
             >
-              kinder.in.hamburg.hh@gmail.com
+              admin@kinder-in-hamburg.de
             </a>
           </div>
         </div>
