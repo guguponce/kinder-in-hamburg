@@ -450,14 +450,14 @@ export const bezirke: iBezirk[] = [
 export const categoryNames = [
   "Indoor",
   "Outdoor",
+  "Wochenende Ausflüge",
+  "Kostenlos",
   "Spielplatz",
   "Museum",
-  "Kostenlos",
   "Essen/Café",
   "Unter 2",
   "Tiere",
   "Geburtstage",
-  "Wochenende Ausflüge",
   "Shops",
 ];
 

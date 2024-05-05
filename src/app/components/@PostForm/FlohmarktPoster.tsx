@@ -1,6 +1,7 @@
 import { getDate } from "@app/utils/functions";
 import Link from "next/link";
 import React from "react";
+import FlohmarktBackground from "../@Icons/@Flohmarkt/FlohmarktBackground";
 
 export default function FlohmarktPoster({
   title,
@@ -20,10 +21,11 @@ export default function FlohmarktPoster({
   return (
     <Link
       href={!!prefixLink ? `${prefixLink}${id}` : `/flohmaerkte/${id}`}
-      className={`${
+      className={`relative ${
         image ? "" : "bg-gradient-to-b from-white to-hh-100"
       } w-full min-w-[180px] h-full shadow-md rounded-sm flex flex-col items-center  justify-between text-center hover:scale-[1.01] hover:shadow-xl`}
     >
+      <FlohmarktBackground />
       {!!image ? (
         <img
           src={image}
