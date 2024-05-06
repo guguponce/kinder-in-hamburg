@@ -10,13 +10,9 @@ export default function RestaurantIcon({ size = "24px", color = "#000" }) {
       viewBox="0 0 512 512"
     >
       <g id="SVGRepo_iconCarrier">
-        {" "}
         <g>
-          {" "}
           <g>
-            {" "}
             <g>
-              {" "}
               <rect
                 x="39.378"
                 y="330.037"
