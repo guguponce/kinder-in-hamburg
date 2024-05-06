@@ -1,7 +1,6 @@
 import { getThisWeekFlohmaerkte } from "@app/api/dbActions";
 import React from "react";
 import ScrollableContainer from "../ScrollableContainer";
-import FlohmarktPoster from "../@PostForm/FlohmarktPoster";
 import FlohPostersList from "../FlohPostersList";
 
 export default async function ThisWeekFlohmaerkte() {

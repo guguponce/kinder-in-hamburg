@@ -1,7 +1,8 @@
 import React from "react";
 import ScrollableContainer from "./ScrollableContainer";
 import { iFlohmarkt } from "@app/utils/types";
-import FlohmarktPoster from "./@PostForm/FlohmarktPoster";
+import FlohmarktPoster from "./FlohmarktPoster";
+import PaperPlane from "./@Icons/PaperPlane";
 
 export default function ScrollableFlohmaerkte({
   flohmaerkte,
@@ -30,11 +31,31 @@ export default function ScrollableFlohmaerkte({
     : flohmaerkte;
   return (
     <div className="w-fit max-w-full rounded">
-      {title && (
-        <h2 className="text-2xl font-semibold text-white text-center p-2 lg:p-4">
-          {title}{" "}
-        </h2>
-      )}
+      {title &&
+        (!!filteredList.length ? (
+          <div className="max-w-full p">
+            <h2 className="text-2xl font-semibold text-white text-center p-2 lg:p-4">
+              {title}{" "}
+            </h2>
+          </div>
+        ) : (
+          <div className="max-w-full flex flex-col items-center">
+            <h2 className="text-2xl font-semibold text-white text-center p-1 lg:p-2">
+              Keine für diese Woche
+            </h2>
+            <p className="text-hh-100">
+              Wenn ihr einen veranstaltet oder kennt, schreibt uns gerne eine
+              E-Mail.
+            </p>
+            <a
+              href="mailto:admin@kinder-in-hamburg.de"
+              className="flex items-center gap-2 self-center p-4 bg-hh-800 text-hh-100 font-semibold rounded-lg mt-4 w-max hover:bg-hh-700 transition-colors duration-300 ease-in-out"
+            >
+              <PaperPlane />
+              admin@kinder-in-hamburg.de
+            </a>
+          </div>
+        ))}
 
       <div className="overflow-x-auto w-fit max-w-full flex justify-center flex-wrap gap-2 lg:gap-4 items-stretch">
         {bezirk
@@ -52,6 +73,7 @@ export default function ScrollableFlohmaerkte({
                   <FlohmarktPoster
                     bezirk={flohBezirk}
                     id={id}
+                    index={i}
                     title={title}
                     date={date}
                     image={image}
@@ -90,6 +112,7 @@ export default function ScrollableFlohmaerkte({
                           <FlohmarktPoster
                             bezirk={flohBezirk}
                             id={id}
+                            index={i}
                             title={title}
                             date={date}
                             image={image}

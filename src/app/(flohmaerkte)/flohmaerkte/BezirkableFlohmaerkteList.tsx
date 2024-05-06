@@ -1,5 +1,5 @@
 "use client";
-import FlohmarktPoster from "@app/components/@PostForm/FlohmarktPoster";
+import FlohmarktPoster from "@app/components/FlohmarktPoster";
 import ScrollableContainer from "@app/components/ScrollableContainer";
 import ScrollableFlohmaerkte from "@app/components/ScrollableFlohmaerkte";
 import { bezirke } from "@app/utils/constants";
@@ -64,6 +64,7 @@ export default function BezirkableFlohmaerkteList({
                   title={title}
                   date={date}
                   image={image}
+                  index={i}
                   prefixLink={`/flohmaerkte/`}
                 />
               </article>

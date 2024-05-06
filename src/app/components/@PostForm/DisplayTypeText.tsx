@@ -21,7 +21,6 @@ export default function DisplayTypeText({
         <h2 className="mt-4 mb-1 text-lg font-semibold">{text}</h2>
       ) : type === "quote" ? (
         <div className="quote mx-auto w-[80%]">
-          {" "}
           <hr className="my-4 border-[hsla(0,0%,30%,1)]" />
           <h1
             className="text-center text-lg italic"

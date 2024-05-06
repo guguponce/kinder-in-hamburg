@@ -5,7 +5,7 @@ import { getFlohmarktWithID } from "@app/api/dbActions";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import PostNotFound from "@components/@PostForm/PostNotFound";
-import FlohmarktPoster from "@components/@PostForm/FlohmarktPoster";
+import FlohmarktPoster from "@app/components/FlohmarktPoster";
 export default async function SuccessfulFormFlohmarkt({
   flohmarktID,
   submitType,
