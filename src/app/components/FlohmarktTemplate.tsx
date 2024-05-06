@@ -11,6 +11,7 @@ import {
   separateAddress,
 } from "@app/utils/functions";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
+import FlohmarktBackground from "./@Icons/@Flohmarkt/FlohmarktBackground";
 
 export default function FlohmarktTemplate({
   flohmarkt: {
@@ -36,7 +37,6 @@ export default function FlohmarktTemplate({
   const { street, number, PLZ, city } = separated;
   const startTime = getStartTime(time);
   const endTime = getEndTime(time);
-
   return (
     <>
       {children}
@@ -88,7 +88,21 @@ export default function FlohmarktTemplate({
                 <h1 className="text-4xl text-center font-bold">{title}</h1>
 
                 {optionalComment && (
-                  <div className="mt-4">
+                  <div className="mt-4 relative">
+                    {!image && (
+                      <div className="absolute top-0 left-0 w-full h-full bg-hh-100 bg-opacity-50 rounded-md flex flex-wrap opacity-20">
+                        {Array(4)
+                          .fill(0)
+                          .map((_, i) => (
+                            <div
+                              className="w-1/2 h-1/2 flex justify-center items-center"
+                              key={i}
+                            >
+                              <FlohmarktBackground />
+                            </div>
+                          ))}
+                      </div>
+                    )}
                     <DisplayTypeText text={optionalComment} type="paragraph" />
                   </div>
                 )}
