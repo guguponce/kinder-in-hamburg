@@ -3,6 +3,7 @@ import React from "react";
 import BezirkableFlohmaerkteList from "../(flohmaerkte)/flohmaerkte/BezirkableFlohmaerkteList";
 import { getTodayNexMonday } from "@app/utils/functions";
 import { getApprovedFlohmaerkte } from "@app/api/dbActions";
+import FlohmarktPoster from "./FlohmarktPoster";
 
 export const revalidate = 0;
 export default async function FlohmaerkteContainer() {

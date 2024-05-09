@@ -12,7 +12,10 @@ export default function DisplayTypeText({
   return (
     <>
       {type === "paragraph" ? (
-        <pre style={{ overflowWrap: "break-word" }} className=" text-wrap ">
+        <pre
+          style={{ overflowWrap: "break-word" }}
+          className=" text-wrap py-1 "
+        >
           {text}
         </pre>
       ) : type === "subtitle1" ? (

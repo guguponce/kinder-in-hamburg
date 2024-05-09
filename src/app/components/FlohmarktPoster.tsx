@@ -3,7 +3,7 @@ import Link from "next/link";
 import React from "react";
 import FlohmarktBackground from "./@Icons/@Flohmarkt/FlohmarktBackground";
 
-export default async function FlohmarktPoster({
+export default function FlohmarktPoster({
   title,
   image,
   date,

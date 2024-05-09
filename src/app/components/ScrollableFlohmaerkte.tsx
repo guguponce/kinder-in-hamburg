@@ -4,7 +4,7 @@ import { iFlohmarkt } from "@app/utils/types";
 import FlohmarktPoster from "./FlohmarktPoster";
 import PaperPlane from "./@Icons/PaperPlane";
 
-export default function ScrollableFlohmaerkte({
+export default async function ScrollableFlohmaerkte({
   flohmaerkte,
   bezirk,
   title,
@@ -56,7 +56,6 @@ export default function ScrollableFlohmaerkte({
             </a>
           </div>
         ))}
-
       <div className="overflow-x-auto w-fit max-w-full flex justify-center flex-wrap gap-2 lg:gap-4 items-stretch">
         {bezirk
           ? filteredList.map(
