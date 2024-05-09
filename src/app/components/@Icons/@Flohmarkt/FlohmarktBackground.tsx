@@ -19,7 +19,7 @@ export default function FlohmarktBackground({
   const bgColor = colors[Math.floor(randomNumber * 10) % 3];
   return (
     <div
-      className={`absolute w-full h-full flex justify-center items-center flex-wrap gap-2 overflow-hidden bg-[${bgColor}] bg-opacity-50`}
+      className={`absolute w-full h-full top-0 flex justify-center items-center flex-wrap gap-2 overflow-hidden bg-[${bgColor}] bg-opacity-50`}
     >
       {randomNumber
         .toFixed(9)
