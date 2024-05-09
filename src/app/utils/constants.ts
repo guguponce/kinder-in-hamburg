@@ -454,10 +454,11 @@ export const categoryNames = [
   "Kostenlos",
   "Spielplatz",
   "Museum",
-  "Essen/Café",
   "Unter 2",
   "Tiere",
+  "Sport",
   "Geburtstage",
+  "Essen/Café",
   "Shops",
 ];
 

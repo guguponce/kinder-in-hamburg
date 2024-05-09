@@ -1,7 +1,6 @@
 "use client";
 import FlohmarktPoster from "@app/components/FlohmarktPoster";
 import ScrollableContainer from "@app/components/ScrollableContainer";
-import ScrollableFlohmaerkte from "@app/components/ScrollableFlohmaerkte";
 import { bezirke } from "@app/utils/constants";
 import { iBezirk, iFlohmarkt } from "@app/utils/types";
 import React, { useMemo } from "react";

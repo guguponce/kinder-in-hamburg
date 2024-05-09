@@ -263,6 +263,7 @@ export type categoryName =
   | "Museum"
   | "Kostenlos"
   | "Essen/Café"
+  | "Sport"
   | "Unter 2"
   | "Tiere"
   | "Geburtstage"
