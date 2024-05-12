@@ -26,7 +26,7 @@ export default async function FlohmaerkteContainer() {
 
       <div className="flex flex-col items-center gap-4 lg:gap-8 max-w-full">
         {!!todayFlohmaerkte.length && (
-          <div className="relative flex justify-center flex-col rounded-md h-full w-fit bg-hh-200">
+          <div className="relative flex justify-center flex-col rounded-md h-full w-fit bg-hh-200 max-w-full">
             <h2 className="text-2xl font-semibold text-hh-800 text-center pt-4">
               Heute
             </h2>
