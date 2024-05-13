@@ -6,7 +6,7 @@ import AdminServerComponent from "@app/providers/AdminServerComponents";
 import Link from "next/link";
 import React from "react";
 import AdminRoute from "@app/providers/AdminRoute";
-
+import Map from "@components/@Map/DynamicMap";
 export default async function CurrentPostPage({
   params,
 }: {
@@ -35,6 +35,7 @@ export default async function CurrentPostPage({
           </Link>
         </AdminServerComponent>
         <PostTemplate post={post} />
+        {post.bezirk && <Map postID={postID} bezirk={post.bezirk} />}
       </>
     </AdminRoute>
   );
