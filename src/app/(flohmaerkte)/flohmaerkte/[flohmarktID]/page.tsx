@@ -1,9 +1,11 @@
 import { getFlohmarktMetadata, getFlohmarktWithID } from "@app/api/dbActions";
+import DynamicThisWeekFlohmaerkteMap from "@app/components/@Map/DynamicThisWeekFlohmaerkteMap";
 import PostNotFound from "@app/components/@PostForm/PostNotFound";
 import DeleteButton from "@app/components/DeleteButton";
 import FlohmarktTemplate from "@app/components/FlohmarktTemplate";
 import UpdateButton from "@app/components/UpdateButton";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
+import { iFlohmarktWithCoordinates } from "@app/utils/types";
 import { Metadata } from "next";
 import Head from "next/head";
 import React from "react";
@@ -58,6 +60,14 @@ export default async function FlohmarktPage({
           </aside>
         </AdminServerComponent>
       </FlohmarktTemplate>
+      <DynamicThisWeekFlohmaerkteMap
+        flohmarktID={flohmarktID}
+        flohmarkt={
+          flohmarkt.lat && flohmarkt.lon
+            ? (flohmarkt as iFlohmarktWithCoordinates)
+            : undefined
+        }
+      />
     </>
   );
 }
