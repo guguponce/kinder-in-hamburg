@@ -130,7 +130,7 @@ const Map = ({
                 >
                   <Popup className="font-sans">
                     <Link
-                      href={`/flohmaerkte/${flohmarktID}`}
+                      href={`/flohmaerkte/${id}`}
                       className="font-semibold text-base block"
                     >
                       {title}
