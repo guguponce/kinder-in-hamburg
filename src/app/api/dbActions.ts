@@ -498,6 +498,20 @@ export const getPinnedPostsWithFilter = async (
   }
 };
 
+export const getAllFlohmaerteSeparatedByStatus = async () => {
+  try {
+    const { data, error } = await supabaseAdmin.from("flohmaerkte").select("*");
+    if (error) {
+      throw new Error("There was a problem getting the approved posts.");
+    }
+    const parsedFlohmaerkte = parseAllFlohmarkte(data);
+    return separateByStatus(
+      parsedFlohmaerkte.filter(({ date }) => date > new Date().getTime())
+    );
+  } catch (error) {
+    return false;
+  }
+};
 export const getAllPostsSeparatedByStatus = async () => {
   try {
     const { data, error } = await supabaseAdmin
@@ -544,6 +558,26 @@ export const deleteApprovedPost = async (
     return data;
   } catch (error) {
     throw new Error("There was a problem deleting the post: " + id + ".");
+  }
+};
+
+export const getAllNearPosts = async (
+  stadtteil: string | undefined,
+  bezirk: iBezirk
+) => {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("kih-approved-blogposts")
+      .select("*")
+      .ilike(stadtteil ? "stadtteil" : "bezirk", stadtteil || bezirk)
+      .like("bezirk", bezirk);
+    if (error) {
+      throw new Error("There was a problem getting the addresses.");
+    }
+    if (!data) return false;
+    return parseAllPosts(data);
+  } catch (error) {
+    return false;
   }
 };
 
