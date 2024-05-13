@@ -1,6 +1,7 @@
 import type {
   Hour,
   TypeAndText,
+  categoryName,
   iAddress,
   iContributor,
   iFlohmarkt,
@@ -38,6 +39,8 @@ export const parsePost = (post: iStringifiedRetrievedPost): iPost => {
         ? post.address
         : JSON.parse(post.address)
       : undefined,
+    lat: post.lat,
+    lon: post.lon,
     addedBy: post.addedBy ? JSON.parse(post.addedBy) : undefined,
     id: post.id,
     createdAt: post.createdAt,
@@ -107,7 +110,7 @@ export const getPlainText = (text: TypeAndText[], max?: number) => {
 };
 
 export const parseParams = (params: string) => {
-  return decodeURIComponent(params);
+  return decodeURIComponent(params) as string | categoryName;
 };
 
 export function separateAddress(address: string) {
@@ -125,31 +128,34 @@ export function separateAddress(address: string) {
   };
 }
 
-export function joinAddress(addressObj: iAddress) {
+export function joinAddress({ street, number, PLZ, city }: iAddress) {
   let parsedAddress = "";
-  if (addressObj.street && addressObj.number) {
-    parsedAddress += `${addressObj.street} ${addressObj.number}`;
-    if (addressObj.PLZ || addressObj.city) {
+  if (street && number) {
+    parsedAddress += `${street} ${number}`;
+    if (PLZ || city) {
       parsedAddress += ", ";
     }
   }
-  if (addressObj.PLZ) {
-    parsedAddress += addressObj.PLZ;
-    if (addressObj.city) {
+  if (PLZ) {
+    parsedAddress += PLZ;
+    if (city) {
       parsedAddress += " ";
     }
   }
-  if (addressObj.city) {
-    parsedAddress += addressObj.city;
+  if (city) {
+    parsedAddress += city;
   }
   return parsedAddress;
 }
+
+export const getAddressQuery = ({ street, number, PLZ, city }: iAddress) =>
+  `${street || ""}+${number || ""}+${PLZ || ""}+${city || ""}`;
 
 export const parseFlohmarkt = (flohmarkt: iStringifiedFlohmarkt) => {
   return {
     ...flohmarkt,
     addedBy: JSON.parse(flohmarkt.addedBy) as iSessionUser,
-  };
+  } as iFlohmarkt;
 };
 
 export const parseAllFlohmarkte = (flohmarkte: iStringifiedFlohmarkt[]) =>
@@ -252,5 +258,28 @@ export const separateByStatus = <T extends iFlohmarkt | iPost>(array: T[]) => {
       pending: [] as T[],
       rejected: [] as T[],
     }
+  );
+};
+
+export const getLatLong = async (address: string) => {
+  try {
+    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
+      address
+    )}&format=json`;
+    const response = await fetch(url);
+    const data = await response.json();
+    console.log(data);
+    return data[0];
+  } catch (e) {
+    console.error(e);
+    return { lat: 0, lon: 0 };
+  }
+};
+
+export const getAllLatLong = async (posts: iPost[]) => {
+  return Promise.all(
+    posts.map((post) =>
+      getLatLong(post.address ? joinAddress(post.address) : "")
+    )
   );
 };
