@@ -12,6 +12,7 @@ import AdminServerComponent from "@app/providers/AdminServerComponents";
 import UserServerComponents from "@app/providers/UserServerComponents";
 import RestoreButton from "@app/components/RestoreButton";
 import AdminRoute from "@app/providers/AdminRoute";
+import AddLatLonFlohmarkt from "@app/components/AddLatLonFlohmarkt";
 
 export default async function FlohmarktSuggestionPage({
   params: { flohmarktID },
@@ -101,6 +102,9 @@ export default async function FlohmarktSuggestionPage({
                         flohmarktID={flohmarktID}
                       />
                     </AdminServerComponent>
+                  )}
+                  {!suggestion.lat && !suggestion.lon && (
+                    <AddLatLonFlohmarkt flohmarkt={suggestion} />
                   )}
                 </aside>
               </UserServerComponents>
