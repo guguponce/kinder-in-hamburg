@@ -70,7 +70,7 @@ export default function FlohmarktTemplate({
           {!!image && (
             <aside
               key={image}
-              className="min-w-[300px] max-w-[400px] md:w-1/2 w-full h-fit  p-4 bg-hh-800 my-4 rounded-md"
+              className="min-w-[300px] max-w-[400px] md:w-1/2 w-full h-fit  p-4 bg-hh-800 rounded-md"
             >
               <img
                 src={image}
