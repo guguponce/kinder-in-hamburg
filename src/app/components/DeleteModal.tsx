@@ -44,7 +44,7 @@ export default function DeleteModal({
         await deleteAllImagesFromPost(id.toString());
       }
     } else if (type === "flohmarkt") {
-      if (deleteFrom === "all") {
+      if (deleteFrom === "all" || deleteFrom === "suggested") {
         await deleteFlohmarkt(id.toString());
       } else {
         await rejectFlohmarkt(id.toString());
