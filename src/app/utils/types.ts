@@ -13,11 +13,18 @@ export interface iPost {
   lastUpdate?: number;
   image?: string[]; //
   igAccounts?: iIgAccount[]; //
-  bezirk?: string | undefined;
+  bezirk?: iBezirk | undefined;
   stadtteil?: string | undefined;
   address?: iAddress | undefined;
+  lat?: number;
+  lon?: number;
   user_id: string;
   addedBy: iSessionUser;
+}
+
+export interface iPostWithCoordinates extends iPost {
+  lat: number;
+  lon: number;
 }
 
 export interface iAddress {
@@ -45,7 +52,7 @@ export interface iStringifiedRetrievedPost {
   tags: string;
   image: string;
   link: string;
-  bezirk: string;
+  bezirk: iBezirk;
   stadtteil: string;
   address: string;
   minAge: number;
@@ -55,6 +62,8 @@ export interface iStringifiedRetrievedPost {
   pinnedPost: boolean | null;
   user_id: string;
   addedBy: string;
+  lat?: number;
+  lon?: number;
   status: "approved" | "pending" | "rejected" | null;
 }
 
@@ -304,6 +313,13 @@ export interface iFlohmarkt {
   location?: string;
   time?: string;
   optionalComment?: string;
+  lat?: number;
+  lon?: number;
+}
+
+export interface iFlohmarktWithCoordinates extends iFlohmarkt {
+  lat: number;
+  lon: number;
 }
 
 export interface iStringifiedFlohmarkt extends Omit<iFlohmarkt, "addedBy"> {
