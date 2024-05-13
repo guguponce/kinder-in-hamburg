@@ -68,6 +68,10 @@ const config: Config = {
           900: "#460B07",
           950: "#250604",
         },
+        currentLocation: "#BC251F",
+        stadtteilLocation: "#7B3E5E",
+        bezirkLocation: "#39579D",
+
         salmon: "rgb(245, 191, 179)",
         astronaut: {
           50: "#E9EDF7",
