@@ -1,9 +1,5 @@
 import React from "react";
-import WeatherBox from "./components/WeatherBox";
-import NextWeekendFlohmaerkte from "./components/@Cards/NextWeekendFlohmaerkte";
-import PinnedPosts from "./components/PinnedPosts";
 import ShortAbout from "./components/@Homepage/ShortAbout";
-import AdminServerComponent from "./providers/AdminServerComponents";
 import FlohmaerkteContainer from "./components/FlohmaerkteContainer";
 
 export const revalidate = 3600;
@@ -15,16 +11,18 @@ export default function Home() {
     >
       <FlohmaerkteContainer />
       <ShortAbout></ShortAbout>
+    </main>
+  );
+}
 
-      <AdminServerComponent>
+/*
+<AdminServerComponent>
         <section className="max-w-[1000px] w-full p-2">
-          {/* <WeatherBox full={true}></WeatherBox> */}
+          {/* <WeatherBox full={true}></WeatherBox> 
         </section>
         <NextWeekendFlohmaerkte></NextWeekendFlohmaerkte>
 
         <PinnedPosts />
         <ShortAbout></ShortAbout>
       </AdminServerComponent>
-    </main>
-  );
-}
+*/
