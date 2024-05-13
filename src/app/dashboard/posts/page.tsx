@@ -3,12 +3,13 @@ import HorizontalCard from "@app/components/@Cards/HorizontalCard";
 import PostNotFound from "@app/components/@PostForm/PostNotFound";
 import { getPlainText } from "@app/utils/functions";
 import React from "react";
-import StatusSetter from "./StatusSetter";
+import StatusSetter from "../StatusSetter";
 import AdminRoute from "@app/providers/AdminRoute";
 
 export default async function AllPostsPage() {
   const allPosts = await getAllPostsSeparatedByStatus();
   if (!allPosts) return <PostNotFound multiples type="post" />;
+
   return (
     <AdminRoute>
       <main className="flex flex-col gap-4">
@@ -48,7 +49,8 @@ export default async function AllPostsPage() {
                   <div className="h-full flex flex-col items-center justify-center gap-4 text-hh-800 w-[100px]">
                     <StatusSetter
                       status={p.status || "pending"}
-                      post={p}
+                      target={p}
+                      type="post"
                     ></StatusSetter>
                   </div>
                 </div>

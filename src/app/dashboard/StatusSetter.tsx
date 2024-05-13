@@ -1,20 +1,25 @@
 "use client";
-import { updatePostStatus } from "@app/api/dbActions";
+import { updateFlohmarktStatus, updatePostStatus } from "@app/api/dbActions";
 import DeleteButton from "@app/components/DeleteButton";
-import { iPost } from "@app/utils/types";
+import { iFlohmarkt, iPost } from "@app/utils/types";
 import React, { useState } from "react";
 
 export default function StatusSetter({
-  post,
+  target,
   status,
+  type = "post",
 }: {
-  post: iPost;
+  target: iPost | iFlohmarkt;
   status: "pending" | "approved" | "rejected";
+  type?: "post" | "flohmarkt";
 }) {
   const [currentStatus, setCurrentStatus] = useState(status);
   const handleSetStatus = async () => {
     if (status === currentStatus) return;
-    await updatePostStatus(post, post.id, status, currentStatus);
+    if (type === "post")
+      await updatePostStatus(target as iPost, target.id, status, currentStatus);
+    if (type === "flohmarkt")
+      await updateFlohmarktStatus(target.id.toString(), currentStatus);
   };
 
   return (
@@ -43,10 +48,10 @@ export default function StatusSetter({
         {'"'}
       </button>
       <DeleteButton
-        id={post.id}
-        title={post.title}
+        id={target.id}
+        title={target.title}
         deleteFrom="all"
-        type="post"
+        type={type}
         callbackURL="/dashboard/posts"
       />
     </>
