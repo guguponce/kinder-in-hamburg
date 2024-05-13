@@ -23,6 +23,15 @@ export default function FlohmarktPoster({
   return (
     <Link
       href={!!prefixLink ? `${prefixLink}${id}` : `/flohmaerkte/${id}`}
+      style={
+        title.includes("Goldbekhaus")
+          ? {
+              backgroundImage: "url(/assets/flohmarkt-images/goldbekhaus.webp)",
+              backgroundPosition: "center",
+              backgroundSize: "contain",
+            }
+          : {}
+      }
       className={`relative ${
         image ? "" : "bg-gradient-to-b from-white to-hh-100"
       } w-full min-w-[180px] h-full shadow-md rounded-sm flex flex-col items-center  justify-between text-center hover:scale-[1.01] hover:shadow-xl p-2`}
@@ -42,7 +51,7 @@ export default function FlohmarktPoster({
         />
       ) : (
         <>
-          <h2 className="text-lg md:text-xl font-extrabold p-2 text-negative-600 my-4 max-w-[180px] break-words rounded bg-hh-300 bg-opacity-50 backdrop-blur-sm">
+          <h2 className="text-lg md:text-xl font-extrabold p-2 text-negative-700 my-4 max-w-[180px] break-words rounded bg-hh-300 bg-opacity-50 backdrop-blur-sm">
             {title}
           </h2>
           <div className="flex flex-col items-center p-1 mb-4 bg-hh-300 bg-opacity-50 backdrop-blur-sm rounded">
