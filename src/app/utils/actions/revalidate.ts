@@ -6,12 +6,14 @@ import { redirect } from "next/navigation";
 
 export async function revalidatePost() {
   revalidatePath("/");
+  revalidatePath("/dashboard", "layout");
   revalidatePath("/posts", "layout");
   revalidatePath("/update-post/", "layout");
   revalidatePath("/update-suggestion/", "layout");
 }
 export async function revalidateFlohmarkt() {
   revalidatePath("/");
+  revalidatePath("/dashboard", "layout");
   revalidatePath("/flohmaerkte", "layout");
   revalidatePath("/update-flohmarkt/", "layout");
   revalidatePath("/flohmarkt-approval/", "layout");
