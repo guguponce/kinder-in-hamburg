@@ -83,7 +83,7 @@ export default function FlohmarktTemplate({
             <div className="w-full flex-grow flex flex-col">
               <div
                 id="flohmarkt-hero"
-                className="w-full p-4 my-4 rounded-md bg-hh-50 w-h-[50%] flex-grow"
+                className="w-full p-4 mb-4 rounded-md bg-hh-50 w-h-[50%] flex-grow"
               >
                 <h1 className="text-4xl text-center font-bold">{title}</h1>
 
