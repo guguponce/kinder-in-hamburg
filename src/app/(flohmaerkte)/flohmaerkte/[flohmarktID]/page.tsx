@@ -40,7 +40,6 @@ export default async function FlohmarktPage({
     return <PostNotFound type="flohmarkt" />;
   return (
     <>
-      <Head>Altona</Head>
       <FlohmarktTemplate flohmarkt={flohmarkt}>
         <AdminServerComponent>
           <aside className="flex gap-2 items-center justify-center mb-4">

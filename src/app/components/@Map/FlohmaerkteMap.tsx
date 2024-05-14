@@ -51,7 +51,8 @@ const Map = ({
     [selectedBezirk, flohmaerkteWithCoordinates]
   );
 
-  const centralFlohmarkt = currentTarget || flohmaerkteWithCoordinates[0];
+  const centralFlohmarkt = currentTarget || displayedMarkers[0];
+
   return (
     <section className="w-[calc(100%-2rem)] max-w-[800px] flex flex-col gap-2 items-center rounded">
       {bezirke.current.length > 1 && (
