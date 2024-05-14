@@ -12,7 +12,7 @@ import {
   checkBezirk,
   getTodayNexMonday,
   checkCategory,
-  parseAllFlohmarkte,
+  parseAllFlohmaerkte,
   parseAllPosts,
   parseFlohmarkt,
   parsePost,
@@ -504,7 +504,7 @@ export const getAllFlohmaerteSeparatedByStatus = async () => {
     if (error) {
       throw new Error("There was a problem getting the approved posts.");
     }
-    const parsedFlohmaerkte = parseAllFlohmarkte(data);
+    const parsedFlohmaerkte = parseAllFlohmaerkte(data);
     return separateByStatus(
       parsedFlohmaerkte.filter(({ date }) => date > new Date().getTime())
     );
@@ -778,7 +778,7 @@ export const getApprovedFlohmaerkteWithBezirk = async (bezirk: iBezirk) => {
     if (error) {
       throw new Error("There was a problem getting the Flea Markets.");
     }
-    return parseAllFlohmarkte(data);
+    return parseAllFlohmaerkte(data);
   } catch (error) {
     return false;
   }
@@ -796,7 +796,7 @@ export const getUserFlohmaerkte = async (email: string) => {
         "There was a problem getting your suggested Flea Markets."
       );
     }
-    const parsedFlohmaerkte = parseAllFlohmarkte(data);
+    const parsedFlohmaerkte = parseAllFlohmaerkte(data);
 
     return separateByStatus(parsedFlohmaerkte);
   } catch (error) {
@@ -815,7 +815,7 @@ export const getThisWeekFlohmaerkte = async () => {
     if (error) {
       return false;
     }
-    return parseAllFlohmarkte(data);
+    return parseAllFlohmaerkte(data);
   } catch (error) {
     return false;
   }
