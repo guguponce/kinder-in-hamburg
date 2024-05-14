@@ -1,6 +1,6 @@
 import { getThisWeekFlohmaerkte } from "@app/api/dbActions";
-import { getLatLong, getTodayNexMonday } from "@app/utils/functions";
-import { iFlohmarkt, iFlohmarktWithCoordinates } from "@app/utils/types";
+import { getTodayNexMonday } from "@app/utils/functions";
+import { iFlohmarktWithCoordinates } from "@app/utils/types";
 import dynamic from "next/dynamic";
 
 const FlohmaerkteMap = dynamic(() => import("./FlohmaerkteMap"), {
@@ -38,9 +38,11 @@ export default async function DynamicThisWeekFlohmaerkteMap({
     .join(".");
   return (
     <section className="flex flex-col items-center gap-2 w-full">
-      <h2 className="text-2xl font-semibold text-hh-800">Flohmärkte Karte</h2>
+      <h2 className="text-2xl font-semibold dark:text-hh-100 text-hh-800">
+        Flohmärkte Karte
+      </h2>
       {currentTarget ? (
-        <ul className="flex flex-col gap-1 px-4">
+        <ul className="flex flex-wrap justify-around w-full max-w-[800px] gap-2 px-4">
           <li className="font-semibold bg-currentLocation text-white px-2 py-1 rounded">
             {currentTarget.title} - am{" "}
             {new Date(currentTarget?.date - 1000 * 60 * 60 * 12)
@@ -50,7 +52,7 @@ export default async function DynamicThisWeekFlohmaerkteMap({
               .join(".")}
           </li>
           <li className="font-semibold bg-stadtteilLocation text-white px-2 py-1 rounded">
-            Flohmärkte von {todayDisplay} bis {nextMondayDisplay}
+            Flohmärkte dieser Woche ({todayDisplay} - {nextMondayDisplay})
           </li>
         </ul>
       ) : (

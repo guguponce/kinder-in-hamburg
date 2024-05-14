@@ -158,8 +158,8 @@ export const parseFlohmarkt = (flohmarkt: iStringifiedFlohmarkt) => {
   } as iFlohmarkt;
 };
 
-export const parseAllFlohmarkte = (flohmarkte: iStringifiedFlohmarkt[]) =>
-  flohmarkte.map((f) => parseFlohmarkt(f));
+export const parseAllFlohmaerkte = (flohmaerkte: iStringifiedFlohmarkt[]) =>
+  flohmaerkte.map((f) => parseFlohmarkt(f));
 
 export const checkBezirk = (bezirk: string) => {
   const bezirkRegex = new RegExp(bezirk, "i");
@@ -263,11 +263,12 @@ export const separateByStatus = <T extends iFlohmarkt | iPost>(array: T[]) => {
 
 export const getLatLong = async (address: string) => {
   try {
-    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
-      address
-    )}&format=json`;
+    const addressQuery = address.match(/[a-zA-ZßäüöÄÜÖ]+|\d+/g)!.join("+");
+    console.log("addressQuery", addressQuery);
+    const url = `https://nominatim.openstreetmap.org/search?q=${addressQuery}&format=json`;
     const response = await fetch(url);
     const data = await response.json();
+    console.log(address);
     console.log(data);
     return data[0];
   } catch (e) {

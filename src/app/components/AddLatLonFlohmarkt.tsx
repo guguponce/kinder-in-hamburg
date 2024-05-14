@@ -17,13 +17,7 @@ export default function AddLatLonFlohmarkt({
     if (!flohmarkt.address) return false;
     if (flohmarkt.lat && flohmarkt.lon)
       return flohmarkt as iFlohmarktWithCoordinates;
-    const addressQuery = flohmarkt.address
-      .replace("ß", "ss")
-      .match(/\w+|\d+/g)!
-      .join("+");
-    console.log(addressQuery);
-    const { lat, lon } = await getLatLong(addressQuery);
-    console.log(lat, lon);
+    const { lat, lon } = await getLatLong(flohmarkt.address);
     try {
       await updateFlohmarkt({ ...flohmarkt, lat, lon });
       setSuccess(true);

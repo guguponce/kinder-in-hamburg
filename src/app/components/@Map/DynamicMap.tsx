@@ -23,10 +23,7 @@ export default async function DynamicMap({
     await Promise.all(
       bezirkPosts.map(async (post) => {
         if (!post.address) return false;
-        const addressQuery = getAddressQuery(post.address).replace(
-          /[ ,]/g,
-          "+"
-        );
+        const addressQuery = getAddressQuery(post.address);
         const { lat, lon } = await getLatLong(addressQuery);
 
         return { ...post, lat, lon } as iPostWithCoordinates;
