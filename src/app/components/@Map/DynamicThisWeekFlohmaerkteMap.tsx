@@ -45,7 +45,7 @@ export default async function DynamicThisWeekFlohmaerkteMap({
         <ul className="flex flex-wrap justify-around w-full max-w-[800px] gap-2 px-4">
           <li className="font-semibold bg-currentLocation text-white px-2 py-1 rounded">
             {currentTarget.title} - am{" "}
-            {new Date(currentTarget?.date - 1000 * 60 * 60 * 12)
+            {new Date(currentTarget?.date)
               .toLocaleDateString("de-DE")
               .split(".")
               .slice(0, 2)
