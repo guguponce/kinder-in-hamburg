@@ -50,13 +50,6 @@ export default function PostFormInput({
               <span className="text-sm text-negative-800"> (Required)</span>
             </>
           )}
-          {inputID === "tags" && (
-            <span>
-              (
-              {`separate each tag with a "--". For example: "park-kleinkinder"`}
-              )
-            </span>
-          )}
         </label>
         {children}
       </div>

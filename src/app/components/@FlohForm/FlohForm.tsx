@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useMemo, useRef } from "react";
 import { useForm, type FieldValues } from "react-hook-form";
 import { addFlohmarkt, updateFlohmarkt } from "@app/api/dbActions";
 import type { iSessionUser, iFlohmarkt, iBezirk } from "../../utils/types";
@@ -61,9 +61,13 @@ export default function FlohForm({
     ready: boolean;
     urls: string[];
   }>({ ready: true, urls: [] });
-  const addressData = address
-    ? separateAddress(address)
-    : { street: "", number: "", PLZ: "", city: "" };
+  const addressData = useMemo(
+    () =>
+      address
+        ? separateAddress(address)
+        : { street: "", number: "", PLZ: "", city: "" },
+    [address]
+  );
   const [successfulSubmit, setSuccessfulSubmit] =
     React.useState<boolean>(false);
 
@@ -417,7 +421,7 @@ export default function FlohForm({
             </div>{" "}
           </div>
           <div
-            id="address-box"
+            id="optionalerComment-box"
             className=" w-full max-w-[600px] flex flex-wrap gap-4 border-2 border-hh-300 rounded"
           >
             <PostFormInput
