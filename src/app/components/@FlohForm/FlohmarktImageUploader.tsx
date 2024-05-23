@@ -24,7 +24,7 @@ interface ImageUploaderProps {
   user: iSessionUser;
 }
 
-export const ImageUploader = ({
+const ImageUploader = ({
   id,
   setImagesUrlsReady,
   user,

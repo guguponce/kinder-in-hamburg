@@ -40,7 +40,7 @@ export default function FlohmarktTemplate({
   return (
     <>
       {children}
-      <main
+      <section
         className={`w-full ${
           image ? "max-w-[1200px]" : "max-w-[800px]"
         } bg-hh-100 sm:rounded-lg p-6 relative flex flex-col items-center gap-4`}
@@ -233,7 +233,7 @@ export default function FlohmarktTemplate({
             )}
           </section>
         </div>
-      </main>
+      </section>
     </>
   );
 }

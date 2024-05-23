@@ -198,6 +198,7 @@ export const uploadFlohmarktImage = async (
       async () => {
         const metadata = await getMetadata(uploadTask.snapshot.ref);
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          console.log("downloadURL", downloadURL);
           imgUrlsSetter((prev) => [
             { url: downloadURL, fileName: file.name, metadata },
           ]);

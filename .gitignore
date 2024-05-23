@@ -39,3 +39,4 @@ next-env.d.ts
 
 # db
 /db_csv
+/spielplaetze
