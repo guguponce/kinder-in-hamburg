@@ -5,11 +5,14 @@ import type {
   iAddress,
   iContributor,
   iFlohmarkt,
+  iLatLonResult,
   iPost,
   iSessionUser,
+  iSpielplatz,
   iStringifiedContributor,
   iStringifiedFlohmarkt,
   iStringifiedRetrievedPost,
+  iStringifiedSpielplatz,
 } from "./types";
 import { bezirke, categoryNames } from "./constants";
 
@@ -81,7 +84,7 @@ export const parseAddress = (address: string | iAddress) => {
 };
 
 export const filterExtraImages = (images: File[]) => {
-  const maxSize = 3000000;
+  const maxSize = 5000000;
   let maxIndex = 0;
   let lastSize = 0;
   for (let i = 0; i < images.length; i++) {
@@ -130,11 +133,16 @@ export function separateAddress(address: string) {
 
 export function joinAddress({ street, number, PLZ, city }: iAddress) {
   let parsedAddress = "";
-  if (street && number) {
-    parsedAddress += `${street} ${number}`;
-    if (PLZ || city) {
-      parsedAddress += ", ";
-    }
+  let streetnumber = "";
+  if (street) {
+    streetnumber += street;
+  }
+  if (number) {
+    streetnumber += " " + number;
+  }
+  parsedAddress += streetnumber;
+  if (PLZ || city) {
+    parsedAddress += ", ";
   }
   if (PLZ) {
     parsedAddress += PLZ;
@@ -264,16 +272,15 @@ export const separateByStatus = <T extends iFlohmarkt | iPost>(array: T[]) => {
 export const getLatLong = async (address: string) => {
   try {
     const addressQuery = address.match(/[a-zA-ZßäüöÄÜÖ]+|\d+/g)!.join("+");
-    console.log("addressQuery", addressQuery);
+
     const url = `https://nominatim.openstreetmap.org/search?q=${addressQuery}&format=json`;
     const response = await fetch(url);
     const data = await response.json();
-    console.log(address);
-    console.log(data);
-    return data[0];
+
+    return (data[0] as iLatLonResult) || { lat: "0", lon: "0" };
   } catch (e) {
     console.error(e);
-    return { lat: 0, lon: 0 };
+    return { lat: "0", lon: "0" };
   }
 };
 
@@ -283,4 +290,27 @@ export const getAllLatLong = async (posts: iPost[]) => {
       getLatLong(post.address ? joinAddress(post.address) : "")
     )
   );
+};
+
+export const parseSpielplatz = (spielplatz: iStringifiedSpielplatz) => {
+  return {
+    ...spielplatz,
+    addedBy: JSON.parse(spielplatz.addedBy) as iSessionUser,
+    address: spielplatz.address
+      ? (JSON.parse(spielplatz.address) as iAddress)
+      : undefined,
+    tags: spielplatz.tags
+      ? (JSON.parse(spielplatz.tags) as string[])
+      : undefined,
+    image: spielplatz.image
+      ? (JSON.parse(spielplatz.image) as string[])
+      : undefined,
+    type: spielplatz.type ? (JSON.parse(spielplatz.type) as string[]) : [],
+    spielgeraete: spielplatz.spielgeraete
+      ? (JSON.parse(spielplatz.spielgeraete) as string[])
+      : [],
+    ausruestung: spielplatz.ausruestung
+      ? (JSON.parse(spielplatz.ausruestung) as string[])
+      : [],
+  } as iSpielplatz;
 };
