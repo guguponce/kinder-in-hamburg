@@ -37,22 +37,26 @@ export default async function DynamicThisWeekFlohmaerkteMap({
     .slice(0, 2)
     .join(".");
   return (
-    <section className="flex flex-col items-center gap-2 w-full">
-      <h2 className="text-2xl font-semibold dark:text-hh-100 text-hh-800">
+    <section className="flex flex-col items-center gap-2 w-[calc(100vw-2rem)] max-w-[600px] md:max-w-[800px] md:w-fit rounded border-2 border-hh-800 p-2">
+      <h2 className="text-2xl self-end font-semibold dark:text-hh-100 text-hh-800 p-4">
         Flohmärkte Karte
       </h2>
       {currentTarget ? (
-        <ul className="flex flex-wrap justify-around w-full max-w-[800px] gap-2 px-4">
-          <li className="font-semibold bg-currentLocation text-white px-2 py-1 rounded">
-            {currentTarget.title} - am{" "}
-            {new Date(currentTarget?.date)
-              .toLocaleDateString("de-DE")
-              .split(".")
-              .slice(0, 2)
-              .join(".")}
+        <ul className="flex flex-col self-start w-full md:w-[800px] max-w-[800px] gap-2 px-4">
+          <li className="flex">
+            <span className="font-semibold bg-currentLocation text-white px-2 py-1 rounded">
+              {currentTarget.title} - am{" "}
+              {new Date(currentTarget?.date)
+                .toLocaleDateString("de-DE")
+                .split(".")
+                .slice(0, 2)
+                .join(".")}
+            </span>
           </li>
-          <li className="font-semibold bg-stadtteilLocation text-white px-2 py-1 rounded">
-            Flohmärkte dieser Woche ({todayDisplay} - {nextMondayDisplay})
+          <li className="flex">
+            <span className="font-semibold bg-stadtteilLocation text-white px-2 py-1 rounded">
+              Dieser Woche ({todayDisplay} - {nextMondayDisplay})
+            </span>
           </li>
         </ul>
       ) : (

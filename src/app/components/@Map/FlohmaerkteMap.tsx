@@ -32,10 +32,8 @@ const Map = ({
     Array.from(new Set(flohmaerkteWithCoordinates.map((p) => p.bezirk).flat()))
   );
 
-  const flohmaerkteIDS = useRef(
-    flohmaerkteWithCoordinates
-      .map(({ id }) => id)
-      .sort((a) => (a === (currentTarget?.id || 0) ? -1 : 0))
+  const flohmaerkteBezirke = useRef(
+    Array.from(new Set(flohmaerkteWithCoordinates.map(({ bezirk }) => bezirk)))
   );
   const [selectedFlohmarkt, setSelectedFlohmarkt] = React.useState<
     number | undefined
@@ -43,55 +41,33 @@ const Map = ({
   const [selectedBezirk, setSelectedBezirk] = React.useState<
     iBezirk | undefined
   >();
-  const displayedMarkers = useMemo(
-    () =>
-      selectedBezirk
-        ? flohmaerkteWithCoordinates.filter((p) => p.bezirk === selectedBezirk)
-        : flohmaerkteWithCoordinates,
-    [selectedBezirk, flohmaerkteWithCoordinates]
-  );
+  const displayedMarkers = useMemo(() => {
+    const restFlohmaerkte = flohmaerkteWithCoordinates.filter(
+      ({ id }) => id.toString() !== flohmarktID
+    );
+    return selectedBezirk
+      ? restFlohmaerkte.filter((p) => p.bezirk === selectedBezirk)
+      : restFlohmaerkte;
+  }, [selectedBezirk, flohmaerkteWithCoordinates, flohmarktID]);
 
   const centralFlohmarkt = currentTarget || displayedMarkers[0];
 
   return (
-    <section className="w-[calc(100%-2rem)] max-w-[800px] flex flex-col gap-2 items-center rounded">
-      {bezirke.current.length > 1 && (
-        <aside className="flex flex-wrap justify-center gap-2">
-          {bezirke.current.map((bezirk) => (
-            <button
-              key={bezirk}
-              onClick={() => setSelectedBezirk(bezirk)}
-              className={`p-2 rounded-md ${
-                selectedBezirk === bezirk
-                  ? "bg-hh-900 text-white"
-                  : "bg-white text-hh-900"
-              }`}
-            >
-              {bezirk}
-            </button>
-          ))}
-          {selectedBezirk && (
-            <button
-              onClick={() => setSelectedBezirk(undefined)}
-              className="p-2 rounded-md bg-white text-hh-900"
-            >
-              All Categories
-            </button>
-          )}
-        </aside>
-      )}
+    <section className="w-full sm:w-[calc(100%-2rem)] md:max-w-[800px] flex flex-col gap-2 sm:gap-4 items-center rounded">
       <article className="h-[60vh] w-full max-w-[800px] flex justify-center rounded overflow-hidden">
         <MapContainer
           style={{ height: "100%", width: "100%", zIndex: 10 }}
           center={[
-            selectedBezirk || selectedBezirk !== centralFlohmarkt.bezirk
-              ? displayedMarkers[0].lat
-              : centralFlohmarkt.lat || 53.5511,
-            selectedBezirk || selectedBezirk !== centralFlohmarkt.bezirk
-              ? displayedMarkers[0].lon
-              : centralFlohmarkt.lon || 9.9937,
+            centralFlohmarkt.lat || 53.5511,
+            centralFlohmarkt.lon || 9.9937,
           ]}
-          zoom={11}
+          zoom={
+            flohmaerkteBezirke.current.length === 1
+              ? 15
+              : flohmaerkteBezirke.current.includes("Wandsbek")
+              ? 10
+              : 11
+          }
           scrollWheelZoom={false}
         >
           <TileLayer
@@ -147,6 +123,76 @@ const Map = ({
           )}
         </MapContainer>
       </article>
+      {bezirke.current.length > 1 && (
+        <aside className="flex w-full gap-2 my-2 p-2">
+          <h3 className="font-bold text-lg p-2">Bezirke:</h3>
+          <div className="flex flex-wrap gap-2 items-center">
+            {bezirke.current.map((bezirk) => (
+              <button
+                key={bezirk}
+                onClick={() =>
+                  setSelectedBezirk((prev) =>
+                    prev === bezirk ? undefined : bezirk
+                  )
+                }
+                className={`p-2 rounded-md ${
+                  selectedBezirk === bezirk
+                    ? "bg-hh-800 text-white  hover:bg-hh-600 hover:text-white"
+                    : "bg-white text-hh-800  hover:bg-hh-600 hover:text-white"
+                } transition-all`}
+              >
+                {bezirk}
+              </button>
+            ))}
+            {selectedBezirk && (
+              <button
+                onClick={() => setSelectedBezirk(undefined)}
+                className="p-2 rounded-md bg-white text-hh-800 hover:bg-hh-600 hover:text-white"
+              >
+                Alle Bezirke
+              </button>
+            )}
+          </div>
+        </aside>
+      )}
+      <hr className="w-full border-t border-hh-800" />
+      {displayedMarkers.length > 0 && (
+        <section className="w-full max-w-[800px] flex flex-col gap-2 items-center my-4">
+          <h3 className="font-bold text-lg">Flohmärkte dieser Woche:</h3>
+          <ul className="w-full flex flex-wrap justify-center gap-2 items-stretch">
+            {displayedMarkers.map(
+              ({ title, address, date, id, time, image }) => (
+                <li
+                  key={id}
+                  className="w-[360px] sm:w-1/3 max-w-[380px] h-32 sm:flex-grow justify-center flex gap-2 items-center bg-white rounded-md overflow-hidden"
+                >
+                  <div className="h-full aspect-square min-w-1/3 w-1/3 bg-hh-50 bg-25 overflow-hidden">
+                    <img
+                      src={image}
+                      alt="location"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  <Link
+                    href={`/flohmaerkte/${id}`}
+                    className="flex flex-col w-2/3 h-full hover:text-hh-700 hover:shadow-md justify-between gap-2  p-2 pl-0 sm:pr-4 sm:p-2"
+                  >
+                    <span className="font-semibold text-base block">
+                      {title}
+                    </span>
+                    <div className="flex flex-col">
+                      <small className="font-semibold italic">
+                        {getDate(date)} ({time})
+                      </small>
+                      <p className="text-xs">{address}</p>
+                    </div>
+                  </Link>
+                </li>
+              )
+            )}
+          </ul>
+        </section>
+      )}
     </section>
   );
 };
