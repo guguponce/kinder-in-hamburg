@@ -1,9 +1,9 @@
 export interface iPost {
+  id: number;
   title: string;
+  createdAt: number;
   text: TypeAndText[];
   tags?: string[];
-  id: number;
-  createdAt: number;
   categories: string[];
   status: "approved" | "pending" | "rejected" | null;
   pinnedPost?: boolean; //
@@ -265,6 +265,49 @@ export interface Station {
   contribution: number;
 }
 
+// SPIELPLATZ
+export interface iSpielplatz {
+  id: number;
+  createdAt: number;
+  title: string;
+  text: string;
+  type: string[];
+  tags?: string[];
+  spielgeraete?: string[];
+  ausruestung?: string[];
+  status: "approved" | "pending" | "rejected" | null;
+  pinnedSpielplatz?: boolean; //
+  minAge?: number | undefined;
+  maxAge?: number | undefined;
+  image?: string[];
+  bezirk?: iBezirk | undefined;
+  stadtteil?: string | undefined;
+  address?: iAddress | undefined;
+  lat: number;
+  lon: number;
+  addedBy: iSessionUser;
+}
+
+export interface iStringifiedSpielplatz
+  extends Omit<
+    iSpielplatz,
+    | "addedBy"
+    | "address"
+    | "tags"
+    | "image"
+    | "type"
+    | "spielgeraete"
+    | "ausruestung"
+  > {
+  type: string;
+  tags: string;
+  spielgeraete: string;
+  ausruestung: string;
+  image: string;
+  address: string;
+  addedBy: string;
+}
+
 export type categoryName =
   | "Indoor"
   | "Outdoor"
@@ -340,4 +383,21 @@ export interface FilterObject {
   untilAge?: number;
   pinnedPosts?: boolean;
   search?: string;
+}
+
+export interface iLatLonResult {
+  place_id: number;
+  licence: string;
+  osm_type: string;
+  osm_id: number;
+  lat: string;
+  lon: string;
+  class: string;
+  type: string;
+  place_rank: number;
+  importance: number;
+  addresstype: string;
+  name: string;
+  display_name: string;
+  boundingbox: string[];
 }
