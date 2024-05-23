@@ -26,7 +26,11 @@ export default async function DynamicMap({
         const addressQuery = getAddressQuery(post.address);
         const { lat, lon } = await getLatLong(addressQuery);
 
-        return { ...post, lat, lon } as iPostWithCoordinates;
+        return {
+          ...post,
+          lat: parseInt(lat),
+          lon: parseInt(lon),
+        } as iPostWithCoordinates;
       })
     )
   ).filter(Boolean) as iPostWithCoordinates[];
@@ -40,7 +44,11 @@ export default async function DynamicMap({
           ? f.address.replace(/[ ,]/g, "+")
           : `${f.stadtteil || ""}+${f.bezirk}+Hamburg`;
         const { lat, lon } = await getLatLong(addressQuery);
-        return { ...f, lat, lon } as iFlohmarktWithCoordinates;
+        return {
+          ...f,
+          lat: parseInt(lat),
+          lon: parseInt(lon),
+        } as iFlohmarktWithCoordinates;
       }
     }));
   if (!currentTarget) return <></>;

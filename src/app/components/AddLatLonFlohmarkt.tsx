@@ -19,7 +19,11 @@ export default function AddLatLonFlohmarkt({
       return flohmarkt as iFlohmarktWithCoordinates;
     const { lat, lon } = await getLatLong(flohmarkt.address);
     try {
-      await updateFlohmarkt({ ...flohmarkt, lat, lon });
+      await updateFlohmarkt({
+        ...flohmarkt,
+        lat: parseInt(lat),
+        lon: parseInt(lon),
+      });
       setSuccess(true);
     } catch (e) {
       console.error(e);
