@@ -33,9 +33,9 @@ export default async function ScrollableFlohmaerkte({
     <div className="w-fit max-w-full rounded">
       {title &&
         (!!filteredList.length ? (
-          <div className="max-w-full p">
-            <h2 className="text-2xl font-semibold text-white text-center p-2 lg:p-4">
-              {title}{" "}
+          <div className="max-w-full">
+            <h2 className="text-3xl font-semibold text-white text-start self-start p-2 lg:p-4">
+              {title}
             </h2>
           </div>
         ) : (
@@ -92,9 +92,9 @@ export default async function ScrollableFlohmaerkte({
           : bezirke.map((bezirk) => (
               <div
                 key={bezirk}
-                className="flex items-center flex-col gap-2 rounded bg-hh-600 bgop75 p-2 w-fit max-w-full shadow-md"
+                className="flex items-center flex-col rounded bg-hh-600 bgop75 p-2 w-fit max-w-full shadow-md"
               >
-                <h3 className="text-xl font-semibold text-white text-center">
+                <h3 className="text-2xl font-semibold p-2 pb-0 ml-4 text-white self-start">
                   {bezirk}
                 </h3>
                 <ScrollableContainer>

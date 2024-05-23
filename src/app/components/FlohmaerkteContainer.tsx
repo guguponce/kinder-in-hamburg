@@ -21,13 +21,15 @@ export default async function FlohmaerkteContainer() {
     ({ date }) => date < today + 1000 * 60 * 60 * 24
   );
   return (
-    <main className="rounded bg-hh-100 bg-opacity-25 w-full max-w-[1000px] p-4 flex flex-col items-center min-h-[50vh]">
-      <h1 className="text-4xl font-bold my-2 p-2 rounded">Flohmärkte</h1>
+    <main className="rounded bg-hh-100 bg-opacity-25 max-w-[1000px] w-[calc(100%-2rem)] p-4 flex flex-col items-center min-h-[50vh]">
+      <h1 className="text-4xl font-bold my-2 p-2 rounded text-hh-900">
+        Flohmärkte
+      </h1>
 
       <div className="flex flex-col items-center gap-4 lg:gap-8 max-w-full">
         {!!todayFlohmaerkte.length && (
           <div className="relative flex justify-center flex-col rounded-md h-full w-fit bg-hh-200 max-w-full">
-            <h2 className="text-2xl font-semibold text-hh-800 text-center pt-4">
+            <h2 className="text-2xl font-semibold text-hh-800 text-center pt-4  self-start">
               Heute
             </h2>
 
