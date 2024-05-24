@@ -28,8 +28,8 @@ export default async function DynamicMap({
 
         return {
           ...post,
-          lat: parseInt(lat),
-          lon: parseInt(lon),
+          lat: parseFloat(lat),
+          lon: parseFloat(lon),
         } as iPostWithCoordinates;
       })
     )
@@ -46,8 +46,8 @@ export default async function DynamicMap({
         const { lat, lon } = await getLatLong(addressQuery);
         return {
           ...f,
-          lat: parseInt(lat),
-          lon: parseInt(lon),
+          lat: parseFloat(lat),
+          lon: parseFloat(lon),
         } as iFlohmarktWithCoordinates;
       }
     }));

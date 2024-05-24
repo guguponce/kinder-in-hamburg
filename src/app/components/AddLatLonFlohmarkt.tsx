@@ -21,8 +21,8 @@ export default function AddLatLonFlohmarkt({
     try {
       await updateFlohmarkt({
         ...flohmarkt,
-        lat: parseInt(lat),
-        lon: parseInt(lon),
+        lat: parseFloat(lat),
+        lon: parseFloat(lon),
       });
       setSuccess(true);
     } catch (e) {

@@ -28,9 +28,9 @@ export default function BezirkableFlohmaerkteList({
     [bezirk, flohList]
   );
   return (
-    <section className="w-full lg:w-4/5 rounded bg-white bg-opacity-75 p-4 flex flex-col">
+    <section className="w-full  rounded bg-white bg-opacity-75 p-4 flex flex-col">
       {title && (
-        <h2 className="text-2xl font-semibold text-hh-700 text-center p-2">
+        <h2 className="text-2xl font-semibold text-hh-700 text-start self-start p-2">
           {title}{" "}
         </h2>
       )}

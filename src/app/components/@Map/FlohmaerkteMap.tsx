@@ -125,7 +125,7 @@ const Map = ({
       </article>
       {bezirke.current.length > 1 && (
         <aside className="flex w-full gap-2 my-2 p-2">
-          <h3 className="font-bold text-lg p-2">Bezirke:</h3>
+          <h3 className="font-bold text-lg p-2 text-hh-800">Bezirke:</h3>
           <div className="flex flex-wrap gap-2 items-center">
             {bezirke.current.map((bezirk) => (
               <button
@@ -158,24 +158,29 @@ const Map = ({
       <hr className="w-full border-t border-hh-800" />
       {displayedMarkers.length > 0 && (
         <section className="w-full max-w-[800px] flex flex-col gap-2 items-center my-4">
-          <h3 className="font-bold text-lg">Flohmärkte dieser Woche:</h3>
+          <h3 className="font-bold text-2xl text-hh-800">
+            Flohmärkte dieser Woche:
+          </h3>
           <ul className="w-full flex flex-wrap justify-center gap-2 items-stretch">
-            {displayedMarkers.map(
-              ({ title, address, date, id, time, image }) => (
+            {[...displayedMarkers]
+              .sort((a, b) => a.date - b.date)
+              .map(({ title, address, date, id, time, image }) => (
                 <li
                   key={id}
-                  className="w-[360px] sm:w-1/3 max-w-[380px] h-32 sm:flex-grow justify-center flex gap-2 items-center bg-white rounded-md overflow-hidden"
+                  className="w-[360px] sm:w-1/3 max-w-[380px] h-32 sm:flex-grow justify-center flex gap-2 items-center bg-white rounded-md overflow-hidden hover:shadow-md"
                 >
-                  <div className="h-full aspect-square min-w-1/3 w-1/3 bg-hh-50 bg-25 overflow-hidden">
+                  <div className="h-full aspect-square min-w-1/3 w-1/3 bg-hh-50 bg-25 overflow-hidden flex justify-center items-center">
                     <img
-                      src={image}
+                      src={image || "/assets/icons/market.svg"}
                       alt="location"
-                      className="w-full h-full object-contain"
+                      className={`${
+                        image ? "w-full h-full" : "w-3/4 h-3/4"
+                      } object-contain`}
                     />
                   </div>
                   <Link
                     href={`/flohmaerkte/${id}`}
-                    className="flex flex-col w-2/3 h-full hover:text-hh-700 hover:shadow-md justify-between gap-2  p-2 pl-0 sm:pr-4 sm:p-2"
+                    className="flex flex-col w-2/3 h-full hover:text-hh-700 justify-between gap-2  p-2 pl-0 sm:pr-4 sm:p-2"
                   >
                     <span className="font-semibold text-base block">
                       {title}
@@ -188,8 +193,7 @@ const Map = ({
                     </div>
                   </Link>
                 </li>
-              )
-            )}
+              ))}
           </ul>
         </section>
       )}
