@@ -88,21 +88,20 @@ export default function FlohmarktTemplate({
                 <h1 className="text-4xl text-center font-bold">{title}</h1>
 
                 {optionalComment && (
-                  <div className="mt-4 relative">
-                    {!image && (
-                      <div className="absolute top-0 left-0 w-full h-full bg-hh-100 bg-opacity-50 rounded-md flex flex-wrap opacity-20">
-                        {Array(4)
-                          .fill(0)
-                          .map((_, i) => (
-                            <div
-                              className="w-1/2 h-1/2 flex justify-center items-center"
-                              key={i}
-                            >
-                              <FlohmarktBackground />
-                            </div>
-                          ))}
-                      </div>
-                    )}
+                  <div className="mt-4 h-[calc(100%-4rem)] relative">
+                    <div className="absolute top-0 left-0 w-full h-full flex-grow overflow-hidden bg-hh-100 bg-opacity-50 rounded-md flex flex-wrap opacity-20">
+                      {Array(4)
+                        .fill(0)
+                        .map((_, i) => (
+                          <div
+                            className="w-1/2 h-1/2 min-h-[300px] flex justify-center items-center"
+                            key={i}
+                          >
+                            <FlohmarktBackground />
+                          </div>
+                        ))}
+                    </div>
+
                     <DisplayTypeText text={optionalComment} type="paragraph" />
                   </div>
                 )}
