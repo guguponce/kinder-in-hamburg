@@ -19,7 +19,7 @@ const MainLocationIcon = new Icon({
   iconAnchor: [25, 50],
 });
 
-const Map = ({
+const FlohmaerkteMap = ({
   flohmarktID,
   flohmaerkteWithCoordinates,
   currentTarget,
@@ -58,8 +58,8 @@ const Map = ({
         <MapContainer
           style={{ height: "100%", width: "100%", zIndex: 10 }}
           center={[
-            centralFlohmarkt.lat || 53.5511,
-            centralFlohmarkt.lon || 9.9937,
+            centralFlohmarkt?.lat || 53.5511,
+            centralFlohmarkt?.lon || 9.9937,
           ]}
           zoom={
             flohmaerkteBezirke.current.length === 1
@@ -201,4 +201,4 @@ const Map = ({
   );
 };
 
-export default Map;
+export default FlohmaerkteMap;
