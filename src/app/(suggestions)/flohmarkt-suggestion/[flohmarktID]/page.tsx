@@ -14,6 +14,16 @@ import RestoreButton from "@app/components/RestoreButton";
 import AdminRoute from "@app/providers/AdminRoute";
 import AddLatLonFlohmarkt from "@app/components/AddLatLonFlohmarkt";
 
+import { iFlohmarktWithCoordinates } from "@app/utils/types";
+import dynamic from "next/dynamic";
+
+const FlohmaerkteMap = dynamic(
+  () => import("@app/components/@Map/FlohmaerkteMap"),
+  {
+    ssr: false,
+  }
+);
+
 export default async function FlohmarktSuggestionPage({
   params: { flohmarktID },
 }: {
@@ -61,6 +71,7 @@ export default async function FlohmarktSuggestionPage({
                 </small>
               </div>
             )}
+
             {suggestion.status === "rejected" ? (
               <AdminServerComponent>
                 <RestoreButton flohmarktID={flohmarktID} size="medium" />
@@ -103,8 +114,14 @@ export default async function FlohmarktSuggestionPage({
                       />
                     </AdminServerComponent>
                   )}
-                  {!suggestion.lat && !suggestion.lon && (
+                  {!suggestion.lat && !suggestion.lon ? (
                     <AddLatLonFlohmarkt flohmarkt={suggestion} />
+                  ) : (
+                    <FlohmaerkteMap
+                      flohmaerkteWithCoordinates={[]}
+                      currentTarget={suggestion as iFlohmarktWithCoordinates}
+                      flohmarktID={flohmarktID}
+                    ></FlohmaerkteMap>
                   )}
                 </aside>
               </UserServerComponents>
