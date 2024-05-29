@@ -920,6 +920,21 @@ export const updateFlohmarktStatus = async (id: string, status: string) => {
   }
 };
 
+export const clearLatLonFromFlohmarkt = async (id: string) => {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("flohmaerkte")
+      .update({ lat: null, lon: null })
+      .match({ id });
+    if (error) {
+      throw new Error("There was a problem updating the Flea Market.");
+    }
+    return true;
+  } catch (error) {
+    throw new Error("There was a problem updating the Flea Market.");
+  }
+};
+
 export const getAllFlohmaerkteIds = async () => {
   try {
     const { data, error } = await supabaseAdmin
