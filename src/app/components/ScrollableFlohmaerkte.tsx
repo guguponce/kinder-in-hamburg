@@ -3,6 +3,7 @@ import ScrollableContainer from "./ScrollableContainer";
 import { iFlohmarkt } from "@app/utils/types";
 import FlohmarktPoster from "./FlohmarktPoster";
 import PaperPlane from "./@Icons/PaperPlane";
+import { bezirke } from "@app/utils/constants";
 
 export default async function ScrollableFlohmaerkte({
   flohmaerkte,
@@ -13,9 +14,6 @@ export default async function ScrollableFlohmaerkte({
   bezirk?: string;
   title?: string;
 }) {
-  const bezirke = Array.from(
-    new Set(flohmaerkte.map((floh) => floh.bezirk))
-  ).sort();
   const reducedFlohmaerkte = [...flohmaerkte]
     .sort((a, b) => a.date - b.date)
     .reduce((acc, floh) => {
@@ -26,6 +24,15 @@ export default async function ScrollableFlohmaerkte({
       }
       return acc;
     }, {} as { [key: string]: iFlohmarkt[] });
+
+  const flohsBezirke = Array.from(
+    new Set(flohmaerkte.map((floh) => floh.bezirk))
+  );
+  const displayBezirke = bezirke
+    .filter((bez) => flohsBezirke.includes(bez))
+    .sort(
+      (a, b) => reducedFlohmaerkte[b].length - reducedFlohmaerkte[a].length
+    );
   const filteredList = bezirk
     ? flohmaerkte.filter((floh) => floh.bezirk === bezirk)
     : flohmaerkte;
@@ -89,10 +96,14 @@ export default async function ScrollableFlohmaerkte({
                 </article>
               )
             )
-          : bezirke.map((bezirk) => (
+          : displayBezirke.map((bezirk) => (
               <div
                 key={bezirk}
-                className="flex items-center flex-col rounded bg-hh-600 bgop75 p-2 w-fit max-w-full shadow-md"
+                className={`flex items-center flex-col rounded bg-hh-600 bg-opacity-50 p-2 ${
+                  reducedFlohmaerkte[bezirk].length > 4
+                    ? "w-fit"
+                    : "xl:w-[calc(33%-0.5rem)] md:w-[calc(50%-1rem)]"
+                } max-w-full shadow-md`}
               >
                 <h3 className="text-2xl font-semibold p-2 pb-0 ml-4 text-white self-start">
                   {bezirk}
