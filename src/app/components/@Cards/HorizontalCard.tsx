@@ -2,6 +2,12 @@ import { iCard } from "@app/utils/types";
 import Link from "next/link";
 import React from "react";
 import CardLogo from "../@Icons/CardLogo";
+import dynamic from "next/dynamic";
+
+const SpielplatzgeraeteBackground = dynamic(
+  () => import("../SpielplatzgeraeteBackground"),
+  { ssr: false }
+);
 
 export default function HorizontalCard({
   id,
@@ -9,6 +15,7 @@ export default function HorizontalCard({
   image,
   description,
   link,
+  spielgeraete,
 }: iCard) {
   return (
     <Link
@@ -17,11 +24,31 @@ export default function HorizontalCard({
       role="link"
       aria-label={`Explore ${title}`}
     >
-      <div className="cardImage min-h-full flex justify-center items-center w-2/5 bg-hh-800">
+      <div
+        className={`cardImage min-h-full flex justify-center items-center w-2/5 bg-hh-800 ${
+          spielgeraete && "bg-opacity-5"
+        }`}
+      >
         {!!image ? (
-          <img className="object-cover w-full h-full" src={image} alt={title} />
+          <img
+            loading="lazy"
+            className="object-cover w-full h-full"
+            src={image}
+            alt={title}
+          />
         ) : (
-          <CardLogo logo="Indoor" color="#ACBAC8" size="3rem" />
+          <>
+            {spielgeraete ? (
+              <SpielplatzgeraeteBackground
+                spList={spielgeraete}
+                small={false}
+                color="#47596B"
+                size="2rem"
+              />
+            ) : (
+              <CardLogo logo="Indoor" color="#ACBAC8" size="3rem" />
+            )}
+          </>
         )}
       </div>
       <div className="cardContent w-3/5 overflow-hidden flex-grow flex justify-center flex-col p-2 md:p-3 lg:p-4">
