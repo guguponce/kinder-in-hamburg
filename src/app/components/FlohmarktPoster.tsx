@@ -11,7 +11,9 @@ export default function FlohmarktPoster({
   prefixLink,
   id,
   index,
+  size = "medium",
 }: {
+  size?: "small" | "medium" | "large";
   index?: number;
   title: string;
   image?: string;
@@ -34,7 +36,9 @@ export default function FlohmarktPoster({
       }
       className={`relative ${
         image ? "" : "bg-gradient-to-b from-white to-hh-100"
-      } w-full min-w-[180px] h-full shadow-md rounded-sm flex flex-col items-center  justify-between text-center hover:scale-[1.01] hover:shadow-xl p-2`}
+      } w-full ${
+        size === "small" ? "min-w-[144px]" : "min-w-[180px]"
+      } h-full shadow-md rounded-sm flex flex-col items-center  justify-between text-center hover:scale-[1.01] hover:shadow-xl p-2`}
     >
       <FlohmarktBackground
         randomNumber={
@@ -45,6 +49,7 @@ export default function FlohmarktPoster({
       />
       {!!image ? (
         <img
+          loading="lazy"
           src={image}
           alt={title}
           className="w-full h-full object-cover rounded"
