@@ -39,7 +39,12 @@ export default function TextPriorityCard({
     >
       <div className="cardImage h-2/5 flex justify-center items-center w-full bg-hh-800">
         {!!image ? (
-          <img className="object-cover w-full h-full" src={image} alt={title} />
+          <img
+            loading="lazy"
+            className="object-cover w-full h-full"
+            src={image}
+            alt={title}
+          />
         ) : (
           <CardLogo logo="Indoor" color="#ACBAC8" size="3rem" />
         )}

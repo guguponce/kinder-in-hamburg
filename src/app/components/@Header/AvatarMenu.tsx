@@ -51,6 +51,7 @@ export default function AvatarMenu({
         <span className="mt-[1px]">{initials ? initials : ""}</span>
         {imgDisplay && (
           <img
+            loading="lazy"
             src={avatar || ""}
             className="absolute z-[500] w-full h-full rounded-full"
             alt=""

@@ -40,6 +40,7 @@ export default function ImagesModalButton({
             className="min-w-[200px] max-w-[300px] h-auto max-h-[400px]"
           >
             <img
+              loading="lazy"
               key={"img" + i}
               src={img}
               alt={title}

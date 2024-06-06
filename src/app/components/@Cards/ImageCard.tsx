@@ -29,7 +29,12 @@ export default function ImageCard({
       aria-label={`Explore ${title}`}
     >
       <div className="cardImage h-full w-full">
-        <img className="object-cover w-full h-full" src={image} alt={title} />
+        <img
+          loading="lazy"
+          className="object-cover w-full h-full"
+          src={image}
+          alt={title}
+        />
       </div>
       <div className="absolute bottom-0 cardContent w-full bg-gradient-to-t from-black via-[#1111118f] to-transparent overflow-hidden flex-grow flex flex-col p-2">
         <h2 className="truncate-2 break-words cardTitle font-bold text-sm sm:text-md md:text-lg text-hh-100  w-full">

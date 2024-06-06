@@ -24,17 +24,10 @@ export default function RandomRecommendation({
 
   const currentPost = useMemo(() => {
     if (originalPosts.current.length === 0) return undefined;
-    // if(pastIDs.current.includes(sortedPosts[currentIndex].id)){
-    //   if(pastIDs.current.length === originalPosts.current.length){
-    //     return null;
-    //   }
-    //   setCurrentIndex((prev)=>(prev+1) % sortedPosts.length);
-    //   return sortedPosts[currentIndex];
-    // }
+
     return sortedPosts[currentIndex];
   }, [currentIndex, sortedPosts]);
   if (currentPost === undefined) return null;
-  // if(currentPost === null) return <>NO MORE RECOMMENDATIONS</>
   return (
     <div
       className={`relative flex flex-col items-center rounded-md h-full aspect-[0.625] w-fit max-w-full gap-2 ${

@@ -30,6 +30,7 @@ export default function UserAvatar({
       {initials ? initials : ""}
       {imgDisplay && (
         <img
+          loading="lazy"
           src={avatar}
           className="absolute z-[500] w-full h-full rounded-full"
           alt=""

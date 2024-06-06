@@ -40,6 +40,7 @@ export default function ImgPriorityCard({
     >
       <div className="cardImage h-2/3 w-full bg-gradient-to-b from-white to-hh-50">
         <img
+          loading="lazy"
           className="object-cover w-full rounded-[6px_6px_0_0] h-full flex justify-center items-center"
           src={image}
           alt={title}
