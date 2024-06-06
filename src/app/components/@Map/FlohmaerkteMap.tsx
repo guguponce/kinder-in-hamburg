@@ -3,9 +3,14 @@ import React, { useMemo, useRef } from "react";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { Icon } from "leaflet";
-import { iBezirk, iFlohmarktWithCoordinates } from "@app/utils/types";
+import {
+  iBezirk,
+  iFlohmarkt,
+  iFlohmarktWithCoordinates,
+} from "@app/utils/types";
 import Link from "next/link";
 import { getDate } from "@app/utils/functions";
+import WeitereFlohmaerkte from "../WeitereFlohmaerkte";
 
 const stadtteilLocationIcon = new Icon({
   iconUrl: "/assets/icons/stadtteilLocation.svg",
@@ -15,21 +20,28 @@ const stadtteilLocationIcon = new Icon({
 
 const MainLocationIcon = new Icon({
   iconUrl: "/assets/icons/currentLocation.svg",
-  iconSize: [50, 50],
-  iconAnchor: [25, 50],
+  iconSize: [35, 35],
+  iconAnchor: [17, 35],
 });
 
 const FlohmaerkteMap = ({
   flohmarktID,
   flohmaerkteWithCoordinates,
   currentTarget,
+  displayList = true,
 }: {
-  flohmarktID: string | undefined;
-  currentTarget?: iFlohmarktWithCoordinates;
-  flohmaerkteWithCoordinates: iFlohmarktWithCoordinates[];
+  displayList?: boolean;
+  flohmarktID: string | number | undefined;
+  currentTarget?: iFlohmarktWithCoordinates | iFlohmarkt;
+  flohmaerkteWithCoordinates: iFlohmarktWithCoordinates[] | iFlohmarkt[];
 }) => {
   const bezirke = useRef(
     Array.from(new Set(flohmaerkteWithCoordinates.map((p) => p.bezirk).flat()))
+  );
+  const dates = useRef(
+    Array.from(new Set(flohmaerkteWithCoordinates.map((p) => p.date))).sort(
+      (a, b) => a - b
+    )
   );
 
   const flohmaerkteBezirke = useRef(
@@ -38,24 +50,34 @@ const FlohmaerkteMap = ({
   const [selectedFlohmarkt, setSelectedFlohmarkt] = React.useState<
     number | undefined
   >(currentTarget?.id);
+  const [selectedDate, setSelectedDate] = React.useState<number | undefined>(
+    undefined
+  );
   const [selectedBezirk, setSelectedBezirk] = React.useState<
     iBezirk | undefined
   >();
   const displayedMarkers = useMemo(() => {
-    const restFlohmaerkte = flohmaerkteWithCoordinates.filter(
+    const dateFlohmaerkte = flohmaerkteWithCoordinates.filter(
+      ({ date }) => !selectedDate || date === selectedDate
+    );
+    const restFlohmaerkte = dateFlohmaerkte.filter(
       ({ id }) => id.toString() !== flohmarktID
     );
     return selectedBezirk
       ? restFlohmaerkte.filter((p) => p.bezirk === selectedBezirk)
       : restFlohmaerkte;
-  }, [selectedBezirk, flohmaerkteWithCoordinates, flohmarktID]);
+  }, [selectedBezirk, flohmaerkteWithCoordinates, selectedDate, flohmarktID]);
 
   const centralFlohmarkt = currentTarget || displayedMarkers[0];
 
   return (
-    <section className="w-full sm:w-[calc(100%-2rem)] md:max-w-[800px] flex flex-col gap-2 sm:gap-4 items-center rounded">
-      <article className="h-[60vh] w-full max-w-[800px] flex justify-center rounded overflow-hidden">
+    <section className="w-full sm:w-full md:max-w-[800px] flex flex-col gap-2 sm:gap-4 items-center rounded">
+      <article className="max-h-[60vh] w-full max-w-[800px] aspect-square flex justify-center rounded overflow-hidden">
         <MapContainer
+          doubleClickZoom={true}
+          touchZoom={true}
+          zoomControl={true}
+          scrollWheelZoom={false}
           style={{ height: "100%", width: "100%", zIndex: 10 }}
           center={[
             centralFlohmarkt?.lat || 53.5511,
@@ -68,13 +90,12 @@ const FlohmaerkteMap = ({
               ? 10
               : 11
           }
-          scrollWheelZoom={false}
         >
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          {currentTarget && (
+          {currentTarget && currentTarget.lat && currentTarget.lon && (
             <Marker
               position={[currentTarget.lat, currentTarget.lon]}
               icon={MainLocationIcon}
@@ -95,107 +116,91 @@ const FlohmaerkteMap = ({
             </Marker>
           )}
           {displayedMarkers.map(
-            ({ title, address, date, id, lat, lon, stadtteil, time }) => (
-              <React.Fragment key={id}>
-                <Marker
-                  position={[lat, lon]}
-                  icon={
-                    currentTarget?.id === id
-                      ? MainLocationIcon
-                      : stadtteilLocationIcon
-                  }
-                >
-                  <Popup className="font-sans">
-                    <Link
-                      href={`/flohmaerkte/${id}`}
-                      className="font-semibold text-base block"
-                    >
-                      {title}
-                    </Link>
-                    <small className="font-semibold italic">
-                      {getDate(date)} ({time}) - {stadtteil}
-                    </small>
-                    <p className="text-xs">{address}</p>
-                  </Popup>
-                </Marker>
-              </React.Fragment>
-            )
+            ({ title, address, date, id, lat, lon, stadtteil, time }) =>
+              lat && lon ? (
+                <React.Fragment key={id}>
+                  <Marker
+                    position={[lat, lon]}
+                    icon={
+                      currentTarget?.id === id
+                        ? MainLocationIcon
+                        : stadtteilLocationIcon
+                    }
+                  >
+                    <Popup className="font-sans">
+                      <Link
+                        href={`/flohmaerkte/${id}`}
+                        className="font-semibold text-base block"
+                      >
+                        {title}
+                      </Link>
+                      <small className="font-semibold italic">
+                        {getDate(date)} ({time}) - {stadtteil}
+                      </small>
+                      <p className="text-xs">{address}</p>
+                    </Popup>
+                  </Marker>
+                </React.Fragment>
+              ) : null
           )}
         </MapContainer>
       </article>
-      {bezirke.current.length > 1 && (
-        <aside className="flex w-full gap-2 my-2 p-2">
-          <h3 className="font-bold text-lg p-2 text-hh-800">Bezirke:</h3>
-          <div className="flex flex-wrap gap-2 items-center">
-            {bezirke.current.map((bezirk) => (
-              <button
-                key={bezirk}
-                onClick={() =>
-                  setSelectedBezirk((prev) =>
-                    prev === bezirk ? undefined : bezirk
-                  )
-                }
-                className={`p-2 rounded-md ${
-                  selectedBezirk === bezirk
-                    ? "bg-hh-800 text-white  hover:bg-hh-600 hover:text-white"
-                    : "bg-white text-hh-800  hover:bg-hh-600 hover:text-white"
-                } transition-all`}
-              >
-                {bezirk}
-              </button>
-            ))}
-            {selectedBezirk && (
-              <button
-                onClick={() => setSelectedBezirk(undefined)}
-                className="p-2 rounded-md bg-white text-hh-800 hover:bg-hh-600 hover:text-white"
-              >
-                Alle Bezirke
-              </button>
-            )}
-          </div>
-        </aside>
-      )}
-      <hr className="w-full border-t border-hh-800" />
-      {displayedMarkers.length > 0 && (
-        <section className="w-full max-w-[800px] flex flex-col gap-2 items-center my-4">
-          <h3 className="font-bold text-2xl text-hh-800">
-            Flohmärkte dieser Woche:
-          </h3>
-          <ul className="w-full flex flex-wrap justify-center gap-2 items-stretch">
-            {[...displayedMarkers]
-              .sort((a, b) => a.date - b.date)
-              .map(({ title, address, date, id, time, image }) => (
-                <li
-                  key={id}
-                  className="w-[360px] sm:w-1/3 max-w-[380px] h-32 sm:flex-grow justify-center flex gap-2 items-center bg-white rounded-md overflow-hidden hover:shadow-md"
-                >
-                  <div className="h-full aspect-square min-w-1/3 w-1/3 bg-hh-50 bg-25 overflow-hidden flex justify-center items-center">
-                    <img
-                      src={image || "/assets/icons/market.svg"}
-                      alt="location"
-                      className={`${
-                        image ? "w-full h-full" : "w-3/4 h-3/4"
-                      } object-contain`}
-                    />
-                  </div>
-                  <Link
-                    href={`/flohmaerkte/${id}`}
-                    className="flex flex-col w-2/3 h-full hover:text-hh-700 justify-between gap-2  p-2 pl-0 sm:pr-4 sm:p-2"
+      <aside
+        id="flohmaerkte-map-filters-aside"
+        className="w-full flex flex-col"
+      >
+        {[
+          ["Termine", dates.current],
+          ["Bezirke", bezirke.current],
+        ].map(([name, arr]) =>
+          arr.length > 1 && typeof arr === "object" ? (
+            <div className="flex w-full flex-col" key={name as string}>
+              <h3 className="font-bold text-lg p-2 text-hh-800">{name}</h3>
+              <div className="flex flex-wrap gap-2 items-center">
+                {arr.map((item) => (
+                  <button
+                    key={item}
+                    onClick={() => {
+                      if (name === "Termine")
+                        setSelectedDate((prev) =>
+                          prev === (item as number)
+                            ? undefined
+                            : (item as number)
+                        );
+                      else
+                        setSelectedBezirk((prev) =>
+                          prev === (item as iBezirk)
+                            ? undefined
+                            : (item as iBezirk)
+                        );
+                    }}
+                    className={`p-2 rounded-md ${
+                      (name === "Termine" && selectedDate === item) ||
+                      (name === "Bezirke" && selectedBezirk === item)
+                        ? "bg-hh-800 text-white  hover:bg-hh-600 hover:text-white"
+                        : "bg-white text-hh-800  hover:bg-hh-600 hover:text-white"
+                    } transition-all`}
                   >
-                    <span className="font-semibold text-base block">
-                      {title}
-                    </span>
-                    <div className="flex flex-col">
-                      <small className="font-semibold italic">
-                        {getDate(date)} ({time})
-                      </small>
-                      <p className="text-xs">{address}</p>
-                    </div>
-                  </Link>
-                </li>
-              ))}
-          </ul>
-        </section>
+                    {name === "Termine" ? getDate(item as number) : item}
+                  </button>
+                ))}
+              </div>
+            </div>
+          ) : null
+        )}
+      </aside>
+      {displayList && (
+        <>
+          <hr className="w-full border-t border-hh-800" />
+          {displayedMarkers.length > 0 && (
+            <section className="w-full max-w-[800px] flex flex-col gap-2 items-center my-4">
+              <h3 className="font-bold text-2xl text-hh-800">
+                Weitere Märkte diese Woche:
+              </h3>
+              <WeitereFlohmaerkte displayedMarkers={displayedMarkers} />
+            </section>
+          )}
+        </>
       )}
     </section>
   );
