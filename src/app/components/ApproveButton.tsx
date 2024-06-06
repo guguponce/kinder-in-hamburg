@@ -2,15 +2,15 @@
 import {
   approveSuggestedFlohmarkt,
   approveSuggestedPost,
-  getContributorData,
   updateContributor,
 } from "@app/api/dbActions";
+import { revalidateSpielplatz } from "@app/api/spActions";
 import {
   revalidateFlohmarkt,
   revalidatePost,
 } from "@app/utils/actions/revalidate";
 import { sleep } from "@app/utils/functions";
-import { iFlohmarkt, iPost, iSessionUser } from "@app/utils/types";
+import { iPost, iSessionUser } from "@app/utils/types";
 import { useRouter } from "next/navigation";
 import React from "react";
 
@@ -44,9 +44,13 @@ export default function ApproveButton({
               parseInt(flohmarktID)
             );
             await revalidateFlohmarkt();
+            await revalidatePost();
+            await revalidateSpielplatz();
           }
         } else if (post) {
           await approveSuggestedPost(post);
+          await revalidateFlohmarkt();
+          await revalidateSpielplatz();
           await revalidatePost();
           await updateContributor("post", post?.addedBy, post.id);
         }
