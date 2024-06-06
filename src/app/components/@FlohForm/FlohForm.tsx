@@ -20,7 +20,10 @@ import {
 } from "@app/utils/functions";
 import FlohmarktImageUploader from "./FlohmarktImageUploader";
 import PostFormInput from "../@PostForm/PostFormInput";
-import { revalidatePost } from "@app/utils/actions/revalidate";
+import {
+  revalidateFlohmarkt,
+  revalidatePost,
+} from "@app/utils/actions/revalidate";
 import UserInputBox from "./UserInputBox";
 import { deleteUnusedFlohmaerkteImages } from "@app/api/storageActions";
 
@@ -133,6 +136,8 @@ export default function FlohForm({
     addFlohmarkt(suggestionFloh)
       .then(() => {
         revalidatePost();
+        revalidateFlohmarkt();
+
         setSubmitError({ isError: false, errorMessage: "" });
         setSuccessfulSubmit(true);
       })
@@ -176,6 +181,7 @@ export default function FlohForm({
       .then(() => {
         setSubmitError({ isError: false, errorMessage: "" });
         revalidatePost();
+        revalidateFlohmarkt();
         setSuccessfulSubmit(true);
       })
       // .then(() => {
