@@ -418,6 +418,34 @@ export const getApprovedPostWithCat = async (category: string) => {
   }
 };
 
+export const getPostsByCategoryBezirkStadtteile = async (
+  bezirk: iBezirk,
+  stadtteile: string[]
+) => {
+  if (!checkBezirk(bezirk)) throw new Error("Invalid Bezirk: " + bezirk);
+
+  // Construct bezirk stadtteile condition
+  const stadtteileConditions = stadtteile
+    .map((nh) => `stadtteil.ilike.%${nh}%`)
+    .join(",");
+  const bezirkCondition = `bezirk.eq.${bezirk}`;
+  const combinedCondition = `${stadtteileConditions},${bezirkCondition}`;
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("kih-approved-blogposts")
+      .select("*")
+      .or(combinedCondition);
+    if (error) {
+      throw new Error(
+        "There was a problem getting the posts for this category."
+      );
+    }
+    return parseAllPosts(data);
+  } catch (error) {
+    return false;
+  }
+};
+
 export const getUserApprovedPosts = async (user: iSessionUser) => {
   try {
     const { data, error } = await supabaseAdmin
