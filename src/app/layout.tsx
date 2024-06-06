@@ -20,6 +20,14 @@ export const metadata: Metadata = {
   description:
     "Hier findet ihr Flohmärkten aus verschiedenen Orten in Hamburg zusammengestellt.",
   keywords: [
+    "hamburg mit kinder",
+    "hamburg familie",
+    "hamburg kinder",
+    "hamburg ausflug",
+    "hamburg flohmarkt",
+    "hamburg kinder flohmarkt",
+    "kinder in hamburg",
+    "kinder hamburg",
     "hamburg",
     "flohmarkt",
     "kinder",
@@ -45,7 +53,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${roboto.className} flex flex-col items-center bg-hh-500 max-w-[1400px] mx-auto gap-4 md:gap-8`}
+        className={`${roboto.className} flex flex-col items-center bg-hh-500 max-w-[1400px] mx-auto gap-2`}
       >
         <SessionProvider session={session}>
           <Header />
