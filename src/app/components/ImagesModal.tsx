@@ -1,5 +1,5 @@
 "use client";
-import React, { useMemo, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import PostLogo from "./@Icons/@PostLogo/PostLogo";
 
 export default function ImagesModal({
@@ -28,9 +28,20 @@ export default function ImagesModal({
       (prev) => (prev - 1 + imageList.current.length) % imageList.current.length
     );
   };
+  useEffect(() => {
+    function handleKeyboardKeys(e: KeyboardEvent) {
+      e.stopPropagation();
+      if (e.key === "ArrowLeft") handlePrevImage();
+      if (e.key === "ArrowRight") handleNextImage();
+      if (e.key === "Escape") handleCloseModal();
+    }
+    document.addEventListener("keydown", handleKeyboardKeys);
+    return () => document.removeEventListener("keydown", handleKeyboardKeys);
+  });
 
   return (
     <div
+      tabIndex={0}
       className="w-screen -translate-x-1/2 left-1/2 mx-auto h-[100dvh] z-[500] fixed top-0 flex justify-center items-center bg-black bg-opacity-25 backdrop-blur-sm"
       ref={containerRef}
       // onClick={handleCloseModal}
@@ -42,27 +53,30 @@ export default function ImagesModal({
         <span className="mb-[1px]">×</span>
       </button>
       <div
-        className="relative w-full h-[calc(100%-150px)]  aspect-square flex justify-around gap-2 items-center bg-hh-300 bg-opacity-25 px-4"
+        className="relative w-full max-w-[1000px] h-[calc(100%-150px)]  aspect-square flex justify-around gap-2 items-center bg-hh-300 bg-opacity-25 px-4 lg:py-4"
         ref={modalRef}
       >
         <button
           onClick={handlePrevImage}
           className={`${
             images.length > 1 ? "flex" : "hidden"
-          } h-10 w-10 aspect-square rounded-lg bg-hh-800 text-white text-3xl font-bold backdrop-opacity-20 -rotate-90 justify-center items-center`}
+          }  min-h-10 min-w-fit absolute top-1/2 sm:relative z-20 sm:top-auto left-6  sm:left-0 aspect-square rounded-lg bg-hh-800 text-white text-3xl font-bold bg-opacity-50 hover:bg-opacity-80 -rotate-90 justify-center items-center`}
         >
           <PostLogo logo="triangle" color="#fefefe" size="1.5rem" />
         </button>
-        <img
-          src={imageList.current[currentImage]}
-          alt={title}
-          className=" w-auto h-auto max-h-full"
-        />
+        <div className="flex-grow h-full max-w-[800px] flex items-center justify-center">
+          <img
+            loading="lazy"
+            src={imageList.current[currentImage]}
+            alt={title}
+            className=" w-auto h-auto max-h-full"
+          />
+        </div>
         <button
           onClick={handleNextImage}
           className={`${
             images.length > 1 ? "flex" : "hidden"
-          } h-10 w-10 aspect-square rounded-lg bg-hh-800 text-white text-3xl font-bold backdrop-opacity-20 rotate-90 justify-center items-center`}
+          } min-h-10 min-w-fit absolute top-1/2 sm:relative z-20 sm:top-auto right-6  sm:right-0 aspect-square rounded-lg bg-hh-800 text-white text-3xl font-bold bg-opacity-50 hover:bg-opacity-80 rotate-90 justify-center items-center`}
         >
           <PostLogo logo="triangle" color="#fefefe" size="1.5rem" />
         </button>

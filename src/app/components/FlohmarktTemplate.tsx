@@ -73,6 +73,7 @@ export default function FlohmarktTemplate({
               className="min-w-[300px] max-w-[400px] md:w-1/2 w-full h-fit  p-4 bg-hh-800 rounded-md"
             >
               <img
+                loading="lazy"
                 src={image}
                 alt={title}
                 className="w-full h-auto object-cover rounded-md"
