@@ -5,14 +5,14 @@ import { sleep } from "../functions";
 import { redirect } from "next/navigation";
 
 export async function revalidatePost() {
-  revalidatePath("/");
+  revalidatePath("/", "layout");
   revalidatePath("/dashboard", "layout");
   revalidatePath("/posts", "layout");
   revalidatePath("/update-post/", "layout");
   revalidatePath("/update-suggestion/", "layout");
 }
 export async function revalidateFlohmarkt() {
-  revalidatePath("/");
+  revalidatePath("/", "layout");
   revalidatePath("/dashboard", "layout");
   revalidatePath("/flohmaerkte", "layout");
   revalidatePath("/update-flohmarkt/", "layout");
