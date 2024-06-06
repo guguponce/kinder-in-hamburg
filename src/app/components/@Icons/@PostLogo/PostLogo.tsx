@@ -1,7 +1,7 @@
 import React, { lazy, Suspense } from "react";
 
-const LazyShuffleIcon = lazy(() => import("./ShuffleIcon"));
-const LazyTriangleIcon = lazy(() => import("./TriangleIcon"));
+const LazyShuffleIcon = lazy(() => import("../ShuffleIcon"));
+const LazyTriangleIcon = lazy(() => import("../TriangleIcon"));
 const LazyDateIcon = lazy(() => import("./DateIcon"));
 const LazyHHIcon = lazy(() => import("./HHIcon"));
 const LazyHamburgIcon = lazy(() => import("./HamburgIcon"));
@@ -22,7 +22,15 @@ export default function PostLogo({
 }) {
   if (lazy) {
     return (
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense
+        fallback={
+          logo === "shuffle" ? (
+            <p className="font-semibold">Ziellos</p>
+          ) : (
+            <div>Loading...</div>
+          )
+        }
+      >
         {logo === "shuffle" && <LazyShuffleIcon size={size} color={color} />}
         {logo === "triangle" && <LazyTriangleIcon size={size} color={color} />}
         {logo === "date" && <LazyDateIcon size={size} color={color} />}
