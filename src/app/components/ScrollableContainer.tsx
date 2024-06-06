@@ -11,13 +11,13 @@ export default function ScrollableContainer({
     <div
       className={`flex items-center ${
         vertical ? "w-full" : "w-fit max-w-full"
-      } overflow-hidden`}
+      } overflow-hidden h-full`}
     >
       <div
         className={`${
           vertical
             ? "verticalScrollbar w-full overflow-y-auto h-fit max-h-full flex-col"
-            : "horizontalScrollbar overflow-x-auto w-fit max-w-full px-4 pb-4 pt-2"
+            : "horizontalScrollbar overflow-x-auto w-fit max-w-full px-4 pb-4 pt-2  h-full"
         }  flex gap-2 lg:gap-4 items-stretch`}
       >
         {children}
