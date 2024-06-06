@@ -118,6 +118,7 @@ export interface iCard {
   bezirk?: string;
   link?: string;
   aspectRatio?: number;
+  spielgeraete?: string[];
 }
 
 // WEATHERAPI
@@ -280,8 +281,8 @@ export interface iSpielplatz {
   minAge?: number | undefined;
   maxAge?: number | undefined;
   image?: string[];
-  bezirk?: iBezirk | undefined;
-  stadtteil?: string | undefined;
+  bezirk: iBezirk;
+  stadtteil: string;
   address?: iAddress | undefined;
   lat: number;
   lon: number;
@@ -320,7 +321,8 @@ export type categoryName =
   | "Tiere"
   | "Geburtstage"
   | "Wochenende Ausflüge"
-  | "Shops";
+  | "Shops"
+  | "Badeplatz";
 
 export type overallCondition =
   | "Sunny"
