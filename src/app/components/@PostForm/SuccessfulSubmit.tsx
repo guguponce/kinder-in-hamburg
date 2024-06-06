@@ -26,7 +26,12 @@ export default function SuccessfulSubmit({
       </h2>
 
       {!!image && (
-        <img src={image} alt={title} className="w-[300px] h-auto rounded " />
+        <img
+          loading="lazy"
+          src={image}
+          alt={title}
+          className="w-[300px] h-auto rounded "
+        />
       )}
       <Link
         className="px-2 py-1 rounded-md font-semibold bg-hh-700 text-white hover:bg-hh-600"
