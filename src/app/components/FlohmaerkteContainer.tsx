@@ -5,6 +5,10 @@ import { getTodayNexMonday } from "@app/utils/functions";
 import { getApprovedFlohmaerkte } from "@app/api/dbActions";
 import FlohmarktPoster from "./FlohmarktPoster";
 import ScrollableContainer from "./ScrollableContainer";
+const FlohmaerkteMap = dynamic(() => import("./@Map/FlohmaerkteMap"), {
+  ssr: false,
+});
+import dynamic from "next/dynamic";
 
 export const revalidate = 0;
 export default async function FlohmaerkteContainer() {
@@ -18,49 +22,74 @@ export default async function FlohmaerkteContainer() {
     .filter(({ date }) => date > nextMonday)
     .sort((a, b) => a.date - b.date);
   const todayFlohmaerkte = thisWeekFlohmaerkte.filter(
-    ({ date }) => date < today + 1000 * 60 * 60 * 24
+    ({ date }) =>
+      date <
+      thisWeekFlohmaerkte[thisWeekFlohmaerkte.length - 1].date +
+        1000 * 60 * 60 * 24
+    //  today + 1000 * 60 * 60 * 24
   );
   return (
-    <main className="rounded bg-hh-100 bg-opacity-25 max-w-[1000px] w-[calc(100%-2rem)] p-4 flex flex-col items-center min-h-[50vh]">
+    <main className="rounded bg-hh-100 bg-opacity-25 w-[calc(100%-2rem)] p-4 flex flex-col items-center min-h-[50vh]">
       <h1 className="text-4xl font-bold my-2 p-2 rounded text-hh-900">
         Flohmärkte
       </h1>
 
       <div className="flex flex-col items-center gap-4 lg:gap-8 max-w-full">
-        {!!todayFlohmaerkte.length && (
-          <div className="relative flex justify-center flex-col rounded-md h-full w-fit bg-hh-200 max-w-full">
-            <h2 className="text-2xl font-semibold text-hh-800 text-center pt-4  self-start">
-              Heute
-            </h2>
+        <section
+          id="current-week-section"
+          className="flex flex-wrap gap-4 w-full"
+        >
+          <div
+            id="heute-map-container"
+            className="w-full max-w-[400px] flex flex-col gap-4 align-center rounded bg-hh-200 bg-opacity-50 p-2 shadow-sm"
+          >
+            {!!todayFlohmaerkte.length && (
+              <div className="relative flex justify-center flex-col rounded-md bg-hh-200 w-full">
+                <h2 className="text-2xl font-semibold text-hh-800 text-center p-4  self-start">
+                  Heute
+                </h2>
 
-            <ScrollableContainer>
-              {todayFlohmaerkte.map((floh) => (
-                <article
-                  key={floh.id}
-                  className="relative flex flex-col items-center overflow-hidden h-[275px] min-w-[180px] gap-1"
-                >
-                  <h3 className="text-hh-600 text-center h-[20px] w-full font-semibold text-sm truncate-1">
-                    {floh.stadtteil}
-                  </h3>
-                  <div className="overflow-hidden h-[250px] min-w-[180px] bg-white">
-                    <FlohmarktPoster
+                <ScrollableContainer>
+                  {todayFlohmaerkte.map((floh) => (
+                    <article
                       key={floh.id}
-                      title={floh.title}
-                      bezirk={floh.bezirk}
-                      date={floh.date}
-                      image={floh.image}
-                      id={floh.id}
-                    />
-                  </div>
-                </article>
-              ))}
-            </ScrollableContainer>
+                      className="relative flex flex-col items-center overflow-hidden h-[275px] min-w-[180px] gap-1"
+                    >
+                      <h3 className="text-hh-600 text-center h-[20px] w-full font-semibold text-sm truncate-1">
+                        {floh.stadtteil}
+                      </h3>
+                      <div className="overflow-hidden h-[250px] min-w-[180px] bg-white">
+                        <FlohmarktPoster
+                          key={floh.id}
+                          title={floh.title}
+                          bezirk={floh.bezirk}
+                          date={floh.date}
+                          image={floh.image}
+                          id={floh.id}
+                        />
+                      </div>
+                    </article>
+                  ))}
+                </ScrollableContainer>
+              </div>
+            )}
+            <FlohmaerkteMap
+              displayList={false}
+              flohmaerkteWithCoordinates={thisWeekFlohmaerkte.filter(
+                (floh) => floh.lat && floh.lon
+              )}
+              flohmarktID={thisWeekFlohmaerkte[0].id}
+            ></FlohmaerkteMap>
           </div>
-        )}
-        <ScrollableFlohmaerkte
-          title="Diese Woche"
-          flohmaerkte={thisWeekFlohmaerkte}
-        ></ScrollableFlohmaerkte>
+          <div className="flex flex-grow justify-center w-1/4">
+            <ScrollableFlohmaerkte
+              title={`Diese Woche gibt es ${thisWeekFlohmaerkte.length} ${
+                thisWeekFlohmaerkte.length === 1 ? "Flohmarkt" : "Flohmärkte"
+              }`}
+              flohmaerkte={thisWeekFlohmaerkte}
+            />
+          </div>
+        </section>
         <BezirkableFlohmaerkteList
           title="Ab nächster Woche"
           flohList={futureFlohmaerkte}
