@@ -1,6 +1,8 @@
 import React from "react";
 
 export default function AboutPage() {
+  const nextMidnight = new Date(new Date().getTime()).setHours(24, 0, 0, 1); // Create a copy of 'now'
+
   return (
     <main className="flex flex-col items-center gap-4">
       <section
@@ -38,7 +40,6 @@ export default function AboutPage() {
           Abenteuer geht.
         </p>
       </section>
-
       <section
         id="future"
         className="p-4 lg:p-8  w-full max-w-[1200px] shadow-lg bg-gradient-to-b from-astronaut-100 to-astronaut-50 text-white flex flex-col gap-4"
@@ -155,6 +156,7 @@ export default function AboutPage() {
           </span>
         </p>
       </section>
+      NextMidnight:{nextMidnight}
     </main>
   );
 }
