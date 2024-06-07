@@ -25,8 +25,8 @@ const stadtteilLocationIcon = new Icon({
 
 const MainLocationIcon = new Icon({
   iconUrl: "/assets/icons/currentLocation.svg",
-  iconSize: [50, 50],
-  iconAnchor: [25, 50],
+  iconSize: [35, 35],
+  iconAnchor: [17, 35],
 });
 
 const Map = ({
@@ -55,7 +55,7 @@ const Map = ({
         : postsNearbyWithCoordinates,
     [selectedCategory, postsNearbyWithCoordinates]
   );
-  if (!currentTarget) return null;
+
   return (
     <section className="w-[calc(100%-2rem)] max-w-[800px] flex flex-col gap-2 items-center rounded">
       <aside className="flex flex-wrap justify-center gap-2">
@@ -84,55 +84,56 @@ const Map = ({
       <article className="h-[60vh] w-full max-w-[800px] flex justify-center rounded overflow-hidden">
         <MapContainer
           style={{ height: "100%", width: "100%", zIndex: 10 }}
-          center={[currentTarget.lat || 53.5511, currentTarget.lon || 9.9937]}
-          zoom={15}
+          center={[currentTarget?.lat || 53.5511, currentTarget?.lon || 9.9937]}
+          zoom={10}
           scrollWheelZoom={false}
         >
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          <Marker
-            position={[currentTarget.lat, currentTarget.lon]}
-            icon={MainLocationIcon}
-          >
-            <Popup className="font-sans">
-              <Link
-                href={
-                  (currentTarget as iPostWithCoordinates).categories
-                    ? `/posts/${postID}`
-                    : `/flohmaerkte/${postID}`
-                }
-                className="font-semibold text-base block"
-              >
-                {currentTarget.title}
-              </Link>
-              <small className="font-semibold italic">
-                {(currentTarget as iPostWithCoordinates).categories
-                  ? (currentTarget as iPostWithCoordinates).categories.join(
-                      " - "
-                    )
-                  : getDate((currentTarget as iFlohmarktWithCoordinates).date)}
-              </small>
-              <p className="text-xs">
-                {currentTarget.address &&
-                  (typeof currentTarget.address === "string"
-                    ? currentTarget.address
-                    : joinAddress(currentTarget.address))}
-              </p>
-            </Popup>
-          </Marker>
+          {currentTarget && (
+            <Marker
+              position={[currentTarget.lat, currentTarget.lon]}
+              icon={MainLocationIcon}
+            >
+              <Popup className="font-sans">
+                <Link
+                  href={
+                    (currentTarget as iPostWithCoordinates).categories
+                      ? `/posts/${postID}`
+                      : `/flohmaerkte/${postID}`
+                  }
+                  className="font-semibold text-base block"
+                >
+                  {currentTarget.title}
+                </Link>
+                <small className="font-semibold italic">
+                  {(currentTarget as iPostWithCoordinates).categories
+                    ? (currentTarget as iPostWithCoordinates).categories.join(
+                        " - "
+                      )
+                    : getDate(
+                        (currentTarget as iFlohmarktWithCoordinates).date
+                      )}
+                </small>
+                <p className="text-xs">
+                  {currentTarget.address &&
+                    (typeof currentTarget.address === "string"
+                      ? currentTarget.address
+                      : joinAddress(currentTarget.address))}
+                </p>
+              </Popup>
+            </Marker>
+          )}
           {displayedMarkers.map(
             ({ title, id, lat, lon, image, stadtteil, categories }) => (
               <React.Fragment key={id}>
                 <Marker
                   position={[lat, lon]}
                   icon={
-                    id === parseInt(postID)
-                      ? MainLocationIcon
-                      : currentTarget?.stadtteil === stadtteil
-                      ? stadtteilLocationIcon
-                      : bezirkLocationIcon
+                    // stadtteilLocationIcon
+                    bezirkLocationIcon
                   }
                 >
                   <Popup className="font-sans">

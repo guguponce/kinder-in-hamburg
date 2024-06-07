@@ -12,6 +12,7 @@ export default function UploadImagePreview({
   return (
     <>
       <img
+        loading="lazy"
         src={imageUrl}
         className="m-0 block h-28 w-24 object-contain"
         alt={imageFileName}
