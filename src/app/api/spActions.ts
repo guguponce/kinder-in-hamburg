@@ -10,7 +10,7 @@ import { getServerSession } from "next-auth";
 import { checkBezirk, parseSpielplatz } from "@app/utils/functions";
 import { revalidatePath } from "next/cache";
 import { FullMetadata } from "firebase/storage";
-import { iSPType } from "@app/(spielplatz)/spielgaerete";
+import { iSPType } from "@app/utils/types";
 
 export async function revalidateSpielplatz() {
   revalidatePath("/");
