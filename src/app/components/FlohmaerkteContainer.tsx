@@ -21,12 +21,14 @@ export default async function FlohmaerkteContainer() {
   const futureFlohmaerkte = flohmaerkte
     .filter(({ date }) => date > nextMonday)
     .sort((a, b) => a.date - b.date);
-  const nextMidnight = new Date(new Date().getTime()).setHours(24, 0, 0, 1); // Create a copy of 'now'
+  const timezoneOffset = -120 * 60 * 1000;
+  const utcMidnight = new Date(new Date().getTime());
+  utcMidnight.setHours(24, 0, 0, 0);
+  const nextMidnight = utcMidnight.getTime() + timezoneOffset;
   const todayFlohmaerkte = thisWeekFlohmaerkte.filter(
     ({ date }) => date < nextMidnight
     //  today + 1000 * 60 * 60 * 24
   );
-
   return (
     <main className="rounded bg-hh-100 bg-opacity-25 w-[calc(100%-2rem)] p-4 flex flex-col items-center min-h-[50vh]">
       <h1 className="text-4xl font-bold my-2 p-2 rounded text-hh-900">
