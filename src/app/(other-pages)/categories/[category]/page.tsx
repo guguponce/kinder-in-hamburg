@@ -1,5 +1,6 @@
 import { getSuggestionsWithCat } from "@app/api/dbActions";
 import RandomRecommendation from "@app/components/@Cards/RandomRecommendation";
+import DynamicCategoryMap from "@app/components/@Map/DynamicCategoryMap";
 import PointsGallery from "@app/components/@PostForm/PointsGallery";
 import FilterablePostList from "@app/components/FilterablePostList";
 import AdminRoute from "@app/providers/AdminRoute";
@@ -65,6 +66,9 @@ export default async function CategoriesPage({
             </h1>
           </FilterablePostList>
         </section>
+        {category === "Badeplatz" && (
+          <DynamicCategoryMap catPosts={categoryPosts} category={category} />
+        )}
       </main>
     </AdminRoute>
   );
