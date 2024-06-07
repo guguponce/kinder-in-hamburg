@@ -154,7 +154,6 @@ export default function AboutPage() {
           </span>
         </p>
       </section>
-      NextMidnight:{nextMidnight}
     </main>
   );
 }
