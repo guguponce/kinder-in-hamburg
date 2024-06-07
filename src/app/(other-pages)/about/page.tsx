@@ -1,8 +1,10 @@
 import React from "react";
 
 export default function AboutPage() {
-  const nextMidnight = new Date(new Date().getTime()).setHours(24, 0, 0, 1); // Create a copy of 'now'
-
+  const timezoneOffset = -120 * 60 * 1000;
+  const utcMidnight = new Date(new Date().getTime());
+  utcMidnight.setHours(24, 0, 0, 0);
+  const nextMidnight = utcMidnight.getTime() + timezoneOffset;
   return (
     <main className="flex flex-col items-center gap-4">
       <section
