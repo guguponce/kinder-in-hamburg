@@ -1,0 +1,40 @@
+#spielplatz-grid {
+  display: grid;
+  height: fit-content;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "spielgeraete"
+    "data"
+    "map";
+  @media (min-width: 1024px) {
+    grid-template-columns: 400px 1fr;
+    gap: 1rem;
+    grid-template-rows: minmax(50px, auto) minmax(auto, 1fr);
+    grid-template-areas:
+      "map spielgeraete"
+      "map data";
+
+    //   "header header header header header header"
+    //   "map map spielgeraete spielgeraete spielgeraete spielgeraete"
+    //   "map map spielgeraete spielgeraete spielgeraete spielgeraete"
+    //   "map map spielgeraete spielgeraete spielgeraete spielgeraete"
+    //   "map map spielgeraete spielgeraete spielgeraete spielgeraete"
+    //   "flohmaerkte flohmaerkte flohmaerkte flohmaerkte flohmaerkte flohmaerkte";
+  }
+}
+
+#spielplatz-spielgeraete-box {
+  grid-area: spielgeraete;
+}
+#spielplatz-map-container {
+  grid-area: map;
+}
+#spielplatz-data {
+  grid-area: data;
+  #image-container {
+    grid-area: image;
+  }
+  #description-container {
+    grid-area: description;
+  }
+}
