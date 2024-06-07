@@ -1,11 +1,6 @@
-import { getFlohmarktWithID, getPostWithBezirk } from "@app/api/dbActions";
+import { getPostWithBezirk } from "@app/api/dbActions";
 import { getAddressQuery, getLatLong } from "@app/utils/functions";
-import {
-  iAddress,
-  iBezirk,
-  iFlohmarktWithCoordinates,
-  iPostWithCoordinates,
-} from "@app/utils/types";
+import { iBezirk, iPostWithCoordinates } from "@app/utils/types";
 import dynamic from "next/dynamic";
 
 const Map = dynamic(() => import("./Map"), { ssr: false });
@@ -22,7 +17,9 @@ export default async function DynamicMap({
   const postsWithCoordinates = (
     await Promise.all(
       bezirkPosts.map(async (post) => {
+        if (post.lat && post.lon) return post as iPostWithCoordinates;
         if (!post.address) return false;
+
         const addressQuery = getAddressQuery(post.address);
         const { lat, lon } = await getLatLong(addressQuery);
 
@@ -34,23 +31,9 @@ export default async function DynamicMap({
       })
     )
   ).filter(Boolean) as iPostWithCoordinates[];
-  const currentTarget =
-    postsWithCoordinates.find((p) => p.id === parseInt(postID)) ||
-    (await getFlohmarktWithID(postID).then(async (f) => {
-      if (!f) {
-        return false;
-      } else {
-        const addressQuery = f.address
-          ? f.address.replace(/[ ,]/g, "+")
-          : `${f.stadtteil || ""}+${f.bezirk}+Hamburg`;
-        const { lat, lon } = await getLatLong(addressQuery);
-        return {
-          ...f,
-          lat: parseFloat(lat),
-          lon: parseFloat(lon),
-        } as iFlohmarktWithCoordinates;
-      }
-    }));
+  const currentTarget = postsWithCoordinates.find(
+    (p) => p.id === parseInt(postID)
+  );
   if (!currentTarget) return <></>;
   return (
     <Map
