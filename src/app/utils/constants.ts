@@ -1,4 +1,4 @@
-import { categoryName, iBezirk, overallCondition } from "./types";
+import { categoryName, iBezirk, iSpielgeräte, overallCondition } from "./types";
 
 export const bezirke: iBezirk[] = [
   "Hamburg-Mitte",
@@ -1296,3 +1296,118 @@ export const PROXIMATE_STADTTEILE_FROM_OTHER_BEZIRK: { [x: string]: string[] } =
       "Neustadt",
     ],
   };
+
+// SPIELPLATZ
+
+export const ausruestungList = [
+  "schatten",
+  "sitzbänke",
+  "picknick-tisch",
+  "liegt im grünen",
+  "toiletten",
+  "grillplatz / feuerstelle",
+];
+
+export const ausstattung = [
+  "liegt im grünen",
+  "schatten",
+  "sitzbänke",
+  "unterfahrbare sitzgruppe",
+  "picknick-tisch",
+  "gastronomie / kiosk",
+  "grillplatz / feuerstelle",
+  "unterstand / schutzhütte",
+  "parkplätze",
+  "barrierefreies parken",
+  "e-ladestation",
+  "toiletten",
+  "barrierefreies wc",
+  "kostenpflichtig",
+  "befahrbarer untergrund / fallschutzflächen",
+  "tasthilfen / leitsysteme für menschen mit sehbehinderung",
+  "einzelne spielstationen barrierefrei erreichbar",
+  "kontrastreiche farbgestaltung",
+  "kommunikationstafel / unterstützte kommunikation ",
+];
+
+export const mappingSpielgeraete: { [x: string]: iSpielgeräte } = {
+  "klettergerät mit rutsche": "rutsche",
+  doppelschaukel: "schaukel",
+  reifenschaukel: "schaukel",
+  sandfläche: "sandspielbereich",
+  sandspielstation: "sandspielbereich",
+  sandbagger: "sandspielbereich",
+  "befahrbares bodentrampolin": "trampolin",
+  seilkletterpyramide: "kletternetzpyramide",
+  "wasserspiel / matschen": "wasserspiel",
+  "balancier-element": "balancier-spiel",
+};
+
+export const spielgeraeteDisplay = {
+  arrays: {
+    rutsche: ["rutsche", "kleinkindrutsche", "röhrenrutsche"],
+    schaukel: [
+      "schaukel",
+      "kleinkindschaukel",
+      "nestschaukel",
+      "schaukel mit fixiermöglichkeit",
+    ],
+    karussell: ["karussell", "inklusives karussella", "dreh-element"],
+    kletterelement: ["kletterelement", "kletternetzpyramide", "kletterwand"],
+  },
+  singles: [
+    "sandspielbereich",
+    "wasserspiel",
+    "wippe",
+    "seilbahn",
+    "trampolin",
+    "reckstange",
+  ],
+  sport: [
+    "basketballkorb",
+    "volleyballnetz",
+    "fußballtore",
+    "tischtennisplatte",
+    "skatepark",
+    "kinderfahrrad/roller geeignet",
+  ],
+};
+
+export const spielgeraeteList = [
+  "rutsche",
+  "kleinkindrutsche",
+  "röhrenrutsche",
+  "schaukel",
+  "kleinkindschaukel",
+  "nestschaukel",
+  "schaukel mit fixiermöglichkeit",
+  "sandspielbereich",
+  "wasserspiel",
+  "wippe",
+  "karussell",
+  "inklusives karussella",
+  "dreh-element",
+  "seilbahn",
+  "trampolin",
+  "kletterelement",
+  "kletternetzpyramide",
+  "kletterwand",
+  "reckstange",
+  "basketballkorb",
+  "volleyballnetz",
+  "fußballtore",
+  "tischtennisplatte",
+  "skatepark",
+  "kinderfahrrad/roller geignet",
+];
+
+export const spType = [
+  "indoor",
+  "outdoor",
+  "abenteuerspielplatz",
+  "tierpark",
+  "waldspielplatz",
+  "planschbecken",
+  "wasserspielplatz",
+  "skatepark",
+];

@@ -3,18 +3,28 @@ import type {
   TypeAndText,
   categoryName,
   iAddress,
+  iAusruestung,
   iContributor,
   iFlohmarkt,
   iLatLonResult,
   iPost,
+  iSPType,
   iSessionUser,
+  iSpielgeräte,
   iSpielplatz,
   iStringifiedContributor,
   iStringifiedFlohmarkt,
   iStringifiedRetrievedPost,
   iStringifiedSpielplatz,
 } from "./types";
-import { bezirke, categoryNames } from "./constants";
+import {
+  ausruestungList,
+  bezirke,
+  categoryNames,
+  mappingSpielgeraete,
+  spType,
+  spielgeraeteList,
+} from "./constants";
 
 export const postDate = () => new Date().getTime();
 
@@ -313,6 +323,47 @@ export const parseSpielplatz = (spielplatz: iStringifiedSpielplatz) => {
       ? (JSON.parse(spielplatz.ausruestung) as string[])
       : [],
   } as iSpielplatz;
+};
+
+export const parseSpielgeräte = (spArray: string[] | undefined) => {
+  if (!spArray) return [];
+  const resultArray = spArray
+    .map((item) => {
+      const lowerCaseItem = item.toLowerCase();
+      if (spielgeraeteList.includes(lowerCaseItem)) {
+        return lowerCaseItem;
+      }
+      return mappingSpielgeraete[lowerCaseItem] || null;
+    })
+    .filter((item) => !!item) as iSpielgeräte[];
+
+  return Array.from(new Set(resultArray));
+};
+
+export const parsedAuruestung = (aArray: string[] | undefined) => {
+  if (!aArray) return [];
+  return aArray
+    .map((item) => {
+      const lowerCaseItem = item.toLowerCase();
+      if (ausruestungList.includes(lowerCaseItem)) {
+        return lowerCaseItem;
+      }
+      return null;
+    })
+    .filter((item) => !!item) as iAusruestung[];
+};
+
+export const parsedSPType = (type: string[] | undefined) => {
+  if (!type) return [];
+  return type
+    .map((item) => {
+      const lowerCaseItem = item.toLowerCase();
+      if (spType.includes(lowerCaseItem)) {
+        return lowerCaseItem;
+      }
+      return null;
+    })
+    .filter((item) => !!item) as iSPType[];
 };
 
 export const getHaynsParkXML = async () => {

@@ -1,3 +1,5 @@
+import { spielgeraeteList } from "./constants";
+
 export interface iPost {
   id: number;
   title: string;
@@ -308,6 +310,26 @@ export interface iStringifiedSpielplatz
   address: string;
   addedBy: string;
 }
+
+export type iAusruestung =
+  | "schatten"
+  | "sitzbänke"
+  | "picknick-tisch"
+  | "liegt im grünen"
+  | "toiletten"
+  | "grillplatz / feuerstelle";
+
+export type iSpielgeräte = (typeof spielgeraeteList)[number];
+
+export type iSPType =
+  | "indoor"
+  | "outdoor"
+  | "abenteuerspielplatz"
+  | "tierpark"
+  | "waldspielplatz"
+  | "planschbecken"
+  | "wasserspielplatz"
+  | "skatepark";
 
 export type categoryName =
   | "Indoor"
