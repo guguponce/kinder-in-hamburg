@@ -36,8 +36,8 @@ export const submitNewSpielplatz = async (
       PLZ: data.PLZ,
       city: data.city,
     },
-    lat: parseFloat(latlon.lat),
-    lon: parseFloat(latlon.lon),
+    lat: data.lat || parseFloat(latlon.lat),
+    lon: data.lon || parseFloat(latlon.lon),
     text: data.text,
     pinnedSpielplatz: data.pinnedSpielplatz === "true" ? true : false,
     type: typeList,
@@ -63,6 +63,7 @@ export const submitUpdateSpielplatz = async (
   );
   if (!latlon.lat || !latlon.lon)
     return alert("Could not find the location of the Spielplatz");
+
   const minAge = data.minAge ? parseInt(data.minAge) : undefined;
   const maxAge = data.maxAge ? parseInt(data.maxAge) : undefined;
   const suggestedSpielplatz: iSpielplatz = {
@@ -79,8 +80,8 @@ export const submitUpdateSpielplatz = async (
       PLZ: data.PLZ,
       city: data.city,
     },
-    lat: parseFloat(latlon.lat),
-    lon: parseFloat(latlon.lon),
+    lat: data.lat || parseFloat(latlon.lat),
+    lon: data.lon || parseFloat(latlon.lon),
     text: data.text,
     pinnedSpielplatz: data.pinnedSpielplatz === "true" ? true : false,
     type: typeList,
@@ -91,6 +92,5 @@ export const submitUpdateSpielplatz = async (
     tags: data.tags.split("*").map((tag: string) => tag.trim()),
     image: data.image,
   };
-
   return await updateSpielplatz(suggestedSpielplatz);
 };
