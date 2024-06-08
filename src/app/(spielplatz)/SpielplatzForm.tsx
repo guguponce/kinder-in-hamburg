@@ -1,11 +1,14 @@
 "use client";
-import { iBezirk, iSessionUser, iSpielplatz } from "@app/utils/types";
-import React, { useEffect, useRef } from "react";
+import { iAddress, iBezirk, iSessionUser, iSpielplatz } from "@app/utils/types";
+import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { FieldValues, useForm } from "react-hook-form";
 import AdminClientComponents from "@app/providers/AdminClientComponents";
 import UserInputBox from "@app/components/@FlohForm/UserInputBox";
 import PostFormInput from "@app/components/@PostForm/PostFormInput";
+
+const LatLonSetterMap = React.lazy(() => import("./LatLonSetterMap"));
+
 import {
   BEZIRK_TO_STADTTEILE,
   addressPartsArray,
@@ -17,7 +20,7 @@ import {
   spType,
 } from "@app/utils/constants";
 import { submitNewSpielplatz, submitUpdateSpielplatz } from "./functions";
-import { sleep } from "@app/utils/functions";
+import { getLatLong, sleep } from "@app/utils/functions";
 import ScrollableContainer from "@app/components/ScrollableContainer";
 
 interface iSpielplatzFormProps {
@@ -59,30 +62,26 @@ export default function SpielplatzForm({
 }: iSpielplatzFormProps) {
   const newID = useRef(new Date().getTime());
   const router = useRouter();
-  const [imagesUrlsReady, setImagesUrlsReady] = React.useState<{
+  const [imagesUrlsReady, setImagesUrlsReady] = useState<{
     ready: boolean;
     urls: string[];
   }>({ ready: true, urls: [] });
-  const [successfulSubmit, setSuccessfulSubmit] =
-    React.useState<boolean>(false);
+  const [successfulSubmit, setSuccessfulSubmit] = useState<boolean>(false);
 
-  const [userInput, setUserInput] = React.useState<iSessionUser>(
-    addedBy || user
-  );
-  const [submitError, setSubmitError] = React.useState<{
+  const [userInput, setUserInput] = useState<iSessionUser>(addedBy || user);
+  const [submitError, setSubmitError] = useState<{
     isError: boolean;
     errorMessage: string;
   }>({ isError: false, errorMessage: "" });
-  const [bezirkInput, setBezirkInput] = React.useState<iBezirk>(
-    bezirk || "Altona"
-  );
-  const [spielgaereteList, setSpielgeraeteList] = React.useState<string[]>(
+  const [bezirkInput, setBezirkInput] = useState<iBezirk>(bezirk || "Altona");
+  const [spielgaereteList, setSpielgeraeteList] = useState<string[]>(
     spielgeraete || []
   );
-  const [ausruestungList, setAusruestungList] = React.useState<string[]>(
+  const [ausruestungList, setAusruestungList] = useState<string[]>(
     ausruestung || []
   );
-  const [typeList, setTypeList] = React.useState<string[]>(type || ["outdoor"]);
+  const [typeList, setTypeList] = useState<string[]>(type || ["outdoor"]);
+  const [latlon, setLatLon] = useState({ lat, lon });
   const {
     register,
     handleSubmit,
@@ -121,7 +120,6 @@ export default function SpielplatzForm({
     // if (!imagesUrlsReady.ready) return alert("Images are not ready yet");
     // if (!userInput.email || !userInput.name)
     //   return alert("Your name and email are required");
-
     if (!data.street || !data.city || !data.PLZ)
       return alert("Please provide the address of the Spielplatz");
 
@@ -183,7 +181,9 @@ export default function SpielplatzForm({
   useEffect(() => {}, [bezirkInput, getValues]);
   if (!user) router.push("/");
   if (!user.email || !user.name) return;
-
+  const handleSetLatLon = (key: "lat" | "lon", value: any) => {
+    setValue(key, value);
+  };
   return (
     <section id="spielplatz-form-container" className="w-full">
       <h2 className="text-center text-hh-800 my-4">
@@ -336,6 +336,7 @@ export default function SpielplatzForm({
                   />
                 </div>
               </PostFormInput>
+
               {addressPartsArray
                 .filter((p) => !!errors[p])
                 .slice(0, 1)
@@ -349,6 +350,31 @@ export default function SpielplatzForm({
                   )
                 )}
             </div>{" "}
+            <button
+              type="button"
+              onClick={async () => {
+                const { lat, lon } = await getLatLong(
+                  [
+                    getValues("street"),
+                    getValues("number"),
+                    getValues("PLZ"),
+                    getValues("city"),
+                  ].join(" ")
+                );
+                setLatLon({ lat: parseFloat(lat), lon: parseFloat(lon) });
+              }}
+              className="bg-green-700 hover:bg-green-600 hover:shadow-md w-full active:scale-[0.99] border-0px-8  flex rounded p-2 text-lg text-white transition-colors  duration-200 ease-in-out  focus:outline-2 focus:ring-2 focus:ring-green-600 focus:ring-offset-2 disabled:bg-gray-500"
+            >
+              Get LatLon
+            </button>
+            {latlon.lon && latlon.lat && (
+              <LatLonSetterMap
+                lat={latlon.lat}
+                lon={latlon.lon}
+                latlonSetter={setLatLon}
+                setValue={handleSetLatLon}
+              />
+            )}
           </article>
           <article
             id="spielgeraete-ausruestung-box"
