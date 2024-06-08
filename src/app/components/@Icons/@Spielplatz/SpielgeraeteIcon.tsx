@@ -106,7 +106,7 @@ export default function SpielgeraeteIcon({
         <LazyTischtennisplatteIcon size={size} color={color} />
       )}
       {logo === "skatepark" && <LazySkateparkIcon size={size} color={color} />}
-      {logo === "kinderfahrrad/roller geignet" && (
+      {logo.includes("kinderfahrrad") && (
         <LazyRollerIcon size={size} color={color} />
       )}
     </Suspense>
