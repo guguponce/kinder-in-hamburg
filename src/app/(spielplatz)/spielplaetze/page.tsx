@@ -4,7 +4,6 @@ import AdminRoute from "@app/providers/AdminRoute";
 import ScrollableContainer from "@app/components/ScrollableContainer";
 import HorizontalCard from "@app/components/@Cards/HorizontalCard";
 import currentLocation from "./currentLocation.svg";
-import GetSPdata from "../getData/GetSPdata";
 import Link from "next/link";
 
 export default async function SpielplaeztePage() {
