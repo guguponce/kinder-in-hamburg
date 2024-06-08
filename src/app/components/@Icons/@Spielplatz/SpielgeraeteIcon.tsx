@@ -25,6 +25,7 @@ const LazyFußballtoreIcon = lazy(() => import("./FußballtoreIcon"));
 const LazyTischtennisplatteIcon = lazy(() => import("./TischtennisplatteIcon"));
 const LazySkateparkIcon = lazy(() => import("./SkateparkIcon"));
 const LazyRollerIcon = lazy(() => import("./RollerIcon"));
+const LazySpielplatzIcon = lazy(() => import("./SpielplatzIcon"));
 
 export default function SpielgeraeteIcon({
   size = "24px",
@@ -63,6 +64,13 @@ export default function SpielgeraeteIcon({
       {logo === "wasserspiel" && (
         <LazyWasserspielIcon size={size} color={color} />
       )}
+      {logo === "wasserspiel / matschen" && (
+        <LazyWasserspielIcon size={size} color={color} />
+      )}
+      {logo === "balancier-spiel" && (
+        <LazySpielplatzIcon size={size} color={color} />
+      )}
+
       {logo === "wippe" && <LazyWippeIcon size={size} color={color} />}
       {logo === "karussell" && <LazyKarussellIcon size={size} color={color} />}
       {logo === "inklusives karussella" && (
