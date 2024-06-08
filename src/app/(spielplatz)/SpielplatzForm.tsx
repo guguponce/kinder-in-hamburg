@@ -352,7 +352,9 @@ export default function SpielplatzForm({
             </div>{" "}
             <button
               type="button"
-              onClick={async () => {
+              onClick={async (e) => {
+                e.preventDefault();
+                e.stopPropagation();
                 const { lat, lon } = await getLatLong(
                   [
                     getValues("street"),
