@@ -47,7 +47,7 @@ export default function Spielgeraete({
         {spielgeraete.map((spielgeraet) => (
           <div
             key={spielgeraet}
-            className="bg-hh-200 p-2 rounded-md capitalize flex-grow flex items-center gap-2 font-semibold text-hh-900 max-w-[230px] h-10"
+            className="bg-hh-200 p-2 rounded-md capitalize flex-grow flex items-center gap-2 font-semibold text-hh-900 max-w-[260px] h-10"
           >
             <div className="iconContainer h-full aspect-square">
               <SpielgeraeteIcon
