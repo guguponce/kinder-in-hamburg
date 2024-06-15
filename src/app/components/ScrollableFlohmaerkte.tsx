@@ -102,10 +102,14 @@ export default async function ScrollableFlohmaerkte({
                 className={`flex items-center flex-col rounded bg-hh-600 bg-opacity-50 p-2 ${
                   reducedFlohmaerkte[bezirk].length > 4
                     ? "w-fit"
-                    : "xl:w-[calc(33%-0.5rem)] md:w-[calc(50%-1rem)]"
+                    : "xl:w-[calc(33%-0.5rem)] lg:w-[calc(50%-1rem)]"
                 } max-w-full shadow-md`}
               >
-                <h3 className="text-2xl font-semibold p-2 pb-0 ml-4 text-white self-start">
+                <h3
+                  className={`${
+                    reducedFlohmaerkte[bezirk].length > 1 ? "ml-4" : "mx-auto"
+                  } text-2xl font-semibold p-2 pb-0 text-white self-start`}
+                >
                   {bezirk}
                 </h3>
                 <ScrollableContainer>
