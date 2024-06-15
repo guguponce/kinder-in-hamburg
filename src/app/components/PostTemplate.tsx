@@ -78,7 +78,7 @@ export default function PostTemplate({
 
         <p className="italic text-xs text-hh-500 text-end self-end">
           {lastUpdate && lastUpdate !== createdAt
-            ? `(Letztes Update): ${new Date(lastUpdate).toLocaleDateString()})`
+            ? `(Letztes Update: ${new Date(lastUpdate).toLocaleDateString()})`
             : `(${new Date(createdAt).toLocaleDateString()})`}
         </p>
       </section>
