@@ -90,9 +90,17 @@ export default function ShuffleGallery({
             title="Shuffle"
             className="aspect-square hover:p-0 h-fit hover:bg-opacity-10 hover:bg-hh-50 rounded-full"
             onClick={() => {
-              setSortedList(
-                [...originalList.current].sort(() => 0.5 - Math.random())
-              );
+              const availableIndexes = Array.from(
+                { length: sortedList.length },
+                (_, i) => i
+              ).filter((i) => i !== currentIndex);
+              const randomIndex =
+                availableIndexes[
+                  Math.floor(Math.random() * availableIndexes.length)
+                ];
+              setCurrentIndex(randomIndex);
+
+              if (idSetter) idSetter(randomIndex);
             }}
           >
             <ShuffleIcon size="2rem" color="#fefefe" />
