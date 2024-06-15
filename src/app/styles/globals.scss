@@ -22,9 +22,9 @@ $hh-900: #1f262e;
 $hh-950: #141a1f;
 @media (prefers-color-scheme: dark) {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --foreground-rgb: 0, 0, 0;
+    --background-start-rgb: 214, 219, 220;
+    --background-end-rgb: 200, 209, 218;
     --main-text-color: $hh-900;
   }
 }
