@@ -115,7 +115,7 @@ export default async function FlohmarktSuggestionPage({
                     </AdminServerComponent>
                   )}
                   {!suggestion.lat && !suggestion.lon ? (
-                    <AddLatLonFlohmarkt flohmarkt={suggestion} />
+                    <AddLatLonFlohmarkt item={suggestion} />
                   ) : (
                     <FlohmaerkteMap
                       flohmaerkteWithCoordinates={[]}

@@ -6,6 +6,7 @@ import Link from "next/link";
 import React from "react";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
 import AdminRoute from "@app/providers/AdminRoute";
+import AddLatLonFlohmarkt from "@app/components/AddLatLonFlohmarkt";
 
 export default async function CurrentPostPage({
   params,
@@ -49,6 +50,7 @@ export default async function CurrentPostPage({
           )}
         </div>
         <AdminServerComponent>
+          <AddLatLonFlohmarkt item={post} />
           <ApprovePostButton post={post} />
           <Link
             href={`/update-suggestion/${suggestionID}`}
