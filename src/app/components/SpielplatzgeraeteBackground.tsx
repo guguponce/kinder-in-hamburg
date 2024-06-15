@@ -1,5 +1,5 @@
 "use client";
-import React, { useMemo } from "react";
+import React, { useMemo, useRef } from "react";
 import SpielgeraeteIcon from "./@Icons/@Spielplatz/SpielgeraeteIcon";
 
 export default function SpielplatzgeraeteBackground({
@@ -13,12 +13,19 @@ export default function SpielplatzgeraeteBackground({
   small?: boolean;
   size?: string;
 }) {
+  const randomNumber = useRef(
+    Array(10)
+      .fill("")
+      .map(() => Math.random())
+  );
   const spielgeraete = useMemo(
     () =>
       Array(10)
-        .fill([...spList])
+        .fill([...spList] as string[])
+        .map((sp, i) => [sp, i])
+        .sort((a, b) => 0.5 - randomNumber.current[a[1]])
+        .map((a) => a[0])
         .flat()
-        .sort(() => 0.5 - Math.random())
         .slice(0, small ? 20 : -1),
     [spList, small]
   );
