@@ -1,22 +1,26 @@
 "use client";
-import { updateFlohmarkt } from "@app/api/dbActions";
-import { revalidateFlohmarkt } from "@app/utils/actions/revalidate";
-import { getLatLong } from "@app/utils/functions";
-import { iFlohmarkt, iFlohmarktWithCoordinates } from "@app/utils/types";
+import {
+  updateApprovedPost,
+  updateFlohmarkt,
+  updateSuggestedPost,
+} from "@app/api/dbActions";
+import {
+  getLatLong,
+  isTypeFlohmarkt,
+  isTypePost,
+  isTypeSpielplatz,
+  joinAddress,
+} from "@app/utils/functions";
+import { iFlohmarkt, iPost, iSpielplatz } from "@app/utils/types";
 import React from "react";
+import ClearLatLonButton from "./@Icons/@Flohmarkt/ClearLatLonButton";
+import { updateSpielplatz } from "@app/api/spActions";
 
-export default function AddLatLonFlohmarkt({
-  flohmarkt,
-}: {
-  flohmarkt: iFlohmarkt;
-}) {
-  const [success, setSuccess] = React.useState(false);
-  if (!flohmarkt.lat && !flohmarkt.lon && flohmarkt.date < new Date().getTime())
-    return null;
-  const addLatLon = async () => {
-    if (!flohmarkt.address) return false;
-    if (flohmarkt.lat && flohmarkt.lon)
-      return flohmarkt as iFlohmarktWithCoordinates;
+const addLatLon = async (item: iFlohmarkt | iSpielplatz | iPost) => {
+  if (!item.address) return false;
+  if (item.lat && item.lon) return false;
+  if (isTypeFlohmarkt(item)) {
+    const flohmarkt = item as iFlohmarkt;
     const { lat, lon } = await getLatLong(flohmarkt.address);
     try {
       await updateFlohmarkt({
@@ -24,16 +28,63 @@ export default function AddLatLonFlohmarkt({
         lat: parseFloat(lat),
         lon: parseFloat(lon),
       });
-      setSuccess(true);
+      return true;
     } catch (e) {
       console.error(e);
     }
-  };
+  } else if (isTypeSpielplatz(item)) {
+    const spielplatz = item as iSpielplatz;
+    if (!spielplatz.address) return false;
+    const { lat, lon } = await getLatLong(joinAddress(spielplatz.address));
+    try {
+      await updateSpielplatz({
+        ...spielplatz,
+        lat: parseFloat(lat),
+        lon: parseFloat(lon),
+      });
+      return true;
+    } catch (e) {
+      console.error(e);
+    }
+  } else if (isTypePost(item)) {
+    const post = item as iPost;
+    if (!post.address) return false;
+    const { lat, lon } = await getLatLong(joinAddress(post.address));
+    try {
+      await (post.status === "approved"
+        ? updateApprovedPost({
+            ...post,
+            lat: parseFloat(lat),
+            lon: parseFloat(lon),
+          })
+        : updateSuggestedPost({
+            ...post,
+            lat: parseFloat(lat),
+            lon: parseFloat(lon),
+          }));
+      return true;
+    } catch (e) {
+      console.error(e);
+    }
+  }
+};
+
+export default function AddLatLonFlohmarkt({
+  item,
+}: {
+  item: iFlohmarkt | iSpielplatz | iPost;
+}) {
+  const [success, setSuccess] = React.useState(false);
+  if (!!item.lat && !!item.lon)
+    return <ClearLatLonButton id={item.id.toString()} />;
+
   if (success) return <p>Success!</p>;
   return (
     <button
       className="bg-hh-700 text-white font-semibold p-2 rounded"
-      onClick={() => addLatLon()}
+      onClick={() => {
+        addLatLon(item).then(() => setSuccess(true));
+      }}
     >
       Add Lat/Lon
     </button>
