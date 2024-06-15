@@ -1,5 +1,5 @@
 "use client";
-import { iAddress, iBezirk, iSessionUser, iSpielplatz } from "@app/utils/types";
+import { iBezirk, iSessionUser, iSpielplatz } from "@app/utils/types";
 import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { FieldValues, useForm } from "react-hook-form";
@@ -7,7 +7,9 @@ import AdminClientComponents from "@app/providers/AdminClientComponents";
 import UserInputBox from "@app/components/@FlohForm/UserInputBox";
 import PostFormInput from "@app/components/@PostForm/PostFormInput";
 
-const LatLonSetterMap = React.lazy(() => import("./LatLonSetterMap"));
+const LatLonSetterMap = dynamic(() => import("./LatLonSetterMap"), {
+  ssr: false,
+});
 
 import {
   BEZIRK_TO_STADTTEILE,
@@ -22,6 +24,8 @@ import {
 import { submitNewSpielplatz, submitUpdateSpielplatz } from "./functions";
 import { getLatLong, sleep } from "@app/utils/functions";
 import ScrollableContainer from "@app/components/ScrollableContainer";
+import dynamic from "next/dynamic";
+import { revalidateSpielplatz } from "@app/api/spActions";
 
 interface iSpielplatzFormProps {
   spielplatzForm: Partial<iSpielplatz>;
@@ -166,6 +170,7 @@ export default function SpielplatzForm({
       .then(() => {
         setSubmitError({ isError: false, errorMessage: "" });
         setSuccessfulSubmit(true);
+        revalidateSpielplatz();
       })
       // .then(() => {
       //   deleteUnusedFlohmaerkteImages();
