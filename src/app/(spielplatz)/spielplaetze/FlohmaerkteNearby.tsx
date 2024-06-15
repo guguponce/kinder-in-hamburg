@@ -38,7 +38,7 @@ export default async function FlohmaerkteNearby({
     <>
       <div
         id="spielplatz-flohmaerkte-nearby"
-        className="relative max-h-96 max-w-[calc(100%-3rem)] flex lg:hidden "
+        className="relative max-h-96 max-w-[calc(100%-3rem)] flex lg:hidden"
       >
         <h2
           className="absolute z-50 bottom-0 -left-8 text-2xl overflow-hidden w-3rem font-bold rotate-180 text-hh-800"
@@ -50,7 +50,7 @@ export default async function FlohmaerkteNearby({
           <ArrowGalleryContainer list={list} />
         </div>
       </div>
-      <div className="hidden lg:flex w-[calc(100vw-3rem)] justify-center bg-hh-700 p-2">
+      <div className="hidden lg:flex w-full justify-center bg-hh-800 bg-opacity-75 p-2 mt-auto mb-2">
         <h2
           className="text-xl overflow-hidden w-3rem rotate-180  flex flex-col font-bold  text-hh-50"
           style={{ writingMode: "vertical-rl", textOrientation: "revert" }}
