@@ -800,8 +800,8 @@ export const getApprovedFlohmaerkteWithBezirk = async (bezirk: iBezirk) => {
     const { data, error } = await supabaseAdmin
       .from("flohmaerkte")
       .select("*")
-      // -----------------------
-      // .ilike("status", "approved")
+      .ilike("status", "approved")
+      .gte("date", new Date().getTime())
       .ilike("bezirk", bezirk);
     if (error) {
       throw new Error("There was a problem getting the Flea Markets.");
