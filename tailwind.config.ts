@@ -90,6 +90,9 @@ const config: Config = {
           950: "#05080F",
         },
       },
+      screens: {
+        xs: "375px",
+      },
     },
   },
   plugins: [],
