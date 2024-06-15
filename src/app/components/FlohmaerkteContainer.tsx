@@ -30,7 +30,7 @@ export default async function FlohmaerkteContainer() {
     //  today + 1000 * 60 * 60 * 24
   );
   return (
-    <main className="rounded bg-hh-100 bg-opacity-25 w-[calc(100%-2rem)] p-4 flex flex-col items-center min-h-[50vh]">
+    <div className="rounded bg-hh-100 bg-opacity-25 w-[calc(100%-2rem)] p-1 xs:p-4 flex flex-col items-center min-h-[50vh]">
       <h1 className="text-4xl font-bold my-2 p-2 rounded text-hh-900">
         Flohmärkte
       </h1>
@@ -38,11 +38,11 @@ export default async function FlohmaerkteContainer() {
       <div className="flex flex-col items-center gap-4 lg:gap-8 max-w-full">
         <section
           id="current-week-section"
-          className="flex flex-wrap gap-4 w-full"
+          className="flex flex-wrap gap-4 w-full justify-center"
         >
           <div
             id="heute-map-container"
-            className="w-full max-w-[400px] flex flex-col gap-4 align-center rounded bg-hh-200 bg-opacity-50 p-2 shadow-sm"
+            className="w-full lg:max-w-[400px] flex flex-col gap-4 items-center rounded bg-hh-200 bg-opacity-50 p-2 shadow-md"
           >
             {!!todayFlohmaerkte.length && (
               <div className="relative flex justify-center flex-col rounded-md bg-hh-200 w-full">
@@ -82,7 +82,7 @@ export default async function FlohmaerkteContainer() {
               flohmarktID={thisWeekFlohmaerkte[0].id}
             ></FlohmaerkteMap>
           </div>
-          <div className="flex flex-grow justify-center w-1/4">
+          <div className="flex flex-grow w-full sm:min-w-[400px] justify-center sm:w-1/4">
             <ScrollableFlohmaerkte
               title={`Diese Woche gibt es ${thisWeekFlohmaerkte.length} ${
                 thisWeekFlohmaerkte.length === 1 ? "Flohmarkt" : "Flohmärkte"
@@ -96,6 +96,6 @@ export default async function FlohmaerkteContainer() {
           flohList={futureFlohmaerkte}
         ></BezirkableFlohmaerkteList>
       </div>
-    </main>
+    </div>
   );
 }
