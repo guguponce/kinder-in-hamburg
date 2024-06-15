@@ -110,11 +110,11 @@ export default function FlohmarktTemplate({
 
               <div
                 id="location-date"
-                className="flex flex-col sm:flex-row flex-wrap flex-grow  justify-between gap-2 w-full max-w-[800px] mx-auto rounded"
+                className="flex flex-col sm:flex-row flex-wrap flex-grow justify-stretch items-stretch gap-2 w-fit sm:w-full max-w-[800px] mx-auto rounded"
               >
                 <div
                   id="location"
-                  className="flex flex-col w-full sm:max-w-[calc(50%-4px)]  h-fit rounded bg-hh-300 bg-opacity-25 py-2 px-4"
+                  className="flex flex-col w-fit sm:w-full sm:max-w-[calc(50%-4px)] justify-stretch  h-fit rounded bg-hh-300 bg-opacity-25 py-2 px-4"
                 >
                   <h2 className="text-lg font-semibold">Standort:</h2>
                   {bezirk && (
@@ -197,10 +197,10 @@ export default function FlohmarktTemplate({
                 </div>
                 <div
                   id="date"
-                  className="w-full sm:max-w-[calc(50%-4px)] py-2 px-4 h-fit rounded bg-hh-300 bg-opacity-25"
+                  className="w-full sm:max-w-[calc(50%-4px)] self-stretch lg:h-fit py-2 px-4 rounded bg-hh-300 bg-opacity-25"
                 >
                   <h2 className="text-lg font-semibold">Datum:</h2>
-                  <div className="flex flex-wrap gap-1 items-center">
+                  <div className="flex flex-col gap-1">
                     <div className="flex gap-1 flex-wrap">
                       <PostLogo logo="date" color="#1F262E" />
                       <h3 className="block font-semibold">{getDate(date)}</h3>
