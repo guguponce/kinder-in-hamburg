@@ -58,6 +58,7 @@ export default function SPBezirkMap({
   const currentSPLocation = currentSpielplatz.current
     ? latLng(currentSpielplatz.current.lat, currentSpielplatz.current.lon)
     : undefined;
+
   const displayedSpList = useMemo(() => {
     if (!currentSpielplatz.current) return spList;
     return spList.filter(
@@ -65,7 +66,7 @@ export default function SPBezirkMap({
         latLng(
           currentSpielplatz.current!.lat,
           currentSpielplatz.current!.lon
-        ).distanceTo(latLng(sp.lat, sp.lon)) < 3000
+        ).distanceTo(latLng(sp.lat, sp.lon)) < 2000
     );
   }, [spList]);
   const filteredCurrentList = useMemo(
@@ -76,7 +77,13 @@ export default function SPBezirkMap({
     return filteredCurrentList[selectedIndex];
   }, [selectedIndex, filteredCurrentList]);
   return (
-    <div className="w-full max-w-[400px] md:max-w-full max-h-[80vh] md:max-h-[300px] lg:max-h-[calc(100dvh-1rem)] aspect-[0.5] shadow-md bg-hh-700 bg-opacity-90  flex flex-col md:flex-row lg:flex-col items-stretch lg:items-center p-2 gap-2 rounded mx-auto">
+    <div
+      className={`w-full max-w-[400px] md:max-w-full ${
+        !!filteredCurrentList.length
+          ? "max-h-[80vh] md:max-h-[300px] lg:max-h-[calc(100dvh-1rem)]"
+          : "h-[400px]"
+      }  aspect-[0.5] shadow-md bg-hh-700 bg-opacity-90  flex flex-col md:flex-row lg:flex-col items-stretch lg:items-center p-2 gap-2 rounded mx-auto`}
+    >
       <article className="w-full md:w-1/2 lg:w-full max-h-fit h-1/2 md:h-full lg:h-1/2 flex-grow  flex flex-col items-center gap-2 rounded bg-hh-900">
         <MapContainer
           style={{ height: "100%", width: "100%", zIndex: 10 }}
@@ -172,21 +179,23 @@ export default function SPBezirkMap({
             { title: currentSpielplatz.current?.title, color: "#BC251F" },
             { title: "Spielplätze in der Nähe", color: "#39579D" },
             {
-              title: filteredCurrentList[selectedIndex].title,
+              title: filteredCurrentList[selectedIndex]?.title,
               color: "#F6AA1C",
             },
-          ].map(({ title, color }) => (
-            <div className="flex gap-1 items-center" key={title}>
-              <TriangleIcon color={color} rotate={90} size="1rem" />
-              <h2 className="text-xs leading-none text-white">
-                {/* {!title?.includes("Spielplatz") && "Spielplatz"}  */}
-                {title}
-              </h2>
-            </div>
-          ))}
+          ].map(({ title, color }) =>
+            title ? (
+              <div className="flex gap-1 items-center" key={title}>
+                <TriangleIcon color={color} rotate={90} size="1rem" />
+                <h2 className="text-xs leading-none text-white">
+                  {/* {!title?.includes("Spielplatz") && "Spielplatz"}  */}
+                  {title}
+                </h2>
+              </div>
+            ) : null
+          )}
         </div>
       </article>
-      {selector && (
+      {selector && !!filteredCurrentList.length && (
         <article className="w-full md:w-1/2 lg:w-full h-1/2 md:h-full lg:h-1/2 min-h-fit">
           <ShuffleGallery
             idSetter={setSelectedIndex}

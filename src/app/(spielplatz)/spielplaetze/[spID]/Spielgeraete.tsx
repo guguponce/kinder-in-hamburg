@@ -37,7 +37,7 @@ export default function Spielgeraete({
       id="spielplatz-spielgeraete-box"
       className={`${
         open ? "h-fit" : spielgeraeteHeight < 112 ? "h-fit" : "h-32"
-      } max-h-fit relative mb-4 lg:mb-0 rounded-md p-2 bg-hh-200 bg-opacity-25 lg:max-w-full overflow-hidden`}
+      } max-h-fit relative lg:mb-0 rounded-md p-2 bg-hh-200 bg-opacity-25 lg:max-w-full overflow-hidden`}
       ref={containerRef}
     >
       <div
@@ -64,7 +64,7 @@ export default function Spielgeraete({
         onClick={handleOpen}
         className={`${
           showButton ? "flex" : "hidden"
-        } absolute bottom-0 backdrop-blur-[1px] w-full h-12 from-hh-400 to-[#758CA370] bg-gradient-to-t items-center justify-center font-semibold text-hh-50 z-30 rounded`}
+        } absolute bottom-0 backdrop-blur-[1px] w-[calc(100%+8px)] -left-2 h-12 from-hh-400 to-[#758CA370] bg-gradient-to-t items-center justify-center font-semibold text-hh-50 z-30 rounded`}
       >
         Alle Spielgeräte anzeigen
       </button>
