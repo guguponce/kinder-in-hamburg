@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <main
       id="homepage-main"
-      className="w-full flex flex-col items-center gap-4"
+      className="w-full flex flex-col items-center gap-4 xs:px-2"
     >
       <FlohmaerkteContainer />
       <ShortAbout></ShortAbout>
