@@ -6,6 +6,7 @@ import { parseAddress, parsePost } from "@app/utils/functions";
 import { redirect } from "next/navigation";
 import PostNotFound from "@components/@PostForm/PostNotFound";
 import AdminRoute from "@app/providers/AdminRoute";
+import AddLatLonFlohmarkt from "@app/components/AddLatLonFlohmarkt";
 
 export default async function updateSuggestedPostPage({
   params,
@@ -21,6 +22,7 @@ export default async function updateSuggestedPostPage({
   return (
     <AdminRoute>
       <main className="relative mb-10 mt-6 max-w-[1000px] bg-hh-100 rounded-xl p-4 text-gray-200 lg:mx-8">
+        <AddLatLonFlohmarkt item={post} />
         <section className="h-full w-full bg-hh-200 p-5 px-5">
           <h1 className="title-font mb-4 text-center text-2xl font-medium text-gray-900 sm:text-3xl">
             APPROVE POST

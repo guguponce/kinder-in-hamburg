@@ -6,7 +6,7 @@ import AdminServerComponent from "@app/providers/AdminServerComponents";
 import Link from "next/link";
 import React from "react";
 import AdminRoute from "@app/providers/AdminRoute";
-import Map from "@components/@Map/DynamicBezirkMap";
+import AddLatLonFlohmarkt from "@app/components/AddLatLonFlohmarkt";
 export default async function CurrentPostPage({
   params,
 }: {
@@ -26,6 +26,8 @@ export default async function CurrentPostPage({
             title={post.title}
             size="large"
           />
+
+          <AddLatLonFlohmarkt item={post} />
 
           <Link
             href={`/update-post/${postID}`}
