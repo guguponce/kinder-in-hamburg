@@ -70,10 +70,16 @@ export default function SpielgeraeteIcon({
       {logo === "balancier-spiel" && (
         <LazySpielplatzIcon size={size} color={color} />
       )}
+      {logo === "spielplatz" && (
+        <LazySpielplatzIcon size={size} color={color} />
+      )}
 
       {logo === "wippe" && <LazyWippeIcon size={size} color={color} />}
       {logo === "karussell" && <LazyKarussellIcon size={size} color={color} />}
       {logo === "inklusives karussella" && (
+        <LazyKarussellIcon size={size} color={color} />
+      )}
+      {logo === "inklusives karussell" && (
         <LazyKarussellIcon size={size} color={color} />
       )}
       {logo === "dreh-element" && (

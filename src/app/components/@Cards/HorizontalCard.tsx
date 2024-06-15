@@ -41,7 +41,6 @@ export default function HorizontalCard({
             {spielgeraete ? (
               <SpielplatzgeraeteBackground
                 spList={spielgeraete}
-                small={false}
                 color="#47596B"
                 size="2rem"
               />

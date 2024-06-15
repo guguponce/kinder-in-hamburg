@@ -18,7 +18,7 @@ export default function MapIcon({
       <g id="SVGRepo_iconCarrier">
         <title>PinLocation-map</title> <defs> </defs>{" "}
         <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-          <g fill="#434343">
+          <g fill={color}>
             <path
               d="M0,11.438 L3.938,12.906 L3.938,1.062 L0,-0.015 L0,11.438 Z"
               className="si-glyph-fill"
