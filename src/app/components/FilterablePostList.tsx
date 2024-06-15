@@ -13,9 +13,11 @@ export default function FilterablePostList({
   postsList: iPost[];
   children?: React.ReactNode;
 }) {
+  // GET PARAMS AND PARSE THEM
   const params = usePathname();
   const [type, p] = params.split("/").filter(Boolean) || ["", ""];
   const param = p ? parseParams(p) : p;
+  // STATE
   const [maxDisplay, setMaxDisplay] = useState(10);
   const [maxDisplayable, setMaxDisplayable] = useState(10);
   const initialFilter = useRef<FilterObject | null>(
@@ -25,12 +27,13 @@ export default function FilterablePostList({
         : type === "bezirke" && { bezirk: param })) ||
       null
   );
-
   const postsListRef = useRef([...postsList]);
+
   const [filters, setFilters] = useState<FilterObject>(
     initialFilter.current || {}
   );
 
+  // FUNCTIONS
   const setNewFilters = (filters: FilterObject) => {
     setFilters(filters);
   };
@@ -38,6 +41,8 @@ export default function FilterablePostList({
   const handleSetMaxDisplay = () => {
     setMaxDisplay((prev) => prev + 10);
   };
+
+  // MEMOIZED VALUES
   const displayList = useMemo(() => {
     const filteredList = postsListRef.current.filter((post) => {
       const postMinAge = post.minAge || 0;
@@ -53,7 +58,7 @@ export default function FilterablePostList({
             (cat) => !post.categories.includes(parseParams(cat))
           );
         } else {
-          return !categories.find((cat) =>
+          return categories.find((cat) =>
             post.categories.includes(parseParams(cat))
           );
         }
