@@ -48,8 +48,9 @@ export default function ArrowGalleryContainer<
       Math.floor(randomSPGeraeteIndex.current * spielgeraete?.length + 1) +
         currentIndex
     ];
+
     return (
-      <ArrowGallery handleIndex={handleIndex}>
+      <ArrowGallery handleIndex={handleIndex} length={list.length}>
         <SpielplatzPoster
           bezirk={bezirk}
           stadtteil={stadtteil}
@@ -66,7 +67,7 @@ export default function ArrowGalleryContainer<
     const { image } = currentArticle as iFlohmarkt;
 
     return (
-      <ArrowGallery handleIndex={handleIndex}>
+      <ArrowGallery handleIndex={handleIndex} length={list.length}>
         <FlohmarktPoster
           bezirk={bezirk}
           date={date}
