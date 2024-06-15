@@ -169,17 +169,17 @@ export const getSpielplatzMetadata = async (id: string) => {
   try {
     const { data, error } = await supabaseAdmin
       .from("spielplaetze")
-      .select("title,bezirk,optionalComment")
+      .select("title,bezirk,text")
       .match({ id });
     if (error) {
       return false;
     }
-    const { title, bezirk, optionalComment } = data[0] as {
+    const { title, bezirk, text } = data[0] as {
       title: string;
       bezirk: iBezirk;
-      optionalComment: string;
+      text: string;
     };
-    return { title, bezirk, optionalComment };
+    return { title, bezirk, text };
   } catch (error) {
     return false;
   }
@@ -190,8 +190,7 @@ export const getApprovedSpielplaetzeWithBezirk = async (bezirk: iBezirk) => {
     const { data, error } = await supabaseAdmin
       .from("spielplaetze")
       .select("*")
-      // -----------------------
-      // .ilike("status", "approved")
+      .ilike("status", "approved")
       .ilike("bezirk", bezirk);
     if (error) {
       throw new Error("There was a problem getting the Flea Markets.");
