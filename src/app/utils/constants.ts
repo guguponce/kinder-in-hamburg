@@ -1352,7 +1352,7 @@ export const spielgeraeteDisplay = {
       "nestschaukel",
       "schaukel mit fixiermöglichkeit",
     ],
-    karussell: ["karussell", "inklusives karussella", "dreh-element"],
+    karussell: ["karussell", "inklusives karussell", "dreh-element"],
     kletterelement: ["kletterelement", "kletternetzpyramide", "kletterwand"],
   },
   singles: [
@@ -1385,7 +1385,7 @@ export const spielgeraeteList = [
   "wasserspiel",
   "wippe",
   "karussell",
-  "inklusives karussella",
+  "inklusives karussell",
   "dreh-element",
   "seilbahn",
   "trampolin",

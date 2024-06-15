@@ -425,3 +425,9 @@ export interface iLatLonResult {
   display_name: string;
   boundingbox: string[];
 }
+
+export interface iListsFPS {
+  flohmaerkte?: iFlohmarkt[];
+  posts?: iPost[];
+  spielplaetze?: iSpielplatz[];
+}
