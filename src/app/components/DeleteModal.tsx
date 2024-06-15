@@ -31,8 +31,9 @@ export default function DeleteModal({
   const [titleInput, setTitleInput] = React.useState("");
   const router = useRouter();
   const handleDelete = async () => {
-    if (titleInput !== title)
+    if (titleInput !== title) {
       return alert("You didn't write the title correctly");
+    }
     if (type === "post") {
       if (deleteFrom === "suggested") {
         await deleteSuggestion(id);
@@ -66,7 +67,7 @@ export default function DeleteModal({
       <div className="flex h-[30vh] min-h-fit w-full flex-col items-center justify-center">
         <div className="rounded-lg bg-negative-100 p-4">
           <h1 className="text-xl font-bold">
-            If you want to delete this {type}, write: {title}{" "}
+            If you want to delete this {type}, write: "{title}"
           </h1>
           <input
             type="text"
