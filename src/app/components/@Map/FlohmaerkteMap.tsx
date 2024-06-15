@@ -71,8 +71,8 @@ const FlohmaerkteMap = ({
   const centralFlohmarkt = currentTarget || displayedMarkers[0];
 
   return (
-    <section className="w-full sm:w-full md:max-w-[800px] flex flex-col gap-2 sm:gap-4 items-center rounded">
-      <article className="max-h-[60vh] w-full max-w-[800px] aspect-square flex justify-center rounded overflow-hidden">
+    <section className="w-full sm:w-full md:max-w-[800px] flex flex-wrap gap-2 sm:gap-4 rounded">
+      <article className="max-h-[60vh] flex-grow xs:min-w-[300px] max-w-[800px] aspect-square flex justify-center rounded overflow-hidden">
         <MapContainer
           doubleClickZoom={true}
           touchZoom={true}
@@ -147,7 +147,7 @@ const FlohmaerkteMap = ({
       </article>
       <aside
         id="flohmaerkte-map-filters-aside"
-        className="w-full flex flex-col"
+        className="w-full sm:w-[300px] flex flex-col"
       >
         {[
           ["Termine", dates.current],
@@ -174,7 +174,7 @@ const FlohmaerkteMap = ({
                             : (item as iBezirk)
                         );
                     }}
-                    className={`p-2 rounded-md ${
+                    className={`text-sm p-1 tex-base xs:text-lg xs:p-2 rounded-md ${
                       (name === "Termine" && selectedDate === item) ||
                       (name === "Bezirke" && selectedBezirk === item)
                         ? "bg-hh-800 text-white  hover:bg-hh-600 hover:text-white"
