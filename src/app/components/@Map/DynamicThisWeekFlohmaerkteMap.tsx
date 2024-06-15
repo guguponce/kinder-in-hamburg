@@ -38,10 +38,15 @@ export default async function DynamicThisWeekFlohmaerkteMap({
     .join(".");
   return (
     <section className="flex flex-col items-center gap-2 w-[calc(100vw-2rem)] max-w-[600px] md:max-w-[800px] md:w-fit rounded border-2 border-hh-800 p-2">
-      <h2 className="text-2xl self-end font-semibold dark:text-hh-100 text-hh-800 p-4">
+      <h2 className="text-2xl self-end font-semibold dark:text-hh-100 text-hh-800 p-4 flex flex-col items-center">
         Flohmärkte Karte
+        {!currentTarget && (
+          <p className="text-hh-800 text-xs">
+            (von {todayDisplay} bis {nextMondayDisplay})
+          </p>
+        )}
       </h2>
-      {currentTarget ? (
+      {currentTarget && (
         <ul className="flex flex-col self-start w-full md:w-[800px] max-w-[800px] gap-2 px-4">
           <li className="flex">
             <span className="font-semibold bg-currentLocation text-white px-2 py-1 rounded">
@@ -59,10 +64,6 @@ export default async function DynamicThisWeekFlohmaerkteMap({
             </span>
           </li>
         </ul>
-      ) : (
-        <p className="text-hh-800">
-          (von {todayDisplay} bis {nextMondayDisplay})
-        </p>
       )}
 
       <FlohmaerkteMap
