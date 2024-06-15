@@ -31,8 +31,8 @@ export default function MarkUpInput({
           />
           {selectedType.includes("list") && (
             <h3 className="text-lg font-semibold">
-              In case of any list, start each item with a &quot;-&quot;. e.g.
-              &quot;-Body&quot;
+              In case of any list, start each item with a &quot;--&quot;. e.g.
+              &quot;--Body&quot;
             </h3>
           )}
         </>

@@ -57,7 +57,7 @@ export default async function AllFlohmaerktePage() {
                         target={floh}
                       ></StatusSetter>
                       {!floh.lat && !floh.lon && (
-                        <AddLatLonFlohmarkt flohmarkt={floh} />
+                        <AddLatLonFlohmarkt item={floh} />
                       )}
                     </div>
                   </div>
