@@ -12,7 +12,7 @@ import React from "react";
 import FilterablePostList from "@app/components/FilterablePostList";
 import PostNotFound from "@app/components/@PostForm/PostNotFound";
 import WeatherBox from "@app/components/WeatherBox";
-import BezirkeScrollableFlohmaerkte from "@app/components/ScrollableFlohmaerkte";
+import BezirkeScrollableFlohmaerkte from "@app/components/BezirkeScrollableFlohmaerkte";
 import PointsGallery from "@app/components/@PostForm/PointsGallery";
 import NotFound from "@app/components/NotFound";
 import AdminRoute from "@app/providers/AdminRoute";
