@@ -53,7 +53,8 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${roboto.className} flex flex-col items-center bg-hh-500 max-w-[1400px] mx-auto gap-2`}
+        className={`
+         flex flex-col items-center bg-hh-500 max-w-[1400px] mx-auto gap-2`}
       >
         <SessionProvider session={session}>
           <Header />
