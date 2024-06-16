@@ -13,32 +13,73 @@ export default function DisplayTypeText({
     <>
       {type === "paragraph" ? (
         <pre
-          style={{ overflowWrap: "break-word" }}
-          className=" text-wrap py-1 "
+          style={{
+            overflowWrap: "break-word",
+            whiteSpace: "pre-wrap",
+            wordWrap: "break-word",
+          }}
+          className=" text-wrap py-1 max-w-full w-full"
         >
           {text}
         </pre>
       ) : type === "subtitle1" ? (
-        <h2 className="mt-6 mb-4 text-lg font-bold">{text}</h2>
+        <h2
+          style={{
+            overflowWrap: "break-word",
+            whiteSpace: "pre-wrap",
+            wordWrap: "break-word",
+          }}
+          className="mt-6 mb-4 text-xl font-bold"
+        >
+          {text}
+        </h2>
       ) : type === "subtitle2" ? (
-        <h2 className="mt-4 mb-1 text-lg font-semibold">{text}</h2>
+        <h2
+          style={{
+            overflowWrap: "break-word",
+            whiteSpace: "pre-wrap",
+            wordWrap: "break-word",
+          }}
+          className="mt-4 mb-1 text-lg font-semibold"
+        >
+          {text}
+        </h2>
       ) : type === "quote" ? (
         <div className="quote mx-auto w-[80%]">
           <hr className="my-4 border-[hsla(0,0%,30%,1)]" />
-          <h1
+          <h3
+            style={{
+              overflowWrap: "break-word",
+              whiteSpace: "pre-wrap",
+              wordWrap: "break-word",
+              fontFamily: "Courier, monospace",
+            }}
             className="text-center text-lg italic"
-            style={{ fontFamily: "Courier, monospace" }}
           >
             &quot;{text}&quot;
-          </h1>
+          </h3>
           <hr className="my-4 border-[hsla(0,0%,30%,1)]" />
         </div>
       ) : type === "small-paragraph" ? (
-        <pre style={{ overflowWrap: "break-word" }} className=" text-wrap ">
+        <pre
+          style={{
+            overflowWrap: "break-word",
+            whiteSpace: "pre-wrap",
+            wordWrap: "break-word",
+          }}
+          className=" text-wrap "
+        >
           {text}
         </pre>
       ) : type === "large-paragraph" ? (
-        <pre style={{ overflowWrap: "break-word" }} className=" text-wrap ">
+        <pre
+          style={{
+            overflowWrap: "break-word",
+            whiteSpace: "pre-wrap",
+            wordWrap: "break-word",
+          }}
+          className=" text-wrap "
+        >
           {text}
         </pre>
       ) : type === "separator" ? (
@@ -50,6 +91,11 @@ export default function DisplayTypeText({
         <Link
           passHref={true}
           href={text}
+          style={{
+            overflowWrap: "break-word",
+            whiteSpace: "pre-wrap",
+            wordWrap: "break-word",
+          }}
           className="break-words block w-full text-hh-500 underline outline-offset-2 hover:text-hh-600 focus:border-0 focus:outline-2 focus:outline-hh-600 active:text-hh-400"
           target="_blank"
         >
