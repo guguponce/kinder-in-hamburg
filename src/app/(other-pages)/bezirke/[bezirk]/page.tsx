@@ -12,7 +12,7 @@ import React from "react";
 import FilterablePostList from "@app/components/FilterablePostList";
 import PostNotFound from "@app/components/@PostForm/PostNotFound";
 import WeatherBox from "@app/components/WeatherBox";
-import ScrollableFlohmaerkte from "@app/components/ScrollableFlohmaerkte";
+import BezirkeScrollableFlohmaerkte from "@app/components/ScrollableFlohmaerkte";
 import PointsGallery from "@app/components/@PostForm/PointsGallery";
 import NotFound from "@app/components/NotFound";
 import AdminRoute from "@app/providers/AdminRoute";
@@ -58,7 +58,7 @@ export default async function BezirkPage({
         </section>
         {!!flohmaerkte && !!flohmaerkte.length && (
           <section className="w-full flex justify-center items-center bg-gradient-to-b from-hh-600 to-hh-500 bg-opacity-25 rounded">
-            <ScrollableFlohmaerkte
+            <BezirkeScrollableFlohmaerkte
               flohmaerkte={flohmaerkte.sort((a, b) => a.date - b.date)}
               bezirk={bezirk}
               title="Flea Markets"

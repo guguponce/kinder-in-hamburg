@@ -1,6 +1,6 @@
 import { getApprovedFlohmaerkte } from "@app/api/dbActions";
 import PostNotFound from "@app/components/@PostForm/PostNotFound";
-import ScrollableFlohmaerkte from "@app/components/ScrollableFlohmaerkte";
+import BezirkeScrollableFlohmaerkte from "@app/components/BezirkeScrollableFlohmaerkte";
 import { getTodayNexMonday } from "@app/utils/functions";
 import Link from "next/link";
 import React from "react";
@@ -39,10 +39,11 @@ export default async function FlohmarktPage() {
       <h1 className="text-4xl font-bold my-2 p-2 rounded bg-opacity-50 bg-hh-50">
         Flohmärkte
       </h1>
-      <ScrollableFlohmaerkte
+      <BezirkeScrollableFlohmaerkte
         title="Diese Woche"
         flohmaerkte={thisWeekFlohmaerkte}
-      ></ScrollableFlohmaerkte>
+      ></BezirkeScrollableFlohmaerkte>
+
       <BezirkableFlohmaerkteList
         title="Ab nächster Woche"
         flohList={futureFlohmaerkte}
