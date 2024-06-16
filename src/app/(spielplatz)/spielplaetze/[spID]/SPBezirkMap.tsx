@@ -6,9 +6,15 @@ import "leaflet/dist/leaflet.css";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import { latLng, divIcon } from "leaflet";
 import Link from "next/link";
-import { createStandortMapIcon, joinAddress } from "@app/utils/functions";
+import {
+  createStandortMapIcon,
+  haversineDistance,
+  joinAddress,
+} from "@app/utils/functions";
 import TriangleIcon from "@components/@Icons/TriangleIcon";
 import ShuffleGallery from "@app/components/ShuffleGallery";
+import GeneralMap from "@app/components/@Map/GeneralMap";
+import MarkersLists from "@app/components/@Map/PopUpsMarkers/MarkersLists";
 
 const bezirkLocationIcon = divIcon({
   html: createStandortMapIcon("#39579D", 30),
@@ -55,27 +61,44 @@ export default function SPBezirkMap({
 }) {
   const [selectedIndex, setSelectedIndex] = React.useState<number>(0);
   const currentSpielplatz = useRef(spList.find((sp) => sp.id === currentSP));
-  const currentSPLocation = currentSpielplatz.current
-    ? latLng(currentSpielplatz.current.lat, currentSpielplatz.current.lon)
-    : undefined;
 
   const displayedSpList = useMemo(() => {
     if (!currentSpielplatz.current) return spList;
-    return spList.filter(
-      (sp) =>
-        latLng(
-          currentSpielplatz.current!.lat,
-          currentSpielplatz.current!.lon
-        ).distanceTo(latLng(sp.lat, sp.lon)) < 2000
-    );
+    return spList
+      .filter(
+        (sp) =>
+          latLng(
+            currentSpielplatz.current!.lat,
+            currentSpielplatz.current!.lon
+          ).distanceTo(latLng(sp.lat, sp.lon)) < 2000
+      )
+      .sort(
+        (a, b) =>
+          haversineDistance(
+            a.lat,
+            a.lon,
+            currentSpielplatz.current!.lat,
+            currentSpielplatz.current!.lon
+          ) -
+          haversineDistance(
+            b.lat,
+            b.lon,
+            currentSpielplatz.current!.lat,
+            currentSpielplatz.current!.lon
+          )
+      );
   }, [spList]);
   const filteredCurrentList = useMemo(
     () => displayedSpList.filter((s) => s.id !== currentSP),
     [displayedSpList, currentSP]
   );
-  const selectedSP = useMemo(() => {
-    return filteredCurrentList[selectedIndex];
+  const { selectedSP, otherSP } = useMemo(() => {
+    return {
+      selectedSP: filteredCurrentList[selectedIndex],
+      otherSP: filteredCurrentList.filter((s) => s.id !== selectedIndex),
+    };
   }, [selectedIndex, filteredCurrentList]);
+
   return (
     <div
       className={`w-full max-w-[400px] md:max-w-full ${
@@ -85,95 +108,42 @@ export default function SPBezirkMap({
       }  aspect-[0.5] shadow-md bg-hh-700 bg-opacity-90  flex flex-col md:flex-row lg:flex-col items-stretch lg:items-center p-2 gap-2 rounded mx-auto`}
     >
       <article className="w-full md:w-1/2 lg:w-full max-h-fit h-1/2 md:h-full lg:h-1/2 flex-grow  flex flex-col items-center gap-2 rounded bg-hh-900">
-        <MapContainer
-          style={{ height: "100%", width: "100%", zIndex: 10 }}
-          center={[
-            currentSpielplatz.current?.lat || 53.5511,
-            currentSpielplatz.current?.lon || 9.9937,
-          ]}
-          zoom={currentSpielplatz.current ? 13 : 10}
-          scrollWheelZoom={false}
-        >
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        <GeneralMap currentTarget={currentSpielplatz.current} zoom={12}>
+          <MarkersLists
+            lists={{
+              spielplaetze: otherSP,
+            }}
           />
-          {currentSpielplatz.current && (
-            <Marker
-              position={[
-                currentSpielplatz.current.lat,
-                currentSpielplatz.current.lon,
-              ]}
-              icon={MainLocationIcon}
+          <Marker
+            position={[selectedSP.lat, selectedSP.lon]}
+            icon={stadtteilLocationIcon}
+          >
+            <Popup
+              className="font-sans"
+              keepInView={true}
+              autoPan={true}
+              maxWidth={200}
             >
-              <Popup className="font-sans" keepInView={true} maxWidth={200}>
-                <Link
-                  href={"/spielplaetze/" + currentSpielplatz.current.id}
-                  className="font-semibold text-base block"
-                >
-                  {currentSpielplatz.current.title}
-                </Link>
-
-                <small className="text-sm font-bold capitalize block">
-                  {currentSpielplatz.current.type?.join(" / ") || ""}
+              <Link
+                href={`/spielplaetze/${selectedSP.id}`}
+                className="font-semibold text-base block"
+                target="_blank"
+              >
+                {selectedSP.title}
+              </Link>
+              <small className="text-sm font-bold capitalize block">
+                {selectedSP.type?.join(" / ") || ""}
+              </small>
+              {selectedSP.spielgeraete && (
+                <small className="text-xs font-semibold italic  capitalize block">
+                  {selectedSP.spielgeraete.slice(0, 8).join(" - ") || ""}
+                  {selectedSP.spielgeraete.length > 8 ? "..." : ""}
                 </small>
-                {currentSpielplatz.current.spielgeraete && (
-                  <small className="text-xs font-semibold italic  capitalize block">
-                    {currentSpielplatz.current.spielgeraete
-                      .slice(0, 8)
-                      .join(" - ") || ""}
-                    {currentSpielplatz.current.spielgeraete.length > 8
-                      ? "..."
-                      : ""}
-                  </small>
-                )}
-                <p className="text-xs">
-                  {currentSpielplatz.current.address &&
-                    joinAddress(currentSpielplatz.current.address)}
-                </p>
-              </Popup>
-            </Marker>
-          )}
-          {displayedSpList.map(
-            ({ title, id, lat, lon, stadtteil, type, spielgeraete }) =>
-              id === currentSP ? null : (
-                <React.Fragment key={id}>
-                  <Marker
-                    position={[lat, lon]}
-                    icon={
-                      selectedSP.id === id
-                        ? stadtteilLocationIcon
-                        : bezirkLocationIcon
-                    }
-                  >
-                    <Popup
-                      className="font-sans"
-                      keepInView={true}
-                      autoPan={true}
-                      maxWidth={200}
-                    >
-                      <Link
-                        href={`/spielplaetze/${id}`}
-                        className="font-semibold text-base block"
-                        target="_blank"
-                      >
-                        {title}
-                      </Link>
-                      <small className="text-sm font-bold capitalize block">
-                        {type?.join(" / ") || ""}
-                      </small>
-                      {spielgeraete && (
-                        <small className="text-xs font-semibold italic  capitalize block">
-                          {spielgeraete.slice(0, 8).join(" - ") || ""}
-                          {spielgeraete.length > 8 ? "..." : ""}
-                        </small>
-                      )}
-                    </Popup>
-                  </Marker>
-                </React.Fragment>
-              )
-          )}
-        </MapContainer>
+              )}
+            </Popup>
+          </Marker>
+        </GeneralMap>
+
         <div className="w-full flex flex-wrap justify-around gap-2 mx-auto px-4 pb-2">
           {[
             { title: currentSpielplatz.current?.title, color: "#BC251F" },
