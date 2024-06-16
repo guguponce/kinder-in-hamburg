@@ -5,7 +5,7 @@ import FlohmarktPoster from "./FlohmarktPoster";
 import PaperPlane from "./@Icons/PaperPlane";
 import { bezirke } from "@app/utils/constants";
 
-export default async function ScrollableFlohmaerkte({
+export default async function BezirkeScrollableFlohmaerkte({
   flohmaerkte,
   bezirk,
   title,
