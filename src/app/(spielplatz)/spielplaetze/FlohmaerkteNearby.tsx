@@ -38,10 +38,10 @@ export default async function FlohmaerkteNearby({
     <>
       <div
         id="spielplatz-flohmaerkte-nearby"
-        className="relative max-h-96 max-w-[calc(100%-3rem)] flex lg:hidden"
+        className="relative h-80 lg:max-h-96 min-w-fit max-w-full flex lg:hidden px-8 lg:px-16"
       >
         <h2
-          className="absolute z-50 bottom-0 -left-8 text-2xl overflow-hidden w-3rem font-bold rotate-180 text-hh-800"
+          className="absolute z-50 bottom-0 left-4 lg:left-8 -translate-x-1/2 text-xl sm:text-2xl overflow-hidden w-3rem font-bold rotate-180 text-hh-800"
           style={{ writingMode: "vertical-rl", textOrientation: "revert" }}
         >
           Flohmärkte dieser Woche
