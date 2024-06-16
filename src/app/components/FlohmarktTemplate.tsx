@@ -102,8 +102,12 @@ export default function FlohmarktTemplate({
                           </div>
                         ))}
                     </div>
-
-                    <DisplayTypeText text={optionalComment} type="paragraph" />
+                    <div id="optional-comment-box" className="max-w-full">
+                      <DisplayTypeText
+                        text={optionalComment}
+                        type="paragraph"
+                      />
+                    </div>
                   </div>
                 )}
               </div>
