@@ -80,15 +80,15 @@ export default async function SpielplatzPage({
       </AdminServerComponent>
       <div
         id="spielplatz-header"
-        className="text-4xl min-h-16 font-bold text-center text-hh-50 flex flex-col justify-center items-center gap-2 lg:p-4"
+        className="text-4xl min-h-16 font-bold text-center text-hh-50 flex flex-col justify-center items-center gap-4 lg:p-4"
       >
         <h1 className="flex justify-center items-center flex-wrap">
           {!title.toLowerCase().includes("spielplatz") && "Spielplatz "}
           {title}
         </h1>
-        <div className="flex justify-center items-center flex-wrap gap-2 text-base text-hh-950">
-          {type.map((t) =>
-            type.length === 1 && type[0] === "outdoor" ? null : (
+        {type.length > 1 || type[0] === "outdoor" ? null : (
+          <div className="flex justify-center items-center flex-wrap gap-2 text-base text-hh-950 p-2">
+            {type.map((t) => (
               <Link
                 href={"/spielplaetze/type/" + t}
                 key={t}
@@ -96,9 +96,9 @@ export default async function SpielplatzPage({
               >
                 {t}
               </Link>
-            )
-          )}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
       <div id="spielplatz-grid" className="w-full xs:px-2 sm:px-4 gap-4">
         {spielgeraete && <Spielgeraete spielgeraete={spielgeraete} />}
@@ -166,10 +166,9 @@ export default async function SpielplatzPage({
           </div>
           <SPBezirkMap currentSP={id} bezirk={bezirk} stadtteil={stadtteil} />
         </section>
-
         <div
           id="spielplatz-data"
-          className="flex flex-col justify-start items-center gap-4 w-full h-full overflow-hidden flex-grow"
+          className="flex flex-col justify-start items-center gap-4 w-full h-fit lg:h-full overflow-hidden flex-grow"
         >
           <SpielplatzgeraeteBackground
             small={false}
