@@ -44,7 +44,7 @@ export default async function FlohmaerkteNearby({
           className="absolute z-50 bottom-0 left-4 lg:left-8 -translate-x-1/2 text-xl sm:text-2xl overflow-hidden w-3rem font-bold rotate-180 text-hh-800"
           style={{ writingMode: "vertical-rl", textOrientation: "revert" }}
         >
-          Flohmärkte dieser Woche
+          Flohmärkte in der Nähe
         </h2>
         <div className="w-full max-h-full">
           <ArrowGalleryContainer list={list} />
