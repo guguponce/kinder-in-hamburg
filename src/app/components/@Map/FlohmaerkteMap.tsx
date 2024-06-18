@@ -11,6 +11,7 @@ import {
 import Link from "next/link";
 import { getDate } from "@app/utils/functions";
 import WeitereFlohmaerkte from "../WeitereFlohmaerkte";
+import MarkersLists from "./PopUpsMarkers/MarkersLists";
 
 const stadtteilLocationIcon = new Icon({
   iconUrl: "/assets/icons/stadtteilLocation.svg",
@@ -115,7 +116,11 @@ const FlohmaerkteMap = ({
               </Popup>
             </Marker>
           )}
-          {displayedMarkers.map(
+          <MarkersLists
+            cluster={displayedMarkers.length > 15}
+            lists={{ flohmaerkte: displayedMarkers }}
+          />
+          {/* {displayedMarkers.map(
             ({ title, address, date, id, lat, lon, stadtteil, time }) =>
               lat && lon ? (
                 <React.Fragment key={id}>
@@ -127,22 +132,16 @@ const FlohmaerkteMap = ({
                         : stadtteilLocationIcon
                     }
                   >
-                    <Popup className="font-sans">
-                      <Link
-                        href={`/flohmaerkte/${id}`}
-                        className="font-semibold text-base block"
-                      >
-                        {title}
-                      </Link>
-                      <small className="font-semibold italic">
-                        {getDate(date)} ({time}) - {stadtteil}
-                      </small>
-                      <p className="text-xs">{address}</p>
-                    </Popup>
+                    <FlohmarktPopUP 
+                      title={title}
+                      id={id}
+                      date={date}
+                      address={address}
+                    />
                   </Marker>
                 </React.Fragment>
               ) : null
-          )}
+          )} */}
         </MapContainer>
       </article>
       <aside
