@@ -13,21 +13,14 @@ export default function GetAnalytics() {
       .find((row) => row.startsWith("kih="));
     const currentHost = window.location.host;
 
-    if (cookieValue && currentHost === "kinder-in-hamburg.de") {
+    if (cookieValue && currentHost === "www.kinder-in-hamburg.de") {
       setShowAnalytics(true);
       console.log("kih cookie found:", cookieValue.split("=")[1]);
-    } else if (!cookieValue && currentHost === "kinder-in-hamburg.de") {
+    } else if (!cookieValue && currentHost === "www.kinder-in-hamburg.de") {
       console.log("kih cookie not found");
       document.cookie = "kih=1; max-age=2592000; path=/"; //30days
     } else {
-      console.log(currentHost, " is not kih.de");
-    }
-  }, []);
-
-  useEffect(() => {
-    const currentHost = window.location.host;
-    if (currentHost === "website.com") {
-      setShowAnalytics(true);
+      console.log(currentHost, " is not www.kinder-in-hamburg.de");
     }
   }, []);
 
