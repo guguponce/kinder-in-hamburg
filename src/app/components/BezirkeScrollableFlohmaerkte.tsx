@@ -4,6 +4,7 @@ import { iFlohmarkt } from "@app/utils/types";
 import FlohmarktPoster from "./FlohmarktPoster";
 import PaperPlane from "./@Icons/PaperPlane";
 import { bezirke } from "@app/utils/constants";
+import { separateInBezirke } from "@app/utils/functions";
 
 export default async function BezirkeScrollableFlohmaerkte({
   flohmaerkte,
@@ -14,16 +15,9 @@ export default async function BezirkeScrollableFlohmaerkte({
   bezirk?: string;
   title?: string;
 }) {
-  const reducedFlohmaerkte = [...flohmaerkte]
-    .sort((a, b) => a.date - b.date)
-    .reduce((acc, floh) => {
-      if (!acc[floh.bezirk]) {
-        acc[floh.bezirk] = [floh];
-      } else {
-        acc[floh.bezirk] = [...acc[floh.bezirk], floh];
-      }
-      return acc;
-    }, {} as { [key: string]: iFlohmarkt[] });
+  const reducedFlohmaerkte = separateInBezirke(
+    [...flohmaerkte].sort((a, b) => a.date - b.date)
+  );
 
   const flohsBezirke = Array.from(
     new Set(flohmaerkte.map((floh) => floh.bezirk))
