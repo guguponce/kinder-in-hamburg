@@ -2,9 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { Analytics } from "@vercel/analytics/react"; // Import from 'react' for client-side
-import { cookies } from "next/headers";
 
-export default function AnalyticsComponent() {
+export default function GetAnalytics() {
   const [showAnalytics, setShowAnalytics] = useState<boolean>(false);
 
   useEffect(() => {

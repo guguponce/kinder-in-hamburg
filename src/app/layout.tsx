@@ -6,8 +6,7 @@ import Header from "@components/@Header/Header";
 import { getServerSession } from "next-auth";
 import SessionProvider from "@app/providers/SessionProvider";
 import Footer from "./components/@Footer/Footer";
-import AnalyticsComponent from "./GetAnalytics";
-import { Analytics } from "@vercel/analytics/react";
+import GetAnalytics from "./GetAnalytics";
 
 const roboto = Roboto({
   weight: "400",
@@ -58,14 +57,10 @@ export default async function RootLayout({
       >
         <SessionProvider session={session}>
           <Header />
-          {/* <LoggedUserComponents> */}
           {children}
-          {/* </LoggedUserComponents> */}
-
           <Footer />
         </SessionProvider>
-        <Analytics />
-        {/* <AnalyticsComponent></AnalyticsComponent> */}
+        <GetAnalytics />
       </body>
     </html>
   );
