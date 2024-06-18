@@ -1,5 +1,4 @@
 import React from "react";
-import SpielgeraeteIcon from "../@Spielplatz/SpielgeraeteIcon";
 
 export default function BezirkIcon({
   color = "#33404D",
@@ -14,6 +13,7 @@ export default function BezirkIcon({
     altona: "altonaIcon.svg",
     harburg: "harburgIcon.svg",
     wandsbek: "wandsbekIcon.svg",
+    eimsbüttel: "eimsbuettelIcon.svg",
     eimsbuettel: "eimsbuettelIcon.svg",
     "hamburg-nord": "nordIcon.svg",
     "hamburg-mitte": "mitteIcon.svg",
