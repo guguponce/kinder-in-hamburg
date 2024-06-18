@@ -210,3 +210,38 @@ picture {
 .verticalScrollbar::-webkit-scrollbar-thumb {
   background-color: $hh-500;
 }
+
+.clusterIconFlohmarkt {
+  background: radial-gradient(circle, #7b3e5e, #7b3e5e 50%, #7b3e5e80 50%);
+  &:hover {
+    background: radial-gradient(circle, #7b3e5e, #7b3e5e 50%, #7b3e5db9 50%);
+  }
+}
+.clusterIconPost {
+  background: radial-gradient(circle, #33404d, #33404d 50%, #33404d80 50%);
+  &:hover {
+    background: radial-gradient(circle, #33404d, #33404d 50%, #33404db9 50%);
+  }
+}
+
+.clusterIconSpielplatz {
+  background: radial-gradient(circle, #17684d, #17684d 50%, #17684d80 50%);
+  &:hover {
+    background: radial-gradient(circle, #17684d, #17684d 50%, #17684db9 50%);
+  }
+}
+
+.clusterIcon {
+  height: 2rem;
+  width: 2rem;
+  padding-bottom: 1px;
+  border-radius: 50%;
+  color: $hh-100;
+  font-size: 0.75rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 900;
+  line-height: 1.5rem;
+  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.25);
+}
