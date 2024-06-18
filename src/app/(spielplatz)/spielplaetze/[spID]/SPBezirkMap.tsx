@@ -3,27 +3,14 @@ import { iSpielplatz } from "@app/utils/types";
 import React, { useMemo, useRef } from "react";
 
 import "leaflet/dist/leaflet.css";
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import { Marker, Popup } from "react-leaflet";
 import { latLng, divIcon } from "leaflet";
 import Link from "next/link";
-import {
-  createStandortMapIcon,
-  haversineDistance,
-  joinAddress,
-} from "@app/utils/functions";
+import { createStandortMapIcon, haversineDistance } from "@app/utils/functions";
 import TriangleIcon from "@components/@Icons/TriangleIcon";
 import ShuffleGallery from "@app/components/ShuffleGallery";
 import GeneralMap from "@app/components/@Map/GeneralMap";
 import MarkersLists from "@app/components/@Map/PopUpsMarkers/MarkersLists";
-
-const bezirkLocationIcon = divIcon({
-  html: createStandortMapIcon("#39579D", 30),
-  iconSize: [30, 30],
-  iconAnchor: [15, 30],
-  className: "bg-transparent",
-  shadowAnchor: [4, 62],
-  shadowSize: [68, 95],
-});
 
 const stadtteilLocationIcon = divIcon({
   // iconUrl: "/assets/icons/selectedLocation.svg",
@@ -31,13 +18,6 @@ const stadtteilLocationIcon = divIcon({
   className: "bg-transparent",
   iconSize: [30, 30],
   iconAnchor: [15, 30],
-});
-
-const MainLocationIcon = divIcon({
-  html: createStandortMapIcon("#BC251F", 35),
-  className: "bg-transparent",
-  iconSize: [35, 35],
-  iconAnchor: [17, 35],
 });
 
 function groupSpielgeraete(geraete: string[]) {
@@ -64,6 +44,8 @@ export default function SPBezirkMap({
 
   const displayedSpList = useMemo(() => {
     if (!currentSpielplatz.current) return spList;
+    if (!!currentSpielplatz.current.lat && !!currentSpielplatz.current.lon)
+      return spList;
     return spList
       .filter(
         (sp) =>
@@ -114,40 +96,45 @@ export default function SPBezirkMap({
               spielplaetze: otherSP,
             }}
           />
-          <Marker
-            position={[selectedSP.lat, selectedSP.lon]}
-            icon={stadtteilLocationIcon}
-          >
-            <Popup
-              className="font-sans"
-              keepInView={true}
-              autoPan={true}
-              maxWidth={200}
+          {selectedSP && (
+            <Marker
+              position={[selectedSP.lat, selectedSP.lon]}
+              icon={stadtteilLocationIcon}
             >
-              <Link
-                href={`/spielplaetze/${selectedSP.id}`}
-                className="font-semibold text-base block"
-                target="_blank"
+              <Popup
+                className="font-sans"
+                keepInView={true}
+                autoPan={true}
+                maxWidth={200}
               >
-                {selectedSP.title}
-              </Link>
-              <small className="text-sm font-bold capitalize block">
-                {selectedSP.type?.join(" / ") || ""}
-              </small>
-              {selectedSP.spielgeraete && (
-                <small className="text-xs font-semibold italic  capitalize block">
-                  {selectedSP.spielgeraete.slice(0, 8).join(" - ") || ""}
-                  {selectedSP.spielgeraete.length > 8 ? "..." : ""}
+                <Link
+                  href={`/spielplaetze/${selectedSP.id}`}
+                  className="font-semibold text-base block"
+                  target="_blank"
+                >
+                  {selectedSP.title}
+                </Link>
+                <small className="text-sm font-bold capitalize block">
+                  {selectedSP.type?.join(" / ") || ""}
                 </small>
-              )}
-            </Popup>
-          </Marker>
+                {selectedSP.spielgeraete && (
+                  <small className="text-xs font-semibold italic  capitalize block">
+                    {selectedSP.spielgeraete.slice(0, 8).join(" - ") || ""}
+                    {selectedSP.spielgeraete.length > 8 ? "..." : ""}
+                  </small>
+                )}
+              </Popup>
+            </Marker>
+          )}
         </GeneralMap>
 
         <div className="w-full flex flex-wrap justify-around gap-2 mx-auto px-4 pb-2">
           {[
             { title: currentSpielplatz.current?.title, color: "#BC251F" },
-            { title: "Spielplätze in der Nähe", color: "#39579D" },
+            {
+              title: !!otherSP.length && "Spielplätze in der Nähe",
+              color: "#39579D",
+            },
             {
               title: filteredCurrentList[selectedIndex]?.title,
               color: "#F6AA1C",

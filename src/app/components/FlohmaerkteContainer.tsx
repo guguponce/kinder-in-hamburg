@@ -3,8 +3,6 @@ import React from "react";
 import BezirkableFlohmaerkteList from "../(flohmaerkte)/flohmaerkte/BezirkableFlohmaerkteList";
 import { getTodayNexMonday } from "@app/utils/functions";
 import { getApprovedFlohmaerkte } from "@app/api/dbActions";
-import FlohmarktPoster from "./FlohmarktPoster";
-import ScrollableContainer from "./ScrollableContainer";
 const FlohmaerkteMap = dynamic(() => import("./@Map/FlohmaerkteMap"), {
   ssr: false,
 });

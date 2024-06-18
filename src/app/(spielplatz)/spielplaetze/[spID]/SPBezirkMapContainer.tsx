@@ -4,7 +4,7 @@ import {
 } from "@app/api/spActions";
 import NotFound from "@app/components/NotFound";
 import { checkBezirk, parseParams } from "@app/utils/functions";
-import { iBezirk, iSpielplatz } from "@app/utils/types";
+import { iBezirk } from "@app/utils/types";
 
 import React from "react";
 import { PROXIMATE_STADTTEILE_FROM_OTHER_BEZIRK } from "@app/utils/constants";
@@ -50,17 +50,6 @@ export default async function SPBezirkMapContainer({
         )
       : [];
 
-  const reducedBezirkSPList = BezirkSPList.reduce(
-    (acc, sp) => {
-      if (!!currentSP && sp.id === currentSP) return acc;
-      if (!!stadtteil && sp.stadtteil === stadtteil)
-        return { ...acc, stadtteil: [...acc.stadtteil, sp] };
-      else return { ...acc, bezirk: [...acc.bezirk, sp] };
-    },
-    { stadtteil: [], bezirk: [], andere: OtherBezirkSPList || [] } as {
-      [key: string]: iSpielplatz[];
-    }
-  );
   return (
     <section id="sp-map-container" className="w-full">
       <DynamicBezirkSPMap
