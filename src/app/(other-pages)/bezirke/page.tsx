@@ -5,16 +5,12 @@ import PostNotFound from "@app/components/@PostForm/PostNotFound";
 import RandomRecommendation from "@app/components/@Cards/RandomRecommendation";
 import Link from "next/link";
 import AdminRoute from "@app/providers/AdminRoute";
+import { separateInBezirke } from "@app/utils/functions";
 
 export default async function BezirkePage() {
   const allPosts = await getAllApprovedPosts();
   if (!allPosts) return <PostNotFound multiples={true} type="post" />;
-  const bezirkePosts = allPosts.reduce((acc, post) => {
-    if (!post.bezirk) return acc;
-    acc[post.bezirk] = acc[post.bezirk] || [];
-    acc[post.bezirk].push(post);
-    return acc;
-  }, {} as { [key: string]: iPost[] });
+  const bezirkePosts = separateInBezirke(allPosts);
 
   return (
     <AdminRoute>

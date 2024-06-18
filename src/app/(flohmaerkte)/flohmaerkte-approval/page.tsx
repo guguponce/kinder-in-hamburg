@@ -17,11 +17,14 @@ export default async function ApprovalPage() {
   return (
     <AdminRoute>
       <div className="flex flex-col gap-4">
-        {flohmaerkte.map((flo) => (
-          <React.Fragment key={flo.id}>
-            <MinimalFlohmarktDisplay flohmarkt={flo} />
-          </React.Fragment>
-        ))}
+        {flohmaerkte
+          .sort((a, b) => a.date - b.date)
+          .map((flo) => (
+            <div key={flo.id} className="rounded p-1 bg-hh-900">
+              <MinimalFlohmarktDisplay flohmarkt={flo} />
+              <p className="text-white uppercase">{flo.status}</p>
+            </div>
+          ))}
       </div>
     </AdminRoute>
   );
