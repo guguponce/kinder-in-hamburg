@@ -15,7 +15,7 @@ export interface iPost {
   lastUpdate?: number;
   image?: string[]; //
   igAccounts?: iIgAccount[]; //
-  bezirk?: iBezirk | undefined;
+  bezirk: iBezirk;
   stadtteil?: string | undefined;
   address?: iAddress | undefined;
   lat?: number;
@@ -118,6 +118,7 @@ export interface iCard {
   description?: string;
   categories?: string;
   bezirk?: string;
+  stadtteil?: string;
   link?: string;
   aspectRatio?: number;
   spielgeraete?: string[];
