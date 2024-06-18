@@ -16,6 +16,7 @@ export default function HorizontalCard({
   description,
   link,
   spielgeraete,
+  stadtteil,
 }: iCard) {
   return (
     <Link
@@ -50,7 +51,14 @@ export default function HorizontalCard({
           </>
         )}
       </div>
-      <div className="cardContent w-3/5 overflow-hidden flex-grow flex justify-center flex-col p-2 md:p-3 lg:p-4">
+      <div
+        className={`cardContent w-3/5 overflow-hidden flex-grow flex justify-center flex-col p-2 ${
+          !stadtteil && "md:p-3 lg:p-4"
+        }`}
+      >
+        {stadtteil && (
+          <h4 className="text-hh-700 font-semibold text-sm">{stadtteil}</h4>
+        )}
         <h2 className="truncate-2 break-words cardTitle font-bold text-sm sm:text-md md:text-lg text-hh-950  break-word max-w-full text-md sm:text-base">
           {title}
         </h2>
