@@ -1,24 +1,54 @@
-"use server";
-import { Analytics } from "@vercel/analytics/next";
+"use client"; // Use "use client" to indicate this should run on the client side
+
+import { useEffect, useState } from "react";
+import { Analytics } from "@vercel/analytics/react"; // Import from 'react' for client-side
 import { cookies } from "next/headers";
 
-export default async function AnalyticsComponent() {
-  const kihcookie = cookies().get("kih")?.value;
-  // if (kihcookie) return null;
+export default function AnalyticsComponent() {
+  const [showAnalytics, setShowAnalytics] = useState<boolean>(false);
+
+  useEffect(() => {
+    // Fetch the cookie value client-side
+    const cookieValue = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("kih="));
+    const currentHost = window.location.host;
+
+    if (cookieValue && currentHost === "kinder-in-hamburg.de") {
+      setShowAnalytics(true);
+      console.log("kih cookie found:", cookieValue.split("=")[1]);
+    } else if (!cookieValue && currentHost === "kinder-in-hamburg.de") {
+      console.log("kih cookie not found");
+      document.cookie = "kih=1; max-age=2592000; path=/"; //30days
+    } else {
+      console.log(currentHost, " is not kih.de");
+    }
+  }, []);
+
+  useEffect(() => {
+    const currentHost = window.location.host;
+    if (currentHost === "website.com") {
+      setShowAnalytics(true);
+    }
+  }, []);
+
+  if (showAnalytics) {
+    return null;
+  }
+
   return (
     <Analytics
       debug={process.env.NODE_ENV === "development"}
       mode={
         process.env.NODE_ENV === "development" ? "development" : "production"
       }
-      beforeSend={(e) => {
-        "use server";
-        if (!kihcookie) {
-          return e;
-        } else {
-          return null;
-        }
-      }}
+      // beforeSend={(e) => {
+      //   if (showAnalytics) {
+      //     return e;
+      //   } else {
+      //     return null;
+      //   }
+      // }}
     />
   );
 }
