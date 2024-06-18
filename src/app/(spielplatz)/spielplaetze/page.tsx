@@ -4,6 +4,8 @@ import AdminRoute from "@app/providers/AdminRoute";
 import HorizontalCard from "@app/components/@Cards/HorizontalCard";
 import Link from "next/link";
 import dynamic from "next/dynamic";
+import { separateInBezirke } from "@app/utils/functions";
+import ExpandableContainer from "@app/components/ExpandableContainer";
 
 const DynamicSielplaetzeMap = dynamic(() => import("./DynamicSielplaetzeMap"), {
   ssr: false,
@@ -12,13 +14,11 @@ const DynamicSielplaetzeMap = dynamic(() => import("./DynamicSielplaetzeMap"), {
 export default async function SpielplaeztePage() {
   const spList = await getAllSpielplaetze();
   if (!spList) return <div>There was a problem retrieving posts</div>;
-  const distributedSP = spList.reduce((acc, sp) => {
-    const { bezirk } = sp;
-    if (!acc[bezirk]) acc[bezirk] = [sp];
-    else acc[bezirk].push(sp);
-    return acc;
-  }, {} as { [key: string]: typeof spList });
-
+  const distributedSP = separateInBezirke(spList);
+  Object.entries(distributedSP).forEach(
+    ([bezirk, list]) =>
+      (distributedSP[bezirk] = list.sort((a) => (a.pinnedSpielplatz ? -1 : 1)))
+  );
   return (
     <AdminRoute>
       <main className="w-full flex flex-col items-center gap-4 p-8">
@@ -43,31 +43,40 @@ export default async function SpielplaeztePage() {
             {Object.entries(distributedSP)
               .sort(([_, alist], [__, blist]) => blist.length - alist.length)
               .map(([bezirk, list]) => (
-                <article
-                  key={bezirk}
-                  className="flex flex-col gap-2 bg-white bg-opacity-25 rounded p-2 "
-                >
-                  <h2 className="font-bold text-center text-lg">
-                    {bezirk} - ({list.length})
-                  </h2>
-                  <div className="flex flex-wrap gap-4 items-stretch mx-auto w-full justify-around">
-                    {list.map((sp) => (
-                      <div
-                        key={sp.id}
-                        className="min-w-[275px] w-1/2 lg:w-1/3 max-w-[400px] h-[168px]"
-                      >
-                        <HorizontalCard
-                          id={sp.id}
-                          title={sp.title}
-                          description={sp.text}
-                          image={!!sp.image?.length ? sp.image[0] : ""}
-                          link={`/spielplaetze/${sp.id}`}
-                          spielgeraete={sp.spielgeraete}
-                        />
+                <div key={bezirk} className="w-full lg:w-[calc(50%-1rem)]">
+                  <ExpandableContainer contentHeight={420} initialHeight={400}>
+                    <article
+                      key={bezirk}
+                      className="flex flex-col gap-2 bg-white bg-opacity-25 rounded p-2 "
+                    >
+                      <h2 className="font-bold text-center text-lg">
+                        {bezirk} - ({list.length})
+                      </h2>
+                      <div className="flex flex-wrap gap-4 items-stretch mx-auto w-full justify-around">
+                        {list.map((sp) => (
+                          <div
+                            key={sp.id}
+                            className={`min-w-[275px] w-1/2 lg:w-full max-w-[400px] h-[168px] ${
+                              sp.pinnedSpielplatz
+                                ? "outline outline-2 outline-offset-2 outline-hh-800"
+                                : ""
+                            }`}
+                          >
+                            <HorizontalCard
+                              stadtteil={sp.stadtteil}
+                              id={sp.id}
+                              title={sp.title}
+                              description={sp.text}
+                              image={!!sp.image?.length ? sp.image[0] : ""}
+                              link={`/spielplaetze/${sp.id}`}
+                              spielgeraete={sp.spielgeraete}
+                            />
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
-                </article>
+                    </article>
+                  </ExpandableContainer>
+                </div>
               ))}
           </section>
         </div>
