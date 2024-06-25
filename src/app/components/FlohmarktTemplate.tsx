@@ -86,7 +86,9 @@ export default function FlohmarktTemplate({
                 id="flohmarkt-hero"
                 className="w-full p-4 mb-4 rounded-md bg-hh-50 w-h-[50%] flex-grow"
               >
-                <h1 className="text-4xl text-center font-bold">{title}</h1>
+                <h1 className="text-4xl text-center font-bold break-words">
+                  {title}
+                </h1>
 
                 {optionalComment && (
                   <div className="mt-4 h-[calc(100%-4rem)] relative">
