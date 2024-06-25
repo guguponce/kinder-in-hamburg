@@ -3,11 +3,12 @@ import React from "react";
 import BezirkableFlohmaerkteList from "../(flohmaerkte)/flohmaerkte/BezirkableFlohmaerkteList";
 import { getTodayNexMonday } from "@app/utils/functions";
 import { getApprovedFlohmaerkte } from "@app/api/dbActions";
+import dynamic from "next/dynamic";
+import TodaysFlohmaerkte from "./TodaysFlohmaerkte";
+
 const FlohmaerkteMap = dynamic(() => import("./@Map/FlohmaerkteMap"), {
   ssr: false,
 });
-import dynamic from "next/dynamic";
-import TodaysFlohmaerkte from "./TodaysFlohmaerkte";
 
 export const revalidate = 0;
 export default async function FlohmaerkteContainer() {
