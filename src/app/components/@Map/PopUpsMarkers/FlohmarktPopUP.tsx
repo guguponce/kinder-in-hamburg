@@ -1,6 +1,5 @@
 "use client";
-import { getDate, joinAddress } from "@app/utils/functions";
-import { iAddress } from "@app/utils/types";
+import { getDate } from "@app/utils/functions";
 import Link from "next/link";
 import React from "react";
 import { Popup } from "react-leaflet";
