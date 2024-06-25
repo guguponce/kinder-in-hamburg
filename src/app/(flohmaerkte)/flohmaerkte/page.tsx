@@ -5,7 +5,11 @@ import { getTodayNexMonday } from "@app/utils/functions";
 import Link from "next/link";
 import React from "react";
 import BezirkableFlohmaerkteList from "./BezirkableFlohmaerkteList";
+import dynamic from "next/dynamic";
 
+const DynamicFlohmarktMap = dynamic(() => import("./DynamicFlohmarktMap"), {
+  ssr: false,
+});
 export const revalidate = 120;
 
 export default async function FlohmarktPage() {
@@ -43,6 +47,12 @@ export default async function FlohmarktPage() {
         title="Diese Woche"
         flohmaerkte={thisWeekFlohmaerkte}
       ></BezirkeScrollableFlohmaerkte>
+      <DynamicFlohmarktMap
+        nextMonday={nextMonday}
+        future={futureFlohmaerkte}
+        thisWeek={thisWeekFlohmaerkte}
+        today={today}
+      />
 
       <BezirkableFlohmaerkteList
         title="Ab nächster Woche"
