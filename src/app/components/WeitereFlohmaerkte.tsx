@@ -48,7 +48,7 @@ export default function WeitereFlohmaerkte({
           <React.Fragment key={date}>
             <ExpandableContainer
               contentHeight={contentHeight}
-              initialHeight={128 * 2 + 32}
+              initialHeight={displayedFlohs.length < 2 ? 180 : 128 * 2 + 32}
             >
               <article className="flex flex-col gap-2 items-stretch w-full">
                 <h3 className="text-lg font-semibold text-hh-900">{date}</h3>
