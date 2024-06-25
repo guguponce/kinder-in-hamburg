@@ -9,11 +9,11 @@ import React from "react";
 import { Marker } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
 
-const createNormalSizeIcon = (color: string) =>
+const createNormalSizeIcon = (color: string, size: number = 30) =>
   divIcon({
-    html: createStandortMapIcon(color, 30),
-    iconSize: [30, 30],
-    iconAnchor: [15, 30],
+    html: createStandortMapIcon(color, size),
+    iconSize: [size, size],
+    iconAnchor: [size / 2, size],
     className: "bg-transparent",
   });
 const createClusterGroupIcon =
