@@ -93,7 +93,7 @@ export default async function BezirkeScrollableFlohmaerkte({
           : displayBezirke.map((bezirk) => (
               <div
                 key={bezirk}
-                className={`flex items-center flex-col rounded bg-hh-600 bg-opacity-50 p-2 ${
+                className={`min-w-[248px] flex items-center flex-col rounded bg-hh-600 bg-opacity-50 p-2 ${
                   reducedFlohmaerkte[bezirk].length > 4
                     ? "w-fit"
                     : "xl:w-[calc(33%-0.5rem)] lg:w-[calc(50%-1rem)]"
@@ -102,7 +102,7 @@ export default async function BezirkeScrollableFlohmaerkte({
                 <h3
                   className={`${
                     reducedFlohmaerkte[bezirk].length > 1 ? "ml-4" : "mx-auto"
-                  } text-2xl font-semibold p-2 pb-0 text-white self-start`}
+                  } text-2xl font-semibold p-2 pb-0 text-white self-start text-center`}
                 >
                   {bezirk}
                 </h3>
