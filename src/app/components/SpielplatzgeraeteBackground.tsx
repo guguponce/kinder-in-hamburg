@@ -5,9 +5,11 @@ import SpielgeraeteIcon from "./@Icons/@Spielplatz/SpielgeraeteIcon";
 export default function SpielplatzgeraeteBackground({
   spList,
   color = "#33404D",
+  bgColor,
   size = "3rem",
   small = true,
 }: {
+  bgColor?: string;
   spList: string[];
   color?: string;
   small?: boolean;
@@ -31,9 +33,12 @@ export default function SpielplatzgeraeteBackground({
   );
   return (
     <div
+      style={{
+        background: `linear-gradient(45deg, ${bgColor}90 0%, ${bgColor}50 100%)`,
+      }}
       className={`${
         small ? "gap-2" : "gap-4"
-      } absolute z-0 p-1 flex flex-wrap justify-around w-full opacity-25 items-around gap-2 overflow-hidden`}
+      } absolute z-0 p-1 flex flex-wrap justify-around w-full h-full opacity-25 items-around gap-2 overflow-hidden`}
     >
       {spielgeraete.map((spielgeraet, i) => (
         <React.Fragment key={spielgeraet + i}>
