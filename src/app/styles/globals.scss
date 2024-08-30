@@ -24,8 +24,8 @@ $hh-950: #141a1f;
   :root {
     --foreground-rgb: 0, 0, 0;
     --background-start-rgb: 214, 219, 220;
-    --background-end-rgb: 200, 209, 218;
-    --main-text-color: $hh-900;
+    --background-end-rgb: 255, 255, 255;
+    --main-text-color: $hh-100;
   }
 }
 
@@ -244,4 +244,34 @@ picture {
   font-weight: 900;
   line-height: 1.5rem;
   box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.25);
+}
+
+#post-template-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+
+  @media screen and (min-width: 1024px) {
+    display: grid;
+    gap: 1rem;
+    align-items: start;
+    grid-template-columns: 300px 1fr;
+    grid-template-rows: min-content 1fr;
+    grid-template-areas:
+      "buttons buttons"
+      "details text";
+  }
+  @media screen and (min-width: 1200px) {
+    grid-template-columns: 400px 1fr;
+  }
+  #back-buttons {
+    grid-area: buttons;
+  }
+  #text {
+    grid-area: text;
+  }
+  #details {
+    grid-area: details;
+  }
 }
