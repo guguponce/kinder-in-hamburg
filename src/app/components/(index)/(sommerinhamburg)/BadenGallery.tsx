@@ -37,6 +37,7 @@ export default function BadenGallery({
             {["badeseen", "freibaeder", "wasserspiele", "planschbecken"].map(
               (type) => (
                 <button
+                  key={type}
                   className={`${
                     whichList === type
                       ? "bg-opacity-100 text-white"

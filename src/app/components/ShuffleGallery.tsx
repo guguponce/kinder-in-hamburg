@@ -60,7 +60,9 @@ export default function ShuffleGallery({
     >
       <article className="h-full w-full md:aspect-square border border-hh-200 shadow-sm rounded bg-hh-400 bg-opacity-25 flex flex-col items-center gap-2 relative">
         <Link
-          href={`/spielplaetze/${currentArticle.id}`}
+          href={`${
+            isTypeSpielplatz(currentArticle) ? "/spielplaetze/" : "/posts/"
+          }${currentArticle.id}`}
           className="hover:brightness-110 hover:shadow-2xl shadow-sm w-full h-full rounded-md overflow-hidden"
         >
           {isTypeSpielplatz(currentArticle) ? (
