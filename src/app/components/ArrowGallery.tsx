@@ -16,7 +16,7 @@ export default function ArrowGallery({
       id="arrow-gallery"
       className={`${
         length > 1 ? "w-full aspect-[0.75] lg:aspect-[0.9]" : "w-fit"
-      } h-full relative xs:max-w-fit max-h-full flex bg-gray-500 bg-opacity-25 gap-1 items-center justify-center lg:justify-between rounded`}
+      } h-full relative xs:max-w-fit max-h-full flex bg-hh-500 bg-opacity-50 gap-1 items-center justify-center lg:justify-between rounded`}
     >
       <div
         className={`${
