@@ -18,17 +18,17 @@ export default function ShuffleGallery({
   children?: React.ReactNode;
   idSetter?: React.Dispatch<React.SetStateAction<number>>;
 }) {
-  const originalList = useRef(list || []);
+  const [currentIndex, setCurrentIndex] = React.useState(0);
+  const originalList = useMemo(() => {
+    setCurrentIndex(0);
+    return list;
+  }, [list]);
+
   const randomSPGeraeteIndex = useRef(Math.random());
 
-  const [currentIndex, setCurrentIndex] = React.useState(0);
-  const [sortedList, setSortedList] = React.useState<iSpielplatz[]>(
-    originalList.current
-  );
-
   const article = useMemo(() => {
-    if (originalList.current.length === 0) return undefined;
-    const currentArticle = sortedList[currentIndex];
+    if (originalList.length === 0) return undefined;
+    const currentArticle = originalList[currentIndex] || originalList[0];
     const { spielgeraete = [] } = currentArticle;
     const backupImg = ["spielplatz", ...(spielgeraete || [])][
       (Math.floor(randomSPGeraeteIndex.current * spielgeraete?.length + 1) +
@@ -36,13 +36,12 @@ export default function ShuffleGallery({
         spielgeraete.length
     ];
     return { currentArticle, backupImg };
-  }, [currentIndex, sortedList]);
-
+  }, [currentIndex, originalList]);
   if (article === undefined) return null;
   const { currentArticle, backupImg } = article;
   return (
     <div
-      className={`relative flex flex-col items-center rounded-md w-full bg-hh-400 bg-opacity-25 h-full lg:aspect-[1.25] gap-2 p-2 ${
+      className={`relative flex flex-col items-center rounded-md min-w-full bg-hh-400 bg-opacity-25 h-full gap-2 p-2 ${
         shuffle ? "pb-12" : ""
       }`}
     >
@@ -61,67 +60,69 @@ export default function ShuffleGallery({
           />
         </Link>
       </article>
-      <div
-        className={`absolute ${
-          shuffle
-            ? "bottom-1 justify-around"
-            : "top-1/2 -translate-y-1/2 -translate-x-1/2 left-1/2 justify-between px-1"
-        } flex items-center w-3/4 gap-2`}
-      >
-        <button
-          title="Previous Post"
-          className={`${
+      {originalList.length > 1 && (
+        <div
+          className={`absolute ${
             shuffle
-              ? ""
-              : "bg-hh-900 bg-opacity-15 hover:bg-hh-950 hover:bg-opacity-20 rounded-md shadow-md hover:shadow-lg transition-all duration-200 ease-in-out"
-          } p-1 ml-1 aspect-square -rotate-90`}
-          onClick={() => {
-            const index =
-              currentIndex === 0 ? sortedList.length - 1 : currentIndex - 1;
-            setCurrentIndex(index);
-
-            if (idSetter) idSetter(index);
-          }}
+              ? "bottom-1 justify-around"
+              : "top-1/2 -translate-y-1/2 -translate-x-1/2 left-1/2 justify-between px-1"
+          } flex items-center w-3/4 gap-2`}
         >
-          <TriangleIcon size="2rem" color="#fefefe" />
-        </button>
-        {shuffle && (
           <button
-            title="Shuffle"
-            className="aspect-square hover:p-0 h-fit hover:bg-opacity-10 hover:bg-hh-50 rounded-full"
+            title="Previous Post"
+            className={`${
+              shuffle
+                ? ""
+                : "bg-hh-900 bg-opacity-15 hover:bg-hh-950 hover:bg-opacity-20 rounded-md shadow-md hover:shadow-lg transition-all duration-200 ease-in-out"
+            } p-1 ml-1 aspect-square -rotate-90`}
             onClick={() => {
-              const availableIndexes = Array.from(
-                { length: sortedList.length },
-                (_, i) => i
-              ).filter((i) => i !== currentIndex);
-              const randomIndex =
-                availableIndexes[
-                  Math.floor(Math.random() * availableIndexes.length)
-                ];
-              setCurrentIndex(randomIndex);
+              const index =
+                currentIndex === 0 ? originalList.length - 1 : currentIndex - 1;
+              setCurrentIndex(index);
 
-              if (idSetter) idSetter(randomIndex);
+              if (idSetter) idSetter(index);
             }}
           >
-            <ShuffleIcon size="2rem" color="#fefefe" />
+            <TriangleIcon size="2rem" color="#fefefe" />
           </button>
-        )}
-        <button
-          title="Next Post"
-          className={`${
-            shuffle
-              ? ""
-              : "bg-hh-900 hover:bg-hh-950 hover:bg-opacity-20 bg-opacity-15 rounded-md shadow-md hover:shadow-lg transition-all duration-200 ease-in-out"
-          } p-1 mr-1 aspect-square rotate-90`}
-          onClick={() => {
-            const index = (currentIndex + 1) % sortedList.length;
-            setCurrentIndex(index);
-            if (idSetter) idSetter(index);
-          }}
-        >
-          <TriangleIcon size="2rem" color="#fefefe" />
-        </button>
-      </div>
+          {shuffle && (
+            <button
+              title="Shuffle"
+              className="aspect-square hover:p-0 h-fit hover:bg-opacity-10 hover:bg-hh-50 rounded-full"
+              onClick={() => {
+                const availableIndexes = Array.from(
+                  { length: originalList.length },
+                  (_, i) => i
+                ).filter((i) => i !== currentIndex);
+                const randomIndex =
+                  availableIndexes[
+                    Math.floor(Math.random() * availableIndexes.length)
+                  ];
+                setCurrentIndex(randomIndex);
+
+                if (idSetter) idSetter(randomIndex);
+              }}
+            >
+              <ShuffleIcon size="2rem" color="#fefefe" />
+            </button>
+          )}
+          <button
+            title="Next Post"
+            className={`${
+              shuffle
+                ? ""
+                : "bg-hh-900 hover:bg-hh-950 hover:bg-opacity-20 bg-opacity-15 rounded-md shadow-md hover:shadow-lg transition-all duration-200 ease-in-out"
+            } p-1 mr-1 aspect-square rotate-90`}
+            onClick={() => {
+              const index = (currentIndex + 1) % originalList.length;
+              setCurrentIndex(index);
+              if (idSetter) idSetter(index);
+            }}
+          >
+            <TriangleIcon size="2rem" color="#fefefe" />
+          </button>
+        </div>
+      )}
     </div>
   );
 }
