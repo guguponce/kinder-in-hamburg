@@ -80,16 +80,17 @@ export const getTypeSpielplaetze = async (type: iSPType) => {
 
 export const getSpielplatzFromBezirkStadtteil = async (
   bezirk: iBezirk,
-  stadtteile: string[]
+  stadtteile: string[] | undefined
 ) => {
   if (!checkBezirk(bezirk)) throw new Error("Invalid Bezirk: " + bezirk);
 
   // Construct bezirk stadtteile condition
-  const stadtteileConditions = stadtteile
-    .map((nh) => `stadtteil.ilike.%${nh}%`)
-    .join(",");
+  const stadtteileConditions =
+    stadtteile && stadtteile.map((nh) => `stadtteil.ilike.%${nh}%`).join(",");
   const bezirkCondition = `bezirk.eq.${bezirk}`;
-  const combinedCondition = `${stadtteileConditions},${bezirkCondition}`;
+  const combinedCondition = !!stadtteileConditions
+    ? `${stadtteileConditions},${bezirkCondition}`
+    : bezirkCondition;
   try {
     const { data, error } = await supabaseAdmin
       .from("spielplaetze")
@@ -430,7 +431,6 @@ export const uploadSpielplatzImage = (
       name: userEmail.name,
     }),
   };
-  console.log(metadata);
 
   // const storageRef = ref(storage, `flohmaerkteImages/${id}/${file.name}`);
   // // Upload file and get status
