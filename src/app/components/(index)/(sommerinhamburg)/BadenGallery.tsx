@@ -58,7 +58,7 @@ export default function BadenGallery({
           Mehr entdecken
         </Link>
       </div>
-      <section className="flex w-[250px] aspect-[3/4]">
+      <section className="flex w-[240px] aspect-[3/4] max-h-[320px]">
         <ShuffleGallery list={list[whichList]} shuffle={true} titleUnder dark />
       </section>
       <Link
