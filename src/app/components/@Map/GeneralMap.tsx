@@ -1,20 +1,17 @@
 "use client";
 import React from "react";
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import { MapContainer, Marker, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { divIcon } from "leaflet";
 import {
   iAddress,
   iFlohmarkt,
-  iFlohmarktWithCoordinates,
   iPost,
   iPostWithCoordinates,
   iSpielplatz,
 } from "@app/utils/types";
-import Link from "next/link";
 import {
   createStandortMapIcon,
-  getDate,
   isTypeFlohmarkt,
   isTypePost,
   isTypeSpielplatz,
@@ -78,6 +75,11 @@ const GeneralMap = ({
           ) : (
             isTypePost(currentTarget) && (
               <PostPopUP
+                image={
+                  currentTarget.image && typeof currentTarget.image === "string"
+                    ? currentTarget.image
+                    : currentTarget.image?.[0]
+                }
                 address={currentTarget.address as iAddress}
                 categories={(currentTarget as iPostWithCoordinates).categories}
                 id={currentTarget.id}
