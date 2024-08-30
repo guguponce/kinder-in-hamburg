@@ -69,7 +69,7 @@ const FlohmaerkteMap = ({
       : restFlohmaerkte;
   }, [selectedBezirk, flohmaerkteWithCoordinates, selectedDate, flohmarktID]);
 
-  const centralFlohmarkt = currentTarget || displayedMarkers[0];
+  const centralFlohmarkt = currentTarget;
 
   return (
     <section className="w-full sm:w-full md:max-w-[800px] flex flex-wrap gap-2 sm:gap-4 rounded">
@@ -87,7 +87,9 @@ const FlohmaerkteMap = ({
           zoom={
             flohmaerkteBezirke.current.length === 1
               ? 15
-              : flohmaerkteBezirke.current.includes("Wandsbek")
+              : ["Wandsbek", "Bergedorf"].some((b) =>
+                  flohmaerkteBezirke.current.includes(b as iBezirk)
+                )
               ? 10
               : 11
           }
@@ -120,33 +122,11 @@ const FlohmaerkteMap = ({
             cluster={displayedMarkers.length > 15}
             lists={{ flohmaerkte: displayedMarkers }}
           />
-          {/* {displayedMarkers.map(
-            ({ title, address, date, id, lat, lon, stadtteil, time }) =>
-              lat && lon ? (
-                <React.Fragment key={id}>
-                  <Marker
-                    position={[lat, lon]}
-                    icon={
-                      currentTarget?.id === id
-                        ? MainLocationIcon
-                        : stadtteilLocationIcon
-                    }
-                  >
-                    <FlohmarktPopUP 
-                      title={title}
-                      id={id}
-                      date={date}
-                      address={address}
-                    />
-                  </Marker>
-                </React.Fragment>
-              ) : null
-          )} */}
         </MapContainer>
       </article>
       <aside
         id="flohmaerkte-map-filters-aside"
-        className="w-full sm:w-[300px] flex flex-col"
+        className="w-full flex flex-col"
       >
         {[
           ["Termine", dates.current],
