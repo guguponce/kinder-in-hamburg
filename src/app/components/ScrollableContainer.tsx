@@ -17,7 +17,7 @@ export default function ScrollableContainer({
         className={`${
           vertical
             ? "verticalScrollbar w-full overflow-y-auto h-fit max-h-full flex-col"
-            : "horizontalScrollbar overflow-x-auto w-fit max-w-full p-1 xs:px-4 pb-4 pt-2  h-full"
+            : "horizontalScrollbar overflow-x-auto w-fit max-w-full p-1 pb-4 pt-2  h-full"
         }  flex gap-2 lg:gap-4 items-stretch`}
       >
         {children}
