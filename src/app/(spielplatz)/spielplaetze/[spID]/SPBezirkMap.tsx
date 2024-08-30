@@ -12,23 +12,13 @@ import ShuffleGallery from "@app/components/ShuffleGallery";
 import GeneralMap from "@app/components/@Map/GeneralMap";
 import MarkersLists from "@app/components/@Map/PopUpsMarkers/MarkersLists";
 
-const stadtteilLocationIcon = divIcon({
+const CurrentSelectedSpielplatzIcon = divIcon({
   // iconUrl: "/assets/icons/selectedLocation.svg",
   html: createStandortMapIcon("#F6AA1C", 30),
   className: "bg-transparent",
   iconSize: [30, 30],
   iconAnchor: [15, 30],
 });
-
-function groupSpielgeraete(geraete: string[]) {
-  return geraete.map((g) =>
-    ["rutsche", "kleinkindrutsche", "röhrenrutsche"].includes(g)
-      ? "rutsche"
-      : ["schaukel", "kleinkindschaukel", "nestschaukel"].includes(g)
-      ? "schaukel"
-      : g
-  );
-}
 
 export default function SPBezirkMap({
   spList,
@@ -44,7 +34,7 @@ export default function SPBezirkMap({
 
   const displayedSpList = useMemo(() => {
     if (!currentSpielplatz.current) return spList;
-    if (!!currentSpielplatz.current.lat && !!currentSpielplatz.current.lon)
+    if (!currentSpielplatz.current.lat && !currentSpielplatz.current.lon)
       return spList;
     return spList
       .filter(
@@ -92,14 +82,16 @@ export default function SPBezirkMap({
       <article className="w-full md:w-1/2 lg:w-full max-h-fit h-1/2 md:h-full lg:h-1/2 flex-grow  flex flex-col items-center gap-2 rounded bg-hh-900">
         <GeneralMap currentTarget={currentSpielplatz.current} zoom={12}>
           <MarkersLists
+            cluster={false}
             lists={{
               spielplaetze: otherSP,
             }}
           />
           {selectedSP && (
             <Marker
+              zIndexOffset={300}
               position={[selectedSP.lat, selectedSP.lon]}
-              icon={stadtteilLocationIcon}
+              icon={CurrentSelectedSpielplatzIcon}
             >
               <Popup
                 className="font-sans"
@@ -133,7 +125,7 @@ export default function SPBezirkMap({
             { title: currentSpielplatz.current?.title, color: "#BC251F" },
             {
               title: !!otherSP.length && "Spielplätze in der Nähe",
-              color: "#39579D",
+              color: "#17684D",
             },
             {
               title: filteredCurrentList[selectedIndex]?.title,
