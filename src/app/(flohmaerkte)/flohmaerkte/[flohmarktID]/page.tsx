@@ -7,7 +7,10 @@ import UpdateButton from "@app/components/UpdateButton";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
 import { Metadata } from "next";
 import React from "react";
-import MapContainer from "./FlohmarktPageMapContainer";
+import FlohmarktPageMapContainer from "./FlohmarktPageMapContainer";
+import { getSpielplatzFromBezirkStadtteil } from "@app/api/spActions";
+import { PROXIMATE_STADTTEILE_FROM_OTHER_BEZIRK } from "@app/utils/constants";
+import SpielplaetzeNearby from "./SpielplaetzeNearby";
 
 interface FlohmarktPageProps {
   params: { flohmarktID: string };
@@ -37,6 +40,14 @@ export default async function FlohmarktPage({
   const flohmarkt = await getFlohmarktWithID(flohmarktID);
   if (!flohmarkt || flohmarkt.status !== "approved")
     return <PostNotFound type="flohmarkt" />;
+
+  const spielplaetzeNearby =
+    (await getSpielplatzFromBezirkStadtteil(
+      flohmarkt.bezirk!,
+      PROXIMATE_STADTTEILE_FROM_OTHER_BEZIRK[flohmarkt.bezirk!] || [
+        flohmarkt.stadtteil,
+      ]
+    )) || [];
   return (
     <>
       <FlohmarktTemplate flohmarkt={flohmarkt}>
@@ -59,7 +70,17 @@ export default async function FlohmarktPage({
           </aside>
         </AdminServerComponent>
       </FlohmarktTemplate>
-      <MapContainer currentTarget={flohmarkt} />
+      <section className="w-full flex flex-wrap-reverse xl:flex-wrap justify-center gap-2">
+        <FlohmarktPageMapContainer
+          spielplaetzeAround={spielplaetzeNearby}
+          currentTarget={flohmarkt}
+        />
+        <SpielplaetzeNearby
+          spielplaetzeNearby={spielplaetzeNearby}
+          lat={flohmarkt.lat}
+          lon={flohmarkt.lon}
+        />
+      </section>
     </>
   );
 }
