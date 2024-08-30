@@ -7,6 +7,7 @@ import React from "react";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
 import AdminRoute from "@app/providers/AdminRoute";
 import AddLatLonFlohmarkt from "@app/components/AddLatLonFlohmarkt";
+import DeleteButton from "@app/components/DeleteButton";
 
 export default async function CurrentPostPage({
   params,
@@ -50,14 +51,25 @@ export default async function CurrentPostPage({
           )}
         </div>
         <AdminServerComponent>
-          <AddLatLonFlohmarkt item={post} />
-          <ApprovePostButton post={post} />
-          <Link
-            href={`/update-suggestion/${suggestionID}`}
-            className="my-2 bg-hh-700 rounded-md text-center flex justify-center p-2 text-white hover:bg-hh-800 active:bg-hh-600"
-          >
-            Update Suggestion
-          </Link>
+          <div className="flex flex-col items-center gap-2 bg-slate-300 w-fit p-2 mx-auto rounded">
+            <AddLatLonFlohmarkt item={post} />
+            {post.status === "approved" ? (
+              <DeleteButton
+                deleteFrom="approved"
+                type="post"
+                id={post.id}
+                title={post.title}
+              />
+            ) : (
+              <ApprovePostButton post={post} />
+            )}
+            <Link
+              href={`/update-suggestion/${suggestionID}`}
+              className="bg-hh-700 rounded-md text-center flex justify-center p-2 text-white hover:bg-hh-800 active:bg-hh-600"
+            >
+              Update Suggestion
+            </Link>
+          </div>
         </AdminServerComponent>
       </PostTemplate>
     </AdminRoute>
