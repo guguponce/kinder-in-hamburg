@@ -52,7 +52,7 @@ export default async function FlohmaerkteNearby({
       </div>
       <div className="hidden lg:flex w-full justify-center bg-hh-800 bg-opacity-75 p-2 mt-auto mb-2">
         <h2
-          className="text-xl overflow-hidden w-3rem rotate-180  flex flex-col font-bold  text-hh-50"
+          className="text-xl overflow-hidden max-w-full mr-2 rotate-180  flex flex-col font-bold  text-hh-50"
           style={{ writingMode: "vertical-rl", textOrientation: "revert" }}
         >
           Flohmärkte dieser Woche
