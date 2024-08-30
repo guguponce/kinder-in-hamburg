@@ -1,4 +1,4 @@
-import { getSuggestionsWithCat } from "@app/api/dbActions";
+import { getApprovedPostWithCat } from "@app/api/dbActions";
 import RandomRecommendation from "@app/components/@Cards/RandomRecommendation";
 import DynamicCategoryMap from "@app/components/@Map/DynamicCategoryMap";
 import PointsGallery from "@app/components/@PostForm/PointsGallery";
@@ -16,7 +16,8 @@ export default async function CategoriesPage({
 }) {
   const category = parseParams(cat);
   if (!categoryNames.includes(category)) return <NotFound type="categories" />;
-  const categoryPosts = await getSuggestionsWithCat(category);
+  const categoryPosts = await getApprovedPostWithCat(category);
+  console;
   if (!categoryPosts) return <NotFound type="categories" />;
   const highlightedWithImages = categoryPosts.filter(
     (post) => post.image && post.pinnedPost

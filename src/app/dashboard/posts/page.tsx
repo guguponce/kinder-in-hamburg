@@ -31,9 +31,9 @@ export default async function AllPostsPage() {
                       : status === "rejected"
                       ? "bg-negative-300"
                       : "bg-hh-300"
-                  } p-2 rounded-md flex  justify-around gap-4 items-center w-[400px] lg:w-[600px]  h-[200px]`}
+                  } p-2 rounded-md flex justify-around flex-wrap gap-4 items-center min-w-[350px] max-w-[450px] w-2/5 lg:w-[600px]`}
                 >
-                  <div className="w-[275px] lg:w-[450px] flex-grow h-full">
+                  <div className="min-w-[275px] lg:max-w-[450px] h-[160px] flex-grow">
                     <HorizontalCard
                       id={p.id}
                       image={p.image ? p.image[0] : ""}
@@ -46,7 +46,7 @@ export default async function AllPostsPage() {
                       }
                     />
                   </div>
-                  <div className="h-full flex flex-col items-center justify-center gap-4 text-hh-800 w-[100px]">
+                  <div className="border border-hh-800 rounded p-2 flex flex-wrap items-center justify-center gap-4 text-hh-800 min-w-[100px]">
                     <StatusSetter
                       status={p.status || "pending"}
                       target={p}
