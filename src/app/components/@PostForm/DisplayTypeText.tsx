@@ -29,7 +29,7 @@ export default function DisplayTypeText({
             whiteSpace: "pre-wrap",
             wordWrap: "break-word",
           }}
-          className="mt-6 mb-4 text-xl font-bold"
+          className="mt-4 text-2xl font-bold"
         >
           {text}
         </h2>
@@ -40,7 +40,7 @@ export default function DisplayTypeText({
             whiteSpace: "pre-wrap",
             wordWrap: "break-word",
           }}
-          className="mt-4 mb-1 text-lg font-semibold"
+          className="mt-2 text-lg font-semibold"
         >
           {text}
         </h2>
@@ -67,7 +67,7 @@ export default function DisplayTypeText({
             whiteSpace: "pre-wrap",
             wordWrap: "break-word",
           }}
-          className=" text-wrap "
+          className="text-sm  text-wrap py-1 max-w-full w-full"
         >
           {text}
         </pre>
@@ -78,7 +78,7 @@ export default function DisplayTypeText({
             whiteSpace: "pre-wrap",
             wordWrap: "break-word",
           }}
-          className=" text-wrap "
+          className="text-xl font-semibold my-1 text-wrap py-1 max-w-full w-full"
         >
           {text}
         </pre>
