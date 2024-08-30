@@ -32,6 +32,8 @@ import IgAccountInput from "./IgAccountInput";
 import { deleteUnusedImages } from "@app/api/storageActions";
 import AdminClientComponents from "@app/providers/AdminClientComponents";
 import { revalidatePost } from "@app/utils/actions/revalidate";
+import LatLonSetterMap from "@app/(spielplatz)/LatLonSetterMap";
+import { getLatLong } from "@app/utils/functions";
 
 interface PostFormProps {
   PostForm: Partial<iPost>;
@@ -64,6 +66,8 @@ export default function PostForm({
     user_id,
     addedBy,
     status,
+    lat,
+    lon,
   },
   user,
   children,
@@ -92,6 +96,8 @@ export default function PostForm({
   const [addressInput, setAddressInput] = React.useState<iAddress | undefined>(
     address || { street: "", number: "", PLZ: "", city: "" }
   );
+  const [latlon, setLatLon] = React.useState({ lat, lon });
+
   const [igAccountsInput, setIgAccountsInput] = React.useState<
     iIgAccount[] | undefined
   >(igAccounts);
@@ -108,6 +114,7 @@ export default function PostForm({
     register,
     setValue,
     handleSubmit,
+    getValues,
     formState: { errors, isSubmitSuccessful, isDirty, isSubmitting, isLoading },
   } = useForm({
     defaultValues: {
@@ -132,6 +139,8 @@ export default function PostForm({
       igAccounts: igAccounts,
       lastUpdate: lastUpdate,
       pinnedPost: pinnedPost,
+      lat: lat,
+      lon: lon,
     },
   });
 
@@ -167,6 +176,8 @@ export default function PostForm({
       user_id: userInput.email,
       addedBy: userInput,
       status: data.status || "pending",
+      lat: latlon.lat,
+      lon: latlon.lon,
     };
 
     addNewSuggestedPost(suggestionPost)
@@ -214,6 +225,8 @@ export default function PostForm({
       title: data.title,
       user_id: user_id!,
       status: data.status,
+      lat: latlon.lat,
+      lon: latlon.lon,
     };
     updateSuggestedPost(updatedPost)
       .then(() => {
@@ -259,6 +272,8 @@ export default function PostForm({
       text: savedPostText,
       title: data.title,
       user_id: user_id,
+      lat: latlon.lat,
+      lon: latlon.lon,
     };
     approveSuggestedPost(suggestionPost)
       .then(() => {
@@ -307,6 +322,8 @@ export default function PostForm({
       title: data.title,
       user_id: user_id,
       status: data.status,
+      lat: latlon.lat,
+      lon: latlon.lon,
     };
     updateApprovedPost(updatedPost)
       .then(() => {
@@ -613,6 +630,35 @@ export default function PostForm({
               </div>
             </PostFormInput>
           </div>{" "}
+          <button
+            type="button"
+            onClick={async (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              const { lat, lon } = await getLatLong(
+                [
+                  addressInput?.street,
+                  addressInput?.number,
+                  addressInput?.PLZ,
+                  addressInput?.city,
+                ].join(" ")
+              );
+              setLatLon({ lat: parseFloat(lat), lon: parseFloat(lon) });
+            }}
+            className="bg-green-700 hover:bg-green-600 hover:shadow-md w-full active:scale-[0.99] border-0px-8  flex rounded p-2 text-lg text-white transition-colors  duration-200 ease-in-out  focus:outline-2 focus:ring-2 focus:ring-green-600 focus:ring-offset-2 disabled:bg-gray-500"
+          >
+            Get LatLon
+          </button>
+          {!!latlon.lon && !!latlon.lat && (
+            <LatLonSetterMap
+              lat={latlon.lat}
+              lon={latlon.lon}
+              latlonSetter={setLatLon}
+              setValue={(key: "lat" | "lon", value: any) => {
+                setValue(key, value);
+              }}
+            />
+          )}
         </div>
         <div
           id="minmax-box"
