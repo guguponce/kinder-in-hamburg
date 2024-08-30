@@ -6,11 +6,29 @@ import Link from "next/link";
 import React from "react";
 import BezirkableFlohmaerkteList from "./BezirkableFlohmaerkteList";
 import dynamic from "next/dynamic";
+import { Metadata } from "next";
 
 const DynamicFlohmarktMap = dynamic(() => import("./DynamicFlohmarktMap"), {
   ssr: false,
 });
 export const revalidate = 120;
+
+export const metadata: Metadata = {
+  title: "Flohmärkte",
+  description: "Flohmärkte in Hamburg",
+  keywords: [
+    "Flohmärkte, Hamburg",
+    "Flohmarkt, Hamburg",
+    "Hamburg Flohmarkt",
+    "Hamburg Flohmärkte",
+    "Hamburg Markt",
+    "Hamburg Märkte",
+    "Kinderflohmarkt",
+    "Kinderflohmärkte",
+    "Kinderflohmarkt Hamburg",
+    "Kinderflohmärkte Hamburg",
+  ],
+};
 
 export default async function FlohmarktPage() {
   const flohmaerkte = await getApprovedFlohmaerkte();
