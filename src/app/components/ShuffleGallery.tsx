@@ -1,20 +1,26 @@
 "use client";
-import { iSpielplatz } from "@app/utils/types";
+import { iPost, iSpielplatz } from "@app/utils/types";
 import React, { useMemo, useRef } from "react";
 import TriangleIcon from "./@Icons/TriangleIcon";
 import ShuffleIcon from "./@Icons/ShuffleIcon";
 import SpielplatzPoster from "./SpielplatzPoster";
 import Link from "next/link";
+import { isTypeSpielplatz } from "@app/utils/functions";
+import PostPoster from "./PostPoster";
 
 export default function ShuffleGallery({
   children,
   list,
   shuffle,
   idSetter,
+  titleUnder = false,
+  dark = false,
 }: {
+  titleUnder?: boolean;
+  dark?: boolean;
   shuffle?: boolean;
   size?: "small" | "medium" | "large";
-  list: iSpielplatz[];
+  list: iSpielplatz[] | iPost[];
   children?: React.ReactNode;
   idSetter?: React.Dispatch<React.SetStateAction<number>>;
 }) {
@@ -29,35 +35,53 @@ export default function ShuffleGallery({
   const article = useMemo(() => {
     if (originalList.length === 0) return undefined;
     const currentArticle = originalList[currentIndex] || originalList[0];
-    const { spielgeraete = [] } = currentArticle;
-    const backupImg = ["spielplatz", ...(spielgeraete || [])][
-      (Math.floor(randomSPGeraeteIndex.current * spielgeraete?.length + 1) +
-        currentIndex) %
-        spielgeraete.length
-    ];
-    return { currentArticle, backupImg };
+    if (isTypeSpielplatz(currentArticle)) {
+      const { spielgeraete = [] } = currentArticle as iSpielplatz;
+      const backupImg = ["spielplatz", ...(spielgeraete || [])][
+        (Math.floor(randomSPGeraeteIndex.current * spielgeraete?.length + 1) +
+          currentIndex) %
+          spielgeraete.length
+      ];
+      return { currentArticle, backupImg };
+    } else {
+      const backupImg = currentArticle.image
+        ? currentArticle.image[0]
+        : undefined;
+      return { currentArticle, backupImg };
+    }
   }, [currentIndex, originalList]);
   if (article === undefined) return null;
   const { currentArticle, backupImg } = article;
   return (
     <div
-      className={`relative flex flex-col items-center rounded-md min-w-full bg-hh-400 bg-opacity-25 h-full gap-2 p-2 ${
-        shuffle ? "pb-12" : ""
-      }`}
+      className={`relative flex flex-col items-center rounded-md min-w-full ${
+        dark ? "bg-hh-700" : "bg-hh-400"
+      } bg-opacity-25 h-full gap-2 p-2 ${shuffle ? "pb-12" : ""}`}
     >
       <article className="h-full w-full md:aspect-square border border-hh-200 shadow-sm rounded bg-hh-400 bg-opacity-25 flex flex-col items-center gap-2 relative">
         <Link
           href={`/spielplaetze/${currentArticle.id}`}
           className="hover:brightness-110 hover:shadow-2xl shadow-sm w-full h-full rounded-md overflow-hidden"
         >
-          <SpielplatzPoster
-            bezirk={currentArticle.bezirk}
-            stadtteil={currentArticle.stadtteil}
-            backupImg={backupImg}
-            title={currentArticle.title}
-            image={currentArticle.image ? currentArticle.image[0] : undefined}
-            spielgeraete={currentArticle.spielgeraete}
-          />
+          {isTypeSpielplatz(currentArticle) ? (
+            <SpielplatzPoster
+              titleUnder={titleUnder}
+              bezirk={currentArticle.bezirk}
+              stadtteil={currentArticle.stadtteil}
+              backupImg={backupImg as string}
+              title={currentArticle.title}
+              image={currentArticle.image ? currentArticle.image[0] : undefined}
+              spielgeraete={(currentArticle as iSpielplatz).spielgeraete}
+            />
+          ) : (
+            <PostPoster
+              titleUnder={titleUnder}
+              title={currentArticle.title}
+              image={currentArticle.image ? currentArticle.image[0] : undefined}
+              bezirk={currentArticle.bezirk}
+              stadtteil={currentArticle.stadtteil}
+            />
+          )}
         </Link>
       </article>
       {originalList.length > 1 && (
