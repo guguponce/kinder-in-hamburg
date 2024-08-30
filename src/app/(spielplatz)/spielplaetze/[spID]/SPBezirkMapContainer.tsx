@@ -39,7 +39,7 @@ export default async function SPBezirkMapContainer({
   stadtteil?: string;
 }) {
   const bezirk = parseParams(bez);
-  if (!checkBezirk(bezirk)) return <NotFound type="bezirk" />;
+  if (!checkBezirk(bezirk)) return null;
 
   const BezirkSPList = await getSpielplaetzeFromBezirk(bezirk as iBezirk);
   if (!BezirkSPList) return <NotFound type="spielplatz" />;
