@@ -86,19 +86,19 @@ export default async function SpielplatzPage({
           {!title.toLowerCase().includes("spielplatz") && "Spielplatz "}
           {title}
         </h1>
-        {type.length > 1 || type[0] === "outdoor" ? null : (
-          <div className="flex justify-center items-center flex-wrap gap-2 text-base text-hh-950 p-2">
-            {type.map((t) => (
-              <Link
-                href={"/spielplaetze/type/" + t}
+        <div className="flex justify-center items-center flex-wrap gap-2 text-base text-hh-950 p-2">
+          {type.map((t) =>
+            t === "outdoor" ? null : (
+              <h3
+                // href={"/spielplaetze/type/" + t}
                 key={t}
                 className="capitalize rounded-xl bg-hh-50 px-2 hover:bg-hh-100 transition-colors"
               >
                 {t}
-              </Link>
-            ))}
-          </div>
-        )}
+              </h3>
+            )
+          )}
+        </div>
       </div>
       <div id="spielplatz-grid" className="w-full xs:px-2 sm:px-4 gap-4">
         {spielgeraete && <Spielgeraete spielgeraete={spielgeraete} />}
