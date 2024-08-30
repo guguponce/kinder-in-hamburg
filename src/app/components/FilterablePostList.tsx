@@ -1,7 +1,7 @@
 "use client";
 import { FilterObject, iPost } from "@app/utils/types";
 import React, { useMemo, useRef, useState } from "react";
-import CardsDisplay from "./@Cards/CardsDisplay";
+import CardsListDisplay from "./@Cards/CardsListDisplay";
 import PostFilters from "./PostsFilters";
 import { usePathname } from "next/navigation";
 import { parseParams } from "@app/utils/functions";
@@ -18,8 +18,8 @@ export default function FilterablePostList({
   const [type, p] = params.split("/").filter(Boolean) || ["", ""];
   const param = p ? parseParams(p) : p;
   // STATE
-  const [maxDisplay, setMaxDisplay] = useState(10);
-  const [maxDisplayable, setMaxDisplayable] = useState(10);
+  const [maxDisplay, setMaxDisplay] = useState(12);
+  const [maxDisplayable, setMaxDisplayable] = useState(12);
   const initialFilter = useRef<FilterObject | null>(
     (!!param &&
       (type === "categories"
@@ -28,7 +28,6 @@ export default function FilterablePostList({
       null
   );
   const postsListRef = useRef([...postsList]);
-
   const [filters, setFilters] = useState<FilterObject>(
     initialFilter.current || {}
   );
@@ -39,7 +38,7 @@ export default function FilterablePostList({
   };
 
   const handleSetMaxDisplay = () => {
-    setMaxDisplay((prev) => prev + 10);
+    setMaxDisplay((prev) => prev + 12);
   };
 
   // MEMOIZED VALUES
@@ -88,6 +87,7 @@ export default function FilterablePostList({
   }, [filters, maxDisplay, type, param]);
   if (!postsListRef.current)
     return <div>There was a problem retrieving posts</div>;
+
   return (
     <section className="flex flex-grow flex-col gap-2 w-full max-w-[1200px] bg-hh-100 rounded py-4">
       <div className="flex flex-col-reverse justify-between gap-2 h-full">
@@ -101,7 +101,7 @@ export default function FilterablePostList({
         {children}
       </div>
       <article className="flex flex-col w-full flex-grow">
-        <CardsDisplay cardPosts={displayList} />
+        <CardsListDisplay cardPosts={displayList} />
         {displayList.length < maxDisplayable && (
           <button
             onClick={handleSetMaxDisplay}
