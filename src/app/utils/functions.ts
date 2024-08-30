@@ -261,13 +261,18 @@ export const sortPostsByDate = (posts: iPost[]) =>
   [...posts].sort((a, b) => b.createdAt - a.createdAt);
 
 export const separateByStatus = <T extends iFlohmarkt | iPost>(array: T[]) => {
+  const arr = isTypeFlohmarkt(array[0])
+    ? (array as iFlohmarkt[]).sort((a, b) => b.date - a.date)
+    : array;
   return array.reduce(
     (acc, current) => {
       const { status } = current;
       if (!status) {
-        acc["pending"].push(current);
+        acc["pending"].unshift(current);
       } else {
-        acc[status].push(current);
+        status === "pending"
+          ? acc["pending"].unshift(current)
+          : acc[status].push(current);
       }
       return acc;
     },
@@ -472,3 +477,39 @@ export const separateInBezirke = <T extends iSpielplatz | iFlohmarkt | iPost>(
     else acc[bezirk].push(sp);
     return acc;
   }, {} as { [key: string]: T[] });
+
+interface iLists {
+  flohmaerkte?: iFlohmarkt[];
+  posts?: iPost[];
+  spielplaetze?: iSpielplatz[];
+}
+export const filterByDistance = (
+  lat: number,
+  lon: number,
+  lists: iLists,
+  maxDistance: number
+) => {
+  const resultList = {} as iLists;
+  Object.entries(lists).map(([key, list]) => {
+    if (!list) return;
+
+    const filteredList = (
+      list as iPost[] | iSpielplatz[] | iFlohmarkt[]
+    ).filter((item) => {
+      if (item.lat && item.lon) {
+        const distance = haversineDistance(lat, lon, item.lat, item.lon);
+        return distance <= maxDistance;
+      }
+      return false;
+    });
+    if (key === "flohmaerkte") resultList[key] = filteredList as iFlohmarkt[];
+    if (key === "posts") resultList[key] = filteredList as iPost[];
+    if (key === "spielplaetze") resultList[key] = filteredList as iSpielplatz[];
+  });
+  return resultList;
+};
+
+export function removeCopyrightLine(text: string) {
+  if (!text.includes("©")) return text;
+  return text.split("\n").slice(1).join("\n").trim();
+}
