@@ -22,20 +22,24 @@ const DynamicThisWeekNearbyMap = dynamic(
   }
 );
 
-export default async function MapContainer({
+export default async function FlohmarktPageMapContainer({
   currentTarget,
+  spielplaetzeAround,
 }: {
   currentTarget: iFlohmarkt | iSpielplatz | iPost;
+  spielplaetzeAround?: iSpielplatz[];
 }) {
   const { today, nextMonday } = getTodayNexMonday();
   const thisWeekFlohmaerkte = await getThisWeekFlohmaerkte();
   const spielplaetzeNearby =
+    spielplaetzeAround ||
     (await getSpielplatzFromBezirkStadtteil(
       currentTarget.bezirk!,
       PROXIMATE_STADTTEILE_FROM_OTHER_BEZIRK[currentTarget.bezirk!] || [
         currentTarget.stadtteil,
       ]
-    )) || [];
+    )) ||
+    [];
   if (!thisWeekFlohmaerkte) return null;
   const weitereFlohmaerkte = thisWeekFlohmaerkte
     .filter(({ id }) => id !== currentTarget.id)
