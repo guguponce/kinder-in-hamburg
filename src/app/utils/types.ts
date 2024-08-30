@@ -16,7 +16,7 @@ export interface iPost {
   image?: string[]; //
   igAccounts?: iIgAccount[]; //
   bezirk: iBezirk;
-  stadtteil?: string | undefined;
+  stadtteil: string;
   address?: iAddress | undefined;
   lat?: number;
   lon?: number;
@@ -111,6 +111,7 @@ export type TextType = (typeof TEXT_TYPES)[number];
 export type TypeAndText = [TextType, string];
 
 export interface iCard {
+  children?: React.ReactNode;
   size?: "small" | "medium" | "large";
   id: number;
   title: string;
@@ -345,6 +346,7 @@ export type categoryName =
   | "Geburtstage"
   | "Wochenende Ausflüge"
   | "Shops"
+  | "Spielhaus"
   | "Badeplatz";
 
 export type overallCondition =
