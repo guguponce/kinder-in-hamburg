@@ -22,6 +22,7 @@ export default function FlohPostersList({
                 image={image}
                 date={date}
                 bezirk={bezirk}
+                prefixLink={prefixLink}
               />
             </article>{" "}
           </React.Fragment>
