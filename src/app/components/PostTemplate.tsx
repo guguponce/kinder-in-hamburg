@@ -3,8 +3,28 @@ import Link from "next/link";
 import React from "react";
 import DisplayTypeText from "./@PostForm/DisplayTypeText";
 import PostLogo from "./@Icons/@PostLogo/PostLogo";
-import UserAvatar from "./UserAvatar";
 import ImagesModalGallery from "./ImagesModalGallery";
+import PostMap from "@app/(blog)/posts/[postID]/PostMap";
+
+const BackButton = ({ type }: { type: "spielhaus" | "general" }) => (
+  <>
+    {type === "spielhaus" ? (
+      <Link
+        href={"/spielhaeuser"}
+        className="text-sm text-hh-700 px-2 py-1 hover:underline hover:underline-offset-4 min-w-fit transition-all rounded-md"
+      >
+        ← Alle Spielhäuser
+      </Link>
+    ) : (
+      <Link
+        href={"/posts"}
+        className="text-sm text-hh-700 px-2 py-1 hover:underline hover:underline-offset-4 min-w-fit transition-all rounded-md "
+      >
+        ← All Posts
+      </Link>
+    )}
+  </>
+);
 
 export default function PostTemplate({
   post: {
@@ -16,12 +36,12 @@ export default function PostTemplate({
     bezirk,
     stadtteil,
     address,
+    pinnedPost,
     minAge,
     maxAge,
     link,
     igAccounts,
-    tags,
-    addedBy,
+    id,
     categories,
   },
   children,
@@ -30,41 +50,58 @@ export default function PostTemplate({
   children?: React.ReactNode;
 }) {
   return (
-    <main className="w-full max-w-[1000px] bg-hh-100 rounded-lg p-6 relative flex flex-col">
+    <main
+      id="post-template-main"
+      className="w-full max-w-[1200px] bg-hh-100 rounded-lg p-6 relative"
+    >
       {children}
-      <div className="flex justify-between items-center gap-4">
-        <Link
-          href={"/posts"}
-          className="text-sm text-hh-700 px-2 py-1 hover:underline hover:underline-offset-4 min-w-fit"
-        >
-          ← All Posts
-        </Link>
-        <section
-          id="categories"
-          className="flex justify-end gap-1 h-fit flex-wrap"
-        >
-          {categories.map((cat) => (
-            <Link
-              className="px-2 py-1 h-fit leading-tight rounded-md align-middle font-semibold bg-transparent transition-all text-hh-700 hover:text-white hover:bg-hh-700"
-              key={cat}
-              href={`/categories/${encodeURIComponent(cat)}`}
-            >
-              {cat}
-            </Link>
-          ))}
-        </section>
+      <div
+        id="back-buttons"
+        className="flex justify-between items-center gap-4 w-full"
+      >
+        <BackButton
+          type={
+            title.toLocaleLowerCase().includes("spielhaus")
+              ? "spielhaus"
+              : "general"
+          }
+        />
+        <div className="flex gap-1 items-center">
+          <section
+            id="categories"
+            className="flex justify-end gap-1 h-fit flex-wrap"
+          >
+            {categories.map((cat) => (
+              <h3
+                className="px-2 py-1 h-fit w-fit text-end leading-tight rounded-md align-middle font-semibold bg-transparent transition-all text-hh-700 hover:text-white hover:bg-hh-700"
+                key={cat}
+                // href={`/categories/${encodeURIComponent(cat)}`}
+              >
+                {cat}
+              </h3>
+            ))}
+          </section>
+          {pinnedPost && (
+            <div className="relative self-start w-12 min-w-12 h-full bg-black">
+              <img
+                src="/assets/icons/bookmark.svg"
+                alt="Pinned Post"
+                className="absolute -top-6 left-0 w-full h-12"
+              />
+            </div>
+          )}
+        </div>
       </div>
-      <section
+
+      <article
         id="text"
-        className="w-full lg:w-4/5 lg:self-center p-4 my-6 rounded-md bg-hh-50 flex flex-col gap-4"
+        className="w-full lg:self-center p-4 rounded-md bg-hh-50 flex flex-col gap-4"
       >
         <h1 className="text-4xl text-center font-bold">{title}</h1>
         {!!image?.length && (
           <div id="posts-images" className="flex items-center gap-2">
             <div className="flex justify-center items-center w-full overflow-hidden">
-              {/* <div className=" flex  gap-2 w-fit overflow-x-auto"> */}
               <ImagesModalGallery images={image} title={title} />
-              {/* </div> */}
             </div>
           </div>
         )}
@@ -81,18 +118,23 @@ export default function PostTemplate({
             ? `(Letztes Update: ${new Date(lastUpdate).toLocaleDateString()})`
             : `(${new Date(createdAt).toLocaleDateString()})`}
         </p>
-      </section>
+      </article>
       <section
-        className={`w-full lg:w-4/5 mx-auto flex flex-wrap flex-col sm:flex-row ${
+        id="details"
+        className={`w-full mx-auto max-w-[800px] flex flex-wrap flex-col sm:flex-row gap-2 ${
           (!!bezirk || !!address) && (!!link || !!igAccounts?.length)
             ? "justify-center sm:justify-between"
             : "justify-center"
         }`}
       >
+        {<PostMap id={id} bezirk={bezirk} stadtteil={stadtteil} />}
         {(!!bezirk || !!address) && (
-          <div className="flex flex-col w-full sm:w-1/2">
-            <section id="location" className="w-full px-4 my-2">
-              <h2 className="text-lg font-semibold">Location:</h2>
+          <div className="flex w-full flex-col sm:flex-row lg:flex-col xl:flex-row gap-2 sm:gap-1">
+            <section
+              id="location"
+              className="w-full xl:flex-grow bg-hh-200 bg-opacity-25 rounded p-4"
+            >
+              <h2 className="text-lg font-semibold">Location</h2>
               {bezirk && (
                 <div className="flex gap-1 items-center">
                   <PostLogo logo="hamburg" color="#1F262E" />
@@ -143,8 +185,11 @@ export default function PostTemplate({
             </section>
 
             {((minAge && minAge > 0) || !!maxAge) && (
-              <section id="age" className="w-full px-4 my-2">
-                <h2 className="text-lg font-semibold">Alter Empfehlung:</h2>
+              <section
+                id="age"
+                className="w-full lg:min-w-fit xl:w-fit bg-hh-200 bg-opacity-25 rounded p-4"
+              >
+                <h2 className="text-lg font-semibold">Alter Empfehlung</h2>
                 <p>
                   {maxAge
                     ? `${minAge} - ${maxAge} Jahren`
@@ -155,8 +200,11 @@ export default function PostTemplate({
           </div>
         )}
         {(!!link || !!igAccounts?.length) && (
-          <section id="links-box" className="w-full sm:w-1/2 px-4 my-2">
-            <h2 className="text-lg font-semibold">Links:</h2>
+          <section
+            id="links-box"
+            className="w-full px-4 bg-hh-200 bg-opacity-25 rounded p-4"
+          >
+            <h2 className="text-lg font-semibold">Links</h2>
             {!!igAccounts && igAccounts.length > 0 && (
               <div className="igAccount flex flex-col gap-1">
                 {igAccounts.map(({ name, description }, i) => (
@@ -164,7 +212,7 @@ export default function PostTemplate({
                     <div className="flex gap-1 items-center">
                       <PostLogo logo="instagram" color="#1F262E" />
                       <Link
-                        className="hover:underline hover:underline-offset-4 font-semibold text-hh-700 italic hover:text-hh-600 active:text-hh-800 visited:text-hh-500"
+                        className="hover:underline hover:underline-offset-4 max-w-full break-words font-semibold text-hh-700 italic hover:text-hh-600 active:text-hh-800 visited:text-hh-500"
                         href={`https://instagram.com/${name}`}
                       >
                         @{name}
@@ -181,7 +229,7 @@ export default function PostTemplate({
                   <PostLogo logo="link" color="#1F262E" size="1rem" />
                 </div>
                 <Link
-                  className="underline underline-offset-2 text-hh-700 italic hover:text-hh-600 active:text-hh-800 visited:text-hh-500"
+                  className="underline underline-offset-2 max-w-full break-words text-hh-700 italic hover:text-hh-600 active:text-hh-800 visited:text-hh-500"
                   href={link}
                 >
                   {link}
@@ -191,9 +239,8 @@ export default function PostTemplate({
           </section>
         )}
       </section>
-
-      {"Augusto Ponce" !== addedBy.name && (
-        <section id="addedBy" className="w-fit px-4 my-2 ml-auto self-end">
+      {/* {"Augusto Ponce" !== addedBy.name && (
+        <section id="addedBy" className="w-fit px-4 ml-auto self-end">
           <h2 className="text-lg font-semibold">Added by:</h2>
           <div className="flex items-center justify-end transition-all">
             <UserAvatar
@@ -204,7 +251,7 @@ export default function PostTemplate({
             <p className="addedByName hidden">{addedBy.name}</p>
           </div>
         </section>
-      )}
+      )} */}
     </main>
   );
 }
