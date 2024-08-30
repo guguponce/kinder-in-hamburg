@@ -20,6 +20,7 @@ import {
   separateByStatus,
 } from "@app/utils/functions";
 import { deletePreviousFlohmaerkteImages } from "./storageActions";
+import { revalidatePost } from "@app/utils/actions/revalidate";
 const supabaseAdmin = createClient(
   process.env.SUPABASE_URL ?? "",
   process.env.SUPABASE_ANON_KEY ?? ""
@@ -395,6 +396,7 @@ export const updatePostStatus = async <
     } else {
       await updateSuggestionStatus(id, newStatus);
     }
+    revalidatePost();
   }
 };
 
@@ -454,6 +456,58 @@ export const getUserApprovedPosts = async (user: iSessionUser) => {
       .match({ user_id: user.email });
     if (error) {
       throw new Error("There was a problem getting your approved posts.");
+    }
+    return parseAllPosts(data);
+  } catch (error) {
+    return false;
+  }
+};
+
+export const getFlohmaerkteFromBezirkStadtteil = async (
+  bezirk: iBezirk,
+  stadtteile: string[]
+) => {
+  const combinedCondition = await createQueryCondition(bezirk, stadtteile);
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("flohmaerkte")
+      .select("*")
+      .or(combinedCondition)
+      .gte("date", new Date().getTime());
+    if (error) {
+      throw new Error("There was a problem getting flea markets from nearby.");
+    }
+    return data.map((floh) => parseFlohmarkt(floh));
+  } catch (error) {
+    return false;
+  }
+};
+export const createQueryCondition = async (
+  bezirk: iBezirk,
+  stadtteile: string[] | undefined
+) => {
+  if (!checkBezirk(bezirk)) throw new Error("Invalid Bezirk: " + bezirk);
+
+  // Construct bezirk stadtteile condition
+  const stadtteileConditions =
+    stadtteile && stadtteile.map((nh) => `stadtteil.ilike.%${nh}%`).join(",");
+  const bezirkCondition = `bezirk.eq.${bezirk}`;
+  if (!stadtteileConditions) return bezirkCondition;
+  return `${stadtteileConditions},${bezirkCondition}`;
+};
+
+export const getPostsFromBezirkStadtteile = async (
+  bezirk: iBezirk,
+  stadtteile: string[] | undefined
+) => {
+  const combinedCondition = await createQueryCondition(bezirk, stadtteile);
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("kih-approved-blogposts")
+      .select("*")
+      .or(combinedCondition);
+    if (error) {
+      throw new Error("There was a problem getting posts from nearby.");
     }
     return parseAllPosts(data);
   } catch (error) {
@@ -548,8 +602,10 @@ export const getAllPostsSeparatedByStatus = async () => {
     if (error) {
       throw new Error("There was a problem getting the approved posts.");
     }
+
     const parsedPosts = parseAllPosts(data);
-    return separateByStatus(parsedPosts);
+    const separatedByStatus = separateByStatus(parsedPosts);
+    return separatedByStatus;
   } catch (error) {
     return false;
   }
@@ -765,6 +821,22 @@ export const getAllFlohmaerkte = async () => {
 };
 
 export const getApprovedFlohmaerkte = async () => {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("flohmaerkte")
+      .select("*")
+      .ilike("status", "approved")
+      .gte("date", new Date().getTime());
+    if (error) {
+      throw new Error("There was a problem getting the Flea Markets.");
+    }
+    return data.map((f) => parseFlohmarkt(f)) as iFlohmarkt[];
+  } catch (error) {
+    return false;
+  }
+};
+
+export const getAllApprovedFlohmaerkte = async () => {
   try {
     const { data, error } = await supabaseAdmin
       .from("flohmaerkte")
