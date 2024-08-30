@@ -12,17 +12,17 @@ export default function GetAnalytics() {
       .split("; ")
       .find((row) => row.startsWith("kih="));
     const currentHost = window.location.host;
-
+    const currentPath = window.location.pathname;
     if (!cookieValue && currentHost === "www.kinder-in-hamburg.de") {
       setShowAnalytics(true);
-      document.cookie = "kih=1; max-age=2592000; path=/"; //30days
+      const newCookie = "kih=1; max-age=604800; path=" + currentPath; //7days
+      document.cookie = newCookie;
     }
   }, []);
 
-  if (showAnalytics) {
+  if (!showAnalytics) {
     return null;
   }
-
   return (
     <Analytics
       debug={process.env.NODE_ENV === "development"}
