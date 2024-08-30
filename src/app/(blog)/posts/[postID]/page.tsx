@@ -16,28 +16,54 @@ export default async function CurrentPostPage({
   const post = await getApprovedPostWithID(postID);
   if (!post) return <PostNotFound />;
   return (
-    <AdminRoute>
-      <>
-        <AdminServerComponent>
-          <DeletePostButton
-            type="post"
-            deleteFrom="approved"
-            id={post.id}
-            title={post.title}
-            size="large"
-          />
+    <>
+      {post.categories.includes("Badeplatz") ? (
+        <>
+          <AdminServerComponent>
+            <DeletePostButton
+              type="post"
+              deleteFrom="approved"
+              id={post.id}
+              title={post.title}
+              size="large"
+            />
 
-          <AddLatLonFlohmarkt item={post} />
+            <AddLatLonFlohmarkt item={post} />
 
-          <Link
-            href={`/update-post/${postID}`}
-            className="w-full max-w-[1000px] my-2 bg-hh-700 rounded-md text-center flex justify-center p-2 text-white hover:bg-hh-800 active:bg-hh-600"
-          >
-            Update Approved Post
-          </Link>
-        </AdminServerComponent>
-        <PostTemplate post={post} />
-      </>
-    </AdminRoute>
+            <Link
+              href={`/update-post/${postID}`}
+              className="w-full max-w-[1000px] my-2 bg-hh-700 rounded-md text-center flex justify-center p-2 text-white hover:bg-hh-800 active:bg-hh-600"
+            >
+              Update Approved Post
+            </Link>
+          </AdminServerComponent>
+          <PostTemplate post={post} />
+        </>
+      ) : (
+        <AdminRoute>
+          <>
+            <AdminServerComponent>
+              <DeletePostButton
+                type="post"
+                deleteFrom="approved"
+                id={post.id}
+                title={post.title}
+                size="large"
+              />
+
+              <AddLatLonFlohmarkt item={post} />
+
+              <Link
+                href={`/update-post/${postID}`}
+                className="w-full max-w-[1000px] my-2 bg-hh-700 rounded-md text-center flex justify-center p-2 text-white hover:bg-hh-800 active:bg-hh-600"
+              >
+                Update Approved Post
+              </Link>
+            </AdminServerComponent>
+            <PostTemplate post={post} />
+          </>
+        </AdminRoute>
+      )}
+    </>
   );
 }
