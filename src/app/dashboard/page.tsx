@@ -5,10 +5,9 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import React from "react";
 import ScrollableCardList from "@components/@Cards/ScrollableCardList";
-import ScrollableContainer from "@components/ScrollableContainer";
-import FlohPostersList from "@components/FlohPostersList";
 import DeleteUnusedImages from "@app/components/DeleteUnusedImages";
 import AdminRoute from "@app/providers/AdminRoute";
+import FlohmaerkteSearchList from "./FlohmaerkteSearchList";
 
 export default async function DashboardPage() {
   const session = await getServerSession();
@@ -59,37 +58,7 @@ export default async function DashboardPage() {
             </section>
           </AdminComponents>
         </section>
-        {userFlohs && Object.values(userFlohs).some((a) => !!a.length) && (
-          <section className="w-full max-w-[800px] flex flex-col gap-2">
-            <h3 className="text-lg font-semibold">Your Flea Markets</h3>
-            {Object.entries(userFlohs).map(([status, flohs]) =>
-              !!flohs.length ? (
-                <div
-                  key={status + "flohmaerkte"}
-                  className="p-2 w-full rounded-sm bg-hh-600 text-hh-50"
-                >
-                  <h4 className="text-lg font-semibold ml-6">
-                    {status.toUpperCase()}
-                  </h4>
-                  <div className="flex w-full items-center overflow-hidden pr-4">
-                    <div className="flex items-center gap-2 w-fit overflow-x-auto">
-                      <ScrollableContainer>
-                        <FlohPostersList
-                          flohList={flohs}
-                          prefixLink={
-                            status === "approved"
-                              ? "/flohmaerkte/"
-                              : "/flohmarkt-suggestion/"
-                          }
-                        />
-                      </ScrollableContainer>
-                    </div>
-                  </div>
-                </div>
-              ) : null
-            )}
-          </section>
-        )}
+        {userFlohs && <FlohmaerkteSearchList userFlohs={userFlohs} />}
         {userPosts && Object.values(userPosts).some((a) => !!a.length) && (
           <section className="w-full max-w-[800px] flex flex-col gap-2">
             <h3 className="text-lg font-semibold">Your Suggested Posts</h3>
