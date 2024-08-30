@@ -16,7 +16,9 @@ export default function SpielplatzPoster({
   backupImg,
   bezirk,
   stadtteil,
+  titleUnder = false,
 }: {
+  titleUnder?: boolean;
   backupImg: string;
   title: string;
   bezirk?: string;
@@ -25,7 +27,11 @@ export default function SpielplatzPoster({
   spielgeraete?: string[];
 }) {
   return (
-    <div className="w-full h-full flex flex-col items-center">
+    <div
+      className={`w-full h-full flex ${
+        titleUnder ? "flex-col-reverse" : "flex-col"
+      }  items-center`}
+    >
       <h3 className="font-bold text-xl text-hh-50 p-2 text-center rounded-sm bg-hh-900 bg-opacity-25 backdrop-blur-sm absolute z-10 flex flex-col">
         {title}
         {stadtteil && (
@@ -47,7 +53,11 @@ export default function SpielplatzPoster({
             {spielgeraete && (
               <div className="w-full h-full relative flex flex-col justify-center rounded items-center gap-2 overflow-hidden">
                 <SpielplatzgeraeteBackground spList={spielgeraete} />
-                <div className="h-4/5 aspect-square mt-auto flex justify-center items-center">
+                <div
+                  className={`h-4/5 aspect-square  flex justify-center items-center ${
+                    titleUnder ? "mb-auto" : "mt-auto"
+                  }`}
+                >
                   <DynamicIcon
                     logo={backupImg || "spielplatz"}
                     color="#fefefe"
