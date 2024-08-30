@@ -1,6 +1,13 @@
 import React from "react";
 import SpielplatzgeraeteBackground from "./SpielplatzgeraeteBackground";
-import SpielgeraeteIcon from "./@Icons/@Spielplatz/SpielgeraeteIcon";
+import dynamic from "next/dynamic";
+
+const DynamicIcon = dynamic(
+  () => import("./@Icons/@Spielplatz/SpielgeraeteIcon"),
+  {
+    ssr: false,
+  }
+);
 
 export default function SpielplatzPoster({
   title,
@@ -19,7 +26,7 @@ export default function SpielplatzPoster({
 }) {
   return (
     <div className="w-full h-full flex flex-col items-center">
-      <h3 className="font-bold text-xl text-hh-50 p-2 text-center rounded bg-hh-900 bg-opacity-25 backdrop-blur-sm absolute z-10 flex flex-col">
+      <h3 className="font-bold text-xl text-hh-50 p-2 text-center rounded-sm bg-hh-900 bg-opacity-25 backdrop-blur-sm absolute z-10 flex flex-col">
         {title}
         {stadtteil && (
           <span className="block text-xs">
@@ -41,7 +48,7 @@ export default function SpielplatzPoster({
               <div className="w-full h-full relative flex flex-col justify-center rounded items-center gap-2 overflow-hidden">
                 <SpielplatzgeraeteBackground spList={spielgeraete} />
                 <div className="h-4/5 aspect-square mt-auto flex justify-center items-center">
-                  <SpielgeraeteIcon
+                  <DynamicIcon
                     logo={backupImg || "spielplatz"}
                     color="#fefefe"
                     size="80%"
