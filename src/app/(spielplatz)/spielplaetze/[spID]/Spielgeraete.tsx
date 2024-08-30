@@ -36,7 +36,7 @@ export default function Spielgeraete({
     <section
       id="spielplatz-spielgeraete-box"
       className={`${
-        open ? "h-fit" : spielgeraeteHeight < 112 ? "h-fit" : "h-32"
+        open ? "h-fit" : spielgeraeteHeight < 112 ? "h-fit" : "h-32 lg:h-fit"
       } max-h-fit relative lg:mb-0 rounded-md p-2 bg-hh-200 bg-opacity-25 lg:max-w-full overflow-hidden`}
       ref={containerRef}
     >
@@ -47,7 +47,14 @@ export default function Spielgeraete({
         {spielgeraete.map((spielgeraet) => (
           <div
             key={spielgeraet}
-            className="bg-hh-200 p-2 rounded-md capitalize flex-grow flex items-center gap-2 font-semibold text-hh-900 max-w-[265px] h-10"
+            className={`${
+              [
+                "kinderfahrrad/roller geeignet",
+                "schaukel mit fixiermöglichkeit",
+              ].includes(spielgeraet.toLowerCase())
+                ? "max-w-fit"
+                : "max-w-[240px]"
+            } bg-hh-200 p-2 rounded-md capitalize flex-grow flex items-center gap-2 font-semibold text-hh-900  h-10`}
           >
             <div className="iconContainer h-full aspect-square">
               <SpielgeraeteIcon
@@ -56,14 +63,16 @@ export default function Spielgeraete({
                 size="1.5rem"
               />
             </div>
-            {spielgeraet}
+            <div className="flex-grow flex justify-center items-center">
+              {spielgeraet}
+            </div>
           </div>
         ))}
       </div>
       <button
         onClick={handleOpen}
         className={`${
-          showButton ? "flex" : "hidden"
+          showButton ? "flex lg:hidden" : "hidden"
         } absolute bottom-0 backdrop-blur-[1px] w-[calc(100%+8px)] -left-2 h-12 from-hh-400 to-[#758CA370] bg-gradient-to-t items-center justify-center font-semibold text-hh-50 z-30 rounded`}
       >
         Alle Spielgeräte anzeigen
