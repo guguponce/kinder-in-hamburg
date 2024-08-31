@@ -821,12 +821,13 @@ export const getAllFlohmaerkte = async () => {
 };
 
 export const getApprovedFlohmaerkte = async () => {
+  const { today } = getTodayNexMonday();
   try {
     const { data, error } = await supabaseAdmin
       .from("flohmaerkte")
       .select("*")
       .ilike("status", "approved")
-      .gte("date", new Date().getTime());
+      .gte("date", today);
     if (error) {
       throw new Error("There was a problem getting the Flea Markets.");
     }
