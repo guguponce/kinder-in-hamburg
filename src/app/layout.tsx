@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 
+import Script from "next/script";
+
 import { Roboto } from "next/font/google";
 import "@styles/globals.scss";
 import Header from "@components/@Header/Header";
@@ -62,6 +64,7 @@ export default async function RootLayout({
         </SessionProvider>
         <GetAnalytics />
       </body>
+      <Script src="https://scripts.simpleanalyticscdn.com/latest.js" />
     </html>
   );
 }
