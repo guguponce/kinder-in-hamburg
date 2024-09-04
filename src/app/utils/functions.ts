@@ -16,6 +16,7 @@ import type {
   iStringifiedFlohmarkt,
   iStringifiedRetrievedPost,
   iStringifiedSpielplatz,
+  iForecastHourly,
 } from "./types";
 import {
   ausruestungList,
@@ -227,26 +228,26 @@ export const getTodayNexMonday = () => {
   };
 };
 
-export const whenWillRainLater = (hours: Hour[], currentHour: number) => {
-  return hours.slice(currentHour, 21).findIndex((h) => h.will_it_rain === 1);
-};
 export const getCurrentTime = () => {
   const germanyDate = new Date().toLocaleString("en-US", {
     timeZone: "Europe/Berlin",
   });
   return new Date(germanyDate);
 };
+export const whenWillRainLater = (hours: iForecastHourly[]) => {
+  return hours.findIndex(
+    ({ HasPrecipitation, Hour }) => Hour > 6 && Hour < 21 && HasPrecipitation
+  );
+};
+
 export const getTimeRainAndActivity = (
-  hours: Hour[],
-  activity: "Outdoor" | "Indoor" | "Both",
-  sunset: string
+  hours: iForecastHourly[],
+  activity: "Outdoor" | "Indoor" | "Both"
 ) => {
   const currentTime = getCurrentTime();
-  const currentHour = currentTime.getHours();
-  const nextRain = whenWillRainLater(hours, currentHour);
-  const sunsetIndex = sunset.match(/\d+/)
-    ? parseInt(sunset.match(/\d+/)![0]) + 12
-    : 19;
+  const currentHour = getCurrentTime().getHours();
+  const nextRain = whenWillRainLater(hours);
+  const sunsetIndex = hours.find((h) => h.IsDaylight)?.Hour || 19;
 
   const activityType =
     nextRain !== -1 && nextRain + 1 + currentHour < sunsetIndex
