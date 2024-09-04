@@ -45,6 +45,37 @@ export interface iCurrentIGAccount {
   description?: string;
 }
 
+export interface iCurrentWeather {
+  WeatherText: string;
+  Temp: number;
+  WeatherIcon: number;
+  HasPrecipitation: boolean;
+  PrecipitationType: null;
+  IsDayTime: boolean;
+}
+
+export interface iForecastHourly {
+  Hour: number;
+  WeatherText: string;
+  Temp: number;
+  WeatherIcon: number;
+  HasPrecipitation: boolean;
+  PrecipitationProbability: number;
+  IsDaylight: boolean;
+}
+export interface iForecastDaily {
+  todayDescription: string;
+  dailyForecast: {
+    Date: Date;
+    dayTemp: {
+      min: number;
+      max: number;
+    };
+    Day: iDay;
+    Night: iDay;
+  }[];
+}
+
 export interface iStringifiedRetrievedPost {
   id: number;
   createdAt: number;
@@ -433,4 +464,88 @@ export interface iListsFPS {
   flohmaerkte?: iFlohmarkt[];
   posts?: iPost[];
   spielplaetze?: iSpielplatz[];
+}
+
+export interface iHourlyAccu {
+  DateTime: Date;
+  EpochDateTime: number;
+  WeatherIcon: number;
+  IconPhrase: string;
+  HasPrecipitation: boolean;
+  IsDaylight: boolean;
+  Temperature: iTemperature;
+  PrecipitationType?: string;
+  PrecipitationIntensity?: string;
+  PrecipitationProbability: number;
+  MobileLink: string;
+  Link: string;
+}
+
+export interface iTemperature {
+  Value: number;
+  Unit: Unit;
+  UnitType: number;
+}
+
+export enum Unit {
+  C = "C",
+}
+
+export interface iCurrentAccu {
+  LocalObservationDateTime: Date;
+  EpochTime: number;
+  WeatherText: string;
+  WeatherIcon: number;
+  HasPrecipitation: boolean;
+  PrecipitationType: null;
+  IsDayTime: boolean;
+  Temperature: iCurrentTemperature;
+  MobileLink: string;
+  Link: string;
+}
+
+export interface iCurrentTemperature {
+  Metric: iTemperature;
+  Imperial: iTemperature;
+}
+
+export interface iDailyAccuWeather {
+  Headline: iHeadline;
+  DailyForecasts: iDailyForecast[];
+}
+
+export interface iDailyForecast {
+  Date: Date;
+  EpochDate: number;
+  Temperature: iTemperature;
+  Day: iDay;
+  Night: iDay;
+  Sources: string[];
+  MobileLink: string;
+  Link: string;
+}
+
+export interface iDay {
+  Icon: number;
+  IconPhrase: string;
+  HasPrecipitation: boolean;
+  PrecipitationType?: string;
+  PrecipitationIntensity?: string;
+}
+
+export interface iTemperature {
+  Minimum: iTemperature;
+  Maximum: iTemperature;
+}
+
+export interface iHeadline {
+  EffectiveDate: Date;
+  EffectiveEpochDate: number;
+  Severity: number;
+  Text: string;
+  Category: string;
+  EndDate: Date;
+  EndEpochDate: number;
+  MobileLink: string;
+  Link: string;
 }
