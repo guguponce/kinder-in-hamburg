@@ -48,17 +48,17 @@ export const setFirstRow = async () => {
   const lastForecast = await utcTime();
   if (!currentWeather || !forecastHourly || !nextDays || !lastForecast)
     return false;
-  setNewWeatherRow({
+  const data = {
     id: lastForecast,
     currentWeather,
     forecastHourly,
     lastForecast,
     nextDays,
-  });
+  };
+  setNewWeatherRow(data);
+  return data;
 };
 export const getAllWeatherRows = async () => {
-  console.log("fetching all weather rows");
-
   try {
     const { data, error } = await supabaseAdmin.from("weather").select("*");
     if (error) {
@@ -161,7 +161,6 @@ export const getCurrentAccuWeather = async () => {
 };
 
 export const getHourlyForecastAccuWeather = async () => {
-  console.log("fetching hourly forecast");
   try {
     const response = await fetch(
       `http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/178556?apikey=${process.env.ACCUWEATHER_API}&language=de-de&metric=true`,
