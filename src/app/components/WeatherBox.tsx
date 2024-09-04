@@ -1,11 +1,12 @@
 import {
+  getApprovedPostsWithCatAndBezirk,
   getApprovedPostWithCat,
   getSuggestionsWithCatAndBezirk,
 } from "@app/api/dbActions";
-import { getHamburgsWeather } from "@app/api/weatherAPI";
-import { WEATHER_CODES, bezirke } from "@app/utils/constants";
+import { getWeatherData } from "@app/api/weatherAPI";
+import { WEATHER_CODES } from "@app/utils/constants";
 import React from "react";
-import { getPlainText, getTimeRainAndActivity } from "@app/utils/functions";
+import { getTimeRainAndActivity, getPlainText } from "@app/utils/functions";
 import WeatherIcon from "./@Icons/@WeatherIcon/WeatherIcon";
 import Link from "next/link";
 import ImageCard from "./@Cards/ImageCard";
@@ -22,20 +23,14 @@ export default async function WeatherBox({
   full?: boolean;
   bezirk?: iBezirk;
 }) {
-  const { current, forecast, location } = await getHamburgsWeather();
+  const weather = await getWeatherData();
+  if (!weather) return <></>;
   const { activity, overallCondition } =
-    WEATHER_CODES[current.condition.code.toString()];
+    WEATHER_CODES[weather.currentWeather.WeatherIcon];
   const { currentTime, nextRain, activityType, sunsetIndex } =
-    getTimeRainAndActivity(
-      forecast.forecastday[0].hour,
-      activity,
-      forecast.forecastday[0].astro.sunset
-    );
-  // -------------------
-  // change to getApprovedSuggestions
+    getTimeRainAndActivity(weather.forecastHourly, activity);
   const retrievedSuggestions = bezirk
-    ? // --------------------
-      await getSuggestionsWithCatAndBezirk(
+    ? await getApprovedPostsWithCatAndBezirk(
         activityType as categoryName,
         bezirk
       ).then((res) => {
@@ -59,15 +54,16 @@ export default async function WeatherBox({
     .sort(() => 0.5 - Math.random())[0];
   const link = `/categories/${activityType}`;
   const {
-    avgtemp_c: todayTemp,
-    condition: { code: todayCode },
-  } = forecast.forecastday[0].day;
+    dayTemp: { min, max },
+    Day: { Icon: todayCode },
+  } = weather.nextDays.dailyForecast[0];
+  const todayTemp = (min + max) / 2;
   const {
-    avgtemp_c: tomorrowTemp,
-    condition: { code: tomorrowCode },
-  } = forecast.forecastday[1].day;
-
-  if ((!current || !forecast || !location) && !suggestion) return <></>;
+    dayTemp: { min: tomorrowMin, max: tomorrowMax },
+    Day: { Icon: tomorrowCode },
+  } = weather.nextDays.dailyForecast[1];
+  const tomorrowTemp = (tomorrowMin + tomorrowMax) / 2;
+  if (!weather && !suggestion) return <></>;
   return (
     <>
       {full ? (
@@ -79,28 +75,28 @@ export default async function WeatherBox({
           weatherAtRight={weatherAtRight}
         >
           <article className="weatherSection flex flex-col items-center md:gap-4 gap-2 w-[100px] md:min-w-[250px] md:min-h-full p-2 md:p-4 md:aspect-[0.66] rounded bg-black backdrop-blur-sm bg-opacity-20  justify-center text-white">
-            <div className="md:aspect-square flex-grow  flex justify-center items-center flex-col">
+            <div className="flex justify-center items-center flex-col">
               <WeatherIcon
-                day={!!current.is_day}
+                day={!!weather.currentWeather.IsDayTime}
                 logo={overallCondition}
                 size="100%"
                 color="#141A1F"
               />
               <div className="flex flex-col items-center">
-                <h2 className="text-lg font-semibold ">
-                  {current.temp_c}°C
-                  <span className="ml-1 text-xs">
+                <h2 className="md:text-lg font-semibold ">
+                  {weather.currentWeather.Temp}°C
+                  {/* <span className="ml-1 text-xs">
                     (
                     {currentTime.toLocaleTimeString("de-DE", {
                       hour: "2-digit",
                       minute: "2-digit",
                     })}
                     )
-                  </span>
+                  </span> */}
                 </h2>
                 {nextRain !== -1 && (
-                  <small className="text-xs italic">
-                    It will probably rain today
+                  <small className="text-xs italic opacity-80">
+                    Heute wird es wahrscheinlich regnen
                   </small>
                 )}
               </div>
@@ -136,7 +132,7 @@ export default async function WeatherBox({
           <WeatherIcon logo={overallCondition} size="100%" color="#141A1F" />
           <div className="flex flex-col items-center">
             <h2 className="text-lg font-semibold ">
-              {current.temp_c}°C
+              {weather.currentWeather.Temp}°C
               <span className="ml-1 text-xs">
                 (
                 {currentTime.toLocaleTimeString("de-DE", {
