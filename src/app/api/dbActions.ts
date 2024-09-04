@@ -271,6 +271,31 @@ export const getSuggestionsWithCat = async (category: string) => {
   }
 };
 
+export const getApprovedPostsWithCatAndBezirk = async (
+  category: categoryName,
+  bezirk: iBezirk
+) => {
+  if (!checkCategory(category))
+    throw new Error("Invalid Category: " + category);
+  if (!checkBezirk(bezirk)) throw new Error("Invalid Bezirk: " + bezirk);
+
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("kih-approved-blogposts")
+      .select()
+      .ilike("categories", `%${category}%`)
+      .like("bezirk", bezirk);
+    if (error) {
+      throw new Error(
+        "There was a problem getting the posts for this Category and Bezirk."
+      );
+    }
+    return parseAllPosts(data);
+  } catch (error) {
+    return false;
+  }
+};
+
 export const getSuggestionsWithCatAndBezirk = async (
   category: categoryName,
   bezirk: iBezirk
