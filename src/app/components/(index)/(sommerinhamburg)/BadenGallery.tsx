@@ -1,7 +1,7 @@
 "use client";
 import ShuffleGallery from "@app/components/ShuffleGallery";
 import { iPost, iSpielplatz } from "@app/utils/types";
-import React from "react";
+import React, { useMemo } from "react";
 
 interface BadenGalleryProps {
   badeseen: iPost[];
@@ -16,18 +16,20 @@ export default function BadenGallery({
   wasserspiele,
   planschbecken,
 }: BadenGalleryProps) {
-  const [whichList, setWhichList] =
-    React.useState<keyof BadenGalleryProps>("badeseen");
+  const [whichList, setWhichList] = React.useState<
+    keyof BadenGalleryProps | "all"
+  >("all");
   const list: BadenGalleryProps = {
     badeseen,
     freibaeder,
     wasserspiele,
     planschbecken,
   };
-  if (
-    [...badeseen, ...freibaeder, ...wasserspiele, ...planschbecken].length === 0
-  )
-    return null;
+  const fullList = useMemo(
+    () => [...badeseen, ...freibaeder, ...planschbecken],
+    [badeseen, freibaeder, wasserspiele, planschbecken]
+  );
+  if (fullList.length === 0) return null;
   return (
     <div className="w-full flex items-center h-fit sm:items-stretch justify-around flex-col sm:flex-row gap-4 bg-hh-100 bg-opacity-50 p-2 rounded-[0_0_6px_6px] sm:rounded">
       <div className="flex flex-col items-center gap-2 mt-auto self-center min-w-full py-2">
@@ -52,8 +54,11 @@ export default function BadenGallery({
             )
           )}
         </select>
-        <div className="w-full max-w-[300px] aspect-[6/7] rounded bg-hh-900 bg-opacity-10">
-          <ShuffleGallery list={list[whichList]} shuffle={true} />
+        <div className="w-full max-w-[300px] max-h-[50vh] aspect-[6/7] rounded bg-hh-900 bg-opacity-10">
+          <ShuffleGallery
+            list={whichList === "all" ? fullList : list[whichList]}
+            shuffle={true}
+          />
         </div>
       </div>
     </div>
