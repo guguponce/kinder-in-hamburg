@@ -20,7 +20,7 @@ export default function ShuffleGallery({
   dark?: boolean;
   shuffle?: boolean;
   size?: "small" | "medium" | "large";
-  list: iSpielplatz[] | iPost[];
+  list: iSpielplatz[] | iPost[] | Array<iPost | iSpielplatz>;
   children?: React.ReactNode;
   idSetter?: React.Dispatch<React.SetStateAction<number>>;
 }) {
