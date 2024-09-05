@@ -26,7 +26,7 @@ export default function BadenGallery({
     planschbecken,
   };
   const fullList = useMemo(
-    () => [...badeseen, ...freibaeder, ...planschbecken],
+    () => [...badeseen, ...freibaeder, ...planschbecken, ...wasserspiele],
     [badeseen, freibaeder, wasserspiele, planschbecken]
   );
   if (fullList.length === 0) return null;
