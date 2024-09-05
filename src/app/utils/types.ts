@@ -45,6 +45,14 @@ export interface iCurrentIGAccount {
   description?: string;
 }
 
+export interface iWeatherData {
+  id: number;
+  currentWeather: iCurrentWeather;
+  forecastHourly: iForecastHourly[];
+  lastForecast: number;
+  nextDays: iForecastDaily;
+}
+
 export interface iCurrentWeather {
   WeatherText: string;
   Temp: number;
