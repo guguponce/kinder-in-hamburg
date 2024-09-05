@@ -2,7 +2,6 @@ import React from "react";
 
 const SunnyDay = ({ size, color }: { size: string; color: string }) => (
   <svg fill={color} height={size} width={size} viewBox="0 0 1024 1024">
-    <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
     <g
       id="SVGRepo_tracerCarrier"
       strokeLinecap="round"
