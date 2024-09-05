@@ -49,18 +49,22 @@ export default function WeatherDisplay({ weather }: { weather: iWeatherData }) {
       DayIcon: Icon,
     }));
   return (
-    <div className="w-full max-w-[400px] flex flex-col justify-center items-center gap-2 mt-auto self-center min-w-full py-2 rounded-[6px_6px_0_0] sm:rounded bg-hh-100 bg-opacity-25 font-sans">
-      <div className="flex gap-2 md:gap-4 items-center">
-        <div className="flex flex-col items-center w-1/3">
+    <div className="w-full max-w-[400px] flex flex-col justify-center items-center gap-2 mt-auto self-center min-w-full py-2 rounded-[6px_6px_0_0] sm:rounded bg-hh-100 bg-opacity-25">
+      <div className="flex gap-2 md:gap-4 items-center justify-evenly sm:justify-center w-full font-sans">
+        <div
+          className={` ${
+            rain ? "h-fit w-fit" : "h-24 aspect-square"
+          } flex flex-col justify-center items-center`}
+        >
           <WIcon logo={overallCondition} day={IsDayTime} size="3rem" />
           <h3 className="text-xl sm:text-xl font-bold text-white">{Temp}°C</h3>
           {rain && (
-            <small className="text-xs text-center opacity-90">
+            <small className="text-xs text-center opacity-90 w-fit text-hh-950 font-semibold">
               Heute wird es regnen
             </small>
           )}
         </div>
-        <div className="flex flex-col items-stretch justify-between">
+        <div className="min-w-[200px] h-fit flex flex-col items-stretch justify-between">
           <div className="flex px-2 py-1 rounded bg-hh-800 bg-opacity-20 items-center justify-center mb-1">
             <h4 className="mr-4">Heute</h4>
             <h3 className="text-xl font-bold text-white">{Math.round(max)}°</h3>
@@ -69,20 +73,22 @@ export default function WeatherDisplay({ weather }: { weather: iWeatherData }) {
               {Math.round(min)}°
             </h5>
           </div>
-          <div className="flex gap-1 px-2 py-1 rounded bg-hh-800 bg-opacity-20 items-center justify-center">
+          <div className="flex gap-2 px-2 py-1 rounded bg-hh-800 bg-opacity-20 items-center justify-around">
             {hours.map(({ Hour, Temp, WeatherIcon }) => (
               <div
                 key={Hour}
-                className="flex flex-col items-center justify-center"
+                className="aspect-[2/3] h-fit flex flex-col items-center justify-center"
               >
                 <WIcon
                   logo={WEATHER_CODES[WeatherIcon].overallCondition}
                   day={true}
                   size="1rem"
                 />
-                <h5 className="text-sm text-white">
-                  {Hour + 1}
-                  <span className="text-[8px]">Uhr</span>
+                <h5 className="text-sm text-white flex flex-col items-center">
+                  {Math.round(Temp)}°
+                  <span className="text-[8px] sm:text-xs leading-none">
+                    {Hour + 1}Uhr
+                  </span>
                 </h5>
               </div>
             ))}
