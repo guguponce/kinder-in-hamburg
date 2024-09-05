@@ -1,7 +1,6 @@
 "use client";
 import ShuffleGallery from "@app/components/ShuffleGallery";
 import { iPost, iSpielplatz } from "@app/utils/types";
-import Link from "next/link";
 import React from "react";
 
 interface BadenGalleryProps {
@@ -25,48 +24,38 @@ export default function BadenGallery({
     wasserspiele,
     planschbecken,
   };
+  if (
+    [...badeseen, ...freibaeder, ...wasserspiele, ...planschbecken].length === 0
+  )
+    return null;
   return (
-    <div className="w-full flex items-center h-fit sm:items-stretch justify-around flex-col sm:flex-row gap-4 bg-hh-100 bg-opacity-50 p-2 rounded">
-      <div className="flex flex-col items-center gap-2 flex-1">
-        <p className="italic px-2 sm:py-6">
-          Der Sommer ist fast vorbei, aber wir haben noch ein paar Tipps für den
-          letzten warmen Wochen!
-        </p>
-        <div className="w-full sm:w-auto flex flex-1 justify-center items-center">
-          <div className="w-full flex flex-wrap sm:gap-4 sm:max-w-[350px] justify-between sm:justify-center items-center px-2 sm:p-4">
-            {["badeseen", "freibaeder", "wasserspiele", "planschbecken"].map(
-              (type) => (
-                <button
-                  key={type}
-                  className={`${
-                    whichList === type
-                      ? "bg-opacity-100 text-white"
-                      : "bg-opacity-20 text-hh-100 "
-                  } p-1 sm:p-2 rounded shadow-md font-semibold bg-hh-500 capitalize hover:shadow-lg hover:scale-[1.01] text-xs sm:text-base`}
-                  onClick={() => setWhichList(type as keyof BadenGalleryProps)}
-                >
-                  {type}
-                </button>
-              )
-            )}
-          </div>
-        </div>
-        <Link
-          href="/sommer-in-hamburg"
-          className="underline underline-offset-2 font-semibold px-2 py-6 text-end text-hh-800 self-end sm:block hidden hover:scale-[1.01] transition-all hover:underline-offset-4"
+    <div className="w-full flex items-center h-fit sm:items-stretch justify-around flex-col sm:flex-row gap-4 bg-hh-100 bg-opacity-50 p-2 rounded-[0_0_6px_6px] sm:rounded">
+      <div className="flex flex-col items-center gap-2 mt-auto self-center min-w-full py-2">
+        <select
+          name="bezirk"
+          id="bezirk-select"
+          className="px-2 py-1 rounded-md bg-hh-600 font-semibold text-white w-fit capitalize"
+          onChange={(e) =>
+            setWhichList(e.target.value as keyof BadenGalleryProps)
+          }
         >
-          Mehr entdecken
-        </Link>
+          <option value="all">Alle Badestelle</option>
+          {["badeseen", "freibaeder", "planschbecken", "wasserspiele"].map(
+            (badestelle) => (
+              <option
+                key={badestelle}
+                value={badestelle}
+                className="capitalize"
+              >
+                {badestelle}
+              </option>
+            )
+          )}
+        </select>
+        <div className="w-full max-w-[300px] aspect-[6/7] rounded bg-hh-900 bg-opacity-10">
+          <ShuffleGallery list={list[whichList]} shuffle={true} />
+        </div>
       </div>
-      <section className="flex w-[240px] aspect-[3/4] max-h-[320px]">
-        <ShuffleGallery list={list[whichList]} shuffle={true} titleUnder dark />
-      </section>
-      <Link
-        href="/sommer-in-hamburg"
-        className="underline underline-offset-2 font-semibold px-2 py-2 sm:py-6 text-end text-hh-800 self-end block sm:hidden"
-      >
-        Mehr entdecken
-      </Link>
     </div>
   );
 }
