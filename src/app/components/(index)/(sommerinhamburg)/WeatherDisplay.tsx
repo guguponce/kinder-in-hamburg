@@ -86,7 +86,7 @@ export default function WeatherDisplay({ weather }: { weather: iWeatherData }) {
                 />
                 <h5 className="text-sm text-white flex flex-col items-center">
                   {Math.round(Temp)}°
-                  <span className="text-[8px] sm:text-xs leading-none">
+                  <span className="text-[8px] sm:text-[10px] leading-none">
                     {Hour + 1}Uhr
                   </span>
                 </h5>
@@ -114,7 +114,7 @@ export default function WeatherDisplay({ weather }: { weather: iWeatherData }) {
                 day={true}
                 size="1.5rem"
               />
-              <h5 className="text-sm text-white font-semibold">
+              <h5 className="text-sm text-white font-semibold hidden xl:block">
                 {max}°/<span className="text-xs">{min}°</span>
               </h5>
             </div>

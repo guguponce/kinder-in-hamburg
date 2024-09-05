@@ -200,7 +200,6 @@ export const getDate = (date: number) =>
   new Date(date).toLocaleDateString("de-DE", {
     day: "numeric",
     month: "long",
-    year: "numeric",
   });
 
 export const getStartTime = (time: string | undefined) =>
