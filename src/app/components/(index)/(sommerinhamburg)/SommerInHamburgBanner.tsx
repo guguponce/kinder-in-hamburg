@@ -48,7 +48,7 @@ export default async function SommerInHamburgBanner() {
 
       <Link
         href="/sommer-in-hamburg"
-        className="underline underline-offset-2 font-semibold px-4 text-end text-white self-end sm:block hidden hover:scale-[1.01] transition-all hover:underline-offset-4"
+        className="underline underline-offset-2 font-semibold px-4 text-end text-white self-end hover:scale-[1.01] transition-all hover:underline-offset-4"
       >
         Mehr entdecken
       </Link>
