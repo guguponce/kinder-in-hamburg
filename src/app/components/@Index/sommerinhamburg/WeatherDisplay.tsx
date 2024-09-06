@@ -31,7 +31,7 @@ export default function WeatherDisplay({
   forecast = true,
 }: {
   weather: iWeatherData;
-  forecast: boolean;
+  forecast?: boolean;
 }) {
   const {
     currentWeather: { WeatherIcon: icon, Temp, IsDayTime },

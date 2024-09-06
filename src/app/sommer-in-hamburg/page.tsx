@@ -6,6 +6,8 @@ import Freibaeder from "./Freibaeder";
 import Wasserspiele from "./Wasserspiele";
 import Planschbecken from "./Planschbecken";
 import dynamic from "next/dynamic";
+import { getWeatherData } from "@app/api/weatherAPI";
+import WeatherDisplay from "@app/components/@Index/sommerinhamburg/WeatherDisplay";
 
 const WaterMapContainer = dynamic(() => import("./WaterMapContainer"), {
   ssr: false,
@@ -25,7 +27,7 @@ export default async function SommerInHamburgPage() {
     (sp) => sp.spielgeraete && sp.spielgeraete.includes("wasserspiel")
   );
   const planschbecken = (await getTypeSpielplaetze("planschbecken")) || [];
-
+  const weather = await getWeatherData();
   return (
     <main className="max-w-[1000px] w-full mx-auto flex flex-col gap-4 items-center bg-hh-900 bg-opacity-20 p-4 rounded">
       <div className="w-full flex flex-col items-center">
@@ -50,7 +52,9 @@ export default async function SommerInHamburgPage() {
         freibaeder={freibaeder}
         badeseen={badeseen}
         wasserspiele={wasserspiele}
-      />
+      >
+        {weather && <WeatherDisplay weather={weather} forecast={false} />}
+      </WaterMapContainer>
       <Badeseen badeseen={badeseen} />
       <Freibaeder freibaeder={freibaeder} />
       <section className="flex flex-col md:flex-row mx-auto gap-4 justify-between items-center md:items-stretch w-full">

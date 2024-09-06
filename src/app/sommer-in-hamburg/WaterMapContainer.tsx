@@ -94,15 +94,12 @@ const SpielplatzMarkers = ({
   );
 };
 
-// create functions and constants for this page
-// create client component to filter
-// change general map to accept markers as props instead of markersLists
-
 interface iWaterMapContainer {
   freibaeder: iPost[];
   badeseen: iPost[];
   planschbecken: iSpielplatz[];
   wasserspiele: iSpielplatz[];
+  children?: React.ReactNode;
 }
 
 export default function WaterMapContainer({
@@ -110,6 +107,7 @@ export default function WaterMapContainer({
   badeseen,
   planschbecken,
   wasserspiele,
+  children,
 }: iWaterMapContainer) {
   const [showBadeseen, setShowBadeseen] = React.useState(true);
   const [showFreibaeder, setShowFreibaeder] = React.useState(true);
@@ -117,6 +115,11 @@ export default function WaterMapContainer({
   const [showWasserspiele, setShowWasserspiele] = React.useState(false);
   return (
     <section className="w-full flex flex-col lg:flex-row items-center gap-2 p-2 my-2 bg-hh-900 bg-opacity-5 rounded-sm">
+      {children && (
+        <div className="flex lg:hidden flex-col gap-2 items-center justify-center">
+          {children}
+        </div>
+      )}
       <article className="w-full max-w-[750px] h-[60vh]">
         <GeneralMap>
           <>
@@ -142,6 +145,11 @@ export default function WaterMapContainer({
         </GeneralMap>
       </article>
       <aside className="lg:flex-1 flex flex-row flex-wrap justify-center lg:flex-col gap-2">
+        {children && (
+          <div className="hidden lg:flex flex-col gap-2 items-center justify-center">
+            {children}
+          </div>
+        )}
         <MemoToggleButton
           title="Badeseen"
           show={showBadeseen}
