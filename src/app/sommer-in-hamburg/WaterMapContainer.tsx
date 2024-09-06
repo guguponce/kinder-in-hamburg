@@ -4,7 +4,7 @@ import PostPopUP from "@app/components/@Map/PopUpsMarkers/PostPopUP";
 import { createStandortMapIcon, joinAddress } from "@app/utils/functions";
 import { iPost, iSpielplatz } from "@app/utils/types";
 import { Marker } from "react-leaflet";
-import React, { memo, useMemo } from "react";
+import React, { memo } from "react";
 import SpielplatzPopUP from "@app/components/@Map/PopUpsMarkers/SpielplatzPopUP";
 import { divIcon } from "leaflet";
 

@@ -8,6 +8,7 @@ import {
   iCurrentAccu,
   iHourlyAccu,
   iDailyAccuWeather,
+  iWeatherData,
 } from "@app/utils/types";
 import { createClient } from "@supabase/supabase-js";
 
@@ -275,7 +276,7 @@ export const getWeatherData = async () => {
       forecastHourly,
       lastForecast,
       nextDays,
-    };
+    } as iWeatherData;
   } else {
     return lastHourData;
   }
