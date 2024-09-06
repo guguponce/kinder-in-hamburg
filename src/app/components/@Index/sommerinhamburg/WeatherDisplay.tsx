@@ -26,7 +26,13 @@ const dia = (date: Date) => {
   }
 };
 
-export default function WeatherDisplay({ weather }: { weather: iWeatherData }) {
+export default function WeatherDisplay({
+  weather,
+  forecast = true,
+}: {
+  weather: iWeatherData;
+  forecast: boolean;
+}) {
   const {
     currentWeather: { WeatherIcon: icon, Temp, IsDayTime },
     forecastHourly,
@@ -49,9 +55,14 @@ export default function WeatherDisplay({ weather }: { weather: iWeatherData }) {
       DayIcon: Icon,
     }));
   return (
-    <div className="w-full max-w-[400px] flex flex-col justify-center items-center gap-2 mt-auto self-center min-w-full py-2 rounded-[6px_6px_0_0] sm:rounded bg-hh-100 bg-opacity-25">
-      <div className="flex gap-2 md:gap-4 items-center justify-evenly sm:justify-center w-full font-sans">
+    <div className="w-full max-w-[400px] p-1 flex flex-col justify-center items-center gap-2 mt-auto self-center min-w-full py-2 rounded-[6px_6px_0_0] sm:rounded bg-hh-100 bg-opacity-25">
+      <div
+        className={`${
+          !forecast && "flex-wrap"
+        } flex gap-2 md:gap-4 items-center justify-evenly sm:justify-center w-full font-sans`}
+      >
         <div
+          id="weather-now"
           className={` ${
             rain ? "h-fit w-fit" : "h-24 aspect-square"
           } flex flex-col justify-center items-center`}
@@ -64,8 +75,11 @@ export default function WeatherDisplay({ weather }: { weather: iWeatherData }) {
             </small>
           )}
         </div>
-        <div className="min-w-[200px] h-fit flex flex-col items-stretch justify-between">
-          <div className="flex px-2 py-1 rounded bg-hh-800 bg-opacity-20 items-center justify-center mb-1">
+        <div
+          id="weather-today"
+          className="min-w-[200px] h-fit flex flex-col items-stretch justify-between"
+        >
+          <div className="flex px-2 py-1 rounded bg-hh-800 bg-opacity-20 items-center justify-center mb-1 text-hh-100">
             <h4 className="mr-4">Heute</h4>
             <h3 className="text-xl font-bold text-white">{Math.round(max)}°</h3>
             <h3 className="text-2xl font-thin">/</h3>
@@ -95,32 +109,34 @@ export default function WeatherDisplay({ weather }: { weather: iWeatherData }) {
           </div>
         </div>
       </div>
-      <div className="hidden w-full sm:flex gap-1 px-2 py-1 bg-hh-800 bg-opacity-20 items-center justify-around">
-        {days.map(({ date, max, min, DayIcon }) => {
-          const d = dia(date);
-          const day = date.getDate();
-          const month = date.getMonth() + 1;
-          return (
-            <div
-              key={date.getTime()}
-              className="flex flex-col items-center justify-center"
-            >
-              <h5 className="text-xs text-white">
-                <span className="text-sm font-semibold mr-1">{d}</span>
-                {day}.{month}
-              </h5>
-              <WIcon
-                logo={WEATHER_CODES[DayIcon].overallCondition}
-                day={true}
-                size="1.5rem"
-              />
-              <h5 className="text-sm text-white font-semibold hidden xl:block">
-                {max}°/<span className="text-xs">{min}°</span>
-              </h5>
-            </div>
-          );
-        })}
-      </div>
+      {forecast && (
+        <div className="hidden w-full sm:flex gap-1 px-2 py-1 bg-hh-800 bg-opacity-20 items-center justify-around">
+          {days.map(({ date, max, min, DayIcon }) => {
+            const d = dia(date);
+            const day = date.getDate();
+            const month = date.getMonth() + 1;
+            return (
+              <div
+                key={date.getTime()}
+                className="flex flex-col items-center justify-center"
+              >
+                <h5 className="text-xs text-white">
+                  <span className="text-sm font-semibold mr-1">{d}</span>
+                  {day}.{month}
+                </h5>
+                <WIcon
+                  logo={WEATHER_CODES[DayIcon].overallCondition}
+                  day={true}
+                  size="1.5rem"
+                />
+                <h5 className="text-sm text-white font-semibold hidden xl:block">
+                  {max}°/<span className="text-xs">{min}°</span>
+                </h5>
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }
