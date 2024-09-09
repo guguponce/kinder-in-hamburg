@@ -38,7 +38,11 @@ export default async function FlohmarktPage({
   params: { flohmarktID },
 }: FlohmarktPageProps) {
   const flohmarkt = await getFlohmarktWithID(flohmarktID);
-  if (!flohmarkt || flohmarkt.status !== "approved")
+  if (
+    !flohmarkt ||
+    flohmarkt.status === null ||
+    !["approved", "old"].includes(flohmarkt.status)
+  )
     return <PostNotFound type="flohmarkt" />;
 
   const spielplaetzeNearby =
@@ -48,6 +52,7 @@ export default async function FlohmarktPage({
         flohmarkt.stadtteil,
       ]
     )) || [];
+
   return (
     <>
       <FlohmarktTemplate flohmarkt={flohmarkt}>
