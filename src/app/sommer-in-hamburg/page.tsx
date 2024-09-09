@@ -34,7 +34,7 @@ export default async function SommerInHamburgPage() {
         <h1 className="text-4xl font-bold text-hh-100 p-2 lg:p-4">
           Sommer in Hamburg
         </h1>
-        <p className="text-hh-100 p-2 lg:p-4">
+        <p className="text-hh-100 p-2 lg:p-4 lg:py-0">
           In den heißen Monaten haben Kinder in Hamburg zahlreiche
           Gelegenheiten, draußen mit Wasser zu spielen. Die Stadt bietet eine
           große Auswahl an Möglichkeiten zur Abkühlung, darunter{" "}

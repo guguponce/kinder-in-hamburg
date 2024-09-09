@@ -144,7 +144,7 @@ export default function WaterMapContainer({
           </>
         </GeneralMap>
       </article>
-      <aside className="lg:flex-1 flex flex-row flex-wrap justify-center lg:flex-col gap-2">
+      <aside className="lg:flex-grow flex flex-row flex-wrap justify-center lg:flex-col gap-2">
         {children && (
           <div className="hidden lg:flex flex-col gap-2 items-center justify-center">
             {children}
