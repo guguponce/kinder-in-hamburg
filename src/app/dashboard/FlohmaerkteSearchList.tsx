@@ -33,7 +33,6 @@ export default function FlohmaerkteSearchList({
     });
     return lists;
   }, [searchQuery]);
-
   return (
     <>
       <input

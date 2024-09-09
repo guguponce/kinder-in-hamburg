@@ -10,7 +10,7 @@ export default function UpdateButton({
   type: "flohmarkt" | "post";
   size: "small" | "medium" | "large";
   id: number;
-  status: "approved" | "rejected" | "pending";
+  status: "approved" | "rejected" | "pending" | "old";
 }) {
   return (
     <Link

@@ -10,7 +10,7 @@ export default function StatusSetter({
   type = "post",
 }: {
   target: iPost | iFlohmarkt;
-  status: "pending" | "approved" | "rejected";
+  status: "pending" | "approved" | "rejected" | "old";
   type?: "post" | "flohmarkt";
 }) {
   const [currentStatus, setCurrentStatus] = useState(status);

@@ -5,6 +5,7 @@ import StatusSetter from "../StatusSetter";
 import AdminRoute from "@app/providers/AdminRoute";
 import FlohmarktPoster from "@app/components/FlohmarktPoster";
 import AddLatLonFlohmarkt from "@app/components/AddLatLonFlohmarkt";
+import OldButtonSetter from "./OldButtonSetter";
 
 export default async function AllFlohmaerktePage() {
   const allFlohs = await getAllFlohmaerteSeparatedByStatus();
@@ -13,6 +14,7 @@ export default async function AllFlohmaerktePage() {
   return (
     <AdminRoute>
       <main className="flex flex-col gap-4">
+        <OldButtonSetter />
         {Object.entries(allFlohs).map(([status, flohmarkt]) => (
           <section
             key={status}

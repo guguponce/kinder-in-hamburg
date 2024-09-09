@@ -369,7 +369,7 @@ export const getUsersSuggestions = async (email: string) => {
         if (!status) {
           acc["approved"].push(current);
         } else {
-          acc[status].push(current);
+          acc[status as "approved" | "pending" | "rejected"].push(current);
         }
         return acc;
       },
@@ -404,7 +404,7 @@ export const updateSuggestionStatus = async (id: number, status: string) => {
 };
 
 export const updatePostStatus = async <
-  T extends "rejected" | "approved" | "pending"
+  T extends "rejected" | "approved" | "pending" | "old"
 >(
   post: iPost,
   id: number,
@@ -768,16 +768,46 @@ export const restorePost = async (id: number) => {
 
 export const updateApprovedPost = async (post: iPost) => {
   try {
-    const { error } = await supabaseAdmin
+    const { data, error } = await supabaseAdmin
       .from("kih-approved-blogposts")
       .update(post)
       .match({ id: post.id });
     if (error) {
       throw new Error("There was a problem updating the post.");
     }
-    return true;
+    return data;
   } catch (error) {
     throw new Error("There was a problem updating the post.");
+  }
+};
+export const setFlohmarktAsOld = async (id: number) => {
+  try {
+    const { error } = await supabaseAdmin
+      .from("flohmaerkte")
+      .update({ status: "old" })
+      .match({ id });
+    if (error) {
+      throw new Error("There was a problem setting the Flea Market as old.");
+    }
+    return true;
+  } catch (error) {
+    throw new Error("There was a problem setting the Flea Market as old.");
+  }
+};
+export const setAllPreviousFlohmaerkteAsOld = async () => {
+  try {
+    const { today } = getTodayNexMonday();
+    const flohs = ((await getAllApprovedFlohmaerkte()) || []).filter(
+      (f) => f.date < today && f.status === "approved"
+    );
+    if (!flohs || flohs.length === 0) return false;
+
+    const oldFlohs = await Promise.all(
+      flohs.map((f) => setFlohmarktAsOld(f.id))
+    );
+    return oldFlohs;
+  } catch (error) {
+    throw new Error("There was a problem setting the Flea Market as old.");
   }
 };
 
@@ -877,29 +907,14 @@ export const getAllApprovedFlohmaerkte = async () => {
   }
 };
 
-export const getFutureApprovedFlohmaerkte = async () => {
-  try {
-    const { data, error } = await supabaseAdmin
-      .from("flohmaerkte")
-      .select("*")
-      .ilike("status", "approved")
-      .gte("date", new Date().getTime());
-    if (error) {
-      throw new Error("There was a problem getting the future Flea Markets.");
-    }
-    return data.map((f) => parseFlohmarkt(f)) as iFlohmarkt[];
-  } catch (error) {
-    return false;
-  }
-};
-
 export const getApprovedFlohmaerkteWithBezirk = async (bezirk: iBezirk) => {
+  const { today } = getTodayNexMonday();
   try {
     const { data, error } = await supabaseAdmin
       .from("flohmaerkte")
       .select("*")
       .ilike("status", "approved")
-      .gte("date", new Date().getTime())
+      .gte("date", today)
       .ilike("bezirk", bezirk);
     if (error) {
       throw new Error("There was a problem getting the Flea Markets.");

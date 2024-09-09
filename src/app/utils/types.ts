@@ -416,7 +416,7 @@ export interface iFlohmarkt {
   createdAt: number;
   date: number;
   id: number;
-  status: "approved" | "pending" | "rejected" | null;
+  status: "approved" | "pending" | "rejected" | "old" | null;
   address: string;
   image?: string;
   location?: string;

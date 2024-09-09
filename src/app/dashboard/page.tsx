@@ -16,7 +16,6 @@ export default async function DashboardPage() {
   }
   const userPosts = await getUsersSuggestions(session.user.email);
   const userFlohs = await getUserFlohmaerkte(session.user.email);
-
   return (
     <AdminRoute>
       <main className="w-[calc(100%-2rem)] max-w-[1000px] p-4 bg-hh-100 rounded-md mx-auto flex flex-col items-center gap-8">
@@ -28,6 +27,8 @@ export default async function DashboardPage() {
         <ul>
           <li>Search Fonts</li>
           <li>Search Jugend Zentrum</li>
+          <li>Flohmarkt page show that is old, change status to approved</li>
+          <li>metadata de sommer in hamburg, spielplatz, post...</li>
         </ul>
         <section className=" w-full max-w-[800px] flex justify-between items-center flex-wrap-reverse gap-4 border-2 border-hh-700 p-4 rounded-md">
           <div className="flex flex-col items-start gap-2">
