@@ -27,6 +27,7 @@ export default function AddText({
       <h1 className="text-lg font-bold">Add a new part of the text:</h1>
       <div className="mt-4 flex flex-col gap-2 md:mt-0 md:flex-row md:gap-8">
         <select
+          name="add-text"
           ref={selectRef}
           className="h-fit rounded-md border-2 border-gray-500 p-2 outline-offset-4 focus:bg-slate-200 focus:shadow-xl focus:outline-2 focus:outline-gray-500 focus-visible:bg-slate-200 focus-visible:shadow-xl focus-visible:outline-2 focus-visible:outline-gray-500 "
           defaultValue={selectedType}

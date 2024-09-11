@@ -213,7 +213,12 @@ export default function FlohmarktTemplate({
                   <div className="flex flex-col gap-1">
                     <div className="flex gap-1 flex-wrap">
                       <PostLogo logo="date" color="#1F262E" />
-                      <h3 className="block font-semibold">{getDate(date)}</h3>
+                      <time
+                        dateTime={new Date(date).toLocaleDateString()}
+                        className="block font-semibold"
+                      >
+                        {getDate(date)}
+                      </time>
                     </div>
                     {time && (
                       <h3 className="block font-semibold">
