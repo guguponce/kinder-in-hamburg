@@ -269,8 +269,6 @@ export const separateByStatus = <T extends iFlohmarkt | iPost>(array: T[]) => {
       const { status } = current;
       if (!status) {
         acc["pending"].unshift(current);
-      } else if (status === "old") {
-        return acc;
       } else {
         status === "pending"
           ? acc["pending"].unshift(current)
@@ -282,6 +280,7 @@ export const separateByStatus = <T extends iFlohmarkt | iPost>(array: T[]) => {
       approved: [] as T[],
       pending: [] as T[],
       rejected: [] as T[],
+      old: [] as T[],
     }
   );
 };

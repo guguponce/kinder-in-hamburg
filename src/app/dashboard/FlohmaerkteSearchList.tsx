@@ -9,6 +9,7 @@ interface iUserFlohs {
   approved?: iFlohmarkt[];
   pending?: iFlohmarkt[];
   rejected?: iFlohmarkt[];
+  old?: iFlohmarkt[];
 }
 
 export default function FlohmaerkteSearchList({
