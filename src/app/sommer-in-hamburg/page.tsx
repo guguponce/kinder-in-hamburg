@@ -38,10 +38,11 @@ export default async function SommerInHamburgPage() {
           In den heißen Monaten haben Kinder in Hamburg zahlreiche
           Gelegenheiten, draußen mit Wasser zu spielen. Die Stadt bietet eine
           große Auswahl an Möglichkeiten zur Abkühlung, darunter{" "}
-          <span className="font-bold">Planschbecken</span> in verschiedenen
-          Parks und <span className="font-bold text-white">Wasserspielen</span>{" "}
-          in Spielplätzen. Außerdem gibt es in Hamburg viele Badestellen, an
-          denen die ganze Familie schwimmen kann. Dazu gehören{" "}
+          <span className="font-bold text-white">Planschbecken</span> in
+          verschiedenen Parks und{" "}
+          <span className="font-bold text-white">Wasserspielen</span> in
+          Spielplätzen. Außerdem gibt es in Hamburg viele Badestellen, an denen
+          die ganze Familie schwimmen kann. Dazu gehören{" "}
           <span className="font-bold text-white">Badeseen</span>,{" "}
           <span className="font-bold text-white">Freibäder</span> und{" "}
           <span className="font-bold text-white">Schwimmbäder</span>.
