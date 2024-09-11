@@ -11,6 +11,7 @@ import FlohmarktPageMapContainer from "./FlohmarktPageMapContainer";
 import { getSpielplatzFromBezirkStadtteil } from "@app/api/spActions";
 import { PROXIMATE_STADTTEILE_FROM_OTHER_BEZIRK } from "@app/utils/constants";
 import SpielplaetzeNearby from "./SpielplaetzeNearby";
+import Link from "next/link";
 
 interface FlohmarktPageProps {
   params: { flohmarktID: string };
@@ -72,6 +73,12 @@ export default async function FlohmarktPage({
               size="medium"
             />
             <AddLatLonFlohmarkt item={flohmarkt} />
+            <Link
+              href={`/copy-flohmarkt/${flohmarkt.id}`}
+              className="p-2 rounded bg-hh-900 text-hh-50"
+            >
+              Copy Flohmarkt
+            </Link>
           </aside>
         </AdminServerComponent>
       </FlohmarktTemplate>
