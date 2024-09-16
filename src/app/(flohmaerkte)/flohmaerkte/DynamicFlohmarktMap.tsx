@@ -89,7 +89,7 @@ export default function DynamicFlohmarktMap({
                         <Marker
                           icon={futureIcon}
                           key={id}
-                          position={[lat!, lon!]}
+                          position={[lat || 53.5511, lon || 9.9937]}
                         >
                           <FlohmarktPopUP
                             id={id}
@@ -108,7 +108,11 @@ export default function DynamicFlohmarktMap({
                 ({ id, lat, lon, address, date, title, bezirk }) =>
                   selectedBezirk && bezirk !== selectedBezirk ? null : (
                     <React.Fragment key={id}>
-                      <Marker icon={todayIcon} key={id} position={[lat!, lon!]}>
+                      <Marker
+                        icon={todayIcon}
+                        key={id}
+                        position={[lat || 53.5511, lon || 9.9937]}
+                      >
                         <FlohmarktPopUP
                           id={id}
                           address={address}
@@ -150,7 +154,7 @@ export default function DynamicFlohmarktMap({
                       <Marker
                         icon={futureIcon}
                         key={id}
-                        position={[lat!, lon!]}
+                        position={[lat || 53.5511, lon || 9.9937]}
                       >
                         <FlohmarktPopUP
                           id={id}

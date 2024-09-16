@@ -7,6 +7,7 @@ import React from "react";
 import BezirkableFlohmaerkteList from "./BezirkableFlohmaerkteList";
 import dynamic from "next/dynamic";
 import { Metadata } from "next";
+import AdminServerComponent from "@app/providers/AdminServerComponents";
 
 const DynamicFlohmarktMap = dynamic(() => import("./DynamicFlohmarktMap"), {
   ssr: false,
@@ -55,9 +56,17 @@ export default async function FlohmarktPage() {
   const futureFlohmaerkte = flohmaerkte
     .filter(({ date }) => date > nextMonday)
     .sort((a, b) => a.date - b.date);
-
+  const flohsWithoutLatLon = flohmaerkte.filter(({ lat, lon }) => !lat || !lon);
   return (
     <main className="rounded bg-hh-100 bg-opacity-25 w-full max-w-[1000px] p-4 flex flex-col items-center min-h-[50vh] gap-2">
+      <AdminServerComponent>
+        {!!flohsWithoutLatLon.length &&
+          flohsWithoutLatLon.map(({ id, title }) => (
+            <div key={id} className="bg-hh-800 p-2 rounded-md text-hh-50">
+              <Link href={`/update-flohmarkt/${id}`}>{title}</Link>
+            </div>
+          ))}
+      </AdminServerComponent>
       <h1 className="text-4xl font-bold my-2 p-2 rounded bg-opacity-50 bg-hh-50">
         Flohmärkte
       </h1>
@@ -71,7 +80,6 @@ export default async function FlohmarktPage() {
         thisWeek={thisWeekFlohmaerkte}
         today={today}
       />
-
       <BezirkableFlohmaerkteList
         title="Ab nächster Woche"
         flohList={futureFlohmaerkte}
