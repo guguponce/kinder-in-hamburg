@@ -1,29 +1,27 @@
-"use client";
 import React from "react";
-import { signIn, signOut } from "next-auth/react";
+import { getServerUser, signIn, signOut } from "@app/api/auth/supabaseAuth";
 
-export default function AuthButton({
+export default async function AuthButton({
   email,
 }: {
   email?: string | undefined | null;
 }) {
-  if (email) {
+  const { user } = !!email ? { user: { email } } : await getServerUser();
+  if (!!user && user?.email) {
     return (
-      <button
-        className="px-2 py-1 rounded-md font-semibold border-2 bg-hh-800 text-hh-100 border-hh-800"
-        onClick={() => signOut({ redirect: true, callbackUrl: "/" })}
-      >
-        Sign out
-      </button>
+      <form action={signOut}>
+        <button className="px-2 py-1 rounded-md font-semibold border-2 bg-hh-800 text-hh-100 border-hh-800">
+          Sign out
+        </button>
+      </form>
     );
   }
 
   return (
-    <button
-      className="px-2 py-1 rounded-md font-semibold border-2  border-hh-800"
-      onClick={() => signIn()}
-    >
-      Sign in
-    </button>
+    <form action={signIn}>
+      <button className="px-2 py-1 rounded-md font-semibold border-2  border-hh-800">
+        Sign in
+      </button>
+    </form>
   );
 }

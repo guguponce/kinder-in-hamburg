@@ -1,6 +1,4 @@
 "use client";
-import AdminClientComponent from "@app/providers/AdminClientComponents";
-import AdminServerComponent from "@app/providers/AdminServerComponents";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useRef } from "react";
@@ -15,12 +13,7 @@ export default function BurgerMenu() {
   const menuList = useRef<HTMLElement>(null);
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
-      // if (
-      //   menuList.current &&
-      //   !menuList.current.contains(event.target as Node)
-      // ) {
-      setMenuOpen(false); // Close setMenuOpen menu if the click is outside the menu
-      // }
+      setMenuOpen(false);
     };
 
     if (menuOpen) {
@@ -32,7 +25,7 @@ export default function BurgerMenu() {
     };
   }, [menuOpen]);
   return (
-    <div className="flex w-16 items-center justify-center relative lg:hidden">
+    <div className="flex items-center justify-center relative lg:hidden">
       <button
         color="#fefefe"
         aria-label="Options"
@@ -56,21 +49,19 @@ export default function BurgerMenu() {
           ].map(({ name, href, auth }, i) =>
             auth ? (
               <React.Fragment key={href}>
-                <AdminClientComponent>
-                  <Link
-                    className={`${
-                      pathname === href
-                        ? "bg-black bg-opacity-20"
-                        : "bg-transparent"
-                    } ${
-                      i !== 0 ? "border-t-2 border-black rounded-none" : ""
-                    } py-1 px-2  font-semibold w-full text-hh-950`}
-                    key={name}
-                    href={href}
-                  >
-                    {name}
-                  </Link>
-                </AdminClientComponent>
+                <Link
+                  className={`${
+                    pathname === href
+                      ? "bg-black bg-opacity-20"
+                      : "bg-transparent"
+                  } ${
+                    i !== 0 ? "border-t-2 border-black rounded-none" : ""
+                  } py-1 px-2  font-semibold w-full text-hh-950`}
+                  key={name}
+                  href={href}
+                >
+                  {name}
+                </Link>
               </React.Fragment>
             ) : (
               <Link

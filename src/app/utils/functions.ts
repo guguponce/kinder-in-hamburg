@@ -288,11 +288,9 @@ export const separateByStatus = <T extends iFlohmarkt | iPost>(array: T[]) => {
 export const getLatLong = async (address: string) => {
   try {
     const addressQuery = address.match(/[a-zA-ZßäüöÄÜÖ]+|\d+/g)!.join("+");
-
     const url = `https://nominatim.openstreetmap.org/search?q=${addressQuery}&format=json`;
     const response = await fetch(url);
     const data = await response.json();
-
     return (data[0] as iLatLonResult) || { lat: "0", lon: "0" };
   } catch (e) {
     console.error(e);

@@ -5,7 +5,6 @@ import Link from "next/link";
 import BurgerMenu from "./BurgerMenu";
 import UserButtons from "./UserButtons";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
-import AdminClientComponent from "@app/providers/AdminClientComponents";
 
 export default async function Header() {
   return (
@@ -13,11 +12,11 @@ export default async function Header() {
       id="header"
       className="relative h-20 w-full lg:max-w-[1200px] bg-negative-500 p-2 sm:p-4 flex justify-between lg:justify-center items-center gap-2 text-white"
     >
-      <AdminClientComponent>
+      <AdminServerComponent>
         <BurgerMenu />
-      </AdminClientComponent>
+      </AdminServerComponent>
       <div
-        className="mx-auto h-full px-4 flex-grow  rounded-sm bg-white flex items-center  justify-end lg:justify-center   hover:text-[#121212] active:text-[#121212] "
+        className="h-full px-4 flex-grow  rounded-sm bg-white flex items-center  justify-end lg:justify-center   hover:text-[#121212] active:text-[#121212] "
         id="logo-text"
       >
         <Link

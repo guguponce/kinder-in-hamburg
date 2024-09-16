@@ -1,17 +1,18 @@
 "use client";
 import Link from "next/link";
 import React, { useEffect, useRef } from "react";
-import AuthButton from "./AuthButton";
 import AdminClientComponent from "@app/providers/AdminClientComponents";
 
 export default function AvatarMenu({
   email,
   avatar,
   initials,
+  children,
 }: {
   email: string | undefined | null;
   avatar: string | undefined | null;
   initials: string;
+  children: React.ReactNode;
 }) {
   const [imgDisplay, setImgDisplay] = React.useState(false);
   const [menuOpen, setMenuOpen] = React.useState(false);
@@ -61,25 +62,25 @@ export default function AvatarMenu({
         )}
       </button>
       {menuOpen && (
-        <nav
-          ref={menuList}
-          id="menu-list"
-          className="absolute top-[calc(100%+24px)] -right-2 sm:-right-3 lg:-right-4  shadow-lg sm:w-[33vw] sm:max-w-[150px] z-[300] flex flex-col bg-gradient-to-b from-hh-200 rounded-[0_0_4px_0] to-hh-100"
-        >
-          {[
-            { admin: false, href: "/dashboard", name: "Dashboard" },
-            { admin: false, href: "/new-post", name: "New Place Suggestion" },
-            { admin: false, href: "/new-flohmarkt", name: "New Flohmarkt" },
-            { admin: true, href: "/dashboard/posts", name: "All Posts" },
-            {
-              admin: true,
-              href: "/flohmaerkte-approval",
-              name: "Flohmärkte approval",
-            },
-          ].map(({ name, href, admin }, i) =>
-            admin ? (
-              <React.Fragment key={name}>
-                <AdminClientComponent>
+        <AdminClientComponent>
+          <nav
+            ref={menuList}
+            id="menu-list"
+            className="absolute top-[calc(100%+24px)] -right-2 sm:-right-3 lg:-right-4  shadow-lg sm:w-[33vw] sm:max-w-[150px] z-[300] flex flex-col bg-gradient-to-b from-hh-200 rounded-[0_0_4px_0] to-hh-100"
+          >
+            {[
+              { admin: false, href: "/dashboard", name: "Dashboard" },
+              { admin: false, href: "/new-post", name: "New Place Suggestion" },
+              { admin: false, href: "/new-flohmarkt", name: "New Flohmarkt" },
+              { admin: true, href: "/dashboard/posts", name: "All Posts" },
+              {
+                admin: true,
+                href: "/flohmaerkte-approval",
+                name: "Flohmärkte approval",
+              },
+            ].map(({ name, href, admin }, i) =>
+              admin ? (
+                <React.Fragment key={name}>
                   <Link
                     className={
                       "border-b-2 border-black rounded-none py-1 px-2  font-semibold w-full text-center text-hh-950"
@@ -93,29 +94,27 @@ export default function AvatarMenu({
                   >
                     {name}
                   </Link>
-                </AdminClientComponent>
-              </React.Fragment>
-            ) : (
-              <Link
-                className={
-                  "border-b-2 border-black rounded-none py-1 px-2  font-semibold w-full text-center text-hh-950"
-                }
-                key={name}
-                href={href}
-                onClick={() =>
-                  setTimeout(() => {
-                    setMenuOpen(false);
-                  }, 100)
-                }
-              >
-                {name}
-              </Link>
-            )
-          )}
-          <li className="p-2 list-none">
-            <AuthButton email={email} />
-          </li>
-        </nav>
+                </React.Fragment>
+              ) : (
+                <Link
+                  className={
+                    "border-b-2 border-black rounded-none py-1 px-2  font-semibold w-full text-center text-hh-950"
+                  }
+                  key={name}
+                  href={href}
+                  onClick={() =>
+                    setTimeout(() => {
+                      setMenuOpen(false);
+                    }, 100)
+                  }
+                >
+                  {name}
+                </Link>
+              )
+            )}
+            {children}
+          </nav>
+        </AdminClientComponent>
       )}
     </div>
   );
