@@ -1,20 +1,26 @@
 import React from "react";
 import FlohForm from "@components/@FlohForm/FlohForm";
-import { getServerSession } from "next-auth";
+import { getServerUser } from "@app/api/auth/supabaseAuth";
 import { redirect } from "next/navigation";
 import AdminRoute from "@app/providers/AdminRoute";
 import { getFlohmarktWithID } from "@app/api/dbActions";
+import { iUserMetadata } from "@app/api/auth/types";
 
 export default async function AddCopiedFlohmarkt({
   params,
 }: {
   params: { flohmarktID: string };
 }) {
-  const session = await getServerSession();
-  if (!session?.user) redirect("/api/auth/signin");
+  const session = await getServerUser();
+  if (!session?.user) redirect("log-in");
   const flohmarkt = await getFlohmarktWithID(params.flohmarktID);
   if (!flohmarkt) redirect("/new-flohmarkt");
   const id = new Date().getTime();
+  const {
+    email,
+    name,
+    avatar_url: image,
+  } = session.user.user_metadata as iUserMetadata;
   return (
     <AdminRoute>
       <main className="relative mb-10 mt-6 max-w-[1000px] w-full bg-hh-100 rounded-xl p-4 text-gray-200 lg:mx-8">
@@ -25,7 +31,7 @@ export default async function AddCopiedFlohmarkt({
           <FlohForm
             flohFormType="new-flohmarkt"
             FlohForm={{ ...flohmarkt, id, createdAt: id }}
-            user={{ ...session.user }}
+            user={{ email, name, image }}
           />
         </div>
       </main>

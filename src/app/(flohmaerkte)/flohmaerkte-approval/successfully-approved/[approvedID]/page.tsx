@@ -2,7 +2,7 @@ import React from "react";
 import { revalidatePost } from "@app/utils/actions/revalidate";
 import SuccessfulSubmit from "@components/@PostForm/SuccessfulSubmit";
 import { getFlohmarktWithID } from "@app/api/dbActions";
-import { getServerSession } from "next-auth";
+import { getServerUser } from "@app/api/auth/supabaseAuth";
 import { redirect } from "next/navigation";
 import PostNotFound from "@components/@PostForm/PostNotFound";
 export default async function SuccessfulApprovedFlohmarktPage({
@@ -13,8 +13,11 @@ export default async function SuccessfulApprovedFlohmarktPage({
   if (approvedID) {
     revalidatePost();
   }
-  const session = await getServerSession();
-  if (!session?.user?.email || session.user.email !== process.env.ADMIN_EMAIL)
+  const session = await getServerUser();
+  if (
+    !session?.user?.email ||
+    session.user.user_metadata.email !== process.env.ADMIN_EMAIL
+  )
     redirect("/flohmaerkte/" + approvedID);
   const flohmarkt = await getFlohmarktWithID(approvedID);
   if (!flohmarkt) return <PostNotFound />;

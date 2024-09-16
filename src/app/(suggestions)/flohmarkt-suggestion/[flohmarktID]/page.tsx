@@ -5,7 +5,7 @@ import FlohmarktTemplate from "@components/FlohmarktTemplate";
 import Link from "next/link";
 import React from "react";
 import UpdateButton from "@app/components/UpdateButton";
-import { getServerSession } from "next-auth";
+import { getServerUser } from "@app/api/auth/supabaseAuth";
 import { redirect } from "next/navigation";
 import PostNotFound from "@app/components/@PostForm/PostNotFound";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
@@ -31,7 +31,7 @@ export default async function FlohmarktSuggestionPage({
 }) {
   const suggestion = await getFlohmarktWithID(flohmarktID);
   if (!suggestion) return <PostNotFound type="flohmarkt" />;
-  const session = await getServerSession();
+  const session = await getServerUser();
   if (
     ![suggestion.addedBy.email, process.env.ADMIN_EMAIL].includes(
       session?.user?.email

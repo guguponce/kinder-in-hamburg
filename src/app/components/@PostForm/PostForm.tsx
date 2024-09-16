@@ -145,7 +145,6 @@ export default function PostForm({
   });
 
   const onSubmitNewSuggestion = (data: FieldValues) => {
-    console.log("submitting");
     if (!imagesUrlsReady.ready) return alert("Images are not ready yet");
     if (!savedPostText.length)
       return alert("Text is required and needs to be saved");

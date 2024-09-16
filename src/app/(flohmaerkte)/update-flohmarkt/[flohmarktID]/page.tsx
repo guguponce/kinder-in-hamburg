@@ -6,25 +6,25 @@ import AdminRoute from "@app/providers/AdminRoute";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
 import FlohForm from "@components/@FlohForm/FlohForm";
 import PostNotFound from "@components/@PostForm/PostNotFound";
-import { getServerSession } from "next-auth";
+import { getServerUser } from "@app/api/auth/supabaseAuth";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import React from "react";
+import { iUserMetadata } from "@app/api/auth/types";
 
 export default async function UpdateApprovedFlohmarktPage({
   params: { flohmarktID },
 }: {
   params: { flohmarktID: string };
 }) {
-  const session = await getServerSession();
-
+  const session = await getServerUser();
   const flohmarkt = await getFlohmarktWithID(flohmarktID);
   if (!flohmarkt) return <PostNotFound />;
   if (
     !flohmarkt.addedBy.email ||
-    !session?.user?.email ||
+    !session?.user?.user_metadata.email ||
     ![flohmarkt.addedBy.email, process.env.ADMIN_EMAIL].includes(
-      session.user.email
+      session.user.user_metadata.email
     )
   )
     redirect("/flohmaerkte/" + flohmarktID);
@@ -45,6 +45,11 @@ export default async function UpdateApprovedFlohmarktPage({
         </Link>
       </main>
     );
+  const {
+    email,
+    name,
+    avatar_url: image,
+  } = session.user.user_metadata as iUserMetadata;
   return (
     <AdminRoute>
       <main className="relative mb-10 mt-6 max-w-[1000px] w-full bg-hh-100 rounded-xl p-4 text-gray-200 lg:mx-8">
@@ -75,7 +80,7 @@ export default async function UpdateApprovedFlohmarktPage({
           <FlohForm
             flohFormType="update-flohmarkt"
             FlohForm={flohmarkt}
-            user={session.user}
+            user={{ email, name, image }}
           />
         </div>
       </main>

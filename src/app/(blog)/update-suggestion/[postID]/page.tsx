@@ -1,6 +1,6 @@
 import React from "react";
 import PostForm from "@components/@PostForm/PostForm";
-import { getServerSession } from "next-auth";
+import { getServerUser } from "@app/api/auth/supabaseAuth";
 import {
   getApprovedPostWithID,
   getSuggestedPostWithID,
@@ -10,13 +10,14 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import PostNotFound from "@components/@PostForm/PostNotFound";
 import AdminRoute from "@app/providers/AdminRoute";
+import { iUserMetadata } from "@app/api/auth/types";
 
 export default async function updateSuggestedPostPage({
   params,
 }: {
   params: { postID: string };
 }) {
-  const session = await getServerSession();
+  const session = await getServerUser();
   const { postID } = params;
   const approvedPost = await getApprovedPostWithID(postID);
 
@@ -44,10 +45,15 @@ export default async function updateSuggestedPostPage({
   if (
     !session?.user?.email ||
     ![process.env.ADMIN_EMAIL, suggestedPost.user_id].includes(
-      session.user.email
+      session.user.user_metadata.email
     )
   )
     redirect("/");
+  const {
+    email,
+    name,
+    avatar_url: image,
+  } = session.user.user_metadata as iUserMetadata;
 
   return (
     <AdminRoute>
@@ -64,7 +70,7 @@ export default async function updateSuggestedPostPage({
                 ? parseAddress(suggestedPost.address)
                 : undefined,
             }}
-            user={session.user}
+            user={{ email, name, image }}
           />
         </section>
       </main>

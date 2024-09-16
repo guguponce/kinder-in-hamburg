@@ -2,7 +2,7 @@ import React from "react";
 import { revalidatePost } from "@app/utils/actions/revalidate";
 import SuccessfulSubmit from "@components/@PostForm/SuccessfulSubmit";
 import { getFlohmarktWithID } from "@app/api/dbActions";
-import { getServerSession } from "next-auth";
+import { getServerUser } from "@app/api/auth/supabaseAuth";
 import { redirect } from "next/navigation";
 import PostNotFound from "@components/@PostForm/PostNotFound";
 import FlohmarktPoster from "@app/components/FlohmarktPoster";
@@ -18,11 +18,11 @@ export default async function SuccessfulFormFlohmarkt({
   }
   const flohmarkt = await getFlohmarktWithID(flohmarktID);
   if (!flohmarkt) return <PostNotFound />;
-  const session = await getServerSession();
+  const session = await getServerUser();
   if (
     !session?.user?.email ||
     ![process.env.ADMIN_EMAIL, flohmarkt.addedBy.email].includes(
-      session.user.email
+      session.user.user_metadata.email
     )
   ) {
     redirect("/");

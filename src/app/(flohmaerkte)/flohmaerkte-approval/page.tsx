@@ -1,13 +1,16 @@
 import { getSuggestedFlohmaerkte } from "@app/api/dbActions";
 import AdminRoute from "@app/providers/AdminRoute";
 import MinimalFlohmarktDisplay from "@components/MinimalFlohmarktDisplay";
-import { getServerSession } from "next-auth";
+import { getServerUser } from "@app/api/auth/supabaseAuth";
 import { redirect } from "next/navigation";
 import React from "react";
 
 export default async function ApprovalPage() {
-  const session = await getServerSession();
-  if (!session?.user?.email || session.user.email !== process.env.ADMIN_EMAIL)
+  const session = await getServerUser();
+  if (
+    !session?.user?.email ||
+    session.user.user_metadata.email !== process.env.ADMIN_EMAIL
+  )
     redirect("/flohmaerkte/");
   const flohmaerkte = await getSuggestedFlohmaerkte();
   if (!flohmaerkte)

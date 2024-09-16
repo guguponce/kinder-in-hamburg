@@ -1,24 +1,33 @@
 import React from "react";
 import PostForm from "@components/@PostForm/PostForm";
-import { getServerSession } from "next-auth";
+import { getServerUser } from "@app/api/auth/supabaseAuth";
 import { getApprovedPostWithID } from "@app/api/dbActions";
 import { parseAddress } from "@app/utils/functions";
 import { redirect } from "next/navigation";
 import PostNotFound from "@components/@PostForm/PostNotFound";
 import AdminRoute from "@app/providers/AdminRoute";
 import AddLatLonFlohmarkt from "@app/components/AddLatLonFlohmarkt";
+import { iUserMetadata } from "@app/api/auth/types";
 
 export default async function updateApprovedPostPage({
   params,
 }: {
   params: { postID: string };
 }) {
-  const session = await getServerSession();
-  if (!session?.user || session.user.email !== process.env.ADMIN_EMAIL)
+  const session = await getServerUser();
+  if (
+    !session?.user ||
+    session.user.user_metadata.email !== process.env.ADMIN_EMAIL
+  )
     redirect("/");
   const { postID } = params;
   const post = await getApprovedPostWithID(postID);
   if (!post) return <PostNotFound />;
+  const {
+    email,
+    name,
+    avatar_url: image,
+  } = session.user.user_metadata as iUserMetadata;
   return (
     <AdminRoute>
       <main className="relative mb-10 mt-6 max-w-[1000px] bg-hh-100 rounded-xl p-4 text-gray-200 lg:mx-8">
@@ -33,7 +42,7 @@ export default async function updateApprovedPostPage({
               ...post,
               address: post.address ? parseAddress(post.address) : undefined,
             }}
-            user={session.user}
+            user={{ email, name, image }}
           />
         </section>
       </main>

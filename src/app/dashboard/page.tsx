@@ -1,6 +1,6 @@
 import { getUserFlohmaerkte, getUsersSuggestions } from "@app/api/dbActions";
 import AdminComponents from "@app/providers/AdminServerComponents";
-import { getServerSession } from "next-auth";
+import { getServerUser } from "@app/api/auth/supabaseAuth";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import React from "react";
@@ -10,21 +10,26 @@ import AdminRoute from "@app/providers/AdminRoute";
 import FlohmaerkteSearchList from "./FlohmaerkteSearchList";
 
 export default async function DashboardPage() {
-  const session = await getServerSession();
-  if (!session?.user?.email || !session?.user?.name) {
-    redirect("/api/auth/signin");
+  const session = await getServerUser();
+  if (!session?.user?.email || !session?.user?.user_metadata.name) {
+    redirect("/log-in");
   }
-  const userPosts = await getUsersSuggestions(session.user.email);
-  const userFlohs = await getUserFlohmaerkte(session.user.email);
+  const userPosts = await getUsersSuggestions(session.user.user_metadata.email);
+  const userFlohs = await getUserFlohmaerkte(session.user.user_metadata.email);
   return (
     <AdminRoute>
       <main className="w-[calc(100%-2rem)] max-w-[1000px] p-4 bg-hh-100 rounded-md mx-auto flex flex-col items-center gap-8">
         <h2 className="text-2xl font-semibold text-center">
-          Hi, {session.user.name.split(" ")[0]}!
-          <span className="block text-sm">({session.user.email})</span>
+          Hi, {session.user.user_metadata.name.split(" ")[0]}!
+          <span className="block text-sm">
+            ({session.user.user_metadata.email})
+          </span>
         </h2>
 
         <ul>
+          <li>change cookies policy</li>
+          <li>commits</li>
+          <li>URLfilteredlist</li>
           <li>Search Fonts</li>
           <li>Search Jugend Zentrum</li>
           <li>Flohmarkt page show that is old, change status to approved</li>

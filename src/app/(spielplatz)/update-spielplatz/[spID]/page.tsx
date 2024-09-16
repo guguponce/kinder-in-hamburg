@@ -1,4 +1,4 @@
-import { getServerSession } from "next-auth";
+import { getServerUser } from "@app/api/auth/supabaseAuth";
 import { redirect } from "next/navigation";
 import React from "react";
 import SpielplatzForm from "../../SpielplatzForm";
@@ -8,13 +8,14 @@ import {
 } from "@app/api/spActions";
 import PostNotFound from "@app/components/@PostForm/PostNotFound";
 import AdminRoute from "@app/providers/AdminRoute";
+import { iUserMetadata } from "@app/api/auth/types";
 export default async function NewSpielplatzPage({
   params: { spID },
 }: {
   params: { spID: string };
 }) {
-  const session = await getServerSession();
-  if (!session?.user) redirect("/api/auth/signin");
+  const session = await getServerUser();
+  if (!session?.user) redirect("log-in");
   const spielplatz = await getSpielplatzWithID(spID);
   const spImages = await getAllSpielplatzImagesURL(spID);
   if (!spielplatz) return <PostNotFound type="spielplatz" />;
@@ -22,11 +23,15 @@ export default async function NewSpielplatzPage({
     !spielplatz.addedBy.email ||
     !session?.user?.email ||
     ![spielplatz.addedBy.email, process.env.ADMIN_EMAIL].includes(
-      session.user.email
+      session.user.user_metadata.email
     )
   )
     redirect("/flohmaerkte/" + spID);
-
+  const {
+    email,
+    name,
+    avatar_url: image,
+  } = session.user.user_metadata as iUserMetadata;
   return (
     <AdminRoute>
       <main className="relative mb-10 mt-6 max-w-[1000px] w-full bg-hh-100 rounded-xl p-4 text-gray-200 lg:mx-8">
@@ -37,7 +42,7 @@ export default async function NewSpielplatzPage({
           <SpielplatzForm
             spielplatzFormType="update-spielplatz"
             spielplatzForm={spielplatz}
-            user={{ ...session.user }}
+            user={{ email, name, image }}
             spielplatzStoredImages={spImages}
           />
         </div>

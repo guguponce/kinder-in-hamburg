@@ -212,8 +212,7 @@ export default function FlohForm({
   if (!user) {
     router.push("/");
   }
-
-  if (!user.email || !user.name) return;
+  if (!user || !user.name) return;
 
   return (
     <section id="flohmarkt-form-container" className="w-full">

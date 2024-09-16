@@ -1,12 +1,18 @@
 import React from "react";
 import PostForm from "@components/@PostForm/PostForm";
-import { getServerSession } from "next-auth";
+import { getServerUser } from "@app/api/auth/supabaseAuth";
 import { redirect } from "next/navigation";
 import AdminRoute from "@app/providers/AdminRoute";
+import { iUserMetadata } from "@app/api/auth/types";
 
 export default async function AddPostPage() {
-  const session = await getServerSession();
-  if (!session?.user) redirect("/api/auth/signin");
+  const session = await getServerUser();
+  if (!session?.user) redirect("log-in");
+  const {
+    email,
+    name,
+    avatar_url: image,
+  } = session.user.user_metadata as iUserMetadata;
   return (
     <AdminRoute>
       <section className="relative mb-10 mt-6 max-w-[1000px] bg-hh-100 rounded-xl p-4 text-gray-200 lg:mx-8">
@@ -17,7 +23,7 @@ export default async function AddPostPage() {
           <PostForm
             postType="new-suggestion"
             PostForm={{}}
-            user={{ ...session.user }}
+            user={{ email, name, image }}
           />
         </div>
       </section>

@@ -3,7 +3,7 @@ import DeleteButton from "@app/components/DeleteButton";
 import UpdateButton from "@app/components/UpdateButton";
 import AdminRoute from "@app/providers/AdminRoute";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
-import { getServerSession } from "next-auth";
+import { getServerUser } from "@app/api/auth/supabaseAuth";
 import { redirect } from "next/navigation";
 import React from "react";
 
@@ -12,8 +12,11 @@ export default async function FlohmarktApprovalPage({
 }: {
   params: { flohmarktID: string };
 }) {
-  const session = await getServerSession();
-  if (!session?.user?.email || session.user.email !== process.env.ADMIN_EMAIL)
+  const session = await getServerUser();
+  if (
+    !session?.user?.email ||
+    session.user.user_metadata.email !== process.env.ADMIN_EMAIL
+  )
     redirect("/flohmaerkte/" + flohmarktID);
   const flohmarkt = await getFlohmarktWithID(flohmarktID);
   if (!flohmarkt) return <>Flohmarkt not found</>;

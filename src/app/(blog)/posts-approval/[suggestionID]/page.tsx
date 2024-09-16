@@ -1,19 +1,23 @@
 import React from "react";
 import PostForm from "@components/@PostForm/PostForm";
-import { getServerSession } from "next-auth";
+import { getServerUser } from "@app/api/auth/supabaseAuth";
 import { getSuggestedPostWithID } from "@app/api/dbActions";
 import { parseAddress, parsePost } from "@app/utils/functions";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import PostNotFound from "@components/@PostForm/PostNotFound";
+import { iUserMetadata } from "@app/api/auth/types";
 
 export default async function ApproveSuggestedPostPage({
   params,
 }: {
   params: { suggestionID: string };
 }) {
-  const session = await getServerSession();
-  if (!session?.user || session.user.email !== process.env.ADMIN_EMAIL)
+  const session = await getServerUser();
+  if (
+    !session?.user ||
+    session.user.user_metadata.email !== process.env.ADMIN_EMAIL
+  )
     redirect("/");
   const { suggestionID } = params;
 
@@ -34,7 +38,7 @@ export default async function ApproveSuggestedPostPage({
         >
           Go check it out!
         </Link>
-        {session.user.email === process.env.ADMIN_EMAIL && (
+        {session.user.user_metadata.email === process.env.ADMIN_EMAIL && (
           <div className="flex flex-col items-center mt-4 p-4">
             <h3 className="font-semibold text-xl">
               You could though update the approved post
@@ -64,7 +68,11 @@ export default async function ApproveSuggestedPostPage({
         </Link>
       </div>
     );
-
+  const {
+    email,
+    name,
+    avatar_url: image,
+  } = session.user.user_metadata as iUserMetadata;
   return (
     <main className="relative mb-10 mt-6 max-w-[1000px] bg-hh-100 rounded-xl p-4 text-gray-200 lg:mx-8">
       <section className="h-full w-full bg-hh-200 p-5 px-5">
@@ -77,7 +85,7 @@ export default async function ApproveSuggestedPostPage({
             ...post,
             address: post.address ? parseAddress(post.address) : undefined,
           }}
-          user={session.user}
+          user={{ email, name, image }}
         />
       </section>
     </main>
