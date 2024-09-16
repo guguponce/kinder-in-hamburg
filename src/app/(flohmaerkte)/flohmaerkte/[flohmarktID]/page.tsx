@@ -1,6 +1,6 @@
 import { getFlohmarktMetadata, getFlohmarktWithID } from "@app/api/dbActions";
 import PostNotFound from "@app/components/@PostForm/PostNotFound";
-import AddLatLonFlohmarkt from "@app/components/AddLatLonFlohmarkt";
+import AddLatLon from "@app/components/AddLatLon";
 import DeleteButton from "@app/components/DeleteButton";
 import FlohmarktTemplate from "@app/components/FlohmarktTemplate";
 import UpdateButton from "@app/components/UpdateButton";
@@ -72,7 +72,7 @@ export default async function FlohmarktPage({
               type="flohmarkt"
               size="medium"
             />
-            <AddLatLonFlohmarkt item={flohmarkt} />
+            <AddLatLon item={flohmarkt} />
             <Link
               href={`/copy-flohmarkt/${flohmarkt.id}`}
               className="p-2 rounded bg-hh-900 text-hh-50"

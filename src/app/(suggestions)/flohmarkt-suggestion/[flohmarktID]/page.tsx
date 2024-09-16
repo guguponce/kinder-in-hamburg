@@ -12,7 +12,7 @@ import AdminServerComponent from "@app/providers/AdminServerComponents";
 import UserServerComponents from "@app/providers/UserServerComponents";
 import RestoreButton from "@app/components/RestoreButton";
 import AdminRoute from "@app/providers/AdminRoute";
-import AddLatLonFlohmarkt from "@app/components/AddLatLonFlohmarkt";
+import AddLatLon from "@app/components/AddLatLon";
 
 import { iFlohmarktWithCoordinates } from "@app/utils/types";
 import dynamic from "next/dynamic";
@@ -115,7 +115,7 @@ export default async function FlohmarktSuggestionPage({
                     </AdminServerComponent>
                   )}
                   {!suggestion.lat && !suggestion.lon ? (
-                    <AddLatLonFlohmarkt item={suggestion} />
+                    <AddLatLon item={suggestion} />
                   ) : (
                     <FlohmaerkteMap
                       flohmaerkteWithCoordinates={[]}

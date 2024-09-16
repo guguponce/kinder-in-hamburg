@@ -4,7 +4,7 @@ import React from "react";
 import StatusSetter from "../StatusSetter";
 import AdminRoute from "@app/providers/AdminRoute";
 import FlohmarktPoster from "@app/components/FlohmarktPoster";
-import AddLatLonFlohmarkt from "@app/components/AddLatLonFlohmarkt";
+import AddLatLon from "@app/components/AddLatLon";
 import OldButtonSetter from "./OldButtonSetter";
 
 export default async function AllFlohmaerktePage() {
@@ -58,9 +58,7 @@ export default async function AllFlohmaerktePage() {
                         status={floh.status || "pending"}
                         target={floh}
                       ></StatusSetter>
-                      {!floh.lat && !floh.lon && (
-                        <AddLatLonFlohmarkt item={floh} />
-                      )}
+                      {!floh.lat && !floh.lon && <AddLatLon item={floh} />}
                     </div>
                   </div>
                 ))}

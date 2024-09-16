@@ -6,7 +6,7 @@ import Link from "next/link";
 import React from "react";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
 import AdminRoute from "@app/providers/AdminRoute";
-import AddLatLonFlohmarkt from "@app/components/AddLatLonFlohmarkt";
+import AddLatLon from "@app/components/AddLatLon";
 import DeleteButton from "@app/components/DeleteButton";
 
 export default async function CurrentPostPage({
@@ -52,7 +52,7 @@ export default async function CurrentPostPage({
         </div>
         <AdminServerComponent>
           <div className="flex flex-col items-center gap-2 bg-slate-300 w-fit p-2 mx-auto rounded">
-            <AddLatLonFlohmarkt item={post} />
+            <AddLatLon item={post} />
             {post.status === "approved" ? (
               <DeleteButton
                 deleteFrom="approved"

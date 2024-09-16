@@ -6,7 +6,7 @@ import AdminServerComponent from "@app/providers/AdminServerComponents";
 import Link from "next/link";
 import React from "react";
 import AdminRoute from "@app/providers/AdminRoute";
-import AddLatLonFlohmarkt from "@app/components/AddLatLonFlohmarkt";
+import AddLatLon from "@app/components/AddLatLon";
 export default async function CurrentPostPage({
   params,
 }: {
@@ -28,7 +28,7 @@ export default async function CurrentPostPage({
               size="large"
             />
 
-            <AddLatLonFlohmarkt item={post} />
+            <AddLatLon item={post} />
 
             <Link
               href={`/update-post/${postID}`}
@@ -51,7 +51,7 @@ export default async function CurrentPostPage({
                 size="large"
               />
 
-              <AddLatLonFlohmarkt item={post} />
+              <AddLatLon item={post} />
 
               <Link
                 href={`/update-post/${postID}`}
