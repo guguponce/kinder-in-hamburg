@@ -1,4 +1,4 @@
-import { getServerSession } from "next-auth";
+import { getServerUser } from "@app/api/auth/supabaseAuth";
 import React from "react";
 
 export default async function UserServerComponents({
@@ -8,12 +8,12 @@ export default async function UserServerComponents({
   children: React.ReactNode;
   creator: string | undefined | null;
 }) {
-  const session = await getServerSession();
+  const { user } = await getServerUser();
   if (
     !creator ||
     (creator &&
-      (!session?.user?.email ||
-        ![creator, process.env.ADMIN_EMAIL].includes(session?.user?.email)))
+      (!user?.email ||
+        ![creator, process.env.ADMIN_EMAIL].includes(user?.email)))
   )
     return <></>;
   return <>{children}</>;

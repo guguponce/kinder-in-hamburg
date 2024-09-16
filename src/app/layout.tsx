@@ -5,10 +5,9 @@ import Script from "next/script";
 import localFont from "next/font/local";
 import "@styles/globals.scss";
 import Header from "@components/@Header/Header";
-import { getServerSession } from "next-auth";
-import SessionProvider from "@app/providers/SessionProvider";
 import Footer from "./components/@Footer/Footer";
 import GetAnalytics from "./GetAnalytics";
+import { SessionProvider } from "./providers/SessionContext";
 const fixelFont = localFont({
   src: "./styles/fonts/FixelVariable.ttf",
   display: "swap",
@@ -49,14 +48,13 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await getServerSession();
   return (
     <html lang="en">
       <body
         className={`${fixelFont.className}
          flex flex-col items-center bg-hh-500 max-w-[1400px] mx-auto gap-2`}
       >
-        <SessionProvider session={session}>
+        <SessionProvider>
           <Header />
           {children}
           <Footer />

@@ -5,12 +5,12 @@ import type {
   iStringifiedSpielplatz,
   iSessionUser,
 } from "@app/utils/types";
-import { createClient } from "@supabase/supabase-js";
-import { getServerSession } from "next-auth";
+import { getServerUser } from "@app/api/auth/supabaseAuth";
 import { checkBezirk, parseSpielplatz } from "@app/utils/functions";
 import { revalidatePath } from "next/cache";
 import { FullMetadata } from "firebase/storage";
 import { iSPType } from "@app/utils/types";
+import { createClient } from "@auth/server";
 
 export async function revalidateSpielplatz() {
   revalidatePath("/");
@@ -22,10 +22,7 @@ export async function revalidateSpielplatz() {
   revalidatePath("/update-suggestion/", "layout");
 }
 
-const supabaseAdmin = createClient(
-  process.env.SUPABASE_URL ?? "",
-  process.env.SUPABASE_ANON_KEY ?? ""
-);
+const supabaseAdmin = createClient();
 
 const parseAllSpielplaetze = (spielplaetze: iStringifiedSpielplatz[]) =>
   spielplaetze.map((f) => parseSpielplatz(f));
@@ -225,7 +222,7 @@ export const getApprovedSpielplaetzeWithBezirk = async (bezirk: iBezirk) => {
 // POST
 export const addSpielplatz = async (spielplatz: iSpielplatz) => {
   try {
-    const session = await getServerSession();
+    const session = await getServerUser();
     if (!session?.user?.email) {
       return "Not logged in";
     }

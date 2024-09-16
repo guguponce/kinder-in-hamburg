@@ -6,8 +6,8 @@ import type {
   iPost,
   iSessionUser,
 } from "@app/utils/types";
-import { createClient } from "@supabase/supabase-js";
-import { getServerSession } from "next-auth";
+import { createClient } from "@auth/server";
+import { getServerUser } from "@app/api/auth/supabaseAuth";
 import {
   checkBezirk,
   getTodayNexMonday,
@@ -21,10 +21,13 @@ import {
 } from "@app/utils/functions";
 import { deletePreviousFlohmaerkteImages } from "./storageActions";
 import { revalidatePost } from "@app/utils/actions/revalidate";
-const supabaseAdmin = createClient(
-  process.env.SUPABASE_URL ?? "",
-  process.env.SUPABASE_ANON_KEY ?? ""
-);
+import { createClient as createServerClient } from "../../../utils/supabase/server";
+import { PostgrestError } from "@supabase/supabase-js";
+import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
+
+const supabaseAdmin = createClient();
+
+const supabase = createServerClient();
 
 //images
 export const getImageURL = async (bucket: string, path: string) =>
@@ -165,7 +168,7 @@ export const deleteContributor = async (id: string) => {
 // SUGGESTED BLOGPOSTS
 export const addNewSuggestedPost = async (post: iPost) => {
   try {
-    const session = await getServerSession();
+    const session = await getServerUser();
     if (!session?.user) {
       return "Not logged in";
     }
@@ -843,16 +846,21 @@ export const getFlohmarktWithID = async (id: string) => {
   }
 };
 
-export const getFlohmarktMetadata = async (id: string) => {
+export const getFlohmarktMetadata = async (
+  id: string,
+  cookies?: ReadonlyRequestCookies
+) => {
+  const supabase = createClient(cookies);
   try {
-    const { data, error } = await supabaseAdmin
+    const { data, error } = await supabase
       .from("flohmaerkte")
       .select("title,bezirk,optionalComment")
-      .match({ id });
+      .match({ id })
+      .single();
     if (error) {
       return false;
     }
-    const { title, bezirk, optionalComment } = data[0] as {
+    const { title, bezirk, optionalComment } = data as {
       title: string;
       bezirk: iBezirk;
       optionalComment: string;
@@ -964,7 +972,7 @@ export const getThisWeekFlohmaerkte = async () => {
 // POST
 export const addFlohmarkt = async (flohmarkt: iFlohmarkt) => {
   try {
-    const session = await getServerSession();
+    const session = await getServerUser();
     if (!session?.user?.email) {
       return "Not logged in";
     }
@@ -976,11 +984,13 @@ export const addFlohmarkt = async (flohmarkt: iFlohmarkt) => {
       .from("flohmaerkte")
       .insert(submittedFlohmarkt);
     if (error) {
-      throw new Error("Error adding flohmarkt");
+      throw new Error("Error adding flohmarkt: " + error.message);
     }
     return "Flohmarkt added";
   } catch (error) {
-    throw new Error("Error adding flohmarkt");
+    throw new Error(
+      "Error adding flohmarkt" + (error as PostgrestError).message
+    );
   }
 };
 

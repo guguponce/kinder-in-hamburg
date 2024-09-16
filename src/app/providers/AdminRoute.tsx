@@ -1,4 +1,4 @@
-import { getServerSession } from "next-auth";
+import { getServerUser } from "@app/api/auth/supabaseAuth";
 import { redirect } from "next/navigation";
 import React from "react";
 
@@ -7,11 +7,11 @@ export default async function AdminRoute({
 }: {
   children: JSX.Element;
 }) {
-  const session = await getServerSession();
+  const session = await getServerUser();
   if (
     !session ||
     !session.user ||
-    session.user.email !== process.env.ADMIN_EMAIL
+    session.user.user_metadata.email !== process.env.ADMIN_EMAIL
   )
     redirect("/");
   return <>{children}</>;
