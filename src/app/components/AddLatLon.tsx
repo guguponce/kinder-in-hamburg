@@ -22,6 +22,7 @@ const addLatLon = async (item: iFlohmarkt | iSpielplatz | iPost) => {
   if (isTypeFlohmarkt(item)) {
     const flohmarkt = item as iFlohmarkt;
     const { lat, lon } = await getLatLong(flohmarkt.address);
+    if (lat === "0" || lon === "0") return false;
     try {
       await updateFlohmarkt({
         ...flohmarkt,
@@ -36,6 +37,7 @@ const addLatLon = async (item: iFlohmarkt | iSpielplatz | iPost) => {
     const spielplatz = item as iSpielplatz;
     if (!spielplatz.address) return false;
     const { lat, lon } = await getLatLong(joinAddress(spielplatz.address));
+    if (lat === "0" || lon === "0") return false;
     try {
       await updateSpielplatz({
         ...spielplatz,
@@ -50,6 +52,7 @@ const addLatLon = async (item: iFlohmarkt | iSpielplatz | iPost) => {
     const post = item as iPost;
     if (!post.address) return false;
     const { lat, lon } = await getLatLong(joinAddress(post.address));
+    if (lat === "0" || lon === "0") return false;
     try {
       await (post.status === "approved"
         ? updateApprovedPost({
@@ -69,21 +72,25 @@ const addLatLon = async (item: iFlohmarkt | iSpielplatz | iPost) => {
   }
 };
 
-export default function AddLatLonFlohmarkt({
+export default function AddLatLon({
   item,
 }: {
   item: iFlohmarkt | iSpielplatz | iPost;
 }) {
   const [success, setSuccess] = React.useState(false);
+  const [error, setError] = React.useState(false);
   if (!!item.lat && !!item.lon)
     return <ClearLatLonButton id={item.id.toString()} />;
 
   if (success) return <p>Success!</p>;
+  if (error) return <p className="text-negative-700">Error</p>;
   return (
     <button
       className="bg-hh-700 text-white font-semibold p-2 rounded"
       onClick={() => {
-        addLatLon(item).then(() => setSuccess(true));
+        addLatLon(item).then((res) => {
+          return !!res ? setSuccess(true) : setError(!res);
+        });
       }}
     >
       Add Lat/Lon

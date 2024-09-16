@@ -10,7 +10,7 @@ import {
   iDailyAccuWeather,
   iWeatherData,
 } from "@app/utils/types";
-import { createClient } from "@supabase/supabase-js";
+import { createClient } from "@auth/server";
 
 export const createFetch =
   (options: Pick<RequestInit, "next" | "cache">) =>
@@ -36,10 +36,7 @@ export const getHamburgsWeather = async () => {
   return data as WeatherAPI;
 };
 
-const supabaseAdmin = createClient(
-  process.env.SUPABASE_URL ?? "",
-  process.env.SUPABASE_ANON_KEY ?? ""
-);
+const supabaseAdmin = createClient();
 
 export const setFirstRow = async () => {
   console.log("setting first row");
