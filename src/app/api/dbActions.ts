@@ -21,13 +21,10 @@ import {
 } from "@app/utils/functions";
 import { deletePreviousFlohmaerkteImages } from "./storageActions";
 import { revalidatePost } from "@app/utils/actions/revalidate";
-import { createClient as createServerClient } from "../../../utils/supabase/server";
 import { PostgrestError } from "@supabase/supabase-js";
 import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
 
 const supabaseAdmin = createClient();
-
-const supabase = createServerClient();
 
 //images
 export const getImageURL = async (bucket: string, path: string) =>
