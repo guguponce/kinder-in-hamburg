@@ -64,6 +64,9 @@ p {
   text-wrap: pretty;
   max-width: 70ch;
 }
+textarea {
+  field-sizing: content;
+}
 
 img {
   max-width: 100%;
