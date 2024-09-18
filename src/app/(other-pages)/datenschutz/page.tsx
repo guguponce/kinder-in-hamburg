@@ -80,7 +80,7 @@ export default function page() {
                 Vercel Web Analytics erfasst anonyme, aggregierte Datenpunkte,
                 einschließlich:
               </p>
-              <ul className="ml-4">
+              <ul className="ml-8">
                 <li className="list-disc">Ereigniszeitstempel</li>
                 <li className="list-disc">URL</li>
                 <li className="list-disc">Dynamischer Pfad</li>
@@ -124,9 +124,81 @@ export default function page() {
                   href="https://vercel.com/docs/analytics/privacy-policy"
                   target="_blank"
                   referrerPolicy="no-referrer"
-                  className="underline underline-offset-4 text-hh-600 hover:text-hh-500"
+                  className="block underline underline-offset-4 text-hh-600 hover:text-hh-500"
                 >
                   Datenschutzrichtlinie von Vercel
+                </a>
+                .
+              </p>
+            </div>{" "}
+          </div>{" "}
+          <div
+            id="vercel-container"
+            className="rounded p-2 bg-hh-100 bg-opacity-75"
+          >
+            <h4 className="text-lg font-semibold p-1"> Simple Analytics</h4>
+            <div className="rounded p-2 bg-hh-100 bg-opacity-75">
+              <p className="px-2">
+                Wir verwenden Simple Analytics, um Einblicke in die Nutzung
+                unserer Website zu erhalten. Simple Analytics legt großen Wert
+                auf Datenschutz und erfasst keine personenbezogenen Daten (PII)
+                und verwendet keine Cookies von Drittanbietern zu
+                Tracking-Zwecken.
+              </p>
+              <h5 className="text-base font-semibold p-1">Datensammlung</h5>
+              <p className="px-2">
+                Simple Analytics erfasst anonyme, aggregierte Datenpunkte,
+                einschließlich:
+              </p>
+              <ul className="ml-8">
+                <li className="list-disc">Ereigniszeitstempel</li>
+                <li className="list-disc">URL</li>
+                <li className="list-disc">Referrer</li>
+                <li className="list-disc">Geolokation (auf Stadtebene)</li>
+                <li className="list-disc">
+                  Gerätetyp (z. B. Mobilgerät oder Desktop)
+                </li>
+                <li className="list-disc">Browser & Version</li>
+                <li className="list-disc">Betriebssystem</li>
+                <li className="list-disc">Spracheinstellungen</li>
+              </ul>
+              <h5 className="text-base font-semibold p-1">
+                Besucheridentifizierung und Datenspeicherung
+              </h5>
+              <p className="px-2">
+                Im Gegensatz zu traditionellen Analysewerkzeugen verwendet
+                Simple Analytics keine personenbezogenen Daten, keine
+                eindeutigen Tracking-IDs oder Cookies. Anstatt Sitzungen
+                nachzuverfolgen, werden aggregierte Daten gesammelt, ohne den
+                Benutzer als individuelle Person zu identifizieren. Simple
+                Analytics speichert nur anonyme, nicht rückverfolgbare Daten.
+              </p>
+              <h5 className="text-base font-semibold p-1">Konformität</h5>
+              <p className="px-2">
+                Unsere Verwendung von Simple Analytics entspricht relevanten
+                Datenschutzbestimmungen, wie z. B. der DSGVO und der
+                ePrivacy-Verordnung. Es werden keine personenbezogenen Daten
+                gesammelt, und die Privatsphäre unserer Nutzer wird
+                vollumfänglich geschützt.
+              </p>
+              <h5 className="text-base font-semibold p-1">Anpassung</h5>
+              <p className="px-2">
+                Simple Analytics ist so konfiguriert, dass keine
+                identifizierbaren Daten gesammelt oder verfolgt werden. Es gibt
+                keine Schwärzung von URLs, da keine personenbezogenen
+                Informationen erfasst werden.
+              </p>
+              <p className="px-2">
+                Für weitere Informationen zu Simple Analytics und ihren
+                Datenschutzfunktionen lesen Sie bitte die Datenschutzrichtlinie
+                von Simple Analytics.
+                <a
+                  href="https://dashboard.simpleanalytics.com/privacy-policy"
+                  target="_blank"
+                  referrerPolicy="no-referrer"
+                  className="block underline underline-offset-4 text-hh-600 hover:text-hh-500"
+                >
+                  Datenschutzrichtlinie von Simple Analytics
                 </a>
                 .
               </p>
@@ -245,18 +317,24 @@ export default function page() {
           <h4 className="text-lg font-semibold p-1">Cookies</h4>
           <div className="rounded p-2 flex flex-col gap-1">
             <p>
-              Unsere Website verwendet Cookies von Next-Auth, einem Dienst, der
-              für die Authentifizierung auf unserer Website verantwortlich ist.
-              Diese Cookies sind für die korrekte Funktionsweise der
+              UnsereUnsere Website verwendet Cookies von Supabase, einem Dienst,
+              der für die Authentifizierung auf unserer Website verantwortlich
+              ist. Diese Cookies sind für die korrekte Funktionsweise der
               Authentifizierung erforderlich und enthalten keine persönlich
               identifizierbaren Informationen. Die verwendeten Cookies sind:
+              Diese Cookies werden verwendet, um den Anmeldeprozess zu verwalten
+              und sicherzustellen, dass Benutzer angemeldet bleiben, während sie
+              die Website nutzen. Sie werden automatisch beim Besuch der Website
+              gesetzt und bleiben für eine begrenzte Zeit gültig, um die Sitzung
+              des Benutzers aufrechtzuerhalten.
             </p>
-            <ul className="ml-4">
-              <li className="list-disc">next-auth.callback-url</li>
-              <li className="list-disc">next-auth.csrf-token</li>
-              <li className="list-disc">next-auth.session-token</li>
+            <ul className="ml-8">
+              <li className="list-disc">supabase-auth.callback-url</li>
+              <li className="list-disc">supabase-auth.csrf-token</li>
+              <li className="list-disc">supabase-auth.session-token</li>
+              <li className="list-disc">sb-auth-token.0</li>
+              <li className="list-disc">sb-auth-token.1</li>
             </ul>
-
             <p>
               Diese Cookies werden verwendet, um den Anmeldeprozess zu verwalten
               und sicherzustellen, dass Benutzer angemeldet bleiben, während sie
@@ -264,20 +342,30 @@ export default function page() {
               gesetzt und bleiben für eine begrenzte Zeit gültig, um die Sitzung
               des Benutzers aufrechtzuerhalten.
             </p>
-
             <p>
-              Die Verwendung dieser Cookies erfolgt auf Grundlage von Art. 6
-              Abs. 1 lit. f DSGVO. Der Websitebetreiber hat ein berechtigtes
-              Interesse an der technisch fehlerfreien und optimierten
-              Bereitstellung seiner Dienste.
+              Zusätzlich verwenden wir einen benutzerdefinierten Cookie namens
+              &quot;kih&quot;, der den Wert &quot;1&quot; hat und nach 7 Tagen
+              abläuft. Dieser Cookie ermöglicht es der Website, zu prüfen, ob
+              ein Benutzer die Website bereits besucht hat. Wenn der Browser
+              diesen Cookie nicht hat, zählt Vercel Analytics den Benutzer als
+              neuen Besucher. Ist der Cookie vorhanden, wird der Benutzer nicht
+              als neuer Besucher gezählt. Die Verwendung dieses Cookies erfolgt
+              auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO, da der
+              Websitebetreiber ein berechtigtes Interesse an der Optimierung der
+              Besucherzählung hat.
             </p>
-
             <p>
-              Unser Analysetool, Vercel Analytics, legt großen Wert auf den
-              Schutz der Privatsphäre der Nutzer und erfasst keine persönlichen
-              Informationen oder setzt Cookies zu Tracking-Zwecken. Weitere
-              Details finden Sie im folgenden Abschnitt:
-            </p>
+              Unser Analysetools, Simple Analytics und Vercel Analytics, legen
+              großen Wert auf den Schutz der Privatsphäre der Nutzer. Simple
+              Analytics erfasst keine persönlichen Informationen und verwendet
+              keine Cookies zu Tracking-Zwecken. Vercel Analytics hingegen
+              analysiert das Nutzungsverhalten auf unserer Website, um die
+              Leistung zu optimieren, ohne dabei persönliche Daten zu erfassen.
+              Weitere Informationen finden Sie in den jeweiligen Abschnitten:
+            </p>{" "}
+            <a href="#vercel-container" className="text-hh-600">
+              Erfahren Sie mehr über Simple Analytics.{" "}
+            </a>
             <a href="#vercel-container" className="text-hh-600">
               Erfahren Sie mehr über Vercel Analytics
             </a>
@@ -291,7 +379,7 @@ export default function page() {
               Informationen in so genannten Server-Log-Dateien, die Ihr Browser
               automatisch an uns übermittelt. Dies sind:
             </p>
-            <ul className="ml-4">
+            <ul className="ml-8">
               <li className="list-disc">Browsertyp und Browserversion</li>
               <li className="list-disc">verwendetes Betriebssystem</li>
               <li className="list-disc">Referrer URL</li>
