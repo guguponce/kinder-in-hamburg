@@ -25,6 +25,7 @@ export const categoryNames = [
   "Essen/Café",
   "Shops",
   "Spielhaus",
+  "Jugendeinrichtung",
   "Badeplatz",
 ];
 
@@ -42,7 +43,8 @@ export const relatedCategories: { [x: string]: categoryName[] } = {
   "Wochenende Ausflüge": ["Outdoor", "Tiere", "Kostenlos"],
   Sport: ["Outdoor", "Indoor", "Spielplatz"],
   Badeplatz: ["Outdoor", "Wochenende Ausflüge"],
-  Spielhaus: ["Kostenlos", "Indoor", "Spielplatz"],
+  Spielhaus: ["Kostenlos", "Indoor", "Spielplatz", "Jugendeinrichtung"],
+  Jugendeinrichtung: ["Kostenlos", "Indoor", "Spielhaus"],
 };
 
 export const WEATHER_CODES: {

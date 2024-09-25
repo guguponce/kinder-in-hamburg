@@ -376,6 +376,7 @@ export type categoryName =
   | "Indoor"
   | "Outdoor"
   | "Spielplatz"
+  | "Jugendeinrichtung"
   | "Museum"
   | "Kostenlos"
   | "Essen/Café"
