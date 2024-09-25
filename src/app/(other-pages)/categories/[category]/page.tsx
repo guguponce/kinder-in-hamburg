@@ -1,4 +1,7 @@
-import { getApprovedPostWithCat } from "@app/api/dbActions";
+import {
+  getApprovedPostWithCat,
+  getSuggestedPostWithCat,
+} from "@app/api/dbActions";
 import RandomRecommendation from "@app/components/@Cards/RandomRecommendation";
 import DynamicCategoryMap from "@app/components/@Map/DynamicCategoryMap";
 import PointsGallery from "@app/components/@PostForm/PointsGallery";
@@ -6,6 +9,7 @@ import FilterablePostList from "@app/components/FilterablePostList";
 import AdminRoute from "@app/providers/AdminRoute";
 import { categoryNames, relatedCategories } from "@app/utils/constants";
 import { parseParams, sortPostsByDate } from "@app/utils/functions";
+import { categoryName } from "@app/utils/types";
 import NotFound from "@components/NotFound";
 import React from "react";
 
@@ -14,15 +18,15 @@ export default async function CategoriesPage({
 }: {
   params: { category: string };
 }) {
-  const category = parseParams(cat);
+  const category = parseParams(cat) as categoryName;
   if (!categoryNames.includes(category)) return <NotFound type="categories" />;
-  const categoryPosts = await getApprovedPostWithCat(category);
+  //----------------------------------------------------------
+  const categoryPosts = await getSuggestedPostWithCat(category);
   console;
   if (!categoryPosts) return <NotFound type="categories" />;
   const highlightedWithImages = categoryPosts.filter(
     (post) => post.image && post.pinnedPost
   );
-
   const randomCategory =
     relatedCategories[category][
       Math.floor(Math.random() * relatedCategories[category].length)
@@ -67,9 +71,11 @@ export default async function CategoriesPage({
             </h1>
           </FilterablePostList>
         </section>
-        {category === "Badeplatz" && (
-          <DynamicCategoryMap catPosts={categoryPosts} category={category} />
-        )}
+        //-------------------------------
+        {/* {category === "Badeplatz" && ( */}
+        <DynamicCategoryMap catPosts={categoryPosts} category={category} />
+        //----------------------------
+        {/* )} */}
       </main>
     </AdminRoute>
   );
