@@ -445,6 +445,25 @@ export const getApprovedPostWithCat = async (category: string) => {
   }
 };
 
+export const getSuggestedPostWithCat = async (category: string) => {
+  if (!checkCategory(category))
+    throw new Error("Invalid Category: " + category);
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("kih-suggestions")
+      .select()
+      .ilike("categories", `%${category}%`);
+    if (error) {
+      throw new Error(
+        "There was a problem getting the posts for this category."
+      );
+    }
+    return parseAllPosts(data);
+  } catch (error) {
+    return false;
+  }
+};
+
 export const getPostsByCategoryBezirkStadtteile = async (
   bezirk: iBezirk,
   stadtteile: string[]
