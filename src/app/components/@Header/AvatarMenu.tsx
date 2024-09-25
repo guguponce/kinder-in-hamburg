@@ -69,15 +69,16 @@ export default function AvatarMenu({
             className="absolute top-[calc(100%+24px)] -right-2 sm:-right-3 lg:-right-4  shadow-lg sm:w-[33vw] sm:max-w-[150px] z-[300] flex flex-col bg-gradient-to-b from-hh-200 rounded-[0_0_4px_0] to-hh-100"
           >
             {[
-              { admin: false, href: "/dashboard", name: "Dashboard" },
-              { admin: false, href: "/new-post", name: "New Place Suggestion" },
-              { admin: false, href: "/new-flohmarkt", name: "New Flohmarkt" },
-              { admin: true, href: "/dashboard/posts", name: "All Posts" },
+              { admin: true, href: "/dashboard", name: "Dashboard" },
+              { admin: true, href: "/dashboard/posts", name: "Posts approval" },
               {
                 admin: true,
-                href: "/flohmaerkte-approval",
+                href: "/dashboard/flohmaerkte",
                 name: "Flohmärkte approval",
               },
+              { admin: true, href: "/new-post", name: "New Place Suggestion" },
+              { admin: true, href: "/new-flohmarkt", name: "New Flohmarkt" },
+              { admin: true, href: "/new-post", name: "New Post" },
             ].map(({ name, href, admin }, i) =>
               admin ? (
                 <React.Fragment key={name}>
