@@ -10,24 +10,9 @@ export default function Home() {
       id="homepage-main"
       className="w-full flex flex-col items-center gap-4 xs:px-2"
     >
-      {/* <section className="max-w-[800px]">
-        <WeatherBox full />
-      </section> */}
-      <SommerInHamburgBanner />
+      {/* <SommerInHamburgBanner /> */}
       <FlohmaerkteContainer />
       <ShortAbout></ShortAbout>
     </main>
   );
 }
-
-/*
-<AdminServerComponent>
-        <section className="max-w-[1000px] w-full p-2">
-          {/* <WeatherBox full={true}></WeatherBox> 
-        </section>
-        <NextWeekendFlohmaerkte></NextWeekendFlohmaerkte>
-
-        <PinnedPosts />
-        <ShortAbout></ShortAbout>
-      </AdminServerComponent>
-*/

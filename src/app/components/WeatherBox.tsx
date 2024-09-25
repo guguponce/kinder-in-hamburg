@@ -27,8 +27,10 @@ export default async function WeatherBox({
   if (!weather) return <></>;
   const { activity, overallCondition } =
     WEATHER_CODES[weather.currentWeather.WeatherIcon];
-  const { currentTime, nextRain, activityType, sunsetIndex } =
-    getTimeRainAndActivity(weather.forecastHourly, activity);
+  const { currentTime, nextRain, activityType } = getTimeRainAndActivity(
+    weather.forecastHourly,
+    activity
+  );
   const retrievedSuggestions = bezirk
     ? await getApprovedPostsWithCatAndBezirk(
         activityType as categoryName,
