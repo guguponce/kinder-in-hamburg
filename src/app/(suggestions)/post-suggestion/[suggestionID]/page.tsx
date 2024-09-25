@@ -20,7 +20,7 @@ export default async function CurrentPostPage({
 
   return (
     <AdminRoute>
-      <PostTemplate post={post}>
+      <>
         <div className="flex self-center justify-center items-center rounded-md border-2 border-hh-600 bg-hh-200 mb-4 p-2">
           {post.status === "approved" ? (
             <div className="flex flex-col items-center">
@@ -71,7 +71,8 @@ export default async function CurrentPostPage({
             </Link>
           </div>
         </AdminServerComponent>
-      </PostTemplate>
+        <PostTemplate post={post} />
+      </>
     </AdminRoute>
   );
 }
