@@ -232,7 +232,7 @@ export default function FlohmarktTemplate({
                 </div>
               </div>
             </div>
-            {"Augusto Ponce" !== addedBy.name && (
+            {process.env.ADMIN_EMAIL !== addedBy.email && (
               <div id="addedBy" className="w-fit px-4 lg:ml-auto self-end">
                 <h2 className="text-lg font-semibold">Hinzugefügt von:</h2>
                 <div className="flex items-center justify-end transition-all">

@@ -305,6 +305,20 @@ export default function page() {
             durch Spam-E-Mails, vor.
           </p>
         </div>
+        <div className="rounded p-2 bg-hh-100 bg-opacity-75">
+          <h4 className="text-lg font-semibold p-1">Externe Links</h4>
+          <p className="px-2">
+            Wir verwenden auf unserer Website Links, die zu anderen Websites
+            führen (externe Links), diese sind besonders gekennzeichnet. Deren
+            Inhalte befinden sich nicht auf unserem Server. Die externen Inhalte
+            dieser Links wurden beim Setzen der Links geprüft. Es kann jedoch
+            nicht ausgeschlossen werden, dass die Inhalte von den jeweiligen
+            Anbietern nachträglich verändert wurden. Sollten Sie bemerken, dass
+            die Inhalte der externen Anbieter gegen geltendes Recht verstoßen,
+            teilen Sie uns dies bitte mit. Diese Datenschutzerklärung gilt nur
+            für Inhalte auf unserer Website.
+          </p>
+        </div>
       </div>
       <div className="rounded p-2 bg-hh-100 bg-opacity-75">
         <h2 className="text-xl font-semibold p-1">
