@@ -151,8 +151,8 @@ export default function FlohForm({
         deleteUnusedFlohmaerkteImages();
       })
       .then(async () => {
-        sleep(750);
-        router.push(`/new-flohmarkt/successfully-submitted/${data.id}`);
+        sleep(3000);
+        router.push(`/flohmarkt-suggestion/${data.id}`);
       })
       .catch((error) =>
         setSubmitError({ isError: true, errorMessage: error.message })
