@@ -178,7 +178,6 @@ export default function PostForm({
       lat: latlon.lat,
       lon: latlon.lon,
     };
-
     addNewSuggestedPost(suggestionPost)
       .then(() => {
         setSubmitError({ isError: false, errorMessage: "" });
@@ -189,8 +188,8 @@ export default function PostForm({
       .then(() => {
         revalidatePost();
         setTimeout(() => {
-          router.push(`/new-post/successfully-submitted/${data.id}`);
-        }, 300);
+          router.push(`/post-suggestion/${data.id}`);
+        }, 4000);
       })
       .catch((error) =>
         setSubmitError({ isError: true, errorMessage: error.message })
@@ -237,8 +236,8 @@ export default function PostForm({
       .then(() => {
         revalidatePost();
         setTimeout(() => {
-          router.push(`/update-suggestion/successfully-updated/${data.id}`);
-        }, 300);
+          router.push(`/post-suggestion/${data.id}`);
+        }, 4000);
       })
       .catch((error) =>
         setSubmitError({ isError: true, errorMessage: error.message })
@@ -287,8 +286,8 @@ export default function PostForm({
       .then(() =>
         setTimeout(() => {
           revalidatePost();
-          router.push(`/posts-approval/success/${data.id}`);
-        }, 300)
+          router.push(`/posts/${data.id}`);
+        }, 4000)
       )
       .catch((error) =>
         setSubmitError({ isError: true, errorMessage: error.message })
@@ -334,8 +333,8 @@ export default function PostForm({
       .then(() => {
         revalidatePost();
         setTimeout(() => {
-          router.push(`/update-post/successfully-updated/${data.id}`);
-        }, 300);
+          router.push(`/posts/${data.id}`);
+        }, 4000);
       })
       .catch((error) =>
         setSubmitError({ isError: true, errorMessage: error.message })
