@@ -2,10 +2,8 @@
 import React from "react";
 import { MapContainer, Marker, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import { divIcon, map } from "leaflet";
+import { divIcon } from "leaflet";
 import { createStandortMapIcon } from "@app/utils/functions";
-import { UseFormSetValue } from "react-hook-form";
-import { iAddress, iBezirk, iSessionUser, iSpielplatz } from "@app/utils/types";
 
 const MainLocationIcon = divIcon({
   html: createStandortMapIcon("#BC251F", 35),

@@ -1,5 +1,4 @@
 import React from "react";
-import PostForm from "@components/@PostForm/PostForm";
 import { getServerUser } from "@app/api/auth/supabaseAuth";
 import { getSuggestedPostWithID } from "@app/api/dbActions";
 import { parseAddress, parsePost } from "@app/utils/functions";
@@ -7,6 +6,8 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import PostNotFound from "@components/@PostForm/PostNotFound";
 import { iUserMetadata } from "@app/api/auth/types";
+import dynamic from "next/dynamic";
+const PostForm = dynamic(() => import("@app/components/@PostForm/PostForm"));
 
 export default async function ApproveSuggestedPostPage({
   params,
