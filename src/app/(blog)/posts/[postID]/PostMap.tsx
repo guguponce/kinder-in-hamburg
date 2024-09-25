@@ -1,6 +1,7 @@
 import {
   getFlohmaerkteFromBezirkStadtteil,
   getPostsFromBezirkStadtteile,
+  getSuggestedPostWithID,
 } from "@app/api/dbActions";
 import { getSpielplatzFromBezirkStadtteil } from "@app/api/spActions";
 import StandortIcon from "@app/components/@Icons/StandortIcon";
@@ -27,9 +28,9 @@ export default async function PostMap({
   const stadtteile = PROXIMATE_STADTTEILE_FROM_OTHER_BEZIRK[stadtteil];
   const postsNearby = await getPostsFromBezirkStadtteile(bezirk, stadtteile);
   if (!postsNearby) return null;
-  const currentPost = postsNearby.splice(
-    postsNearby.findIndex((post) => post.id === id)
-  )[0];
+  const currentPost =
+    postsNearby.find((post) => post.id === id) ||
+    (await getSuggestedPostWithID(id.toString()));
   if (!currentPost || !currentPost.lat || !currentPost.lon) return null;
   const { nextMonday } = getTodayNexMonday();
   const flohmaerkteNearby = await getFlohmaerkteFromBezirkStadtteil(
@@ -52,7 +53,7 @@ export default async function PostMap({
     },
     1000
   );
-
+  const listsLength = !!Object.values(lists).flat().length;
   return (
     <article
       id="map"
@@ -99,7 +100,9 @@ export default async function PostMap({
             </div>
           )}
         </div>
-        <h3 className="text-xl font-semibold lg:self-end">in der Nähe</h3>
+        {listsLength && (
+          <h3 className="text-xl font-semibold lg:self-end">in der Nähe</h3>
+        )}
       </div>
     </article>
   );
