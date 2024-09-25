@@ -34,6 +34,8 @@ export default async function CategoriesPage({
   const randomCategoryPosts = categoryPosts
     .filter((post) => post.categories.includes(randomCategory))
     .sort(() => 0.5 - Math.random());
+  //-------------------------------
+  //----------------------------
 
   return (
     <AdminRoute>
@@ -71,10 +73,8 @@ export default async function CategoriesPage({
             </h1>
           </FilterablePostList>
         </section>
-        //-------------------------------
         {/* {category === "Badeplatz" && ( */}
         <DynamicCategoryMap catPosts={categoryPosts} category={category} />
-        //----------------------------
         {/* )} */}
       </main>
     </AdminRoute>
