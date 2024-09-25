@@ -10,29 +10,35 @@ import OldButtonSetter from "./OldButtonSetter";
 export default async function AllFlohmaerktePage() {
   const allFlohs = await getAllFlohmaerteSeparatedByStatus();
   if (!allFlohs) return <PostNotFound multiples type="post" />;
+  const status: Array<keyof typeof allFlohs> = [
+    "pending",
+    "approved",
+    "rejected",
+    "old",
+  ];
 
   return (
     <AdminRoute>
       <main className="flex flex-col gap-4">
         <OldButtonSetter />
-        {Object.entries(allFlohs).map(([status, flohmarkt]) => (
+        {status.map((st) => (
           <section
-            key={status}
+            key={st}
             className="w-full gap-2 bg-hh-400 text-white rounded-md p-4"
           >
             <h2 className="font-semibold text-center text-2xl p-2 capitalize">
-              {status}
+              {st}
             </h2>
             <article className="flex flex-wrap gap-2 justify-center">
-              {[...flohmarkt]
+              {[...allFlohs[st]]
                 .sort((a, b) => a.date - b.date)
                 .map((floh, i) => (
                   <div
                     key={floh.id}
                     className={`${
-                      status === "approved"
+                      st === "approved"
                         ? "bg-positive-300"
-                        : status === "rejected"
+                        : st === "rejected"
                         ? "bg-negative-300"
                         : "bg-hh-300"
                     } floh-2 rounded-md flex  justify-around gap-4 items-center w-[400px] lg:w-[600px]  h-[400px] p-2`}

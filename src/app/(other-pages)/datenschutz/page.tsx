@@ -128,7 +128,6 @@ export default function page() {
                 >
                   Datenschutzrichtlinie von Vercel
                 </a>
-                .
               </p>
             </div>{" "}
           </div>{" "}
@@ -200,7 +199,6 @@ export default function page() {
                 >
                   Datenschutzrichtlinie von Simple Analytics
                 </a>
-                .
               </p>
             </div>{" "}
           </div>{" "}

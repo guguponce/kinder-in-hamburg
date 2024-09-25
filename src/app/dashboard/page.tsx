@@ -27,8 +27,6 @@ export default async function DashboardPage() {
         </h2>
 
         <ul>
-          <li>change cookies policy</li>
-          <li>commits</li>
           <li>URLfilteredlist</li>
           <li>Search Fonts</li>
           <li>Search Jugend Zentrum</li>
