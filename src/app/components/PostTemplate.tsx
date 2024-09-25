@@ -57,7 +57,7 @@ export default function PostTemplate({
       {children}
       <div
         id="back-buttons"
-        className="flex justify-between items-center gap-4 w-full"
+        className="relative flex justify-between gap-4 w-full flex-col sm:flex-row"
       >
         <BackButton
           type={
@@ -69,7 +69,9 @@ export default function PostTemplate({
         <div className="flex gap-1 items-center">
           <section
             id="categories"
-            className="flex justify-end gap-1 h-fit flex-wrap"
+            className={`flex justify-end gap-1 h-fit flex-wrap w-full ${
+              pinnedPost && "sm:pr-12"
+            }`}
           >
             {categories.map((cat) => (
               <h3
@@ -81,21 +83,21 @@ export default function PostTemplate({
               </h3>
             ))}
           </section>
-          {pinnedPost && (
-            <div className="relative self-start w-12 min-w-12 h-full bg-black">
-              <img
-                src="/assets/icons/bookmark.svg"
-                alt="Pinned Post"
-                className="absolute -top-6 left-0 w-full h-12"
-              />
-            </div>
-          )}
         </div>
+        {pinnedPost && (
+          <div className="absolute flex self-start w-12 min-w-12 h-full border-0 m-0 -top-6 sm:-top-6 right-0">
+            <img
+              src="/assets/icons/bookmark.svg"
+              alt="Pinned Post"
+              className="w-full h-12"
+            />
+          </div>
+        )}
       </div>
 
       <article
         id="text"
-        className="w-full lg:self-center p-4 rounded-md bg-hh-50 flex flex-col gap-4"
+        className="w-full lg:self-start p-4 rounded-md bg-hh-50 flex flex-col gap-4"
       >
         <h1 className="text-4xl text-center font-bold">{title}</h1>
         {!!image?.length && (
