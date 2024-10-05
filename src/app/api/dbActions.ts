@@ -975,7 +975,7 @@ export const getThisWeekFlohmaerkte = async () => {
       .from("flohmaerkte")
       .select("*")
       .match({ status: "approved" })
-      .gte("date", today)
+      .gte("date", today - 1000 * 60 * 60)
       .lte("date", nextMonday);
     if (error) {
       return false;
