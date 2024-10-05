@@ -86,14 +86,17 @@ export default async function FlohmarktPageMapContainer({
         spielplaetzeOneKM={spielplaetzeOneKM}
         weitereFlohmaerkte={weitereFlohmaerkte}
       />
-      <hr className="w-full border-t border-hh-800 mt-4" />
+
       {weitereFlohmaerkte.length > 0 && (
-        <section className="w-full max-w-[800px] flex flex-col gap-2 items-center my-4 px-1 xs:px-4 sm:px-8">
-          <h3 className="font-bold text-2xl text-hh-800">
-            Weitere Märkte diese Woche:
-          </h3>
-          <WeitereFlohmaerkte displayedMarkers={weitereFlohmaerkte} />
-        </section>
+        <>
+          <hr className="w-full border-t border-hh-800 mt-4" />
+          <section className="w-full max-w-[800px] flex flex-col gap-2 items-center my-4 px-1 xs:px-4 sm:px-8">
+            <h3 className="font-bold text-2xl text-hh-800">
+              Weitere Märkte diese Woche:
+            </h3>
+            <WeitereFlohmaerkte displayedMarkers={weitereFlohmaerkte} />
+          </section>
+        </>
       )}
     </div>
   );
