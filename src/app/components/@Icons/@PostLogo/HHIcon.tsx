@@ -20,65 +20,6 @@ export default function HHIcon({
         fill={color}
       >
         <g id="SVGRepo_iconCarrier">
-          <defs></defs>
-          {/* <circle
-        style={{
-          fill: "none",
-          stroke: color,
-          strokeLinecap: "round",
-          strokeLinejoin: "round",
-        }}
-        cx="30.6862"
-        cy="37.7149"
-        r="3.5996"
-      ></circle>
-      <circle
-        style={{
-          fill: "none",
-          stroke: color,
-          strokeLinecap: "round",
-          strokeLinejoin: "round",
-        }}
-        cx="17.3138"
-        cy="37.7149"
-        r="3.5996"
-      ></circle> */}
-          {/* <path
-        style={{
-          fill: "none",
-          stroke: color,
-          strokeLinecap: "round",
-          strokeLinejoin: "round",
-        }}
-        d="M28.6164,31.4247l-4.89,6.2848H17.3156l4.908-6.2848h6.3928"
-      ></path>
-      <path
-        style={{
-          fill: "none",
-          stroke: color,
-          strokeLinecap: "round",
-          strokeLinejoin: "round",
-        }}
-        d="M30.6862,37.7149,27.8425,29.094H25.7512"
-      ></path>
-      <path
-        style={{
-          fill: "none",
-          stroke: color,
-          strokeLinecap: "round",
-          strokeLinejoin: "round",
-        }}
-        d="M21.75,29.436l1.9743,8.2762"
-      ></path>
-      <path
-        style={{
-          fill: "none",
-          stroke: color,
-          strokeLinecap: "round",
-          strokeLinejoin: "round",
-        }}
-        d="M20.4724,29.436h2.6619"
-      ></path> */}
           <path
             style={{
               fill: "none",
