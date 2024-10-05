@@ -17,7 +17,7 @@ export default function StatusSetter({
   const handleSetStatus = async () => {
     if (status === currentStatus) return;
     if (type === "post")
-      await updatePostStatus(target as iPost, target.id, status, currentStatus);
+      await updatePostStatus(target.id, status, currentStatus, target as iPost);
     if (type === "flohmarkt")
       await updateFlohmarktStatus(target.id.toString(), currentStatus);
   };
