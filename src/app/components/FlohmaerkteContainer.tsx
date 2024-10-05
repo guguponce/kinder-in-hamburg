@@ -33,7 +33,7 @@ export default async function FlohmaerkteContainer() {
   const isSunday = new Date().getDay() === 0;
   return (
     <div className="rounded bg-hh-100 bg-opacity-25 w-[calc(100%-2rem)] p-1 sm:p-4 flex flex-col items-center min-h-[50vh]">
-      <h1 className="text-4xl font-bold my-2 p-2 rounded text-hh-900">
+      <h1 className="text-4xl font-bold mt-2 p-2 rounded text-sun-300">
         Flohmärkte
       </h1>
 

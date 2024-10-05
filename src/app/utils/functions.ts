@@ -210,7 +210,8 @@ export const joinTime = (start: string | undefined, end: string | undefined) =>
   !start ? undefined : !end ? start : `${start} - ${end}`;
 
 export const getTodayNexMonday = () => {
-  const currentDate = new Date();
+  const nowUTCDate = new Date();
+  const currentDate = new Date(nowUTCDate.getTime() + 2 * 60 * 60 * 1000);
   const currentDayOfWeek = currentDate.getDay();
   const daysUntilNextMonday = (1 - currentDayOfWeek + 7) % 7;
   const millisecondsUntilNextMonday =
