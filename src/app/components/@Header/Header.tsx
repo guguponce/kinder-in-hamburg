@@ -5,22 +5,29 @@ import Link from "next/link";
 import BurgerMenu from "./BurgerMenu";
 import UserButtons from "./UserButtons";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
+import PostLogo from "../@Icons/@PostLogo/PostLogo";
 
 export default async function Header() {
   return (
     <header
       id="header"
-      className="relative h-20 w-full lg:max-w-[1200px] bg-negative-500 p-2 sm:p-4 flex justify-between lg:justify-center items-center gap-2 text-white"
+      className="relative h-20 w-full lg:max-w-[1200px] bg-negative-400 flex justify-between lg:justify-center items-center gap-2 text-white"
     >
       <AdminServerComponent>
         <BurgerMenu />
       </AdminServerComponent>
       <div
-        className="h-full px-4 flex-grow  rounded-sm bg-white flex items-center  justify-end lg:justify-center   hover:text-[#121212] active:text-[#121212] "
+        className="h-full px-4 flex-grow rounded-sm flex items-center justify-center lg:justify-start gap-4"
         id="logo-text"
       >
+        <div className="flex items-center justify-center" id="logo">
+          <Link href="/">
+            <PostLogo logo="logo" size="6.5rem" />
+          </Link>
+        </div>
+
         <Link
-          className={`${logoFont.className} text-3xl sm:text-4xl tracking-wide sm:tracking-widest text-end lg:text-center font-bold text-hh-800 flex items-end gap-4`}
+          className={`${logoFont.className} text-3xl hidden sm:flex sm:text-4xl pt-1 align-top tracking-wide sm:tracking-widest text-end lg:text-center font-bold text-white items-end gap-4`}
           href="/"
         >
           Kinder in HH
