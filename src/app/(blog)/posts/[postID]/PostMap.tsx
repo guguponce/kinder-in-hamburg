@@ -51,8 +51,9 @@ export default async function PostMap({
       posts: postsNearby || [],
       spielplaetze: spielplaetzeNearby || [],
     },
-    1000
+    2000
   );
+  lists.posts = lists.posts?.filter((post) => post.id !== id);
   const listsLength = !!Object.values(lists).flat().length;
   return (
     <article
