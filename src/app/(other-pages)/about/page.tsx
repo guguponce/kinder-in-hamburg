@@ -2,10 +2,10 @@ import React from "react";
 
 export default function AboutPage() {
   return (
-    <main className="flex flex-col items-center gap-4">
+    <main className="flex flex-col items-center gap-4 p-1">
       <section
         id="about"
-        className="p-4 w-full sm:w-4/5 md:w-3/4 max-w-[800px] rounded-lg shadow-lg bg-gradient-to-b from-hh-500 to-hh-600 text-white flex flex-col gap-4"
+        className="p-4 w-full sm:w-4/5 md:w-3/4 max-w-[800px] rounded-lg shadow-lg bg-gradient-to-b from-hh-800 to-hh-600 text-white flex flex-col gap-4"
       >
         <h1 className="text-3xl font-bold">Über uns</h1>
         <h3 className="font-semibold">
@@ -40,7 +40,7 @@ export default function AboutPage() {
       </section>
       <section
         id="future"
-        className="p-4 lg:p-8  w-full max-w-[1200px] shadow-lg bg-gradient-to-b from-astronaut-100 to-astronaut-50 text-white flex flex-col gap-4"
+        className="p-4 lg:p-8  w-full max-w-[1200px] shadow-lg bg-gradient-to-b from-hh-100 to-hh-50 text-white flex flex-col gap-4"
       >
         <h3 className="font-bold text-xl text-hh-800">
           Willkommen in der Zukunft unserer App!
@@ -50,7 +50,7 @@ export default function AboutPage() {
           Erlebnis noch bereichernder und angenehmer machen werden:
         </p>
         <ul>
-          <li className="my-1 rounded p-1 bg-astronaut-800 bg-opacity-75">
+          <li className="my-1 rounded p-1 bg-hh-800">
             <span className="font-semibold text-lg text-positive-200">
               Posts:
             </span>{" "}
@@ -60,14 +60,14 @@ export default function AboutPage() {
             und Inspirationen, die aus verschiedenen Internetseiten und
             Influencern stammen.
           </li>
-          <li className="my-1 rounded p-1 bg-astronaut-800 bg-opacity-75">
+          <li className="my-1 rounded p-1 bg-hh-800">
             <span className="font-semibold text-lg text-positive-200">
               Kategorien und Standortorganisation:
             </span>{" "}
             Navigiere problemlos durch verschiedene Kategorien von Beiträgen und
             Bezirken.
           </li>
-          <li className="my-1 rounded p-1 bg-astronaut-800 bg-opacity-75">
+          <li className="my-1 rounded p-1 bg-hh-800">
             <span className="font-semibold text-lg text-positive-200">
               Erweiterte Filterung:
             </span>{" "}
@@ -75,7 +75,7 @@ export default function AboutPage() {
             an, um sicherzustellen, dass der Inhalt deinen Vorlieben und
             Interessen entspricht.
           </li>
-          <li className="my-1 rounded p-1 bg-astronaut-800 bg-opacity-75">
+          <li className="my-1 rounded p-1 bg-hh-800">
             <span className="font-semibold text-lg text-positive-200">
               Neue Orte und Flohmärkte vorschlagen:
             </span>{" "}
@@ -83,7 +83,7 @@ export default function AboutPage() {
             über unsere Vorschlagsformulare teilen, um das kollektive Wissen
             unserer Community zu erweitern.
           </li>
-          <li className="my-1 rounded p-1 bg-astronaut-800 bg-opacity-75">
+          <li className="my-1 rounded p-1 bg-hh-800">
             <span className="font-semibold text-lg text-positive-200">
               Spielplatz-Erkundung:
             </span>{" "}
@@ -91,14 +91,14 @@ export default function AboutPage() {
             Abdeckung der besten in jedem Stadtviertel, perfekt für endlosen
             Spaß mit deinen Kindern.
           </li>
-          <li className="my-1 rounded p-1 bg-astronaut-800 bg-opacity-75">
+          <li className="my-1 rounded p-1 bg-hh-800">
             <span className="font-semibold text-lg text-positive-200">
               Interaktive Karten:
             </span>{" "}
             Wir werden versuchen, eine Karte mit den Standorten der Orte der
             Beiträge in jedem Bezirk zu erstellen.
           </li>
-          <li className="my-1 rounded p-1 bg-astronaut-800 bg-opacity-75">
+          <li className="my-1 rounded p-1 bg-hh-800">
             <span className="font-semibold text-lg text-positive-200">
               Persönliche Erfahrung:
             </span>{" "}
@@ -111,7 +111,7 @@ export default function AboutPage() {
 
         <h3 className="font-bold text-xl mt-2 text-hh-800">Einschränkungen:</h3>
         <ul>
-          <li className="my-1 rounded p-1 bg-astronaut-800 bg-opacity-75">
+          <li className="my-1 rounded p-1 bg-hh-800">
             <span className="font-semibold text-lg text-negative-200">
               Bildrechte:
             </span>{" "}
@@ -122,7 +122,7 @@ export default function AboutPage() {
             interessiert bist, deine Instagram-Bilder zu teilen, würden wir uns
             freuen, dein Konto auf unserer Website zu bewerben.
           </li>
-          <li className="my-1 rounded p-1 bg-astronaut-800 bg-opacity-75">
+          <li className="my-1 rounded p-1 bg-hh-800">
             <span className="font-semibold text-lg text-negative-200">
               Web-Wartungskosten:
             </span>{" "}
@@ -132,7 +132,7 @@ export default function AboutPage() {
             Premium-Konten, um auf einige Funktionen zuzugreifen, oder Werbung
             auf der Website.
           </li>
-          <li className="my-1 rounded p-1 bg-astronaut-800 bg-opacity-75">
+          <li className="my-1 rounded p-1 bg-hh-800">
             <span className="font-semibold text-lg text-negative-200">
               Zeitaufwand:
             </span>{" "}
