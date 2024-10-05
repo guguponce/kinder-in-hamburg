@@ -12,7 +12,7 @@ import FlohmaerkteSearchList from "./FlohmaerkteSearchList";
 export default async function DashboardPage() {
   const session = await getServerUser();
   if (!session?.user?.email || !session?.user?.user_metadata.name) {
-    redirect("/log-in");
+    redirect("/");
   }
   const userPosts = await getUsersSuggestions(session.user.user_metadata.email);
   const userFlohs = await getUserFlohmaerkte(session.user.user_metadata.email);

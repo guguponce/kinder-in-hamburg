@@ -61,7 +61,15 @@ export default async function CurrentPostPage({
                 title={post.title}
               />
             ) : (
-              <ApprovePostButton post={post} />
+              <>
+                <ApprovePostButton post={post} />
+                <DeleteButton
+                  deleteFrom="suggested"
+                  type="post"
+                  id={post.id}
+                  title={post.title}
+                />
+              </>
             )}
             <Link
               href={`/update-suggestion/${suggestionID}`}
