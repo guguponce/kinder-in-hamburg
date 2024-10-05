@@ -9,17 +9,18 @@
   --main-text-color: $hh-100;
 }
 
-$hh-50: #f0f2f5;
-$hh-100: #e3e8ed;
-$hh-200: #c8d1da;
-$hh-300: #acbac8;
-$hh-400: #91a3b6;
-$hh-500: #758ca3;
-$hh-600: #5c738a;
-$hh-700: #47596b;
-$hh-800: #33404d;
-$hh-900: #1f262e;
-$hh-950: #141a1f;
+$hh-50: #f0f1f2;
+$hh-100: #e1e4e5;
+$hh-200: #d0d7da;
+$hh-300: #becad0;
+$hh-400: #abbec7;
+$hh-500: #97b2bf;
+$hh-600: #7896a5;
+$hh-700: #607884;
+$hh-800: #4b5960;
+$hh-900: #343b3e;
+$hh-950: #1b1d1e;
+
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 0, 0, 0;
