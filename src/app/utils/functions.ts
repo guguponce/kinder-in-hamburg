@@ -218,11 +218,10 @@ export const getTodayNexMonday = () => {
   const nextMonday = new Date(
     currentDate.getTime() + millisecondsUntilNextMonday
   );
-
-  nextMonday.setHours(5, 0, 0, 1);
-  currentDate.setHours(0, 0, 0, 1);
+  nextMonday.setUTCHours(0, 0, 0, 1);
+  currentDate.setUTCHours(0, 0, 0, 1);
   return {
-    today: currentDate.getTime() - 60000,
+    today: currentDate.getTime(),
     nextMonday: nextMonday.getTime(),
   };
 };

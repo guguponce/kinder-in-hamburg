@@ -406,17 +406,17 @@ export const updateSuggestionStatus = async (id: number, status: string) => {
 export const updatePostStatus = async <
   T extends "rejected" | "approved" | "pending" | "old"
 >(
-  post: iPost,
   id: number,
   oldStatus: T,
-  newStatus: T
+  newStatus: T,
+  post?: iPost
 ) => {
   if (oldStatus === "approved") {
     if (newStatus === "rejected" || newStatus === "pending") {
       await deleteApprovedPost(id, newStatus);
     }
   } else {
-    if (newStatus === "approved") {
+    if (newStatus === "approved" && post) {
       await approveSuggestedPost(post);
     } else {
       await updateSuggestionStatus(id, newStatus);
@@ -906,7 +906,7 @@ export const getApprovedFlohmaerkte = async () => {
       .from("flohmaerkte")
       .select("*")
       .ilike("status", "approved")
-      .gte("date", today);
+      .gte("date", today - 1000 * 60 * 60);
     if (error) {
       throw new Error("There was a problem getting the Flea Markets.");
     }

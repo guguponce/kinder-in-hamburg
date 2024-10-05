@@ -15,8 +15,9 @@ export default async function FlohmaerkteContainer() {
   const flohmaerkte = await getApprovedFlohmaerkte();
   if (!flohmaerkte) return <div>Keine Flohmärkte gefunden</div>;
   const { today, nextMonday } = getTodayNexMonday();
+  const yesterdayNight = today - 1000 * 60 * 60;
   const thisWeekFlohmaerkte = flohmaerkte.filter(
-    ({ date }) => date > today && date < nextMonday
+    ({ date }) => date > yesterdayNight && date < nextMonday
   );
   const futureFlohmaerkte = flohmaerkte
     .filter(({ date }) => date > nextMonday)
