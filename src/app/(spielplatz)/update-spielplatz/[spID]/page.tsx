@@ -15,7 +15,7 @@ export default async function NewSpielplatzPage({
   params: { spID: string };
 }) {
   const session = await getServerUser();
-  if (!session?.user) redirect("log-in");
+  if (!session?.user) redirect("/");
   const spielplatz = await getSpielplatzWithID(spID);
   const spImages = await getAllSpielplatzImagesURL(spID);
   if (!spielplatz) return <PostNotFound type="spielplatz" />;

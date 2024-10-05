@@ -11,7 +11,7 @@ const DynamicForm = dynamic(() => import("../SpielplatzForm"), {
 
 export default async function NewSpielplatzPage() {
   const session = await getServerUser();
-  if (!session?.user) redirect("log-in");
+  if (!session?.user) redirect("/");
   const {
     email,
     name,

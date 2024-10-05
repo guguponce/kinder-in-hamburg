@@ -7,7 +7,7 @@ import { iUserMetadata } from "@app/api/auth/types";
 
 export default async function AddFlohmarkt() {
   const session = await getServerUser();
-  if (!session?.user) redirect("log-in");
+  if (!session?.user) redirect("/");
   const {
     email,
     name,

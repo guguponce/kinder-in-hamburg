@@ -12,7 +12,7 @@ export default async function AddCopiedFlohmarkt({
   params: { flohmarktID: string };
 }) {
   const session = await getServerUser();
-  if (!session?.user) redirect("log-in");
+  if (!session?.user) redirect("/");
   const flohmarkt = await getFlohmarktWithID(params.flohmarktID);
   if (!flohmarkt) redirect("/new-flohmarkt");
   const id = new Date().getTime();
