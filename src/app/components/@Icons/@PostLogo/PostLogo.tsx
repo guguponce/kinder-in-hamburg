@@ -36,7 +36,7 @@ export default function PostLogo({
         {logo === "shuffle" && <LazyShuffleIcon size={size} color={color} />}
         {logo === "triangle" && <LazyTriangleIcon size={size} color={color} />}
         {logo === "date" && <LazyDateIcon size={size} color={color} />}
-        {logo === "hh" && (
+        {logo === "logo" && (
           <LazyLogo size={size} color={color} color2={color2} />
         )}
         {logo === "hamburg" && <LazyHamburgIcon size={size} color={color} />}
@@ -48,13 +48,14 @@ export default function PostLogo({
       </Suspense>
     );
   }
-
   return (
     <>
       {logo === "shuffle" && <LazyShuffleIcon size={size} color={color} />}
       {logo === "triangle" && <LazyTriangleIcon size={size} color={color} />}
       {logo === "date" && <LazyDateIcon size={size} color={color} />}
-      {logo === "hh" && <LazyLogo size={size} color={color} color2={color2} />}
+      {logo === "logo" && (
+        <LazyLogo size={size} color={color} color2={color2} />
+      )}
       {logo === "hamburg" && <LazyHamburgIcon size={size} color={color} />}
       {logo === "map" && <LazyMapIcon size={size} color={color} />}
       {logo === "link" && <LazyLinkIcon size={size} color={color} />}
