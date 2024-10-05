@@ -35,18 +35,20 @@ export default function FlohmarktPoster({
           : {}
       }
       className={`relative ${
-        image ? "" : "bg-gradient-to-b from-white to-hh-100"
+        image ? "" : "bg-gradient-to-b from-white to-hh-100 p-2"
       } w-full ${
         size === "small" ? "min-w-[144px]" : "min-w-[180px]"
-      } h-full shadow-md rounded-sm flex flex-col items-center  justify-between text-center hover:scale-[1.01] hover:shadow-xl p-2`}
+      } h-full shadow-md rounded-sm flex flex-col items-center  justify-between text-center hover:scale-[1.01] hover:shadow-xl`}
     >
-      <FlohmarktBackground
-        randomNumber={
-          typeof index === "number"
-            ? Number("0." + (index + 1) * 72584270527)
-            : undefined
-        }
-      />
+      {!image && (
+        <FlohmarktBackground
+          randomNumber={
+            typeof index === "number"
+              ? Number("0." + (index + 1) * 72584270527)
+              : undefined
+          }
+        />
+      )}
       {!!image ? (
         <img
           loading="lazy"
