@@ -39,9 +39,6 @@ export const createClient = (dynamicCookies?: ReadonlyRequestCookies) => {
             });
           } catch (error) {
             console.log("Error setting cookies", error);
-            // The `set` method was called from a Server Component.
-            // This can be ignored if you have middleware refreshing
-            // user sessions.
           }
         },
       },

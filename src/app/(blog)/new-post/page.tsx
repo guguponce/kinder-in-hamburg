@@ -8,7 +8,7 @@ const PostForm = dynamic(() => import("@app/components/@PostForm/PostForm"));
 
 export default async function AddPostPage() {
   const session = await getServerUser();
-  if (!session?.user) redirect("log-in");
+  if (!session?.user) redirect("/");
   const {
     email,
     name,

@@ -15,7 +15,7 @@ export default async function AddCopiedFlohmarkt({
   params: { postID: string };
 }) {
   const session = await getServerUser();
-  if (!session?.user) redirect("log-in");
+  if (!session?.user) redirect("/");
   const flohmarkt =
     (await getApprovedPostWithID(params.postID)) ||
     (await getSuggestedPostWithID(params.postID));
