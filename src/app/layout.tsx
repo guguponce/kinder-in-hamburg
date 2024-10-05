@@ -52,7 +52,7 @@ export default async function RootLayout({
     <html lang="en">
       <body
         className={`${fixelFont.className}
-         flex flex-col items-center bg-hh-500 max-w-[1400px] mx-auto gap-2`}
+         flex flex-col items-center bg-hh-600 max-w-[1400px] mx-auto gap-2`}
       >
         <SessionProvider>
           <Header />
