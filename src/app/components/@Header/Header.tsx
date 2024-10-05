@@ -1,6 +1,6 @@
 import React from "react";
 import LinkActive from "./LinkActive";
-
+import { logoFont } from "@app/styles/fonts/localfonts";
 import Link from "next/link";
 import BurgerMenu from "./BurgerMenu";
 import UserButtons from "./UserButtons";
@@ -20,7 +20,7 @@ export default async function Header() {
         id="logo-text"
       >
         <Link
-          className="text-3xl text-end lg:text-center font-bold text-hh-800 flex items-end gap-4"
+          className={`${logoFont.className} text-3xl sm:text-4xl tracking-wide sm:tracking-widest text-end lg:text-center font-bold text-hh-800 flex items-end gap-4`}
           href="/"
         >
           Kinder in HH

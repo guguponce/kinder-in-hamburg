@@ -5,6 +5,7 @@ import {
   deleteFlohmarkt,
   deleteSuggestion,
   rejectFlohmarkt,
+  updatePostStatus,
 } from "@app/api/dbActions";
 import { useRouter } from "next/navigation";
 import {
@@ -36,7 +37,7 @@ export default function DeleteModal({
     }
     if (type === "post") {
       if (deleteFrom === "suggested") {
-        await deleteSuggestion(id);
+        await updatePostStatus(id, "pending", "rejected");
       } else if (deleteFrom === "approved") {
         await deleteApprovedPost(id);
       } else if (deleteFrom === "all") {
