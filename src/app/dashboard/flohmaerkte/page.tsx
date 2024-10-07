@@ -11,8 +11,7 @@ import { GetServerSideProps } from "next";
 
 export const revalidate = 20;
 
-const fetchFlohmaerkteByStatus = async () => {
-  const url = `${process.env.BASE_URL}api/flohmaerkteByStatus`;
+const fetchFlohmaerkteByStatus = async (url: string) => {
   const allFlohs = await fetch(url, {
     headers: {
       method: "GET",
@@ -35,7 +34,8 @@ const fetchFlohmaerkteByStatus = async () => {
 };
 
 export default async function AllFlohmaerktePage() {
-  const allFlohs = await fetchFlohmaerkteByStatus();
+  const url = `${process.env.BASE_URL}api/flohmaerkteByStatus`;
+  const allFlohs = await fetchFlohmaerkteByStatus(url);
   if (!allFlohs) return <PostNotFound multiples type="post" />;
   const status: Array<keyof typeof allFlohs> = [
     "pending",
