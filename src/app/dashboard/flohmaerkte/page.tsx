@@ -35,7 +35,6 @@ export default async function AllFlohmaerktePage() {
   const url = `${process.env.BASE_URL}api/flohmaerkteByStatus`;
   const allFlohs = await fetchFlohmaerkteByStatus(url);
   if (!allFlohs) return <PostNotFound multiples type="post" />;
-  console.log(allFlohs.approved.find(({ id }) => id === 1714770390428)?.title);
   const status: Array<keyof typeof allFlohs> = [
     "pending",
     "approved",
