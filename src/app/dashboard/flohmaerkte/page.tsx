@@ -9,19 +9,19 @@ import OldButtonSetter from "./OldButtonSetter";
 import { iFlohmarkt } from "@app/utils/types";
 import { GetServerSideProps } from "next";
 
+export const revalidate = 20;
+
 const fetchFlohmaerkteByStatus = async () => {
-  const allFlohs = await fetch(
-    `${process.env.BASE_URL}api/flohmaerkteByStatus`,
-    {
-      headers: {
-        method: "GET",
-        Accept: "application/json",
-      },
-      next: {
-        revalidate: 30,
-      },
-    }
-  );
+  const url = `${process.env.BASE_URL}api/flohmaerkteByStatus`;
+  const allFlohs = await fetch(url, {
+    headers: {
+      method: "GET",
+      Accept: "application/json",
+    },
+    next: {
+      revalidate: 20,
+    },
+  });
   if (allFlohs) {
     return (await allFlohs.json()) as
       | {
