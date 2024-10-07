@@ -8,20 +8,13 @@ import AddLatLon from "@app/components/AddLatLon";
 import OldButtonSetter from "./OldButtonSetter";
 import { iFlohmarkt } from "@app/utils/types";
 
-export const revalidate = 30;
-
 const fetchFlohmaerkteByStatus = async (url: string) => {
   try {
     const allFlohs = await fetch(url, {
-      headers: {
-        method: "GET",
-        Accept: "application/json",
-      },
       next: {
         revalidate: 30,
       },
     });
-
     if (allFlohs) {
       return (await allFlohs.json()) as
         | {
@@ -42,6 +35,7 @@ export default async function AllFlohmaerktePage() {
   const url = `${process.env.BASE_URL}api/flohmaerkteByStatus`;
   const allFlohs = await fetchFlohmaerkteByStatus(url);
   if (!allFlohs) return <PostNotFound multiples type="post" />;
+  console.log(allFlohs.approved.find(({ id }) => id === 1714770390428)?.title);
   const status: Array<keyof typeof allFlohs> = [
     "pending",
     "approved",

@@ -3,10 +3,13 @@ import { getAllFlohmaerteSeparatedByStatus } from "../dbActions";
 
 export async function GET() {
   const flohmaerkte = await getAllFlohmaerteSeparatedByStatus();
+  console.log("GET");
+  return NextResponse.json(flohmaerkte);
+}
 
-  return NextResponse.json(flohmaerkte, {
-    headers: {
-      "Cache-Control": "public, max-age=15, stale-while-revalidate",
-    },
-  });
+export async function POST() {
+  const flohmaerkte = await getAllFlohmaerteSeparatedByStatus();
+  console.log("POST");
+
+  return NextResponse.json(flohmaerkte);
 }
