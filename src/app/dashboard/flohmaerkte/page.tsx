@@ -34,7 +34,7 @@ const fetchFlohmaerkteByStatus = async (url: string) => {
 };
 
 export default async function AllFlohmaerktePage() {
-  const url = `${process.env.BASE_URL}api/flohmaerkteByStatus`;
+  const url = `https://www.kinder-in-hamburg.de/api/flohmaerkteByStatus`;
   const allFlohs = await fetchFlohmaerkteByStatus(url);
   if (!allFlohs) return <PostNotFound multiples type="post" />;
   const status: Array<keyof typeof allFlohs> = [
