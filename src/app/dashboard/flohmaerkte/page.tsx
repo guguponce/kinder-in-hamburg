@@ -7,9 +7,8 @@ import FlohmarktPoster from "@app/components/FlohmarktPoster";
 import AddLatLon from "@app/components/AddLatLon";
 import OldButtonSetter from "./OldButtonSetter";
 import { iFlohmarkt } from "@app/utils/types";
-import { GetServerSideProps } from "next";
 
-export const revalidate = 20;
+export const revalidate = 30;
 
 const fetchFlohmaerkteByStatus = async (url: string) => {
   try {
@@ -19,9 +18,10 @@ const fetchFlohmaerkteByStatus = async (url: string) => {
         Accept: "application/json",
       },
       next: {
-        revalidate: 20,
+        revalidate: 30,
       },
     });
+
     if (allFlohs) {
       return (await allFlohs.json()) as
         | {
