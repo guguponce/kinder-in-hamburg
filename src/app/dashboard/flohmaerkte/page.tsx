@@ -12,29 +12,34 @@ import { GetServerSideProps } from "next";
 export const revalidate = 20;
 
 const fetchFlohmaerkteByStatus = async (url: string) => {
-  const allFlohs = await fetch(url, {
-    headers: {
-      method: "GET",
-      Accept: "application/json",
-    },
-    next: {
-      revalidate: 20,
-    },
-  });
-  if (allFlohs) {
-    return (await allFlohs.json()) as
-      | {
-          pending: iFlohmarkt[];
-          approved: iFlohmarkt[];
-          rejected: iFlohmarkt[];
-          old: iFlohmarkt[];
-        }
-      | false;
+  try {
+    const allFlohs = await fetch(url, {
+      headers: {
+        method: "GET",
+        Accept: "application/json",
+      },
+      next: {
+        revalidate: 20,
+      },
+    });
+    if (allFlohs) {
+      return (await allFlohs.json()) as
+        | {
+            pending: iFlohmarkt[];
+            approved: iFlohmarkt[];
+            rejected: iFlohmarkt[];
+            old: iFlohmarkt[];
+          }
+        | false;
+    }
+  } catch (e) {
+    console.error(e);
+    return false;
   }
 };
 
 export default async function AllFlohmaerktePage() {
-  const url = `https://www.kinder-in-hamburg.de/api/flohmaerkteByStatus`;
+  const url = `${process.env.BASE_URL}api/flohmaerkteByStatus`;
   const allFlohs = await fetchFlohmaerkteByStatus(url);
   if (!allFlohs) return <PostNotFound multiples type="post" />;
   const status: Array<keyof typeof allFlohs> = [
