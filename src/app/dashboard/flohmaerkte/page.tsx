@@ -7,17 +7,21 @@ import FlohmarktPoster from "@app/components/FlohmarktPoster";
 import AddLatLon from "@app/components/AddLatLon";
 import OldButtonSetter from "./OldButtonSetter";
 import { iFlohmarkt } from "@app/utils/types";
+import { GetServerSideProps } from "next";
 
 const fetchFlohmaerkteByStatus = async () => {
-  const allFlohs = await fetch("/api/flohmaerkteByStatus", {
-    headers: {
-      method: "GET",
-      Accept: "application/json",
-    },
-    next: {
-      revalidate: 30,
-    },
-  });
+  const allFlohs = await fetch(
+    `${process.env.BASE_URL}api/flohmaerkteByStatus`,
+    {
+      headers: {
+        method: "GET",
+        Accept: "application/json",
+      },
+      next: {
+        revalidate: 30,
+      },
+    }
+  );
   if (allFlohs) {
     return (await allFlohs.json()) as
       | {
