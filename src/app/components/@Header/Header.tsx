@@ -22,7 +22,12 @@ export default async function Header() {
       >
         <div className="flex items-center justify-center" id="logo">
           <Link href="/">
-            <PostLogo logo="logo" size="6.5rem" />
+            <PostLogo
+              logo="logo"
+              size="6.5rem"
+              color="#9ed0e6"
+              color2="#FFF9F3"
+            />
           </Link>
         </div>
 
