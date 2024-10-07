@@ -6,9 +6,32 @@ import AdminRoute from "@app/providers/AdminRoute";
 import FlohmarktPoster from "@app/components/FlohmarktPoster";
 import AddLatLon from "@app/components/AddLatLon";
 import OldButtonSetter from "./OldButtonSetter";
+import { iFlohmarkt } from "@app/utils/types";
+
+const fetchFlohmaerkteByStatus = async () => {
+  const allFlohs = await fetch("/api/flohmaerkteByStatus", {
+    headers: {
+      method: "GET",
+      Accept: "application/json",
+    },
+    next: {
+      revalidate: 30,
+    },
+  });
+  if (allFlohs) {
+    return (await allFlohs.json()) as
+      | {
+          pending: iFlohmarkt[];
+          approved: iFlohmarkt[];
+          rejected: iFlohmarkt[];
+          old: iFlohmarkt[];
+        }
+      | false;
+  }
+};
 
 export default async function AllFlohmaerktePage() {
-  const allFlohs = await getAllFlohmaerteSeparatedByStatus();
+  const allFlohs = await fetchFlohmaerkteByStatus();
   if (!allFlohs) return <PostNotFound multiples type="post" />;
   const status: Array<keyof typeof allFlohs> = [
     "pending",
