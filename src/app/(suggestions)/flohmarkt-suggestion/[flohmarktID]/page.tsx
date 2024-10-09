@@ -7,7 +7,6 @@ import React from "react";
 import UpdateButton from "@app/components/UpdateButton";
 import { getServerUser } from "@app/api/auth/supabaseAuth";
 import { redirect } from "next/navigation";
-import PostNotFound from "@app/components/@PostForm/PostNotFound";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
 import UserServerComponents from "@app/providers/UserServerComponents";
 import RestoreButton from "@app/components/RestoreButton";
