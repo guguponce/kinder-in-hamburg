@@ -133,140 +133,138 @@ export default function SpielhaeuserMap({ sphList }: { sphList: iPost[] }) {
     return Object.values(displayList).flat();
   }, [displayList]);
   return (
-    <AdminRoute>
-      <section className="flex flex-col items-center gap-4 w-full max-w-[800px] p-4 rounded-md bg-gradient-to-b from-hh-50 to-hh-100 bg-opacity-20">
-        <article className="w-full h-[400px]">
-          <GeneralMap zoom={10}>
-            <MarkersLists
-              lists={{ posts: markersList }}
-              cluster={false}
-              customPostMarker={PostMarker}
-            />
-          </GeneralMap>
-        </article>
-        <div className="flex flex-col gap-4 rounded bg-gradient-to-b from-hh-500 to-hh-600 p-2 w-full font-sans">
-          <div id="alter-select" className="flex flex-col gap-2 text-hh-50">
-            <h3 className="font-semibold">Alter {alter}</h3>
-            <div className="flex flex-wrap gap-2 items-center min-h-9">
-              {["0-3", "4-6", "7-9", "10-14", "15-18"].map((age) => (
-                <button
-                  key={age}
-                  className={`${alter && alter !== age && "opacity-75"} ${
-                    alter === age && "font-semibold"
-                  } py-1 px-2 rounded bg-hh-50 bg-opacity-10 min-w-[calc(${
-                    age.length
-                  }ch + 1rem)]`}
-                  onClick={() => setAlter(age)}
-                >
-                  {age} Jahre
-                </button>
-              ))}
-              {!!alter && (
-                <button
-                  className="py-1 px-2 rounded bg-hh-50 font-semibold border border-hh-200 bg-opacity-10 opacity-75"
-                  onClick={() => setAlter(undefined)}
-                >
-                  Alle
-                </button>
-              )}
-            </div>
-          </div>
-          <div id="bezirk-select" className="flex flex-col gap-2 text-hh-50">
-            <h3 className="font-semibold">Bezirk</h3>
-            <div className="flex flex-wrap gap-2  items-center min-h-9">
-              {bezirke.current.map((bezirk) => (
-                <button
-                  key={bezirk}
-                  className={`${
-                    bezirkFilter && bezirkFilter !== bezirk && "opacity-75"
-                  } ${
-                    bezirkFilter === bezirk && "font-semibold"
-                  } py-1 px-2 rounded bg-hh-50 bg-opacity-10`}
-                  onClick={() => setBezirkFilter(bezirk)}
-                >
-                  {bezirk}
-                </button>
-              ))}
-              {!!bezirkFilter && (
-                <button
-                  className="py-1 px-2 rounded bg-hh-50 font-semibold border border-hh-200 bg-opacity-10 opacity-75"
-                  onClick={() => setBezirkFilter(undefined)}
-                >
-                  Überall in Hamburg
-                </button>
-              )}
-            </div>
+    <section className="flex flex-col items-center gap-4 w-full max-w-[800px] p-4 rounded-md bg-gradient-to-b from-hh-50 to-hh-100 bg-opacity-20">
+      <article className="w-full h-[400px]">
+        <GeneralMap zoom={10}>
+          <MarkersLists
+            lists={{ posts: markersList }}
+            cluster={false}
+            customPostMarker={PostMarker}
+          />
+        </GeneralMap>
+      </article>
+      <div className="flex flex-col gap-4 rounded bg-gradient-to-b from-hh-500 to-hh-600 p-2 w-full font-sans">
+        <div id="alter-select" className="flex flex-col gap-2 text-hh-50">
+          <h3 className="font-semibold">Alter {alter}</h3>
+          <div className="flex flex-wrap gap-2 items-center min-h-9">
+            {["0-3", "4-6", "7-9", "10-14", "15-18"].map((age) => (
+              <button
+                key={age}
+                className={`${alter && alter !== age && "opacity-75"} ${
+                  alter === age && "font-semibold"
+                } py-1 px-2 rounded bg-hh-50 bg-opacity-10 min-w-[calc(${
+                  age.length
+                }ch + 1rem)]`}
+                onClick={() => setAlter(age)}
+              >
+                {age} Jahre
+              </button>
+            ))}
+            {!!alter && (
+              <button
+                className="py-1 px-2 rounded bg-hh-50 font-semibold border border-hh-200 bg-opacity-10 opacity-75"
+                onClick={() => setAlter(undefined)}
+              >
+                Alle
+              </button>
+            )}
           </div>
         </div>
-        <section
-          id="sph-list"
-          className="flex flex-wrap items-stretch gap-4 w-full max-w-[800px] p-4 rounded-md bg-gradient-to-b from-hh-50 to-hh-100 bg-opacity-20"
-        >
-          {Object.keys(displayList)
-            .sort()
-            .map((bezirk) => {
-              const sphQuantity = displayList[bezirk].length;
-              return (
-                <div
-                  key={bezirk}
+        <div id="bezirk-select" className="flex flex-col gap-2 text-hh-50">
+          <h3 className="font-semibold">Bezirk</h3>
+          <div className="flex flex-wrap gap-2  items-center min-h-9">
+            {bezirke.current.map((bezirk) => (
+              <button
+                key={bezirk}
+                className={`${
+                  bezirkFilter && bezirkFilter !== bezirk && "opacity-75"
+                } ${
+                  bezirkFilter === bezirk && "font-semibold"
+                } py-1 px-2 rounded bg-hh-50 bg-opacity-10`}
+                onClick={() => setBezirkFilter(bezirk)}
+              >
+                {bezirk}
+              </button>
+            ))}
+            {!!bezirkFilter && (
+              <button
+                className="py-1 px-2 rounded bg-hh-50 font-semibold border border-hh-200 bg-opacity-10 opacity-75"
+                onClick={() => setBezirkFilter(undefined)}
+              >
+                Überall in Hamburg
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+      <section
+        id="sph-list"
+        className="flex flex-wrap items-stretch gap-4 w-full max-w-[800px] p-4 rounded-md bg-gradient-to-b from-hh-50 to-hh-100 bg-opacity-20"
+      >
+        {Object.keys(displayList)
+          .sort()
+          .map((bezirk) => {
+            const sphQuantity = displayList[bezirk].length;
+            return (
+              <div
+                key={bezirk}
+                className={`${
+                  sphQuantity > 1 ? "w-full" : "w-[calc(50%-0.5rem)] p-2"
+                } flex flex-col`}
+              >
+                <h2
                   className={`${
-                    sphQuantity > 1 ? "w-full" : "w-[calc(50%-0.5rem)] p-2"
-                  } flex flex-col`}
+                    sphQuantity > 1 && "px-2"
+                  } font-semibold text-hh-800`}
                 >
-                  <h2
-                    className={`${
-                      sphQuantity > 1 && "px-2"
-                    } font-semibold text-hh-800`}
-                  >
-                    {bezirk}
-                  </h2>
-                  <OptionalExpandableContainer
-                    length={sphQuantity}
-                    expandable={sphQuantity > 2 && !bezirkFilter}
-                  >
-                    <article className="flex flex-wrap gap-2 w-full h-full">
-                      {displayList[bezirk].map((post) => (
-                        <React.Fragment key={post.id}>
-                          <div
-                            className={`${
-                              sphQuantity > 1
-                                ? "w-[calc(50%-0.25rem)]"
-                                : "w-full -200"
-                            } min-w-[325px] md:flex hidden`}
-                            key={post.id}
-                          >
-                            <HorizontalCard
-                              id={post.id}
-                              title={post.title}
-                              image={(post.image && post.image[0]) || ""}
-                              description={
-                                getPlainText(post.text).slice(0, 100) + "..."
-                              }
-                              link={post.link}
-                              stadtteil={post.stadtteil}
-                            />
-                          </div>
-                          <div className="w-[calc(50%-0.25rem)] min-w-[325px] md:hidden flex">
-                            <ImgPriorityCard
-                              id={post.id + 1}
-                              title={post.title}
-                              image={(post.image && post.image[0]) || ""}
-                              description={
-                                getPlainText(post.text).slice(0, 100) + "..."
-                              }
-                              link={post.link}
-                              stadtteil={post.stadtteil}
-                            />
-                          </div>
-                        </React.Fragment>
-                      ))}
-                    </article>
-                  </OptionalExpandableContainer>
-                </div>
-              );
-            })}
-        </section>
+                  {bezirk}
+                </h2>
+                <OptionalExpandableContainer
+                  length={sphQuantity}
+                  expandable={sphQuantity > 2 && !bezirkFilter}
+                >
+                  <article className="flex flex-wrap gap-2 w-full h-full">
+                    {displayList[bezirk].map((post) => (
+                      <React.Fragment key={post.id}>
+                        <HorizontalCard
+                          type="post"
+                          id={post.id}
+                          title={post.title}
+                          link={`/${
+                            post.status === "approved"
+                              ? "posts"
+                              : "post-suggestions"
+                          }/${post.id}`}
+                          image={(post.image && post.image[0]) || ""}
+                        >
+                          <HorizontalCard.PostInfo
+                            title={post.title}
+                            description={
+                              getPlainText(post.text).slice(0, 100) + "..."
+                            }
+                            stadtteil={post.stadtteil}
+                          />
+                        </HorizontalCard>
+                        {/* </div>
+                          <ImgPriorityCard
+                            id={post.id + 1}
+                            title={post.title}
+                            image={(post.image && post.image[0]) || ""}
+                            description={
+                              getPlainText(post.text).slice(0, 100) + "..."
+                            }
+                            link={post.link}
+                            stadtteil={post.stadtteil}
+                          />
+                        </div> */}
+                      </React.Fragment>
+                    ))}
+                  </article>
+                </OptionalExpandableContainer>
+              </div>
+            );
+          })}
       </section>
-    </AdminRoute>
+    </section>
   );
 }

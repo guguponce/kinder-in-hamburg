@@ -27,7 +27,7 @@ export default async function PinnedPostsSpielplaetzeNearby({
 }) {
   const pinnedSpielplaetzeAround =
     (await getSpielplatzFromBezirkStadtteil(bezirk, stadtteile)) || [];
-  const listPostsSpielplaetze = [
+  const listPostsSpielplaetze: Array<iPost | iSpielplatz> = [
     ...pinnedSpielplaetzeAround,
     ...pinnedPosts,
   ].filter(
@@ -45,29 +45,25 @@ export default async function PinnedPostsSpielplaetzeNearby({
           className="min-w-[300px] max-w-[300px] aspect-[2] sm:min-w-[400px] sm:max-w-[400px] sm:aspect-[2.5] mr-2"
         >
           <HorizontalCard
-            spielgeraete={
-              isTypeSpielplatz(item) ? (item as iSpielplatz).spielgeraete : []
-            }
+            type="post"
             id={item.id}
             title={item.title}
-            image={
-              typeof item.image === "string"
-                ? item.image
-                : !item.image
-                ? ""
-                : item.image[0]
-            }
-            description={
-              typeof item.text === "string"
-                ? item.text
-                : getPlainText(item.text)
-            }
-            link={
-              isTypeSpielplatz(item)
-                ? `/spielplaetze/${item.id}`
-                : `/posts/${item.id}`
-            }
-          />
+            link={`/${isTypeSpielplatz(item) ? "spielplaetze" : "posts"}/${
+              item.id
+            }`}
+            image={(item.image && item.image[0]) || ""}
+          >
+            <HorizontalCard.PostInfo
+              title={item.title}
+              description={
+                (isTypeSpielplatz(item) || typeof item.text === "string"
+                  ? item.text
+                  : getPlainText(item.text)
+                ).slice(0, 100) + "..."
+              }
+              stadtteil={item.stadtteil}
+            />
+          </HorizontalCard>
         </article>
       ))}
     </ScrollableContainer>

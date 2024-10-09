@@ -1,6 +1,6 @@
 import { getAllPostsSeparatedByStatus } from "@app/api/dbActions";
 import HorizontalCard from "@app/components/@Cards/HorizontalCard";
-import PostNotFound from "@app/components/@PostForm/PostNotFound";
+import NotFound from "@components/@NotFound/NotFound";
 import { getPlainText } from "@app/utils/functions";
 import React from "react";
 import StatusSetter from "../StatusSetter";
@@ -8,7 +8,7 @@ import AdminRoute from "@app/providers/AdminRoute";
 
 export default async function AllPostsPage() {
   const allPosts = await getAllPostsSeparatedByStatus();
-  if (!allPosts) return <PostNotFound multiples type="post" />;
+  if (!allPosts) return <NotFound multiples type="post" />;
 
   return (
     <AdminRoute>
@@ -35,16 +35,20 @@ export default async function AllPostsPage() {
                 >
                   <div className="min-w-[275px] lg:max-w-[450px] h-[160px] flex-grow">
                     <HorizontalCard
+                      type="post"
                       id={p.id}
-                      image={p.image ? p.image[0] : ""}
                       title={p.title}
-                      description={getPlainText(p.text)}
-                      link={
-                        p.status === "approved"
-                          ? `/posts/${p.id}`
-                          : `/post-suggestion/${p.id}`
-                      }
-                    />
+                      link={`/${
+                        p.status === "approved" ? "posts" : "post-suggestions"
+                      }/${p.id}`}
+                      image={(p.image && p.image[0]) || ""}
+                    >
+                      <HorizontalCard.PostInfo
+                        title={p.title}
+                        description={getPlainText(p.text).slice(0, 100) + "..."}
+                        stadtteil={p.stadtteil}
+                      />
+                    </HorizontalCard>
                   </div>
                   <div className="border border-hh-800 rounded p-2 flex flex-wrap items-center justify-center gap-4 text-hh-800 min-w-[100px]">
                     <StatusSetter

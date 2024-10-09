@@ -29,11 +29,20 @@ export default async function PinnedPosts({
             key={p.id}
           >
             <HorizontalCard
+              type="post"
               id={p.id}
-              image={p.image ? p.image[0] : ""}
               title={p.title}
-              description={getPlainText(p.text)}
-            />
+              link={`/${
+                p.status === "approved" ? "posts" : "post-suggestions"
+              }/${p.id}`}
+              image={(p.image && p.image[0]) || ""}
+            >
+              <HorizontalCard.PostInfo
+                title={p.title}
+                description={getPlainText(p.text).slice(0, 100) + "..."}
+                stadtteil={p.stadtteil}
+              />
+            </HorizontalCard>
           </article>
         ))}
       </ScrollableContainer>

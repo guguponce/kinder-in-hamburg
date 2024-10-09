@@ -54,24 +54,23 @@ export default async function SpielplaeztePage() {
                       </h2>
                       <div className="flex flex-wrap gap-4 items-stretch mx-auto w-full justify-around">
                         {list.map((sp) => (
-                          <div
-                            key={sp.id}
-                            className={`min-w-[275px] w-1/2 lg:w-full max-w-[400px] h-[168px] ${
-                              sp.pinnedSpielplatz
-                                ? "outline outline-2 outline-offset-2 outline-hh-800"
-                                : ""
-                            }`}
-                          >
+                          <React.Fragment key={sp.id}>
                             <HorizontalCard
-                              stadtteil={sp.stadtteil}
-                              id={sp.id}
                               title={sp.title}
-                              description={sp.text}
-                              image={!!sp.image?.length ? sp.image[0] : ""}
+                              image={sp.image ? sp.image[0] : ""}
+                              type="spielplatz"
+                              id={sp.id}
                               link={`/spielplaetze/${sp.id}`}
-                              spielgeraete={sp.spielgeraete}
-                            />
-                          </div>
+                            >
+                              <HorizontalCard.PostInfo
+                                title={sp.title}
+                                description={
+                                  sp.text ? sp.text.slice(0, 100) + "..." : ""
+                                }
+                                stadtteil={sp.stadtteil}
+                              />
+                            </HorizontalCard>
+                          </React.Fragment>
                         ))}
                       </div>
                     </article>
