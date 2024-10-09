@@ -4,7 +4,7 @@ import SuccessfulSubmit from "@components/@PostForm/SuccessfulSubmit";
 import { getFlohmarktWithID } from "@app/api/dbActions";
 import { getServerUser } from "@app/api/auth/supabaseAuth";
 import { redirect } from "next/navigation";
-import PostNotFound from "@components/@PostForm/PostNotFound";
+import NotFound from "@components/@NotFound/NotFound";
 export default async function SuccessfulApprovedFlohmarktPage({
   params: { approvedID },
 }: {
@@ -20,7 +20,7 @@ export default async function SuccessfulApprovedFlohmarktPage({
   )
     redirect("/flohmaerkte/" + approvedID);
   const flohmarkt = await getFlohmarktWithID(approvedID);
-  if (!flohmarkt) return <PostNotFound />;
+  if (!flohmarkt) return <NotFound />;
   if (flohmarkt.status !== "approved")
     redirect(`/flohmaerkte-approval/${approvedID}`);
 

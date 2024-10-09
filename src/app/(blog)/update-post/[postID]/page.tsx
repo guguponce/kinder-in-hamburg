@@ -3,7 +3,7 @@ import { getServerUser } from "@app/api/auth/supabaseAuth";
 import { getApprovedPostWithID } from "@app/api/dbActions";
 import { parseAddress } from "@app/utils/functions";
 import { redirect } from "next/navigation";
-import PostNotFound from "@components/@PostForm/PostNotFound";
+import NotFound from "@components/@NotFound/NotFound";
 import AdminRoute from "@app/providers/AdminRoute";
 import AddLatLon from "@app/components/AddLatLon";
 import { iUserMetadata } from "@app/api/auth/types";
@@ -23,7 +23,7 @@ export default async function updateApprovedPostPage({
     redirect("/");
   const { postID } = params;
   const post = await getApprovedPostWithID(postID);
-  if (!post) return <PostNotFound />;
+  if (!post) return <NotFound />;
   const {
     email,
     name,

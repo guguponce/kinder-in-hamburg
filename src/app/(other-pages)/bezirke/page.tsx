@@ -1,7 +1,7 @@
 import React from "react";
 import { getAllApprovedPosts } from "@app/api/dbActions";
 import { iPost } from "@app/utils/types";
-import PostNotFound from "@app/components/@PostForm/PostNotFound";
+import NotFound from "@components/@NotFound/NotFound";
 import RandomRecommendation from "@app/components/@Cards/RandomRecommendation";
 import Link from "next/link";
 import AdminRoute from "@app/providers/AdminRoute";
@@ -9,7 +9,7 @@ import { separateInBezirke } from "@app/utils/functions";
 
 export default async function BezirkePage() {
   const allPosts = await getAllApprovedPosts();
-  if (!allPosts) return <PostNotFound multiples={true} type="post" />;
+  if (!allPosts) return <NotFound multiples={true} type="post" />;
   const bezirkePosts = separateInBezirke(allPosts);
 
   return (

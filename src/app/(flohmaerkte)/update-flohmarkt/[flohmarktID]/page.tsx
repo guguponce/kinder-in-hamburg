@@ -5,7 +5,7 @@ import DeleteButton from "@app/components/DeleteButton";
 import AdminRoute from "@app/providers/AdminRoute";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
 import FlohForm from "@components/@FlohForm/FlohForm";
-import PostNotFound from "@components/@PostForm/PostNotFound";
+import NotFound from "@components/@NotFound/NotFound";
 import { getServerUser } from "@app/api/auth/supabaseAuth";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -19,7 +19,7 @@ export default async function UpdateApprovedFlohmarktPage({
 }) {
   const session = await getServerUser();
   const flohmarkt = await getFlohmarktWithID(flohmarktID);
-  if (!flohmarkt) return <PostNotFound />;
+  if (!flohmarkt) return <NotFound />;
   if (
     !flohmarkt.addedBy.email ||
     !session?.user?.user_metadata.email ||

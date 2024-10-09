@@ -1,5 +1,5 @@
 import { getApprovedPostWithID } from "@app/api/dbActions";
-import PostNotFound from "@components/@PostForm/PostNotFound";
+import NotFound from "@components/@NotFound/NotFound";
 import DeletePostButton from "@app/components/DeleteButton";
 import PostTemplate from "@components/PostTemplate";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
@@ -14,7 +14,7 @@ export default async function CurrentPostPage({
 }) {
   const { postID } = params;
   const post = await getApprovedPostWithID(postID);
-  if (!post) return <PostNotFound />;
+  if (!post) return <NotFound />;
   return (
     <>
       {post.categories.includes("Badeplatz") ? (

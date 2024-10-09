@@ -6,7 +6,7 @@ import {
   getAllSpielplatzImagesURL,
   getSpielplatzWithID,
 } from "@app/api/spActions";
-import PostNotFound from "@app/components/@PostForm/PostNotFound";
+import NotFound from "@components/@NotFound/NotFound";
 import AdminRoute from "@app/providers/AdminRoute";
 import { iUserMetadata } from "@app/api/auth/types";
 export default async function NewSpielplatzPage({
@@ -18,7 +18,7 @@ export default async function NewSpielplatzPage({
   if (!session?.user) redirect("/");
   const spielplatz = await getSpielplatzWithID(spID);
   const spImages = await getAllSpielplatzImagesURL(spID);
-  if (!spielplatz) return <PostNotFound type="spielplatz" />;
+  if (!spielplatz) return <NotFound type="spielplatz" />;
   if (
     !spielplatz.addedBy.email ||
     !session?.user?.email ||

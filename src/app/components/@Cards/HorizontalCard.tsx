@@ -33,13 +33,13 @@ export default function HorizontalCard({
     <Link
       aria-label={`Explore ${title}`}
       href={link || `/flohmaerkte/${id}`}
-      className="HorizontalCard w-full h-32 sm:flex-grow justify-center flex gap-2 items-center bg-white rounded-md overflow-hidden hover:shadow-md"
+      className="HorizontalCard w-full h-32 sm:flex-grow justify-center flex gap-2 items-center bg-white text-hh-900 rounded-md overflow-hidden hover:shadow-md"
     >
       <>
         <div
-          className={`cardImage min-h-full flex justify-center items-center w-2/5 ${
+          className={`cardImage h-full aspect-square min-w-1/3 w-1/3 bg-hh-50 overflow-hidden flex justify-center items-center ${
             spielgeraete && "bg-opacity-5"
-          } ${!image && "bg-hh-300"}`}
+          } ${!image && "p-2"}`}
         >
           {!!image || type === "flohmarkt" ? (
             <img
@@ -82,8 +82,10 @@ HorizontalCard.FlohmarktInfo = function FlohmarktInfo({
   stadtteil: string;
 }) {
   return (
-    <div className="flex flex-col w-2/3 h-full hover:text-hh-700 justify-between gap-2  p-2 pl-0 sm:pr-4 sm:p-2">
-      <span className="truncate-2 font-semibold text-base block">{title}</span>
+    <div className="flex flex-col w-2/3 h-full hover:text-hh-950 justify-between gap-2  p-2 pl-0 sm:pr-4 sm:p-2">
+      <span className="truncate-2 font-semibold text-base block text-hh-950">
+        {title}
+      </span>
       <div className="flex flex-col">
         <small className="font-semibold italic">
           {getDate(date)} ({time})

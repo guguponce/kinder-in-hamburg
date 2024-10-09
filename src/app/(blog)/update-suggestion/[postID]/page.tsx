@@ -7,7 +7,7 @@ import {
 import { parseAddress, parsePost } from "@app/utils/functions";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import PostNotFound from "@components/@PostForm/PostNotFound";
+import NotFound from "@components/@NotFound/NotFound";
 import AdminRoute from "@app/providers/AdminRoute";
 import { iUserMetadata } from "@app/api/auth/types";
 import dynamic from "next/dynamic";
@@ -41,7 +41,7 @@ export default async function updateSuggestedPostPage({
     );
 
   const suggestedPost = await getSuggestedPostWithID(postID);
-  if (!suggestedPost) return <PostNotFound />;
+  if (!suggestedPost) return <NotFound />;
 
   if (
     !session?.user?.email ||

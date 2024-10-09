@@ -12,15 +12,6 @@ import {
 } from "@app/utils/types";
 import { createClient } from "@auth/server";
 
-export const createFetch =
-  (options: Pick<RequestInit, "next" | "cache">) =>
-  (url: RequestInfo | URL, init?: RequestInit) => {
-    return fetch(url, {
-      ...init,
-      ...options,
-    });
-  };
-
 export const utcTime = () => {
   const date = new Date();
   date.setMinutes(0, 0, 0);

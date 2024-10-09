@@ -1,5 +1,5 @@
 import { getFlohmarktMetadata, getFlohmarktWithID } from "@app/api/dbActions";
-import PostNotFound from "@app/components/@PostForm/PostNotFound";
+import NotFound from "@components/@NotFound/NotFound";
 import AddLatLon from "@app/components/AddLatLon";
 import DeleteButton from "@app/components/DeleteButton";
 import FlohmarktTemplate from "@app/components/FlohmarktTemplate";
@@ -16,8 +16,6 @@ import Link from "next/link";
 interface FlohmarktPageProps {
   params: { flohmarktID: string };
 }
-
-export const revalidate = 0;
 
 export async function generateMetadata({
   params,
@@ -44,7 +42,7 @@ export default async function FlohmarktPage({
     flohmarkt.status === null ||
     !["approved", "old"].includes(flohmarkt.status)
   )
-    return <PostNotFound type="flohmarkt" />;
+    return <NotFound type="flohmarkt" />;
 
   const spielplaetzeNearby =
     (await getSpielplatzFromBezirkStadtteil(

@@ -5,15 +5,14 @@ import { getTodayNexMonday } from "@app/utils/functions";
 import { getApprovedFlohmaerkte } from "@app/api/dbActions";
 import dynamic from "next/dynamic";
 import TodaysFlohmaerkte from "./TodaysFlohmaerkte";
+import ErrorFetchingData from "./@NotFound/ErrorFetchingData";
 
 const FlohmaerkteMap = dynamic(() => import("./@Map/FlohmaerkteMap"), {
   ssr: false,
 });
-
-export const revalidate = 0;
 export default async function FlohmaerkteContainer() {
   const flohmaerkte = await getApprovedFlohmaerkte();
-  if (!flohmaerkte) return <div>Keine Flohmärkte gefunden</div>;
+  if (!flohmaerkte) return <ErrorFetchingData type="Flohmärkte" />;
   const { today, nextMonday } = getTodayNexMonday();
   const yesterdayNight = today - 1000 * 60 * 60;
   const thisWeekFlohmaerkte = flohmaerkte.filter(

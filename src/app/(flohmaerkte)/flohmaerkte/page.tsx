@@ -1,5 +1,5 @@
 import { getApprovedFlohmaerkte } from "@app/api/dbActions";
-import PostNotFound from "@app/components/@PostForm/PostNotFound";
+import NotFound from "@components/@NotFound/NotFound";
 import BezirkeScrollableFlohmaerkte from "@app/components/BezirkeScrollableFlohmaerkte";
 import { getTodayNexMonday } from "@app/utils/functions";
 import Link from "next/link";
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
 
 export default async function FlohmarktPage() {
   const flohmaerkte = await getApprovedFlohmaerkte();
-  if (!flohmaerkte) return <PostNotFound multiples={true} type="flohmarkt" />;
+  if (!flohmaerkte) return <NotFound multiples={true} type="flohmarkt" />;
   if (flohmaerkte.length === 0)
     return (
       <main className="flex flex-col items-center justify-center p-6 rounded-md bg-hh-100 w-[500px] max-w-full m-2 gap-4">

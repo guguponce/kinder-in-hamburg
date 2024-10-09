@@ -3,7 +3,7 @@ import StackedCards from "@app/components/@Cards/StackedCards";
 import AdminRoute from "@app/providers/AdminRoute";
 import { categoryNames } from "@app/utils/constants";
 import { iPost } from "@app/utils/types";
-import NotFound from "@components/NotFound";
+import NotFound from "@app/components/@NotFound/NotFound";
 import React from "react";
 
 export default async function CategoriesPage() {

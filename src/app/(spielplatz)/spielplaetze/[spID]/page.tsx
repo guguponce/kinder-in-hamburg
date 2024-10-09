@@ -1,6 +1,6 @@
 import "./style.scss";
 import { getSpielplatzMetadata, getSpielplatzWithID } from "@app/api/spActions";
-import PostNotFound from "@app/components/@PostForm/PostNotFound";
+import NotFound from "@components/@NotFound/NotFound";
 import React from "react";
 import SPBezirkMap from "./SPBezirkMapContainer";
 import FlohmaerkteNearby from "../FlohmaerkteNearby";
@@ -12,6 +12,8 @@ import Link from "next/link";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
 import { Metadata } from "next";
 import BezirkIcon from "@components/@Icons/@BezirkIcon/BezirkIcon";
+import CategoryBezirkStadtteileRecommendation from "./CategoryBezirkStadtteileRecommendation";
+import { PROXIMATE_STADTTEILE_FROM_OTHER_BEZIRK } from "@app/utils/constants";
 
 interface SpielplatzPageProps {
   params: { spID: string };
@@ -23,7 +25,6 @@ const SpielplatzgeraeteBackground = dynamic(
     ssr: false,
   }
 );
-export const revalidate = 3600 * 4; // 4 hours
 
 export async function generateMetadata({
   params,
@@ -46,7 +47,7 @@ export default async function SpielplatzPage({
   params: { spID: string };
 }) {
   const spielplatz = await getSpielplatzWithID(spID);
-  if (!spielplatz) return <PostNotFound type="spielplatz" />;
+  if (!spielplatz) return <NotFound type="spielplatz" />;
   const {
     id,
     lat,

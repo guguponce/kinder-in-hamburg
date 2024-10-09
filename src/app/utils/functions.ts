@@ -202,6 +202,17 @@ export const getDate = (date: number) =>
     month: "long",
   });
 
+export function addressWithoutCity(address: string) {
+  const match = address.match(/\b\d{5}\b/);
+  if (match && match.index) {
+    let plzIndex = match.index;
+    let newAddress = address.slice(0, plzIndex + 5).trim();
+    return newAddress;
+  } else {
+    return address;
+  }
+}
+
 export const getStartTime = (time: string | undefined) =>
   time?.split("-")[0].trim();
 export const getEndTime = (time: string | undefined) =>
@@ -368,27 +379,6 @@ export const parsedSPType = (type: string[] | undefined) => {
       return null;
     })
     .filter((item) => !!item) as iSPType[];
-};
-
-export const getHaynsParkXML = async () => {
-  const response = await fetch(
-    "https://planschis-eimsbuettel.blogspot.com/feeds/posts/default"
-  );
-  const xmlString = await response.text();
-  return xmlString;
-};
-
-export const parseHaynsParkXML = (xmlString: string) => {
-  const parser = new DOMParser();
-  const xmlDoc = parser.parseFromString(xmlString, "text/xml");
-  const titleNode = xmlDoc.getElementsByTagName("title"); // Get the first <title> element
-  let titles = [];
-  for (let i = 0; i < titleNode.length; i++) {
-    if (!!titleNode[i].textContent) {
-      titles.push(titleNode[i].textContent!);
-    }
-  }
-  return titles;
 };
 
 const datePattern = /(\d{1,2})\.(\d{1,2})\./g;

@@ -4,7 +4,7 @@ import SuccessfulSubmit from "@components/@PostForm/SuccessfulSubmit";
 import { getFlohmarktWithID } from "@app/api/dbActions";
 import { getServerUser } from "@app/api/auth/supabaseAuth";
 import { redirect } from "next/navigation";
-import PostNotFound from "@components/@PostForm/PostNotFound";
+import NotFound from "@components/@NotFound/NotFound";
 import FlohmarktPoster from "@app/components/FlohmarktPoster";
 export default async function SuccessfulFormFlohmarkt({
   flohmarktID,
@@ -17,7 +17,7 @@ export default async function SuccessfulFormFlohmarkt({
     revalidatePost();
   }
   const flohmarkt = await getFlohmarktWithID(flohmarktID);
-  if (!flohmarkt) return <PostNotFound />;
+  if (!flohmarkt) return <NotFound />;
   const session = await getServerUser();
   if (
     !session?.user?.email ||

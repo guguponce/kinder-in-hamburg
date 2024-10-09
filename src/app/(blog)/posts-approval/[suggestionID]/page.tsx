@@ -4,7 +4,7 @@ import { getSuggestedPostWithID } from "@app/api/dbActions";
 import { parseAddress, parsePost } from "@app/utils/functions";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import PostNotFound from "@components/@PostForm/PostNotFound";
+import NotFound from "@components/@NotFound/NotFound";
 import { iUserMetadata } from "@app/api/auth/types";
 import dynamic from "next/dynamic";
 const PostForm = dynamic(() => import("@app/components/@PostForm/PostForm"));
@@ -23,7 +23,7 @@ export default async function ApproveSuggestedPostPage({
   const { suggestionID } = params;
 
   const post = await getSuggestedPostWithID(suggestionID);
-  if (!post) return <PostNotFound />;
+  if (!post) return <NotFound />;
   if (post.status === "approved")
     return (
       <main className="mx-auto flex h-fit w-full max-w-[400px] flex-col items-center justify-center rounded-md bg-hh-100 p-4 gap-4 text-center">

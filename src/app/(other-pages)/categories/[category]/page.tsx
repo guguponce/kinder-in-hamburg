@@ -10,7 +10,7 @@ import AdminRoute from "@app/providers/AdminRoute";
 import { categoryNames, relatedCategories } from "@app/utils/constants";
 import { parseParams, sortPostsByDate } from "@app/utils/functions";
 import { categoryName } from "@app/utils/types";
-import NotFound from "@components/NotFound";
+import NotFound from "@app/components/@NotFound/NotFound";
 import React from "react";
 
 export default async function CategoriesPage({

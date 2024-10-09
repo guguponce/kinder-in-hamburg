@@ -2,15 +2,13 @@ import {
   getSpielplaetzeFromBezirk,
   getSpielplaetzeFromStadtteile,
 } from "@app/api/spActions";
-import NotFound from "@app/components/NotFound";
+import NotFound from "@app/components/@NotFound/NotFound";
 import { checkBezirk, parseParams } from "@app/utils/functions";
 import { iBezirk } from "@app/utils/types";
 
 import React from "react";
 import { PROXIMATE_STADTTEILE_FROM_OTHER_BEZIRK } from "@app/utils/constants";
 import dynamic from "next/dynamic";
-
-export const revalidate = 10;
 
 const DynamicBezirkSPMap = dynamic(() => import("./SPBezirkMap"), {
   ssr: false,

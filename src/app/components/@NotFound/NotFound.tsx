@@ -1,5 +1,6 @@
 import Link from "next/link";
 import React from "react";
+import ErrorContainer from "./ErrorContainer";
 
 export default function NotFound({
   type = "post",
@@ -16,7 +17,7 @@ export default function NotFound({
 }) {
   const text = {
     spielplatz: {
-      title: "Spielplatz",
+      title: multiples ? "Spielplätze" : "Spielplatz",
       text: "Schaue dich mal unsere aktiven Spielplätze an",
       linkText: "Alle Spielplätze",
       link: "/spielplaetze",
@@ -29,13 +30,13 @@ export default function NotFound({
       link: "/spielplaetze",
     },
     flohmarkt: {
-      title: "Flohmarkt",
+      title: multiples ? "Flohmärkte" : "Flohmarkt",
       text: "Schaue dich mal unsere aktiven Flohmärkte an",
       linkText: "Alle Flohmärkte",
       link: "/flohmaerkte",
     },
     post: {
-      title: "Post",
+      title: multiples ? "Posts" : "Post",
       text: "Schaue dich mal unsere aktiven Posts an",
       linkText: "Alle Posts",
       link: "/posts",
@@ -54,20 +55,16 @@ export default function NotFound({
     },
   };
   return (
-    <main className="flex flex-col items-center justify-center p-6 rounded-md bg-hh-100 w-[500px] max-w-full m-2 gap-4">
-      <h2 className="text-lg font-bold text-hh-950">
-        {type && text[type].title}
-        {multiples ? "s" : ""} nicht gefunden
-      </h2>
-      <p className="text-base text-hh-600">
+    <ErrorContainer as="main">
+      <ErrorContainer.Title>
+        {type && text[type].title} nicht gefunden
+      </ErrorContainer.Title>
+      <ErrorContainer.Text>
         {text[type].text || "Zurück zur Hauptseite"}
-      </p>
-      <Link
-        className="p-2 rounded-md bg-hh-800 hover:bg-hh-700 active:bg-hh-600 text-white"
-        href={text[type].link || "/"}
-      >
+      </ErrorContainer.Text>
+      <ErrorContainer.Link href={text[type].link || "/"}>
         {text[type]?.linkText || "Home"}
-      </Link>
-    </main>
+      </ErrorContainer.Link>
+    </ErrorContainer>
   );
 }

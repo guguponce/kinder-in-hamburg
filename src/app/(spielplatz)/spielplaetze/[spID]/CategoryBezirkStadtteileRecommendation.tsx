@@ -22,17 +22,20 @@ export default async function CategoryBezirkStadtteileRecommendation({
   lon: number;
 }) {
   const posts = await getPostsByCategoryBezirkStadtteile(bezirk, stadtteile);
+  const coldMonths = new Date().getMonth() < 6 || new Date().getMonth() > 8;
   const categoryArray = [
-    planschbecken ? "Badeplatz" : null,
+    !indoor && coldMonths ? "Indoor" : planschbecken ? "Badeplatz" : null,
     indoor ? "Indoor" : "Outdoor",
   ].filter(Boolean) as categoryName[];
 
   if (!posts || posts.length === 0) return null;
   const categoriesPosts = posts.filter(
     ({ categories, id: postID }) =>
-      categoryArray.some((cat) => categories.includes(cat)) && postID !== id
+      categoryArray.some((cat) => categories.includes(cat)) &&
+      postID !== id &&
+      (coldMonths && categories.includes("Badeplatz") ? false : true)
   );
-  const pinnedPosts = categoriesPosts.filter(({ pinnedPost }) => pinnedPost);
+  const pinnedPosts = posts;
   return (
     <section className="min-w-full flex justify-center items-stretch max-w-[1000px] gap-4">
       <div className="p-4 pl-12 w-fit max-w-[50%] ml-5rem flex flex-col justify-center items-center">

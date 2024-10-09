@@ -1,6 +1,6 @@
 import { getSuggestedPostWithID } from "@app/api/dbActions";
 import ApprovePostButton from "@components/ApproveButton";
-import PostNotFound from "@components/@PostForm/PostNotFound";
+import NotFound from "@components/@NotFound/NotFound";
 import PostTemplate from "@components/PostTemplate";
 import Link from "next/link";
 import React from "react";
@@ -16,7 +16,7 @@ export default async function CurrentPostPage({
 }) {
   const { suggestionID } = params;
   const post = await getSuggestedPostWithID(suggestionID);
-  if (!post) return <PostNotFound />;
+  if (!post) return <NotFound />;
 
   return (
     <AdminRoute>
@@ -51,7 +51,7 @@ export default async function CurrentPostPage({
           )}
         </div>
         <AdminServerComponent>
-          <div className="flex flex-col items-center gap-2 bg-slate-300 w-fit p-2 mx-auto rounded">
+          <div className="flex flex-wrap items-center gap-2 bg-slate-300 w-fit p-2 mx-auto rounded">
             <AddLatLon item={post} />
             {post.status === "approved" ? (
               <DeleteButton

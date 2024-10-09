@@ -16,6 +16,7 @@ import AddLatLon from "@app/components/AddLatLon";
 
 import { iFlohmarktWithCoordinates } from "@app/utils/types";
 import dynamic from "next/dynamic";
+import NotFound from "@app/components/@NotFound/NotFound";
 
 const FlohmaerkteMap = dynamic(
   () => import("@app/components/@Map/FlohmaerkteMap"),
@@ -30,7 +31,7 @@ export default async function FlohmarktSuggestionPage({
   params: { flohmarktID: string };
 }) {
   const suggestion = await getFlohmarktWithID(flohmarktID);
-  if (!suggestion) return <PostNotFound type="flohmarkt" />;
+  if (!suggestion) return <NotFound type="flohmarkt" />;
   const session = await getServerUser();
   if (
     ![suggestion.addedBy.email, process.env.ADMIN_EMAIL].includes(
