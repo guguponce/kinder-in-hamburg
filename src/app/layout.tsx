@@ -66,33 +66,6 @@ export async function generateMetadata(): Promise<Metadata> {
     metadataBase: new URL("https://example.com"), // Base URL for resolving relative URLs
   };
 }
-export const metadata: Metadata = {
-  title: "Kinder in Hamburg",
-  icons: "/favicon/favicon.ico",
-  description:
-    "Hier findet ihr Aktivitäten und Flohmärkten für die ganze Familie aus verschiedenen Orten in Hamburg zusammengestellt.",
-  keywords: [
-    "hamburg mit kinder",
-    "hamburg familie",
-    "hamburg kinder",
-    "hamburg ausflug",
-    "hamburg flohmarkt",
-    "hamburg kinder flohmarkt",
-    "kinder in hamburg",
-    "kinder hamburg",
-    "hamburg",
-    "flohmarkt",
-    "kinder",
-    "familie",
-    "ausflug",
-    "flohmarkt hamburg",
-    "flohmarkt kinder",
-    "flohmarkt familie",
-    "flohmarkt hamburg kinder",
-    "flohmarkt hamburg familie",
-    "flea market",
-  ],
-};
 
 export default async function RootLayout({
   children,
