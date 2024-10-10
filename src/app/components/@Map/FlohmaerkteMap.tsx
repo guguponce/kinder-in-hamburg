@@ -12,6 +12,7 @@ import Link from "next/link";
 import { getDate } from "@app/utils/functions";
 import WeitereFlohmaerkte from "../WeitereFlohmaerkte";
 import MarkersLists from "./PopUpsMarkers/MarkersLists";
+import Button from "../Button";
 
 const stadtteilLocationIcon = new Icon({
   iconUrl: "/assets/icons/stadtteilLocation.svg",
@@ -136,33 +137,37 @@ const FlohmaerkteMap = ({
             <div className="flex w-full flex-col" key={name as string}>
               <h3 className="font-bold text-lg p-2 text-hh-800">{name}</h3>
               <div className="flex flex-wrap gap-2 items-center">
-                {arr.map((item) => (
-                  <button
-                    key={item}
-                    onClick={() => {
-                      if (name === "Termine")
-                        setSelectedDate((prev) =>
-                          prev === (item as number)
-                            ? undefined
-                            : (item as number)
-                        );
-                      else
-                        setSelectedBezirk((prev) =>
-                          prev === (item as iBezirk)
-                            ? undefined
-                            : (item as iBezirk)
-                        );
-                    }}
-                    className={`text-sm p-1 tex-base xs:text-lg xs:p-2 rounded-md ${
-                      (name === "Termine" && selectedDate === item) ||
-                      (name === "Bezirke" && selectedBezirk === item)
-                        ? "bg-hh-800 text-white  hover:bg-hh-600 hover:text-white"
-                        : "bg-white text-hh-800  hover:bg-hh-600 hover:text-white"
-                    } transition-all`}
-                  >
-                    {name === "Termine" ? getDate(item as number) : item}
-                  </button>
-                ))}
+                {arr.map((item) => {
+                  const selected =
+                    (name === "Termine" && selectedDate === item) ||
+                    (name === "Bezirke" && selectedBezirk === item);
+                  return (
+                    <React.Fragment key={item}>
+                      <Button
+                        onClick={() => {
+                          if (name === "Termine")
+                            setSelectedDate((prev) =>
+                              prev === (item as number)
+                                ? undefined
+                                : (item as number)
+                            );
+                          else
+                            setSelectedBezirk((prev) =>
+                              prev === (item as iBezirk)
+                                ? undefined
+                                : (item as iBezirk)
+                            );
+                        }}
+                        fontWeight="normal"
+                        variant={selected ? "hh-dark" : "white"}
+                        size="fit"
+                        fontSize="sm"
+                      >
+                        {name === "Termine" ? getDate(item as number) : item}
+                      </Button>
+                    </React.Fragment>
+                  );
+                })}
               </div>
             </div>
           ) : null
