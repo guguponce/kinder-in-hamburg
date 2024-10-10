@@ -45,7 +45,7 @@ export default async function FlohmaerkteContainer() {
         >
           <div
             id="heute-map-container"
-            className="w-full lg:max-w-[400px] flex flex-col gap-4 items-center rounded bg-hh-200 bg-opacity-50 p-2 shadow-md"
+            className="w-full lg:max-w-[400px] flex flex-col gap-4 items-center rounded bg-hh-200 bg-opacity-50 p-2 pb-6 shadow-md"
           >
             {!!todayFlohmaerkte.length && !isSunday && (
               <TodaysFlohmaerkte todayFlohmaerkte={todayFlohmaerkte} />
