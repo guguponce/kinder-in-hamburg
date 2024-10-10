@@ -8,6 +8,7 @@ import Header from "@components/@Header/Header";
 import Footer from "./components/@Footer/Footer";
 import GetAnalytics from "./GetAnalytics";
 import { SessionProvider } from "./providers/SessionContext";
+import Head from "next/head";
 const fixelFont = localFont({
   src: "./styles/fonts/FixelVariable.ttf",
   display: "swap",
@@ -48,7 +49,7 @@ export async function generateMetadata(): Promise<Metadata> {
       url: "https://www.kinder-in-hamburg.de",
       images: [
         {
-          url: "/favicon/favicon-48x48.png", // Relative path to the image
+          url: "/favicon/favicon-48x48.png",
           width: 48,
           height: 48,
           alt: "Kinder in Hamburg",
@@ -61,9 +62,9 @@ export async function generateMetadata(): Promise<Metadata> {
       description:
         "Hier findet ihr Aktivitäten und Flohmärkten für die ganze Familie aus verschiedenen Orten in Hamburg zusammengestellt.",
 
-      images: ["/favicon/favicon-48x48.png"], // Relative path to the image
+      images: ["/src/app/favicon/favicon-48x48.png"], // Relative path to the image
     },
-    metadataBase: new URL("https://example.com"), // Base URL for resolving relative URLs
+    metadataBase: new URL("https://www.kinder-in-hamburg.de"), // Base URL for resolving relative URLs
   };
 }
 
@@ -74,6 +75,12 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <Head>
+        <meta
+          property="og:image"
+          content="/src/app/favicon/favicon-48x48.png"
+        />
+      </Head>
       <body
         className={`${fixelFont.className}
          flex flex-col items-center bg-hh-600 max-w-[1400px] mx-auto gap-2`}
