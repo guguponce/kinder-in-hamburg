@@ -14,6 +14,58 @@ const fixelFont = localFont({
   variable: "--font-fixel",
 });
 
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: "Kinder in Hamburg",
+    icons: "/favicon/favicon.ico",
+    description:
+      "Hier findet ihr Aktivitäten und Flohmärkten für die ganze Familie aus verschiedenen Orten in Hamburg zusammengestellt.",
+    keywords: [
+      "hamburg mit kinder",
+      "hamburg familie",
+      "hamburg kinder",
+      "hamburg ausflug",
+      "hamburg flohmarkt",
+      "hamburg kinder flohmarkt",
+      "kinder in hamburg",
+      "kinder hamburg",
+      "hamburg",
+      "flohmarkt",
+      "kinder",
+      "familie",
+      "ausflug",
+      "flohmarkt hamburg",
+      "flohmarkt kinder",
+      "flohmarkt familie",
+      "flohmarkt hamburg kinder",
+      "flohmarkt hamburg familie",
+      "flea market",
+    ],
+    openGraph: {
+      title: "Kinder in Hamburg",
+      description:
+        "Hier findet ihr Aktivitäten und Flohmärkten für die ganze Familie aus verschiedenen Orten in Hamburg zusammengestellt.",
+      url: "https://www.kinder-in-hamburg.de",
+      images: [
+        {
+          url: "/favicon/favicon-48x48.png", // Relative path to the image
+          width: 48,
+          height: 48,
+          alt: "Kinder in Hamburg",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Kinder in Hamburg",
+      description:
+        "Hier findet ihr Aktivitäten und Flohmärkten für die ganze Familie aus verschiedenen Orten in Hamburg zusammengestellt.",
+
+      images: ["/favicon/favicon-48x48.png"], // Relative path to the image
+    },
+    metadataBase: new URL("https://example.com"), // Base URL for resolving relative URLs
+  };
+}
 export const metadata: Metadata = {
   title: "Kinder in Hamburg",
   icons: "/favicon/favicon.ico",
