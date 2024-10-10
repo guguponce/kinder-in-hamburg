@@ -47,14 +47,7 @@ export async function generateMetadata(): Promise<Metadata> {
       description:
         "Hier findet ihr Aktivitäten und Flohmärkten für die ganze Familie aus verschiedenen Orten in Hamburg zusammengestellt.",
       url: "https://www.kinder-in-hamburg.de",
-      images: [
-        {
-          url: "/favicon/favicon-48x48.png",
-          width: 48,
-          height: 48,
-          alt: "Kinder in Hamburg",
-        },
-      ],
+      images: "/opengraph-image.png",
     },
     twitter: {
       card: "summary_large_image",
@@ -76,10 +69,10 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <Head>
-        <meta
-          property="og:image"
-          content="/src/app/favicon/favicon-48x48.png"
-        />
+        <meta property="og:image" content="<generated>" />
+        <meta property="og:image:type" content="<generated>" />
+        <meta property="og:image:width" content="<generated>" />
+        <meta property="og:image:height" content="<generated>" />
       </Head>
       <body
         className={`${fixelFont.className}
