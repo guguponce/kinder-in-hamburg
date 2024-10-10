@@ -16,8 +16,9 @@ const fixelFont = localFont({
 
 export const metadata: Metadata = {
   title: "Kinder in Hamburg",
+  icons: "/favicon/favicon.ico",
   description:
-    "Hier findet ihr Flohmärkten aus verschiedenen Orten in Hamburg zusammengestellt.",
+    "Hier findet ihr Aktivitäten und Flohmärkten für die ganze Familie aus verschiedenen Orten in Hamburg zusammengestellt.",
   keywords: [
     "hamburg mit kinder",
     "hamburg familie",
