@@ -20,7 +20,10 @@ import {
   separateByStatus,
 } from "@app/utils/functions";
 import { deletePreviousFlohmaerkteImages } from "./storageActions";
-import { revalidatePost } from "@app/utils/actions/revalidate";
+import {
+  revalidateFlohmarkt,
+  revalidatePost,
+} from "@app/utils/actions/revalidate";
 import { PostgrestError } from "@supabase/supabase-js";
 import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
 
@@ -76,20 +79,19 @@ export const getContributorData = async (email: string) => {
 };
 
 export const addNewContributor = async (
-  type: "post" | "flohmarkt",
+  type: "post" | "flohmarkt" | "spielplatz",
   contributor: iSessionUser,
-  postID: number
+  id: number | string
 ) => {
   try {
     const contributorData = {
-      flohmaerkteSubmitted: JSON.stringify(
-        type === "flohmarkt" ? [postID] : []
-      ),
+      flohmaerkteSubmitted: JSON.stringify(type === "flohmarkt" ? [id] : []),
+      spielplaetzeSubmitted: JSON.stringify(type === "spielplatz" ? [id] : []),
       name: contributor.name,
       image: contributor.image,
       id: contributor.email,
       email: contributor.email,
-      postsSubmitted: JSON.stringify(type === "post" ? [postID] : []),
+      postsSubmitted: JSON.stringify(type === "post" ? [id] : []),
     };
     const { error } = await supabaseAdmin
       .from("contributors")
@@ -103,24 +105,24 @@ export const addNewContributor = async (
 };
 
 export const updateContributor = async (
-  type: "post" | "flohmarkt",
+  type: "post" | "flohmarkt" | "spielplatz",
   user: iSessionUser,
-  postID: number
+  id: number
 ) => {
   try {
     const contributor = await getContributorData(user.email!);
     if (!contributor) {
-      await addNewContributor(type, user, postID);
+      await addNewContributor(type, user, id);
       return;
     }
-    if (contributor.postsSubmitted?.includes(postID)) return;
     if (type === "flohmarkt") {
+      if (contributor.flohmaerkteSubmitted?.includes(id)) return;
       const { error } = await supabaseAdmin
         .from("contributors")
         .update({
           flohmaerkteSubmitted: [
             ...(contributor.flohmaerkteSubmitted || []),
-            postID,
+            id,
           ],
         })
         .match({ id: contributor.id });
@@ -130,15 +132,32 @@ export const updateContributor = async (
         );
       }
     } else if (type === "post") {
+      if (contributor.postsSubmitted?.includes(id)) return;
       const { error } = await supabaseAdmin
         .from("contributors")
         .update({
-          postsSubmitted: [...(contributor.postsSubmitted || []), postID],
+          postsSubmitted: [...(contributor.postsSubmitted || []), id],
         })
         .match({ id: contributor.id });
       if (error) {
         throw new Error(
           "There was a problem updating the contributor's postSubmitted."
+        );
+      }
+    } else if (type === "spielplatz") {
+      if (contributor.spielplaetzeSubmitted?.includes(id)) return;
+      const { error } = await supabaseAdmin
+        .from("contributors")
+        .update({
+          spielplaetzeSubmitted: [
+            ...(contributor.spielplaetzeSubmitted || []),
+            id,
+          ],
+        })
+        .match({ id: contributor.id });
+      if (error) {
+        throw new Error(
+          "There was a problem updating the contributor's spielplatzSubmitted."
         );
       }
     }
@@ -624,16 +643,20 @@ export const getPinnedPostsWithFilter = async (
   }
 };
 
-export const getAllFlohmaerteSeparatedByStatus = async () => {
+export const getAllFlohmaerteSeparatedByStatus = async (
+  futureFlohmarkte: boolean = true
+) => {
   try {
-    const { data, error } = await supabaseAdmin.from("flohmaerkte").select("*");
+    const { data, error } = await supabaseAdmin
+      .from("flohmaerkte")
+      .select("*")
+      .gte("date", futureFlohmarkte ? new Date().getTime() : 0);
     if (error) {
       throw new Error("There was a problem getting the approved posts.");
     }
     const parsedFlohmaerkte = parseAllFlohmaerkte(data);
-    return separateByStatus(
-      parsedFlohmaerkte.filter(({ date }) => date > new Date().getTime())
-    );
+    const serparatedByStatus = separateByStatus(parsedFlohmaerkte);
+    return serparatedByStatus;
   } catch (error) {
     return false;
   }
@@ -765,7 +788,7 @@ export const rejectSuggestedPost = async (id: number) => {
   }
 };
 
-export const restorePost = async (id: number) => {
+export const restorePost = async (id: string | number) => {
   try {
     const { data, error } = await supabaseAdmin
       .from("kih-approved-blogposts")
@@ -782,6 +805,28 @@ export const restorePost = async (id: number) => {
     return data;
   } catch (error) {
     throw new Error("There was a problem restoring the post.");
+  }
+};
+
+export const clearLatLonFromPost = async (id: string | number) => {
+  try {
+    const { error } = await supabaseAdmin
+      .from("kih-approved-blogposts")
+      .update({ lat: null, lon: null })
+      .match({ id });
+
+    const { error: error2 } = await supabaseAdmin
+      .from("kih-suggestions")
+      .update({ lat: null, lon: null })
+      .match({ id });
+    if (error || error2) {
+      throw new Error("There was a problem clearing the lat and lon.");
+    }
+    await revalidatePost();
+
+    return true;
+  } catch (error) {
+    throw new Error("There was a problem clearing the lat and lon.");
   }
 };
 
@@ -1072,7 +1117,10 @@ export const approveSuggestedFlohmarkt = async (id: string) => {
   }
 };
 
-export const updateFlohmarktStatus = async (id: string, status: string) => {
+export const updateFlohmarktStatus = async (
+  id: number | string,
+  status: string
+) => {
   try {
     const { data, error } = await supabaseAdmin
       .from("flohmaerkte")
@@ -1096,6 +1144,7 @@ export const clearLatLonFromFlohmarkt = async (id: string) => {
     if (error) {
       throw new Error("There was a problem updating the Flea Market.");
     }
+    await revalidateFlohmarkt();
     return true;
   } catch (error) {
     throw new Error("There was a problem updating the Flea Market.");
