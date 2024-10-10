@@ -17,7 +17,7 @@ const fixelFont = localFont({
 export async function generateMetadata(): Promise<Metadata> {
   return {
     title: "Kinder in Hamburg",
-    icons: "/favicon/favicon.ico",
+    icons: "/favicon.ico",
     description:
       "Hier findet ihr Aktivitäten und Flohmärkten für die ganze Familie aus verschiedenen Orten in Hamburg zusammengestellt.",
     keywords: [
