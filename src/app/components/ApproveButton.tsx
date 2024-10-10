@@ -4,7 +4,10 @@ import {
   approveSuggestedPost,
   updateContributor,
 } from "@app/api/dbActions";
-import { revalidateSpielplatz } from "@app/api/spActions";
+import {
+  approveSuggestedSpielplatz,
+  revalidateSpielplatz,
+} from "@app/api/spActions";
 import {
   revalidateFlohmarkt,
   revalidatePost,
@@ -17,54 +20,69 @@ import React from "react";
 export default function ApproveButton({
   post,
   flohmarktID,
+  spielplatzID,
   size = "small",
-  flohmarktContributor,
+  contributor,
 }: {
   post?: iPost;
   flohmarktID?: string;
-  flohmarktContributor?: iSessionUser;
-  size?: "small" | "medium" | "large";
+  spielplatzID?: string;
+  contributor?: iSessionUser;
+  size?: "small" | "medium" | "large" | "full" | "fit";
 }) {
   const router = useRouter();
   if (!post && !flohmarktID) return null;
+
+  const bSize = size === "small" ? "py-1" : size === "medium" ? "py-2" : "py-4";
+  const bWidth =
+    size === "large"
+      ? "w-full max-w-[1000px]"
+      : size === "medium"
+      ? "w-fit"
+      : "max-w-24";
   return (
     <button
-      className={` flex ${
-        size === "large" ? "w-full max-w-[1000px]" : "w-fit"
-      } items-center justify-center rounded  px-2 ${
-        size === "small" ? "py-1" : "py-2"
-      } font-semibold bg-positive-700 text-white hover:bg-positive-800 active:bg-positive-600`}
+      className={`${bSize} ${bWidth} rounded  px-2 font-semibold bg-positive-700 text-center text-white hover:bg-positive-800 active:bg-positive-600`}
       onClick={async () => {
         if (flohmarktID) {
           await approveSuggestedFlohmarkt(flohmarktID);
-          if (flohmarktContributor) {
+          if (contributor) {
             await updateContributor(
               "flohmarkt",
-              flohmarktContributor,
+              contributor,
               parseInt(flohmarktID)
             );
-            await revalidateFlohmarkt();
-            await revalidatePost();
-            await revalidateSpielplatz();
           }
         } else if (post) {
           await approveSuggestedPost(post);
-          await revalidateFlohmarkt();
-          await revalidateSpielplatz();
-          await revalidatePost();
           await updateContributor("post", post?.addedBy, post.id);
+        } else if (spielplatzID) {
+          await approveSuggestedSpielplatz(spielplatzID);
+          if (contributor) {
+            await updateContributor(
+              "spielplatz",
+              contributor,
+              parseInt(spielplatzID)
+            );
+          }
         }
-        await sleep(500);
+
+        await revalidateFlohmarkt();
+        await revalidatePost();
+        await revalidateSpielplatz();
+        await sleep(2500);
         router.push(
           post
-            ? `/posts-approval/success/${post.id}`
+            ? `/posts/${post.id}`
             : flohmarktID
-            ? `/flohmaerkte-approval/successfully-approved/${flohmarktID}`
+            ? `/flohmaerkte/${flohmarktID}`
+            : spielplatzID
+            ? `/spielplaetze/${spielplatzID}`
             : "/"
         );
       }}
     >
-      Approve {post ? "Post" : "Flohmarkt"}
+      Approve {post ? "Post" : flohmarktID ? "Flohmarkt" : "Spielplatz"}
     </button>
   );
 }

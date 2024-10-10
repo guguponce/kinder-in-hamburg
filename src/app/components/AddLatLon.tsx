@@ -80,13 +80,30 @@ export default function AddLatLon({
   const [success, setSuccess] = React.useState(false);
   const [error, setError] = React.useState(false);
   if (!!item.lat && !!item.lon)
-    return <ClearLatLonButton id={item.id.toString()} />;
+    return (
+      <ClearLatLonButton
+        type={
+          isTypeFlohmarkt(item)
+            ? "flohmarkt"
+            : isTypePost(item)
+            ? "post"
+            : "spielplatz"
+        }
+        id={item.id.toString()}
+      />
+    );
 
   if (success) return <p>Success!</p>;
-  if (error) return <p className="text-negative-700">Error</p>;
+  if (error)
+    return (
+      <p className="border-2 border-negative-700 p-1 text-negative-800">
+        Error
+      </p>
+    );
+
   return (
     <button
-      className="bg-hh-700 text-white font-semibold p-2 rounded"
+      className={`w-fit rounded px-2 py-2 font-semibold bg-hh-700 text-center text-white hover:bg-hh-800 active:bg-hh-600`}
       onClick={() => {
         addLatLon(item).then((res) => {
           return !!res ? setSuccess(true) : setError(!res);

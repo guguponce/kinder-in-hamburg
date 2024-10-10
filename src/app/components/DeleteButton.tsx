@@ -12,13 +12,19 @@ export default function DeleteButton({
 }: {
   callbackURL?: string;
   id: number;
-  type: "flohmarkt" | "post";
+  type: "flohmarkt" | "post" | "spielplatz";
   title: string;
   deleteFrom: "suggested" | "approved" | "all";
   size?: "small" | "medium" | "large";
 }) {
   const [deleteModal, setDeleteModal] = useState(false);
-
+  const bSize = size === "small" ? "py-1" : size === "medium" ? "py-2" : "py-4";
+  const bWidth =
+    size === "large"
+      ? "w-full max-w-[1000px]"
+      : size === "medium"
+      ? "w-fit"
+      : "max-w-24";
   return (
     <>
       {deleteModal && (
@@ -33,11 +39,7 @@ export default function DeleteButton({
       )}
       <button
         role="button"
-        className={`flex ${
-          size === "large" ? "w-full max-w-[1000px]" : "w-fit"
-        } items-center justify-center rounded  px-2 ${
-          size === "small" ? "py-1" : "py-2"
-        } font-semibold text-white bg-negative-500 hover:bg-negative-700`}
+        className={`${bSize} ${bWidth} rounded  py-2 font-semibold bg-negative-600 text-center text-white hover:bg-negative-500 active:bg-negative-700`}
         onClick={(e) => {
           e.preventDefault();
           setDeleteModal(true);

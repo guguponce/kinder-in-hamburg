@@ -30,7 +30,7 @@ export default function Button<C extends React.ElementType = "button">({
   variant = "hh",
   size = "medium",
   fontSize = "base",
-  fontGrow = true,
+  fontGrow = false,
   ...rest
 }: iButtonProps) {
   const style = {
@@ -63,7 +63,7 @@ export default function Button<C extends React.ElementType = "button">({
       full: "w-full px-4 py-2",
       small: "max-w-24 px-2 py-1",
       medium: "max-w-32 px-3 py-2",
-      large: "max-w-48 px-4 py-2",
+      large: "max-w-48 px-4 py-3",
     },
     variant: {
       "hh-dark": "bg-hh-800 text-white hover:bg-hh-700 active:bg-hh-900",
@@ -85,13 +85,11 @@ export default function Button<C extends React.ElementType = "button">({
     },
   };
 
-  const className =
-    rest.className ||
-    `${style.size[size]} ${style.variant[variant]} ${
-      style.fontWeight[fontWeight]
-    } ${
-      style.fontSize[fontGrow ? "grow" : "still"][fontSize]
-    } rounded-md transition-all`;
+  const className = `${style.size[size]} ${style.variant[variant]} ${
+    style.fontWeight[fontWeight]
+  } ${
+    style.fontSize[fontGrow ? "grow" : "still"][fontSize]
+  } rounded-md text-center transition-all`;
   if (as === "link")
     return (
       <Link className={className} href={href}>

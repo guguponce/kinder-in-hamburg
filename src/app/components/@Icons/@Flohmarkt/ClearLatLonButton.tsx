@@ -4,6 +4,7 @@ import {
   clearLatLonFromPost,
 } from "@app/api/dbActions";
 import { clearLatLonFromSpielplatz } from "@app/api/spActions";
+import Button from "@app/components/Button";
 import React from "react";
 
 export default function ClearLatLonButton({
@@ -14,8 +15,10 @@ export default function ClearLatLonButton({
   id: string;
 }) {
   return (
-    <button
-      className="p-2 font-semibold text-white bg-negative-600 rounded-md hover:bg-negative-700"
+    <Button
+      variant="negative-dark"
+      fontWeight="semibold"
+      size="medium"
       onClick={() => {
         if (type === "flohmarkt") clearLatLonFromFlohmarkt(id);
         if (type === "post") clearLatLonFromPost(id);
@@ -23,6 +26,6 @@ export default function ClearLatLonButton({
       }}
     >
       Clear Lat/Lon
-    </button>
+    </Button>
   );
 }
