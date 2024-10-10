@@ -7,7 +7,7 @@ export interface iPost {
   text: TypeAndText[];
   tags?: string[];
   categories: string[];
-  status: "approved" | "pending" | "rejected" | null;
+  status: "approved" | "pending" | "rejected";
   pinnedPost?: boolean; //
   minAge?: number | undefined;
   maxAge?: number | undefined;
@@ -105,7 +105,7 @@ export interface iStringifiedRetrievedPost {
   addedBy: string;
   lat?: number;
   lon?: number;
-  status: "approved" | "pending" | "rejected" | null;
+  status: "approved" | "pending" | "rejected";
 }
 
 export interface iSessionUser {
@@ -122,6 +122,7 @@ export interface iContributor {
   email: string;
   image: string;
   postsSubmitted?: number[] | null;
+  spielplaetzeSubmitted?: number[] | null;
 }
 export interface iStringifiedContributor {
   id: string;
@@ -130,6 +131,7 @@ export interface iStringifiedContributor {
   image: string;
   flohmaerkteSubmitted: string;
   postsSubmitted: string;
+  spielplaetzeSubmitted: string;
 }
 
 //FORMS
@@ -319,7 +321,7 @@ export interface iSpielplatz {
   tags?: string[];
   spielgeraete?: string[];
   ausruestung?: string[];
-  status: "approved" | "pending" | "rejected" | null;
+  status: "approved" | "pending" | "rejected";
   pinnedSpielplatz?: boolean; //
   minAge?: number | undefined;
   maxAge?: number | undefined;
