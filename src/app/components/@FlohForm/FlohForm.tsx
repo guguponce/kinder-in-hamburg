@@ -191,17 +191,14 @@ export default function FlohForm({
         revalidateFlohmarkt();
         setSuccessfulSubmit(true);
       })
-      // .then(() => {
-      // deleteUnusedFlohmaerkteImages();
-      // })
       .then(async () => {
-        await sleep(750);
+        await sleep(2500);
         router.push(
           flohFormType === "update-flohmarkt"
-            ? `/update-flohmarkt/successfully-submitted/${data.id}`
+            ? `/flohmaerkte/${data.id}`
             : flohFormType === "update-suggestion"
-            ? `/update-flohmarkt/successfully-submitted/${data.id}`
-            : `/flohmaerkte-approval/successfully-approved/${data.id}`
+            ? `/flohmarkt-suggestion/${data.id}`
+            : `/flohmaerkte/${data.id}`
         );
       })
       .catch((error) =>
