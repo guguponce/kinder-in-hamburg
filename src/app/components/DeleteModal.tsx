@@ -13,6 +13,11 @@ import {
   revalidatePost,
 } from "@app/utils/actions/revalidate";
 import { deleteAllImagesFromPost } from "@app/api/storageActions";
+import {
+  deleteSpielplatz,
+  rejectSpielplatz,
+  revalidateSpielplatz,
+} from "@app/api/spActions";
 
 export default function DeleteModal({
   id,
@@ -23,7 +28,7 @@ export default function DeleteModal({
   callbackURL,
 }: {
   callbackURL?: string;
-  type: "flohmarkt" | "post";
+  type: "flohmarkt" | "post" | "spielplatz";
   id: number;
   title: string;
   setDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -51,7 +56,14 @@ export default function DeleteModal({
       } else {
         await rejectFlohmarkt(id.toString());
       }
+    } else if (type === "spielplatz") {
+      if (deleteFrom === "all" || deleteFrom === "suggested") {
+        await rejectSpielplatz(id);
+      } else {
+        await deleteSpielplatz(id);
+      }
     }
+
     if (type === "post") {
       revalidatePost().then(() => {
         router.push(callbackURL || "/posts");
@@ -60,6 +72,11 @@ export default function DeleteModal({
     if (type === "flohmarkt") {
       revalidateFlohmarkt().then(() => {
         router.push(callbackURL || "/flohmaerkte");
+      });
+    }
+    if (type === "spielplatz") {
+      revalidateSpielplatz().then(() => {
+        router.push(callbackURL || "/spielplaetze");
       });
     }
   };
