@@ -35,7 +35,7 @@ export const getImagesArray = (images: string) => {
 
 export const parsePost = (post: iStringifiedRetrievedPost): iPost => {
   return {
-    status: post.status,
+    status: post.status || "pending",
     user_id: post.user_id,
     title: post.title,
     text: post.text ? JSON.parse(post.text) : undefined,
@@ -69,6 +69,9 @@ export const parseContributor = (contributor: iStringifiedContributor) => {
       | number[]
       | null,
     postsSubmitted: JSON.parse(contributor.postsSubmitted) as number[] | null,
+    spielplaetzeSubmitted: JSON.parse(contributor.postsSubmitted) as
+      | number[]
+      | null,
   } as iContributor;
 };
 export const parseAllPosts = (posts: iStringifiedRetrievedPost[]) =>
