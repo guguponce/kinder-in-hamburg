@@ -100,9 +100,12 @@ export default function AdminEditButtons({
           <Button
             href={`/copy-${copyButton.type}/${copyButton.id}`}
             variant="hh-dark"
-            size="medium"
+            size="fit"
+            fontWeight="semibold"
           >
-            Copy {copyButton.type}
+            <>
+              Copy <span className="capitalize">{copyButton.type}</span>
+            </>
           </Button>
         )}
         {children}

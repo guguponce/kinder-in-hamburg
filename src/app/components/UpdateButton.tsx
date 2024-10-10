@@ -22,7 +22,7 @@ export default function UpdateButton({
   return (
     <Link
       href={link}
-      className={`${bSize} ${bWidth} rounded  py-2 font-semibold bg-hh-700 text-center text-white hover:bg-hh-800 active:bg-hh-600`}
+      className={`${bSize} ${bWidth} rounded px-2 font-semibold bg-hh-700 text-center text-white hover:bg-hh-800 active:bg-hh-600`}
     >
       Update {status === "pending" ? "suggested" : status} {type}
     </Link>

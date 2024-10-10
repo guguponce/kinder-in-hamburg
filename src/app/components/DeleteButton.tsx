@@ -39,7 +39,7 @@ export default function DeleteButton({
       )}
       <button
         role="button"
-        className={`${bSize} ${bWidth} rounded  py-2 font-semibold bg-negative-600 text-center text-white hover:bg-negative-500 active:bg-negative-700`}
+        className={`${bSize} ${bWidth} rounded px-2 font-semibold bg-negative-600 text-center text-white hover:bg-negative-500 active:bg-negative-700`}
         onClick={(e) => {
           e.preventDefault();
           setDeleteModal(true);

@@ -419,7 +419,7 @@ export interface iFlohmarkt {
   createdAt: number;
   date: number;
   id: number;
-  status: "approved" | "pending" | "rejected" | "old" | null;
+  status: "approved" | "pending" | "rejected" | "old";
   address: string;
   image?: string;
   location?: string;

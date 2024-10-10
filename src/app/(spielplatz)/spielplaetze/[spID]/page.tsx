@@ -9,11 +9,9 @@ import ImagesModalButton from "@app/components/ImagesModalGallery";
 import Spielgeraete from "./Spielgeraete";
 import PostLogo from "@app/components/@Icons/@PostLogo/PostLogo";
 import Link from "next/link";
-import AdminServerComponent from "@app/providers/AdminServerComponents";
 import { Metadata } from "next";
 import BezirkIcon from "@components/@Icons/@BezirkIcon/BezirkIcon";
-import CategoryBezirkStadtteileRecommendation from "./CategoryBezirkStadtteileRecommendation";
-import { PROXIMATE_STADTTEILE_FROM_OTHER_BEZIRK } from "@app/utils/constants";
+import AdminEditButtons from "@app/components/AdminEditButtons";
 
 interface SpielplatzPageProps {
   params: { spID: string };
@@ -55,6 +53,7 @@ export default async function SpielplatzPage({
     title,
     spielgeraete = [],
     bezirk,
+    status,
     stadtteil,
     type,
     image,
@@ -66,19 +65,20 @@ export default async function SpielplatzPage({
         .join("+")
     : "";
   const { number } = spielplatz.address || { number: "" };
+  const spStatus = !status ? "pending" : status;
   return (
     <main
       id="spielplatz-page"
       className="w-full items-center gap-4 p-2 flex flex-col"
     >
-      <AdminServerComponent>
-        <Link
-          href={"/update-spielplatz/" + spID}
-          className="p-2 bg-hh-600 rounded text-white"
-        >
-          Update Spielplatz
-        </Link>
-      </AdminServerComponent>
+      <AdminEditButtons
+        updateButton={{
+          link: "/update-spielplatz/" + spID,
+          size: "medium",
+          status: spStatus,
+          type: "spielplatz",
+        }}
+      />
       <div
         id="spielplatz-header"
         className="text-4xl min-h-16 font-bold text-center text-hh-50 flex flex-col justify-center items-center gap-4 lg:p-4"
