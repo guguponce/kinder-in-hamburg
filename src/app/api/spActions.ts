@@ -252,7 +252,7 @@ export const addSpielplatz = async (spielplatz: iSpielplatz) => {
 };
 
 // DELETE
-export const deleteSpielplatz = async (id: string) => {
+export const deleteSpielplatz = async (id: string | number) => {
   try {
     const { data, error } = await supabaseAdmin
       .from("spielplaetze")
@@ -269,7 +269,7 @@ export const deleteSpielplatz = async (id: string) => {
     throw new Error("Error deleting spielplatz");
   }
 };
-export const rejectSpielplatz = async (id: string) => {
+export const rejectSpielplatz = async (id: string | number) => {
   try {
     const { data, error } = await supabaseAdmin
       .from("spielplaetze")
@@ -314,6 +314,22 @@ export const updateSpielplatz = async (spielplatz: iSpielplatz) => {
   }
 };
 
+export const clearLatLonFromSpielplatz = async (id: string) => {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("spielplaetze")
+      .update({ lat: null, lon: null })
+      .match({ id });
+    if (error) {
+      throw new Error("Error clearing lat lon from spielplatz");
+    }
+    await revalidateSpielplatz();
+    return data;
+  } catch (error) {
+    throw new Error("Error clearing lat lon from spielplatz");
+  }
+};
+
 export const approveSuggestedSpielplatz = async (id: string) => {
   try {
     const { data, error } = await supabaseAdmin
@@ -330,7 +346,10 @@ export const approveSuggestedSpielplatz = async (id: string) => {
   }
 };
 
-export const updateSpielplatzStatus = async (id: string, status: string) => {
+export const updateSpielplatzStatus = async (
+  id: number | string,
+  status: string
+) => {
   try {
     const { data, error } = await supabaseAdmin
       .from("spielplaetze")
