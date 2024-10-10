@@ -1,21 +1,16 @@
 import { getFlohmarktWithID } from "@app/api/dbActions";
-import ApproveFlohmarktButton from "@components/ApproveButton";
-import DeleteButton from "@components/DeleteButton";
 import FlohmarktTemplate from "@components/FlohmarktTemplate";
 import Link from "next/link";
 import React from "react";
-import UpdateButton from "@app/components/UpdateButton";
 import { getServerUser } from "@app/api/auth/supabaseAuth";
 import { redirect } from "next/navigation";
-import AdminServerComponent from "@app/providers/AdminServerComponents";
-import UserServerComponents from "@app/providers/UserServerComponents";
-import RestoreButton from "@app/components/RestoreButton";
-import AdminRoute from "@app/providers/AdminRoute";
-import AddLatLon from "@app/components/AddLatLon";
 
 import { iFlohmarktWithCoordinates } from "@app/utils/types";
 import dynamic from "next/dynamic";
 import NotFound from "@app/components/@NotFound/NotFound";
+import AdminEditButtons from "@app/components/AdminEditButtons";
+import AdminRoute from "@app/providers/AdminRoute";
+import StatusDisplay from "@app/components/StatusDisplay";
 
 const FlohmaerkteMap = dynamic(
   () => import("@app/components/@Map/FlohmaerkteMap"),
@@ -42,95 +37,71 @@ export default async function FlohmarktSuggestionPage({
     <AdminRoute>
       <>
         <FlohmarktTemplate flohmarkt={suggestion}>
-          <div className="flex self-center flex-col justify-center items-center rounded-md border-2 border-hh-600 bg-hh-200 mb-4 p-4 gap-2">
-            {suggestion.status === "approved" ? (
-              <div className="flex flex-col items-center">
-                <h2 className="text-xl font-semibold">
-                  This sugggestion has already been approved
-                </h2>{" "}
-                <Link
-                  className="px-2 py-1 rounded-md font-semibold bg-hh-700 text-white hover:bg-hh-600"
-                  href={`/flohmaerkte/${flohmarktID}`}
-                >
-                  Check it out
-                </Link>
-              </div>
-            ) : suggestion.status === "rejected" ? (
-              <div className="flex flex-col items-center bg-negative-800 text-white rounded-md p-2">
-                <h2 className="text-xl font-semibold">
-                  This sugggestion has been rejected
-                </h2>
-              </div>
-            ) : (
-              <div className="flex flex-col items-center ">
-                <h2 className="text-xl font-semibold">
-                  This sugggestion has still not been approved
-                </h2>
-                <small className="text-xs">
+          <StatusDisplay status={suggestion.status}>
+            <StatusDisplay.Title>
+              {suggestion.status === "approved"
+                ? "Dieser Flohmarkt wurde schon angenommen"
+                : suggestion.status === "rejected"
+                ? "Dieser Flohmarkt wurde abgelehnt"
+                : "Dieser Flohmarkt wurde noch nicht angenommen"}
+            </StatusDisplay.Title>
+            <StatusDisplay.Link
+              href={
+                suggestion.status === "approved"
+                  ? `/flohmaerkte/${suggestion.id}`
+                  : `/update-flohmarkt/${flohmarktID}`
+              }
+              status={suggestion.status}
+            >
+              <>
+                <small className="block text-xs">
                   (You can modify it if you want)
                 </small>
-              </div>
-            )}
-
-            {suggestion.status === "rejected" ? (
-              <AdminServerComponent>
-                <RestoreButton flohmarktID={flohmarktID} size="medium" />
-                <DeleteButton
-                  deleteFrom="all"
-                  id={suggestion.id}
-                  title={suggestion.title}
-                  type="flohmarkt"
-                  size="small"
-                />
-              </AdminServerComponent>
-            ) : (
-              <UserServerComponents creator={suggestion.addedBy.email}>
-                <aside className="flex items-center justify-center gap-2 flex-wrap m-4">
-                  <UpdateButton
-                    id={suggestion.id}
-                    status={suggestion.status || "pending"}
-                    type="flohmarkt"
-                    size="small"
-                  />
-                  <DeleteButton
-                    deleteFrom={
-                      session?.user?.email === suggestion.addedBy.email
-                        ? "all"
-                        : suggestion.status === "approved"
-                        ? "approved"
-                        : "suggested"
-                    }
-                    id={suggestion.id}
-                    title={suggestion.title}
-                    type="flohmarkt"
-                    size="small"
-                  />
-                  {suggestion.status !== "approved" && (
-                    <AdminServerComponent>
-                      <ApproveFlohmarktButton
-                        size="small"
-                        flohmarktContributor={suggestion.addedBy}
-                        flohmarktID={flohmarktID}
-                      />
-                    </AdminServerComponent>
-                  )}
-                  {!suggestion.lat && !suggestion.lon ? (
-                    <AddLatLon item={suggestion} />
-                  ) : (
-                    <FlohmaerkteMap
-                      flohmaerkteWithCoordinates={[]}
-                      currentTarget={suggestion as iFlohmarktWithCoordinates}
-                      flohmarktID={flohmarktID}
-                    ></FlohmaerkteMap>
-                  )}
-                </aside>
-              </UserServerComponents>
-            )}
-          </div>
+                {suggestion.status === "approved"
+                  ? "Check it out!"
+                  : "Update suggestion"}
+              </>
+            </StatusDisplay.Link>
+          </StatusDisplay>{" "}
+          <AdminEditButtons
+            updateButton={{
+              size: "medium",
+              link: `/update-flohmarkt/${flohmarktID}`,
+              status: suggestion.status || "pending",
+              type: "flohmarkt",
+            }}
+            deleteButton={{
+              deleteFrom:
+                suggestion.status === "approved" ? "approved" : "suggested",
+              id: suggestion.id,
+              title: suggestion.title,
+              type: "flohmarkt",
+              size: "medium",
+            }}
+            copyButton={{ type: "flohmarkt", id: suggestion.id }}
+            addLatLonButton={
+              !suggestion.lat && !suggestion.lon
+                ? { item: suggestion }
+                : undefined
+            }
+            approveButton={
+              suggestion.status !== "approved"
+                ? {
+                    size: "medium",
+                    contributor: suggestion.addedBy,
+                    flohmarktID: flohmarktID,
+                  }
+                : undefined
+            }
+          />
+          {suggestion.lat && suggestion.lon && (
+            <FlohmaerkteMap
+              flohmaerkteWithCoordinates={[]}
+              currentTarget={suggestion as iFlohmarktWithCoordinates}
+              flohmarktID={flohmarktID}
+            ></FlohmaerkteMap>
+          )}
         </FlohmarktTemplate>
-        {/* other flohmarkts in the same bezirk */}
-        <br />
-        {/* other flohmarkts in the same WEEKEND */}
       </>
     </AdminRoute>
   );
