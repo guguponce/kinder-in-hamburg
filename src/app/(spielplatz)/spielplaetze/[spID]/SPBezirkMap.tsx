@@ -79,7 +79,7 @@ export default function SPBezirkMap({
           : "h-[400px]"
       }  aspect-[0.5] shadow-md bg-hh-700 bg-opacity-90  flex flex-col md:flex-row lg:flex-col items-stretch lg:items-center p-2 gap-2 rounded mx-auto`}
     >
-      <article className="w-full md:w-1/2 lg:w-full max-h-fit h-1/2 md:h-full lg:h-1/2 flex-grow  flex flex-col items-center gap-2 rounded bg-hh-900">
+      <article className="w-full md:w-1/2 lg:w-full max-h-fit aspect-square sm:aspect-auto h-1/2 md:h-full lg:h-1/2 flex-grow  flex flex-col items-center gap-2 rounded bg-hh-900">
         <GeneralMap currentTarget={currentSpielplatz.current} zoom={12}>
           <MarkersLists
             cluster={false}
