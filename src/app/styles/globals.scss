@@ -17,7 +17,7 @@ $hh-400: #abbec7;
 $hh-500: #97b2bf;
 $hh-600: #7896a5;
 $hh-700: #607884;
-$hh-800: #4b5960;
+$hh-800: #33404d;
 $hh-900: #343b3e;
 $hh-950: #1b1d1e;
 
@@ -229,9 +229,9 @@ picture {
 }
 
 .clusterIconSpielplatz {
-  background: radial-gradient(circle, #17684d, #17684d 50%, #17684d80 50%);
+  background: radial-gradient(circle, #405b3a, #405b3a 50%, #405b3a80 50%);
   &:hover {
-    background: radial-gradient(circle, #17684d, #17684d 50%, #17684db9 50%);
+    background: radial-gradient(circle, #405b3a, #405b3a 50%, #405b3ab9 50%);
   }
 }
 
