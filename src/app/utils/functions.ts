@@ -131,7 +131,7 @@ export const parseParams = (params: string) => {
 };
 
 export function separateAddress(address: string) {
-  const regex = /^(.*?)(\d+|\s+),\s*(\d+|\s+)\s*(.*?|\s+)$/;
+  const regex = /^(.*?)(\d+.*|\s+),\s*(\d+|\s+)\s*(.*?|\s+)$/;
   const match = address.match(regex);
   if (!match) {
     return { street: "", number: "", PLZ: "", city: "" };
@@ -237,7 +237,10 @@ export const getTodayNexMonday = () => {
   currentDate.setUTCHours(0, 0, 0, 1);
   return {
     today: currentDate.getTime(),
-    nextMonday: nextMonday.getTime(),
+    nextMonday:
+      currentDate.getDay() === 0
+        ? currentDate.getTime() + 1000 * 60 * 60 * 24
+        : nextMonday.getTime(),
   };
 };
 
@@ -266,18 +269,17 @@ export const getTimeRainAndActivity = (
     nextRain !== -1 && nextRain + 1 + currentHour < sunsetIndex
       ? "Indoor"
       : activity === "Both"
-      ? ["Indoor", "Outdoor"][Math.floor(Math.random() * 2)]
-      : activity;
+        ? ["Indoor", "Outdoor"][Math.floor(Math.random() * 2)]
+        : activity;
   return { currentTime, currentHour, nextRain, activityType, sunsetIndex };
 };
 
 export const sortPostsByDate = (posts: iPost[]) =>
   [...posts].sort((a, b) => b.createdAt - a.createdAt);
 
-export const separateByStatus = <T extends iFlohmarkt | iPost>(array: T[]) => {
-  const arr = isTypeFlohmarkt(array[0])
-    ? (array as iFlohmarkt[]).sort((a, b) => b.date - a.date)
-    : array;
+export const separateByStatus = <T extends iFlohmarkt | iPost | iSpielplatz>(
+  array: T[]
+) => {
   return array.reduce(
     (acc, current) => {
       const { status } = current;
@@ -310,6 +312,20 @@ export const getLatLong = async (address: string) => {
     console.error(e);
     return { lat: "0", lon: "0" };
   }
+};
+
+export const addLatLongToPost = async (post: iPost) => {
+  if (post.lat && post.lon) return post;
+  if (!post.address) return false;
+
+  const addressQuery = getAddressQuery(post.address);
+  const { lat, lon } = await getLatLong(addressQuery);
+
+  return {
+    ...post,
+    lat: parseFloat(lat),
+    lon: parseFloat(lon),
+  };
 };
 
 export const getAllLatLong = async (posts: iPost[]) => {
@@ -463,12 +479,15 @@ export function createStandortMapIcon(
 export const separateInBezirke = <T extends iSpielplatz | iFlohmarkt | iPost>(
   array: Array<T>
 ) =>
-  array.reduce((acc, sp) => {
-    const { bezirk } = sp;
-    if (!acc[bezirk]) acc[bezirk] = [sp];
-    else acc[bezirk].push(sp);
-    return acc;
-  }, {} as { [key: string]: T[] });
+  array.reduce(
+    (acc, sp) => {
+      const { bezirk } = sp;
+      if (!acc[bezirk]) acc[bezirk] = [sp];
+      else acc[bezirk].push(sp);
+      return acc;
+    },
+    {} as { [key: string]: T[] }
+  );
 
 interface iLists {
   flohmaerkte?: iFlohmarkt[];
