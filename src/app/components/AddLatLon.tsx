@@ -29,7 +29,7 @@ const addLatLon = async (item: iFlohmarkt | iSpielplatz | iPost) => {
         lat: parseFloat(lat),
         lon: parseFloat(lon),
       });
-      return true;
+      return { lat, lon };
     } catch (e) {
       console.error(e);
     }
@@ -44,7 +44,7 @@ const addLatLon = async (item: iFlohmarkt | iSpielplatz | iPost) => {
         lat: parseFloat(lat),
         lon: parseFloat(lon),
       });
-      return true;
+      return { lat, lon };
     } catch (e) {
       console.error(e);
     }
@@ -65,7 +65,7 @@ const addLatLon = async (item: iFlohmarkt | iSpielplatz | iPost) => {
             lat: parseFloat(lat),
             lon: parseFloat(lon),
           }));
-      return true;
+      return { lat, lon };
     } catch (e) {
       console.error(e);
     }
@@ -86,8 +86,8 @@ export default function AddLatLon({
           isTypeFlohmarkt(item)
             ? "flohmarkt"
             : isTypePost(item)
-            ? "post"
-            : "spielplatz"
+              ? "post"
+              : "spielplatz"
         }
         id={item.id.toString()}
       />
