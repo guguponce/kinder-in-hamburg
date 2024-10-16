@@ -3,13 +3,9 @@ import React, { useMemo, useRef } from "react";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { Icon } from "leaflet";
-import {
-  categoryName,
-  iFlohmarktWithCoordinates,
-  iPostWithCoordinates,
-} from "@app/utils/types";
+import { categoryName, iFlohmarkt, iPost } from "@app/utils/types";
 import Link from "next/link";
-import { getDate, joinAddress } from "@app/utils/functions";
+import { getDate, isTypePost, joinAddress } from "@app/utils/functions";
 
 const bezirkLocationIcon = new Icon({
   iconUrl: "/assets/icons/bezirkLocation.svg",
@@ -31,29 +27,25 @@ const MainLocationIcon = new Icon({
 
 const Map = ({
   postID,
-  postsNearbyWithCoordinates,
+  postsNearby,
   currentTarget,
 }: {
   postID: string;
-  currentTarget?: iPostWithCoordinates | iFlohmarktWithCoordinates;
-  postsNearbyWithCoordinates: iPostWithCoordinates[];
+  currentTarget?: iPost | iFlohmarkt;
+  postsNearby: iPost[];
 }) => {
   const [selectedCategory, setSelectedCategory] = React.useState<
     categoryName | undefined
   >();
   const categories = useRef(
-    Array.from(
-      new Set(postsNearbyWithCoordinates.map((p) => p.categories).flat())
-    )
+    Array.from(new Set(postsNearby.map((p) => p.categories).flat()))
   );
   const displayedMarkers = useMemo(
     () =>
       selectedCategory
-        ? postsNearbyWithCoordinates.filter((p) =>
-            p.categories.includes(selectedCategory)
-          )
-        : postsNearbyWithCoordinates,
-    [selectedCategory, postsNearbyWithCoordinates]
+        ? postsNearby.filter((p) => p.categories.includes(selectedCategory))
+        : postsNearby,
+    [selectedCategory, postsNearby]
   );
 
   return (
@@ -92,7 +84,7 @@ const Map = ({
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          {currentTarget && (
+          {currentTarget?.lat && currentTarget?.lon && (
             <Marker
               position={[currentTarget.lat, currentTarget.lon]}
               icon={MainLocationIcon}
@@ -100,7 +92,7 @@ const Map = ({
               <Popup className="font-sans">
                 <Link
                   href={
-                    (currentTarget as iPostWithCoordinates).categories
+                    isTypePost(currentTarget)
                       ? `/posts/${postID}`
                       : `/flohmaerkte/${postID}`
                   }
@@ -109,13 +101,9 @@ const Map = ({
                   {currentTarget.title}
                 </Link>
                 <small className="font-semibold italic">
-                  {(currentTarget as iPostWithCoordinates).categories
-                    ? (currentTarget as iPostWithCoordinates).categories.join(
-                        " - "
-                      )
-                    : getDate(
-                        (currentTarget as iFlohmarktWithCoordinates).date
-                      )}
+                  {isTypePost(currentTarget)
+                    ? (currentTarget as iPost).categories.join(" - ")
+                    : getDate((currentTarget as iFlohmarkt).date)}
                 </small>
                 <p className="text-xs">
                   {currentTarget.address &&
@@ -126,8 +114,8 @@ const Map = ({
               </Popup>
             </Marker>
           )}
-          {displayedMarkers.map(
-            ({ title, id, lat, lon, image, stadtteil, categories }) => (
+          {displayedMarkers.map(({ title, id, lat, lon, categories }) =>
+            !lat || !lon ? null : (
               <React.Fragment key={id}>
                 <Marker
                   position={[lat, lon]}

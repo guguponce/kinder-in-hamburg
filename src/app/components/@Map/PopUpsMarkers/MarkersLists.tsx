@@ -24,15 +24,15 @@ const createClusterGroupIcon =
         type === "flohmarkt"
           ? "clusterIconFlohmarkt"
           : type === "spielplatz"
-          ? "clusterIconSpielplatz"
-          : "clusterIconPost"
+            ? "clusterIconSpielplatz"
+            : "clusterIconPost"
       }">${cluster.getChildCount()}</div>`,
       className: "custom-marker-cluster",
       iconSize: point(32, 32, true),
     });
 const flohmarktIcon = createNormalSizeIcon("#7B3E5E");
 const postIcon = createNormalSizeIcon("#33404D");
-const spielplatzIcon = createNormalSizeIcon("#17684D");
+const spielplatzIcon = createNormalSizeIcon("#405b3a");
 
 const ConditionalCluster = ({
   cluster,
