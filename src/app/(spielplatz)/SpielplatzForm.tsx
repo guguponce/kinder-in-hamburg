@@ -175,8 +175,8 @@ export default function SpielplatzForm({
       //   deleteUnusedFlohmaerkteImages();
       // })
       .then(async () => {
-        sleep(1000);
-        router.push(`/spielplaetze/`);
+        sleep(3000);
+        router.push(`/spielplaetze/${data.id}`);
       })
       .catch((error) =>
         setSubmitError({ isError: true, errorMessage: error.message })
@@ -216,10 +216,10 @@ export default function SpielplatzForm({
           spielplatzFormType === "new-spielplatz"
             ? onSubmitNewSpielplatz(data)
             : spielplatzFormType === "update-spielplatz"
-            ? onSubmitUpdateSpielplatz(data)
-            : () => {
-                return data;
-              }
+              ? onSubmitUpdateSpielplatz(data)
+              : () => {
+                  return data;
+                }
         )}
         className="spielplatzForm mx-auto w-full text-gray-900 lg:w-3/4 my-2 flex flex-col gap-2"
       >
@@ -661,10 +661,10 @@ export default function SpielplatzForm({
               spielplatzFormType === "new-spielplatz"
                 ? "Submit Spielplatz Suggestion"
                 : status === "approved"
-                ? spielplatzFormType === "update-spielplatz"
-                  ? "Update Spielplatz"
-                  : "Approve Spielplatz"
-                : "Update Spielplatz Suggestion"
+                  ? spielplatzFormType === "update-spielplatz"
+                    ? "Update Spielplatz"
+                    : "Approve Spielplatz"
+                  : "Update Spielplatz Suggestion"
               // : "Done"
             }
           </button>
