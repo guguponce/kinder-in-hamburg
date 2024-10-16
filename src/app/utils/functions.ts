@@ -307,14 +307,11 @@ export function distanceFilter<T extends iSpielplatz | iFlohmarkt | iPost>(
   maxDistance: number
 ) {
   if (!currentSP || !currentSP.lat || !currentSP.lon) return list;
+  const { lat, lon } = currentSP;
   return list
     .map((sp) => {
-      const distance = haversineDistance(
-        currentSP.lat,
-        currentSP.lon,
-        sp.lat,
-        sp.lon
-      );
+      if (!sp.lat || !sp.lon) return sp;
+      const distance = haversineDistance(lat, lon, sp.lat, sp.lon);
       return distance < maxDistance && distance > 0 ? { sp, distance } : null;
     })
     .filter((sp) => !!sp);
