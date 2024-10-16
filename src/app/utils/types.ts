@@ -24,11 +24,6 @@ export interface iPost {
   addedBy: iSessionUser;
 }
 
-export interface iPostWithCoordinates extends iPost {
-  lat: number;
-  lon: number;
-}
-
 export interface iAddress {
   street?: string;
   number?: string;
@@ -247,19 +242,6 @@ export interface Location {
   localtime: string;
 }
 
-export interface VisualCrossing {
-  queryCost: number;
-  latitude: number;
-  longitude: number;
-  resolvedAddress: string;
-  address: string;
-  timezone: string;
-  tzoffset: number;
-  days: CurrentConditions[];
-  stations: { [key: string]: Station };
-  currentConditions: CurrentConditions;
-}
-
 export interface CurrentConditions {
   datetime: string;
   datetimeEpoch: number;
@@ -298,17 +280,6 @@ export interface CurrentConditions {
   severerisk?: number;
   description?: string;
   hours?: CurrentConditions[];
-}
-
-export interface Station {
-  distance: number;
-  latitude: number;
-  longitude: number;
-  useCount: number;
-  id: string;
-  name: string;
-  quality: number;
-  contribution: number;
 }
 
 // SPIELPLATZ
@@ -429,22 +400,10 @@ export interface iFlohmarkt {
   lon?: number;
 }
 
-export interface iFlohmarktWithCoordinates extends iFlohmarkt {
-  lat: number;
-  lon: number;
-}
-
 export interface iStringifiedFlohmarkt extends Omit<iFlohmarkt, "addedBy"> {
   addedBy: string;
 }
 
-export type Filter =
-  | "categories"
-  | "bezirk"
-  | "fromAge"
-  | "untilAge"
-  | "pinnedPosts"
-  | "search";
 export interface FilterObject {
   categories?: string[];
   bezirk?: string;
