@@ -1,11 +1,8 @@
 import { getFlohmarktWithID } from "@app/api/dbActions";
 import FlohmarktTemplate from "@components/FlohmarktTemplate";
-import Link from "next/link";
 import React from "react";
 import { getServerUser } from "@app/api/auth/supabaseAuth";
 import { redirect } from "next/navigation";
-
-import { iFlohmarktWithCoordinates } from "@app/utils/types";
 import dynamic from "next/dynamic";
 import NotFound from "@app/components/@NotFound/NotFound";
 import AdminEditButtons from "@app/components/AdminEditButtons";
@@ -26,11 +23,10 @@ export default async function FlohmarktSuggestionPage({
 }) {
   const suggestion = await getFlohmarktWithID(flohmarktID);
   if (!suggestion) return <NotFound type="flohmarkt" />;
-  const session = await getServerUser();
+  const user = await getServerUser();
   if (
-    ![suggestion.addedBy.email, process.env.ADMIN_EMAIL].includes(
-      session?.user?.email
-    )
+    !user ||
+    ![suggestion.addedBy.email, process.env.ADMIN_EMAIL].includes(user.email)
   )
     return redirect("/flohmaerkte/" + flohmarktID);
   return (
@@ -42,8 +38,8 @@ export default async function FlohmarktSuggestionPage({
               {suggestion.status === "approved"
                 ? "Dieser Flohmarkt wurde schon angenommen"
                 : suggestion.status === "rejected"
-                ? "Dieser Flohmarkt wurde abgelehnt"
-                : "Dieser Flohmarkt wurde noch nicht angenommen"}
+                  ? "Dieser Flohmarkt wurde abgelehnt"
+                  : "Dieser Flohmarkt wurde noch nicht angenommen"}
             </StatusDisplay.Title>
             <StatusDisplay.Link
               href={
@@ -96,8 +92,8 @@ export default async function FlohmarktSuggestionPage({
           />
           {suggestion.lat && suggestion.lon && (
             <FlohmaerkteMap
-              flohmaerkteWithCoordinates={[]}
-              currentTarget={suggestion as iFlohmarktWithCoordinates}
+              flohmaerkte={[]}
+              currentTarget={suggestion}
               flohmarktID={flohmarktID}
             ></FlohmaerkteMap>
           )}

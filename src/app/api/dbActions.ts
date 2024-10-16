@@ -184,8 +184,8 @@ export const deleteContributor = async (id: string) => {
 // SUGGESTED BLOGPOSTS
 export const addNewSuggestedPost = async (post: iPost) => {
   try {
-    const session = await getServerUser();
-    if (!session?.user) {
+    const user = await getServerUser();
+    if (!user) {
       return "Not logged in";
     }
     const submittedPost = {
@@ -1033,13 +1033,13 @@ export const getThisWeekFlohmaerkte = async () => {
 // POST
 export const addFlohmarkt = async (flohmarkt: iFlohmarkt) => {
   try {
-    const session = await getServerUser();
-    if (!session?.user?.email) {
+    const user = await getServerUser();
+    if (!user?.email) {
       return "Not logged in";
     }
     const submittedFlohmarkt = {
       ...flohmarkt,
-      addedBy: JSON.stringify(session.user),
+      addedBy: JSON.stringify(user),
     };
     const { error } = await supabaseAdmin
       .from("flohmaerkte")

@@ -65,7 +65,6 @@ export default async function SpielplatzPage({
         .join("+")
     : "";
   const { number } = spielplatz.address || { number: "" };
-  const spStatus = !status ? "pending" : status;
   return (
     <main
       id="spielplatz-page"
@@ -75,9 +74,28 @@ export default async function SpielplatzPage({
         updateButton={{
           link: "/update-spielplatz/" + spID,
           size: "medium",
-          status: spStatus,
+          status,
           type: "spielplatz",
         }}
+        deleteButton={{
+          deleteFrom:
+            status === "pending" || status === "approved" ? "approved" : "all",
+          id: parseInt(spID),
+          title,
+          type: "spielplatz",
+          size: "medium",
+        }}
+        addLatLonButton={{ item: spielplatz }}
+        approveButton={
+          status !== "approved"
+            ? {
+                spielplatzID: spID,
+                size: "medium",
+                redirect: false,
+              }
+            : undefined
+        }
+        copyButton={{ type: "spielplatz", id: parseInt(spID) }}
       />
       <div
         id="spielplatz-header"

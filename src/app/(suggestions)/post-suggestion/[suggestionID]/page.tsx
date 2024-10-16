@@ -54,11 +54,15 @@ export default async function CurrentPostPage({
           addLatLonButton={{
             item: post,
           }}
-          approveButton={{
-            contributor: post.addedBy,
-            post: post,
-            size: "medium",
-          }}
+          approveButton={
+            post.status !== "approved"
+              ? {
+                  contributor: post.addedBy,
+                  post: post,
+                  size: "medium",
+                }
+              : undefined
+          }
         />
         <PostTemplate post={post} />
       </>

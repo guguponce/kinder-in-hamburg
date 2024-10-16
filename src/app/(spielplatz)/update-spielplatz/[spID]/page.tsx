@@ -14,24 +14,18 @@ export default async function NewSpielplatzPage({
 }: {
   params: { spID: string };
 }) {
-  const session = await getServerUser();
-  if (!session?.user) redirect("/");
+  const user = await getServerUser();
+  if (!user) redirect("/");
   const spielplatz = await getSpielplatzWithID(spID);
   const spImages = await getAllSpielplatzImagesURL(spID);
   if (!spielplatz) return <NotFound type="spielplatz" />;
   if (
     !spielplatz.addedBy.email ||
-    !session?.user?.email ||
-    ![spielplatz.addedBy.email, process.env.ADMIN_EMAIL].includes(
-      session.user.user_metadata.email
-    )
+    !user?.email ||
+    ![spielplatz.addedBy.email, process.env.ADMIN_EMAIL].includes(user.email)
   )
     redirect("/flohmaerkte/" + spID);
-  const {
-    email,
-    name,
-    avatar_url: image,
-  } = session.user.user_metadata as iUserMetadata;
+  const { email, full_name: name, picture: image } = user;
   return (
     <AdminRoute>
       <main className="relative mb-10 mt-6 max-w-[1000px] w-full bg-hh-100 rounded-xl p-4 text-gray-200 lg:mx-8">

@@ -6,6 +6,7 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import { separateInBezirke } from "@app/utils/functions";
 import ExpandableContainer from "@app/components/ExpandableContainer";
+import ApproveButton from "@app/components/ApproveButton";
 
 const DynamicSielplaetzeMap = dynamic(() => import("./DynamicSielplaetzeMap"), {
   ssr: false,
@@ -47,14 +48,23 @@ export default async function SpielplaeztePage() {
                   <ExpandableContainer contentHeight={420} initialHeight={400}>
                     <article
                       key={bezirk}
-                      className="flex flex-col gap-2 bg-white bg-opacity-25 rounded p-2 "
+                      className="flex flex-col gap-2 bg-white bg-opacity-25 rounded p-2"
                     >
                       <h2 className="font-bold text-center text-lg">
                         {bezirk} - ({list.length})
                       </h2>
-                      <div className="flex flex-wrap gap-4 items-stretch mx-auto w-full justify-around">
+                      <div className="flex flex-wrap gap-4 items-stretch mx-auto w-full justify-around  max-h-full">
                         {list.map((sp) => (
-                          <React.Fragment key={sp.id}>
+                          <div
+                            key={sp.id}
+                            className={` flex gap-2 flex-wrap ${
+                              sp.status === "approved"
+                                ? "p-2 bg-positive-300"
+                                : sp.status === "pending"
+                                  ? "p-2 bg-orange-300"
+                                  : "p-2 bg-negative-300"
+                            }`}
+                          >
                             <HorizontalCard
                               title={sp.title}
                               image={sp.image ? sp.image[0] : ""}
@@ -70,7 +80,14 @@ export default async function SpielplaeztePage() {
                                 stadtteil={sp.stadtteil}
                               />
                             </HorizontalCard>
-                          </React.Fragment>
+                            {sp.status !== "approved" && (
+                              <ApproveButton
+                                size="medium"
+                                spielplatzID={sp.id.toString()}
+                                redirect={false}
+                              />
+                            )}
+                          </div>
                         ))}
                       </div>
                     </article>
