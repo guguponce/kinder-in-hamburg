@@ -115,12 +115,20 @@ export default function FlohForm({
   });
 
   const onSubmitNewFlohmarkt = (data: FieldValues) => {
-    if (!imagesUrlsReady.ready) alert("Images are not ready yet");
+    if (!imagesUrlsReady.ready) {
+      alert("Images are not ready yet");
+      return;
+    }
     if (!userInput.email || !userInput.name)
       return alert("Your name and email are required");
-    if (!data.date) alert("The date of the Flohmarkt is required");
-    if (!data.startTime && data.endTime)
+    if (!data.date) {
+      alert("The date of the Flohmarkt is required");
+      return;
+    }
+    if (!data.startTime && data.endTime) {
       alert("Please provide the start and end time of the Flohmarkt");
+      return;
+    }
     const suggestionFloh: iFlohmarkt = {
       id: data.id,
       status: data.status,
@@ -163,9 +171,9 @@ export default function FlohForm({
     if (!imagesUrlsReady.ready) return alert("Images are not ready yet");
     if (!userInput.email || !addedBy)
       return alert("User data from creator needed");
-    if (!data.date) alert("The date of the Flohmarkt is required");
+    if (!data.date) return alert("The date of the Flohmarkt is required");
     if (!data.startTime && data.endTime)
-      alert("Please provide the start and end time of the Flohmarkt");
+      return alert("Please provide the start and end time of the Flohmarkt");
 
     const updatedFlohmarkt: iFlohmarkt = {
       id: id || newID.current,
@@ -194,11 +202,9 @@ export default function FlohForm({
       .then(async () => {
         await sleep(2500);
         router.push(
-          flohFormType === "update-flohmarkt"
+          data.status === "approved"
             ? `/flohmaerkte/${data.id}`
-            : flohFormType === "update-suggestion"
-            ? `/flohmarkt-suggestion/${data.id}`
-            : `/flohmaerkte/${data.id}`
+            : `/flohmarkt-suggestion/${data.id}`
         );
       })
       .catch((error) =>
@@ -470,10 +476,10 @@ export default function FlohForm({
                 ? flohFormType === "new-flohmarkt"
                   ? "Submit Flohmarkt Suggestion"
                   : status === "approved"
-                  ? flohFormType === "update-flohmarkt"
-                    ? "Update Flohmarkt"
-                    : "Approve Flohmarkt"
-                  : "Update Flohmarkt Suggestion"
+                    ? flohFormType === "update-flohmarkt"
+                      ? "Update Flohmarkt"
+                      : "Approve Flohmarkt"
+                    : "Update Flohmarkt Suggestion"
                 : "Done"}
             </button>
             {submitError.isError && (
