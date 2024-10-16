@@ -3,11 +3,7 @@ import React, { useMemo, useRef } from "react";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { Icon } from "leaflet";
-import {
-  iBezirk,
-  iFlohmarkt,
-  iFlohmarktWithCoordinates,
-} from "@app/utils/types";
+import { iBezirk, iFlohmarkt } from "@app/utils/types";
 import Link from "next/link";
 import { getDate } from "@app/utils/functions";
 import WeitereFlohmaerkte from "../WeitereFlohmaerkte";
@@ -26,28 +22,26 @@ const MainLocationIcon = new Icon({
   iconAnchor: [17, 35],
 });
 
-const FlohmaerkteMap = ({
+export default function FlohmaerkteMap({
   flohmarktID,
-  flohmaerkteWithCoordinates,
+  flohmaerkte,
   currentTarget,
   displayList = true,
 }: {
   displayList?: boolean;
   flohmarktID: string | number | undefined;
-  currentTarget?: iFlohmarktWithCoordinates | iFlohmarkt;
-  flohmaerkteWithCoordinates: iFlohmarktWithCoordinates[] | iFlohmarkt[];
-}) => {
+  currentTarget?: iFlohmarkt;
+  flohmaerkte: iFlohmarkt[];
+}) {
   const bezirke = useRef(
-    Array.from(new Set(flohmaerkteWithCoordinates.map((p) => p.bezirk).flat()))
+    Array.from(new Set(flohmaerkte.map((p) => p.bezirk).flat()))
   );
   const dates = useRef(
-    Array.from(new Set(flohmaerkteWithCoordinates.map((p) => p.date))).sort(
-      (a, b) => a - b
-    )
+    Array.from(new Set(flohmaerkte.map((p) => p.date))).sort((a, b) => a - b)
   );
 
   const flohmaerkteBezirke = useRef(
-    Array.from(new Set(flohmaerkteWithCoordinates.map(({ bezirk }) => bezirk)))
+    Array.from(new Set(flohmaerkte.map(({ bezirk }) => bezirk)))
   );
   const [selectedFlohmarkt, setSelectedFlohmarkt] = React.useState<
     number | undefined
@@ -59,7 +53,7 @@ const FlohmaerkteMap = ({
     iBezirk | undefined
   >();
   const displayedMarkers = useMemo(() => {
-    const dateFlohmaerkte = flohmaerkteWithCoordinates.filter(
+    const dateFlohmaerkte = flohmaerkte.filter(
       ({ date }) => !selectedDate || date === selectedDate
     );
     const restFlohmaerkte = dateFlohmaerkte.filter(
@@ -68,13 +62,13 @@ const FlohmaerkteMap = ({
     return selectedBezirk
       ? restFlohmaerkte.filter((p) => p.bezirk === selectedBezirk)
       : restFlohmaerkte;
-  }, [selectedBezirk, flohmaerkteWithCoordinates, selectedDate, flohmarktID]);
+  }, [selectedBezirk, flohmaerkte, selectedDate, flohmarktID]);
 
   const centralFlohmarkt = currentTarget;
 
   return (
-    <section className="w-full sm:w-full md:max-w-[800px] flex flex-wrap gap-2 sm:gap-4 rounded">
-      <article className="max-h-[60vh] flex-grow xs:min-w-[300px] max-w-[800px] aspect-square flex justify-center rounded overflow-hidden">
+    <section className="w-full sm:w-full flex flex-col md:flex-row md:flex-wrap items-stretch gap-2 sm:gap-4 rounded">
+      <article className="max-h-[60vh] min-h-[250px] flex-grow xs:min-w-[300px] max-w-[800px] md:max-w-[calc(75%-2rem)] lg:max-w-[800px] aspect-[3/2] md:aspect-auto lg:aspect-square flex justify-center rounded overflow-hidden">
         <MapContainer
           doubleClickZoom={true}
           touchZoom={true}
@@ -89,10 +83,10 @@ const FlohmaerkteMap = ({
             flohmaerkteBezirke.current.length === 1
               ? 15
               : ["Wandsbek", "Bergedorf"].some((b) =>
-                  flohmaerkteBezirke.current.includes(b as iBezirk)
-                )
-              ? 10
-              : 11
+                    flohmaerkteBezirke.current.includes(b as iBezirk)
+                  )
+                ? 10
+                : 11
           }
         >
           <TileLayer
@@ -127,7 +121,7 @@ const FlohmaerkteMap = ({
       </article>
       <aside
         id="flohmaerkte-map-filters-aside"
-        className="w-full flex flex-col"
+        className="px-2 pb-2 w-full md:w-1/4 xs:min-w-[300px] max-w-full lg:w-full flex flex-col"
       >
         {[
           ["Termine", dates.current],
@@ -188,6 +182,4 @@ const FlohmaerkteMap = ({
       )}
     </section>
   );
-};
-
-export default FlohmaerkteMap;
+}
