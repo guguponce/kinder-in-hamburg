@@ -44,7 +44,7 @@ const config: Config = {
           "500": "#97b2bf",
           "600": "#7896a5",
           "700": "#607884",
-          "800": "#4b5960",
+          "800": "#33404D",
           "900": "#343b3e",
           "950": "#1b1d1e",
         },
@@ -111,7 +111,7 @@ const config: Config = {
           "900": "#7e291e",
           "950": "#44110b",
         },
-        currentLocation: "#BC251F",
+        currentLocation: "#b72f1e",
         stadtteilLocation: "#7B3E5E",
         bezirkLocation: "#39579D",
 
