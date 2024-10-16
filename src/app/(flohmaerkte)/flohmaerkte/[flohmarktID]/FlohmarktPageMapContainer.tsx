@@ -1,6 +1,5 @@
 import { getThisWeekFlohmaerkte } from "@app/api/dbActions";
 import { iFlohmarkt, iPost, iSpielplatz } from "@app/utils/types";
-import dynamic from "next/dynamic";
 import WeitereFlohmaerkte from "@components/WeitereFlohmaerkte";
 import RecommendationsMap from "@app/components/@Map/RecommendationsMap";
 
@@ -19,13 +18,15 @@ export default async function FlohmarktPageMapContainer({
   return (
     <div className="flex flex-col items-center gap-2 w-full max-w-[600px] md:max-w-[800px] rounded p-2">
       <RecommendationsMap
-        avoid={["flohmaerkte"]}
         bezirk={currentTarget.bezirk}
         currentType="flohmarkt"
         stadtteil={currentTarget.stadtteil}
         id={currentTarget.id}
         maxDistance={2000}
-        recommendationsList={{ flohmaerkte: thisWeekFlohmaerkte }}
+        recommendationsList={{
+          flohmaerkte: thisWeekFlohmaerkte,
+          spielplaetze: spielplaetzeAround,
+        }}
       />
 
       {weitereFlohmaerkte.length > 0 && (
