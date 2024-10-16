@@ -4,7 +4,7 @@ import React from "react";
 import DisplayTypeText from "./@PostForm/DisplayTypeText";
 import PostLogo from "./@Icons/@PostLogo/PostLogo";
 import ImagesModalGallery from "./ImagesModalGallery";
-import PostMap from "@app/(blog)/posts/[postID]/PostMap";
+import RecommendationsMap from "@app/components/@Map/RecommendationsMap";
 
 const BackButton = ({ type }: { type: "spielhaus" | "general" }) => (
   <>
@@ -129,7 +129,12 @@ export default function PostTemplate({
             : "justify-center"
         }`}
       >
-        {<PostMap id={id} bezirk={bezirk} stadtteil={stadtteil} />}
+        <RecommendationsMap
+          id={id}
+          bezirk={bezirk}
+          stadtteil={stadtteil}
+          currentType="post"
+        />
         {(!!bezirk || !!address) && (
           <div className="flex w-full flex-col sm:flex-row lg:flex-col xl:flex-row gap-2 sm:gap-1">
             <section
