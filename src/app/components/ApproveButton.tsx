@@ -23,15 +23,18 @@ export default function ApproveButton({
   spielplatzID,
   size = "small",
   contributor,
+  redirect = true,
 }: {
+  redirect?: boolean;
   post?: iPost;
   flohmarktID?: string;
   spielplatzID?: string;
   contributor?: iSessionUser;
   size?: "small" | "medium" | "large" | "full" | "fit";
 }) {
+  const [loading, setLoading] = React.useState(false);
   const router = useRouter();
-  if (!post && !flohmarktID) return null;
+  if (!post && !flohmarktID && !spielplatzID) return null;
 
   const bSize = size === "small" ? "py-1" : size === "medium" ? "py-2" : "py-4";
   const bWidth =
@@ -40,10 +43,14 @@ export default function ApproveButton({
       : size === "medium"
       ? "w-fit"
       : "max-w-24";
+
   return (
     <button
-      className={`${bSize} ${bWidth} rounded  px-2 font-semibold bg-positive-700 text-center text-white hover:bg-positive-800 active:bg-positive-600`}
-      onClick={async () => {
+      disabled={loading}
+      className={`${bSize} ${bWidth} rounded px-2 font-semibold bg-positive-700 text-center text-white disabled:bg-positive-300 disabled:bg-opacity-30 hover:bg-positive-800 active:bg-positive-600 transition-all flex`}
+      onClick={async (e) => {
+        e.stopPropagation();
+        setLoading(true);
         if (flohmarktID) {
           await approveSuggestedFlohmarkt(flohmarktID);
           if (contributor) {
@@ -70,19 +77,26 @@ export default function ApproveButton({
         await revalidateFlohmarkt();
         await revalidatePost();
         await revalidateSpielplatz();
-        await sleep(2500);
-        router.push(
-          post
-            ? `/posts/${post.id}`
-            : flohmarktID
-            ? `/flohmaerkte/${flohmarktID}`
-            : spielplatzID
-            ? `/spielplaetze/${spielplatzID}`
-            : "/"
-        );
+        if (redirect) {
+          await sleep(2500);
+          router.push(
+            post
+              ? `/posts/${post.id}`
+              : flohmarktID
+              ? `/flohmaerkte/${flohmarktID}`
+              : spielplatzID
+              ? `/spielplaetze/${spielplatzID}`
+              : "/"
+          );
+        } else {
+          await sleep(2500);
+          setLoading(false);
+          router.refresh();
+        }
       }}
     >
       Approve {post ? "Post" : flohmarktID ? "Flohmarkt" : "Spielplatz"}
+      {loading && <span className="font-bold animate-spin block ml-2">↻</span>}
     </button>
   );
 }
