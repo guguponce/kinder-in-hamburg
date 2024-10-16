@@ -9,7 +9,9 @@ export default function FlohmarktPopUP({
   title,
   address,
   date,
+  image,
 }: {
+  image?: string;
   id: number;
   title: string;
   address: string;
@@ -17,14 +19,28 @@ export default function FlohmarktPopUP({
 }) {
   return (
     <Popup className="font-sans">
-      <Link
-        href={`/flohmaerkte/${id}`}
-        className="font-semibold text-base block"
-      >
-        {title}
-      </Link>
-      <small className="font-semibold italic">{getDate(date)}</small>
-      <p className="text-xs">{address}</p>
+      <div className="flex justify-stretch gap-2 ">
+        {image && (
+          <div className="w-16 h-24">
+            <img
+              src={image}
+              alt={title}
+              className="w-full h-full object-cover"
+            />
+          </div>
+        )}
+        <div className="flex-1">
+          <Link
+            href={`/flohmaerkte/${id}`}
+            className="font-semibold text-base block"
+          >
+            {title}
+          </Link>
+          <small className="font-semibold italic">{getDate(date)}</small>
+
+          <p className="text-xs">{address}</p>
+        </div>
+      </div>
     </Popup>
   );
 }

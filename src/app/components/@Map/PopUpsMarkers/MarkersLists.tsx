@@ -99,12 +99,17 @@ export default function MarkersLists({
         <ConditionalCluster cluster={cluster} type="flohmarkt">
           {flohmaerkte
             .filter(({ lat, lon }) => !!lat && !!lon)
-            .map(({ lon, lat, address, id, title, date }) => (
-              <Marker icon={flohmarktIcon} key={id} position={[lat!, lon!]}>
+            .map(({ lon, lat, image, address, id, title, date }) => (
+              <Marker
+                icon={flohmarktIcon}
+                key={"marker" + id}
+                position={[lat!, lon!]}
+              >
                 <FlohmarktPopUP
                   address={address}
                   date={date}
                   title={title}
+                  image={image}
                   id={id}
                 />
               </Marker>
@@ -116,34 +121,43 @@ export default function MarkersLists({
           {posts
             .filter(({ lat, lon, address }) => !!lat && !!lon && !!address)
             .map(
-              ({
-                lon,
-                lat,
-                address,
-                id,
-                minAge,
-                image,
-                maxAge,
-                title,
-                categories,
-                stadtteil,
-                bezirk,
-              }) => (
-                <>
+              (
+                {
+                  lon,
+                  lat,
+                  address,
+                  id,
+                  minAge,
+                  image,
+                  maxAge,
+                  title,
+                  categories,
+                  stadtteil,
+                  bezirk,
+                },
+                i
+              ) => (
+                <React.Fragment key={"marker" + id}>
                   {customPostMarker ? (
-                    customPostMarker({
-                      lat,
-                      lon,
-                      id,
-                      title,
-                      minAge,
-                      maxAge,
-                      address,
-                      stadtteil,
-                      bezirk,
-                    })
+                    <>
+                      {customPostMarker({
+                        lat,
+                        lon,
+                        id,
+                        title,
+                        minAge,
+                        maxAge,
+                        address,
+                        stadtteil,
+                        bezirk,
+                      })}
+                    </>
                   ) : (
-                    <Marker icon={postIcon} key={id} position={[lat!, lon!]}>
+                    <Marker
+                      icon={postIcon}
+                      key={"marker" + id + i}
+                      position={[lat!, lon!]}
+                    >
                       <PostPopUP
                         image={image && image[0]}
                         address={address!}
@@ -153,7 +167,7 @@ export default function MarkersLists({
                       />
                     </Marker>
                   )}
-                </>
+                </React.Fragment>
               )
             )}
         </ConditionalCluster>
@@ -164,7 +178,11 @@ export default function MarkersLists({
           {spielplaetze
             .filter(({ address }) => !!address)
             .map(({ lon, lat, address, id, title, type, spielgeraete }) => (
-              <Marker key={id} position={[lat!, lon!]} icon={spielplatzIcon}>
+              <Marker
+                key={"marker" + id}
+                position={[lat!, lon!]}
+                icon={spielplatzIcon}
+              >
                 <SpielplatzPopUP
                   address={joinAddress(address!)}
                   title={title}

@@ -39,7 +39,7 @@ export default function PostPopUP({
           </small>
           <p className="text-xs">{joinAddress(address)}</p>
         </div>
-      </div>{" "}
+      </div>
     </Popup>
   );
 }
