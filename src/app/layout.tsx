@@ -60,7 +60,7 @@ export async function generateMetadata(): Promise<Metadata> {
     metadataBase: new URL("https://www.kinder-in-hamburg.de"), // Base URL for resolving relative URLs
   };
 }
-
+export const revalidate = 60 * 60 * 6; // 6 hours
 export default async function RootLayout({
   children,
 }: Readonly<{
