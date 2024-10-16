@@ -72,30 +72,30 @@ async function getList(
     list: recList,
     currentItem: false,
   };
+  const promises = ["flohmaerkte", "posts", "spielplaetze"]
+    .filter((key) => !avoid?.includes(key as (typeof avoid)[number]))
+    .map(async (key) => {
+      const itemType = key as "flohmaerkte" | "posts" | "spielplaetze";
+      const items = recList[itemType] as iFlohmarkt[] & iPost[] & iSpielplatz[];
+      const itemsNearby =
+        items || (await getItemsNearby(itemType, bezirk, stadtteile)) || [];
+      acc.list[itemType] = itemsNearby;
 
-  const promises = ["flohmaerkte", "posts", "spielplaetze"].map(async (key) => {
-    const itemType = key as "flohmaerkte" | "posts" | "spielplaetze";
-    const items = recList[itemType] as iFlohmarkt[] & iPost[] & iSpielplatz[];
-    const itemsNearby =
-      items || (await getItemsNearby(itemType, bezirk, stadtteile)) || [];
-    acc.list[itemType] = itemsNearby;
+      const current =
+        acc.currentItem ||
+        acc.list[itemType]?.find((post) => post.id === id) ||
+        (type === "post"
+          ? await getSuggestedPostWithID(id.toString())
+          : type === "flohmarkt"
+            ? await getFlohmarktWithID(id.toString())
+            : type === "spielplatz"
+              ? await getSpielplatzWithID(id.toString())
+              : false);
 
-    const current =
-      acc.currentItem ||
-      acc.list[itemType]?.find((post) => post.id === id) ||
-      (type === "post"
-        ? await getSuggestedPostWithID(id.toString())
-        : type === "flohmarkt"
-          ? await getFlohmarktWithID(id.toString())
-          : type === "spielplatz"
-            ? await getSpielplatzWithID(id.toString())
-            : false);
-
-    acc.currentItem = current;
-  });
+      acc.currentItem = current;
+    });
 
   await Promise.all(promises);
-
   return acc;
 }
 
@@ -109,7 +109,6 @@ export default async function RecommendationsMap({
   showFlohmaerkte = true,
   showSpielplaetze = true,
   showPosts = true,
-  avoid = [],
 }: {
   showFlohmaerkte?: boolean;
   showPosts?: boolean;
@@ -120,7 +119,6 @@ export default async function RecommendationsMap({
   bezirk: iBezirk;
   stadtteil: string;
   recommendationsList?: iListsFPS;
-  avoid?: Array<"flohmaerkte" | "posts" | "spielplaetze">;
 }) {
   const stadtteile = PROXIMATE_STADTTEILE_FROM_OTHER_BEZIRK[stadtteil];
   const {
@@ -130,11 +128,25 @@ export default async function RecommendationsMap({
       posts: postsNearby,
       spielplaetze: spielplaetzeNearby,
     },
-  } = await getList(currentType, id, bezirk, stadtteile, {
-    flohmaerkte: recommendationsList?.flohmaerkte,
-    posts: recommendationsList?.posts,
-    spielplaetze: recommendationsList?.spielplaetze,
-  });
+  } = await getList(
+    currentType,
+    id,
+    bezirk,
+    stadtteile,
+    {
+      flohmaerkte: recommendationsList?.flohmaerkte,
+      posts: recommendationsList?.posts,
+      spielplaetze: recommendationsList?.spielplaetze,
+    },
+    [
+      showFlohmaerkte ? null : "flohmaerkte",
+      showPosts ? null : "posts",
+      showSpielplaetze ? null : "spielplaetze",
+    ].filter(
+      (item): item is "flohmaerkte" | "posts" | "spielplaetze" => item !== null
+    )
+  );
+
   if (
     !currentItem ||
     currentItem.lat === undefined ||
@@ -155,7 +167,9 @@ export default async function RecommendationsMap({
     },
     maxDistance
   );
-  const defList = !!Object.values(lists).flat().length
+  const defList = !!(
+    Object.values(lists).filter((list) => !!list?.length).length > 1
+  )
     ? lists
     : filterByDistance(
         currentItem.lat,
@@ -167,9 +181,8 @@ export default async function RecommendationsMap({
           posts: postsNearby || [],
           spielplaetze: spielplaetzeNearby || [],
         },
-        maxDistance + 1000
+        maxDistance + 2000
       );
-
   if (currentType === "flohmarkt")
     defList.flohmaerkte = defList.flohmaerkte?.filter(
       (flohmarkt) => flohmarkt.id !== id
@@ -185,7 +198,7 @@ export default async function RecommendationsMap({
       ? recommendationsList?.flohmaerkte?.filter(
           ({ id: flohID }) => flohID !== id
         )
-      : defList.flohmaerkte;
+      : defList.flohmaerkte?.filter((sp) => sp.id !== id);
 
   const tags = {
     flohmaerkte: {
@@ -208,6 +221,8 @@ export default async function RecommendationsMap({
     },
   };
 
+  const listsLength = Object.values(defList).filter((l) => !!l?.length).length;
+
   return (
     <article
       id="map"
@@ -217,7 +232,7 @@ export default async function RecommendationsMap({
         <h3 className="text-xl font-semibold w-fit px-8">in der Nähe</h3>
         <GeneralMap zoom={14} currentTarget={currentItem || undefined}>
           <MarkersLists
-            lists={lists}
+            lists={defList}
             showFlohmaerkte={showFlohmaerkte}
             showPosts={showPosts}
             showSpielplaetze={showSpielplaetze}
@@ -225,36 +240,41 @@ export default async function RecommendationsMap({
         </GeneralMap>
       </div>
       <div className="w-full flex flex-col items-center">
-        <div className="w-fit max-w-full flex flex-col md:flex-row flex-wrap items-center md:gap-2">
-          <div className="w-fit flex flex-col items-center md:items-start gap-1">
+        <div
+          className={`w-fit max-w-full flex flex-col ${currentItem && listsLength === 3 && "md:flex-row md:gap-2"} flex-wrap items-stretch gap-1`}
+        >
+          <div className="w-fit flex flex-col gap-1  items-center md:items-start">
             <div className="w-fit max-w-full flex gap-2 bg-hh-800 bg-opacity-20 rounded p-1">
               <StandortIcon color="#b72f1e" />
               <p>{currentItem.title}</p>
             </div>
-            <div className="flex bg-hh-800 bg-opacity-20 rounded p-1">
-              <StandortIcon color={tags.flohmaerkte.color} />
-              <p>
-                {lists.flohmaerkte?.length}{" "}
-                {(lists.flohmaerkte || []).length < 2
-                  ? tags.flohmaerkte.singular
-                  : tags.flohmaerkte.plural}{" "}
-                dieser Woche in Hamburg
-              </p>
-            </div>
+            {showFlohmaerkte && !!defList.flohmaerkte?.length && (
+              <div className="flex bg-hh-800 bg-opacity-20 rounded p-1">
+                <StandortIcon color={tags.flohmaerkte.color} />
+                <p>
+                  {defList.flohmaerkte?.length}{" "}
+                  {(defList.flohmaerkte || []).length < 2
+                    ? tags.flohmaerkte.singular
+                    : tags.flohmaerkte.plural}{" "}
+                  {currentType === "flohmarkt" && "dieser Woche in Hamburg"}
+                </p>
+              </div>
+            )}
           </div>
 
-          <div className="flex flex-col items-center md:items-end gap-1">
+          <div
+            className={`flex flex-col items-center ${listsLength === 3 ? (currentType === "post" ? "md:items-start" : "md:items-end") : "md:items-start"} gap-1`}
+          >
             {Object.entries(tags).map(
               ([key, { color, singular, plural, show }]) => {
                 const type = key as "flohmaerkte" | "posts" | "spielplaetze";
-                const list = lists[type] as iFlohmarkt[] &
+                const list = defList[type] as iFlohmarkt[] &
                   iPost[] &
                   iSpielplatz[];
                 if (type === "flohmaerkte") return null;
                 return (
                   show &&
-                  !avoid?.includes(type) &&
-                  list!.length > 0 && (
+                  !!list?.length && (
                     <div
                       key={type}
                       className="flex gap-2 bg-hh-800 bg-opacity-20 rounded p-1"
