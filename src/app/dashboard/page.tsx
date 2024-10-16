@@ -10,20 +10,18 @@ import AdminRoute from "@app/providers/AdminRoute";
 import FlohmaerkteSearchList from "./FlohmaerkteSearchList";
 
 export default async function DashboardPage() {
-  const session = await getServerUser();
-  if (!session?.user?.email || !session?.user?.user_metadata.name) {
+  const user = await getServerUser();
+  if (!user?.email || !user.name) {
     redirect("/");
   }
-  const userPosts = await getUsersSuggestions(session.user.user_metadata.email);
-  const userFlohs = await getUserFlohmaerkte(session.user.user_metadata.email);
+  const userPosts = await getUsersSuggestions(user.email);
+  const userFlohs = await getUserFlohmaerkte(user.email);
   return (
     <AdminRoute>
       <main className="w-[calc(100%-2rem)] max-w-[1000px] p-4 bg-hh-100 rounded-md mx-auto flex flex-col items-center gap-8">
         <h2 className="text-2xl font-semibold text-center">
-          Hi, {session.user.user_metadata.name.split(" ")[0]}!
-          <span className="block text-sm">
-            ({session.user.user_metadata.email})
-          </span>
+          Hi, {user.name.split(" ")[0]}!
+          <span className="block text-sm">({user.email})</span>
         </h2>
 
         <ul>

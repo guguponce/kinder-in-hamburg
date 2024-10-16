@@ -6,7 +6,7 @@ export default async function AdminServerComponent({
 }: {
   children: React.ReactNode;
 }) {
-  const { user } = await getServerUser();
+  const user = await getServerUser();
   if (user?.email !== process.env.ADMIN_EMAIL) return <></>;
 
   return <>{children}</>;

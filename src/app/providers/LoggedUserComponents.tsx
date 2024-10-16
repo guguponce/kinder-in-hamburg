@@ -6,7 +6,7 @@ export default async function LoggedUserComponents({
 }: {
   children: React.ReactNode;
 }) {
-  const { user } = await getServerUser();
+  const user = await getServerUser();
   if (!user?.email) return <></>;
 
   return <>{children}</>;

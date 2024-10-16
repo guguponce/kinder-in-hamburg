@@ -7,12 +7,7 @@ export default async function AdminRoute({
 }: {
   children: JSX.Element;
 }) {
-  const session = await getServerUser();
-  if (
-    !session ||
-    !session.user ||
-    session.user.user_metadata.email !== process.env.ADMIN_EMAIL
-  )
-    redirect("/");
+  const user = await getServerUser();
+  if (!user || !user || user.email !== process.env.ADMIN_EMAIL) redirect("/");
   return <>{children}</>;
 }

@@ -6,8 +6,8 @@ export default async function AuthButton({
 }: {
   email?: string | undefined | null;
 }) {
-  const { user } = !!email ? { user: { email } } : await getServerUser();
-  if (!!user && user?.email) {
+  const userEmail = email || (await getServerUser())?.email;
+  if (!!userEmail) {
     return (
       <form action={signOut}>
         <button className="px-2 py-1 rounded-md font-semibold border-2 bg-hh-800 text-hh-100 border-hh-800">

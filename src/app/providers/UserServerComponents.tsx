@@ -8,7 +8,7 @@ export default async function UserServerComponents({
   children: React.ReactNode;
   creator: string | undefined | null;
 }) {
-  const { user } = await getServerUser();
+  const user = await getServerUser();
   if (
     !creator ||
     (creator &&

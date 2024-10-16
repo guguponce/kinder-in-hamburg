@@ -6,10 +6,9 @@ import { iUserMetadata } from "@app/api/auth/types";
 import { User } from "@supabase/supabase-js";
 
 export default async function UserButtons({ user }: { user?: User | null }) {
-  const { user: userData } =
-    user === null || !!user ? { user } : await getServerUser();
+  const userData = user?.user_metadata || (await getServerUser());
   if (!userData) return <AuthButton email={null} />;
-  const { email, name, avatar_url } = userData.user_metadata as iUserMetadata;
+  const { email, full_name: name, picture: image } = userData as iUserMetadata;
   return (
     <AvatarMenu
       email={email}
@@ -22,7 +21,7 @@ export default async function UserButtons({ user }: { user?: User | null }) {
               .join("")
           : ""
       }
-      avatar={avatar_url}
+      avatar={image}
     >
       <li className="p-2 list-none flex justify-center">
         <AuthButton email={email} />
