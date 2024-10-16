@@ -17,7 +17,7 @@ interface iAdminEditButtons {
   };
   deleteButton?: {
     id: number;
-    type: "flohmarkt" | "post";
+    type: "flohmarkt" | "post" | "spielplatz";
     title: string;
     deleteFrom: "suggested" | "approved" | "all";
     size?: "small" | "medium" | "large";
@@ -37,6 +37,7 @@ interface iAdminEditButtons {
     size?: "small" | "medium" | "large";
   };
   approveButton?: {
+    redirect?: boolean;
     post?: iPost;
     flohmarktID?: string;
     spielplatzID?: string;
@@ -67,6 +68,7 @@ export default function AdminEditButtons({
             spielplatzID={approveButton.spielplatzID}
             contributor={approveButton.contributor}
             size={approveButton.size}
+            redirect={approveButton.redirect}
           />
         )}
         {restoreButton && (
