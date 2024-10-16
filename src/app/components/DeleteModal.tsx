@@ -57,7 +57,7 @@ export default function DeleteModal({
         await rejectFlohmarkt(id.toString());
       }
     } else if (type === "spielplatz") {
-      if (deleteFrom === "all" || deleteFrom === "suggested") {
+      if (deleteFrom === "approved" || deleteFrom === "suggested") {
         await rejectSpielplatz(id);
       } else {
         await deleteSpielplatz(id);
