@@ -8,7 +8,6 @@ import Header from "@components/@Header/Header";
 import Footer from "./components/@Footer/Footer";
 import GetAnalytics from "./GetAnalytics";
 import { SessionProvider } from "./providers/SessionContext";
-import Head from "next/head";
 const fixelFont = localFont({
   src: "./styles/fonts/FixelVariable.ttf",
   display: "swap",
@@ -68,12 +67,12 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Head>
+      <head>
         <meta property="og:image" content="<generated>" />
         <meta property="og:image:type" content="<generated>" />
         <meta property="og:image:width" content="<generated>" />
         <meta property="og:image:height" content="<generated>" />
-      </Head>
+      </head>
       <body
         className={`${fixelFont.className}
          flex flex-col items-center bg-hh-600 max-w-[1400px] mx-auto gap-2`}
