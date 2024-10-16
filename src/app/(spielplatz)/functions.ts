@@ -43,7 +43,7 @@ export const submitNewSpielplatz = async (
     ausruestung: ausruestungList,
     spielgeraete: spielgaereteList,
     minAge: minAge && maxAge ? (minAge > maxAge ? minAge : maxAge) : undefined,
-    maxAge: minAge,
+    maxAge: maxAge,
     tags: data.tags.split("*").map((tag: string) => tag.trim()),
     image: [],
   };
@@ -86,9 +86,10 @@ export const submitUpdateSpielplatz = async (
     ausruestung: ausruestungList,
     spielgeraete: spielgaereteList,
     minAge: minAge && maxAge ? (minAge > maxAge ? minAge : maxAge) : undefined,
-    maxAge: minAge,
+    maxAge: maxAge,
     tags: data.tags.split("*").map((tag: string) => tag.trim()),
     image: data.image,
   };
+
   return await updateSpielplatz(suggestedSpielplatz);
 };
