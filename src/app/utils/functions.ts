@@ -301,6 +301,25 @@ export const separateByStatus = <T extends iFlohmarkt | iPost | iSpielplatz>(
   );
 };
 
+export function distanceFilter<T extends iSpielplatz | iFlohmarkt | iPost>(
+  list: T[],
+  currentSP: T,
+  maxDistance: number
+) {
+  if (!currentSP || !currentSP.lat || !currentSP.lon) return list;
+  return list
+    .map((sp) => {
+      const distance = haversineDistance(
+        currentSP.lat,
+        currentSP.lon,
+        sp.lat,
+        sp.lon
+      );
+      return distance < maxDistance && distance > 0 ? { sp, distance } : null;
+    })
+    .filter((sp) => !!sp);
+}
+
 export const getLatLong = async (address: string) => {
   try {
     const addressQuery = address.match(/[a-zA-ZßäüöÄÜÖ]+|\d+/g)!.join("+");
