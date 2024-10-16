@@ -3,13 +3,7 @@ import React from "react";
 import { MapContainer, Marker, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { divIcon } from "leaflet";
-import {
-  iAddress,
-  iFlohmarkt,
-  iPost,
-  iPostWithCoordinates,
-  iSpielplatz,
-} from "@app/utils/types";
+import { iAddress, iFlohmarkt, iPost, iSpielplatz } from "@app/utils/types";
 import {
   createStandortMapIcon,
   isTypeFlohmarkt,
@@ -22,7 +16,7 @@ import FlohmarktPopUP from "./PopUpsMarkers/FlohmarktPopUP";
 import PostPopUP from "./PopUpsMarkers/PostPopUP";
 
 const MainLocationIcon = divIcon({
-  html: createStandortMapIcon("#BC251F", 35),
+  html: createStandortMapIcon("#b72f1e", 35),
   className: "bg-transparent",
   iconSize: [35, 35],
   iconAnchor: [17, 35],
@@ -81,9 +75,9 @@ const GeneralMap = ({
                     : currentTarget.image?.[0]
                 }
                 address={currentTarget.address as iAddress}
-                categories={(currentTarget as iPostWithCoordinates).categories}
+                categories={(currentTarget as iPost).categories}
                 id={currentTarget.id}
-                title={(currentTarget as iPostWithCoordinates).title}
+                title={currentTarget.title}
               />
             )
           )}

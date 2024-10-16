@@ -43,7 +43,7 @@ export default function DynamicThisWeekNearbyMap({
       className={`${
         greenBG
           ? "from-[#06190980] to-[#0c3f0c80]"
-          : `from-[#91a3b6ec] to-[#33404dec]`
+          : `from-[#91a3b6ec] to-[#33404Dec]`
       } flex flex-col items-center w-full max-w-[600px] md:max-w-[800px] bg-opacity-5 bg-gradient-to-b p-4 rounded gap-4`}
     >
       <aside className="flex flex-col items-center w-full max-w-[800px] gap-4 px-4">
