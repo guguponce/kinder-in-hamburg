@@ -25,14 +25,17 @@ export default function WeitereFlohmaerkte({
   const [contentHeight, setContentHeight] = useState<number>(128 + 16);
   const listRef = useRef<HTMLDivElement>(null);
   const flohmaerkteByDate = useRef(
-    displayedMarkers.reduce((acc, flohmarkt) => {
-      const date = getDate(flohmarkt.date);
-      if (!acc[date]) {
-        acc[date] = [];
-      }
-      acc[date].push(flohmarkt);
-      return acc;
-    }, {} as Record<string, iFlohmarkt[]>)
+    displayedMarkers.reduce(
+      (acc, flohmarkt) => {
+        const date = getDate(flohmarkt.date);
+        if (!acc[date]) {
+          acc[date] = [];
+        }
+        acc[date].push(flohmarkt);
+        return acc;
+      },
+      {} as Record<string, iFlohmarkt[]>
+    )
   );
 
   useEffect(() => {
@@ -61,7 +64,7 @@ export default function WeitereFlohmaerkte({
                           type="flohmarkt"
                           id={id}
                           title={title}
-                          link={`/flohmarkt/${id}`}
+                          link={`/flohmaerkte/${id}`}
                           image={image || ""}
                         >
                           <HorizontalCard.FlohmarktInfo

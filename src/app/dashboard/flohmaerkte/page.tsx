@@ -69,8 +69,8 @@ export default async function AllFlohmaerktePage() {
                           st === "approved"
                             ? "bg-positive-300"
                             : st === "rejected"
-                            ? "bg-negative-300"
-                            : "bg-hh-300"
+                              ? "bg-negative-300"
+                              : "bg-hh-300"
                         } floh-2 rounded-md flex flex-col justify-around gap-4 items-center w-[360px] p-2`}
                       >
                         <div className="flex  flex-col items-center">
@@ -78,7 +78,7 @@ export default async function AllFlohmaerktePage() {
                             type="flohmarkt"
                             id={floh.id}
                             title={floh.title}
-                            link={`/flohmarkt/${floh.id}`}
+                            link={`/flohmaerkte/${floh.id}`}
                             image={floh.image || ""}
                           >
                             <HorizontalCard.FlohmarktInfo
