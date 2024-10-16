@@ -33,7 +33,8 @@ export const getAllSpielplaetze = async () => {
   try {
     const { data, error } = await supabaseAdmin
       .from("spielplaetze")
-      .select("*");
+      .select("*")
+      .order("createdAt", { ascending: false });
     if (error) {
       throw new Error("There was a problem getting the Flea Markets.");
     }
@@ -92,6 +93,7 @@ export const getSpielplatzFromBezirkStadtteil = async (
     const { data, error } = await supabaseAdmin
       .from("spielplaetze")
       .select("*")
+      .neq("status", "rejected")
       .or(combinedCondition);
     if (error) {
       throw new Error("There was a problem getting spielplätze from nearby.");
@@ -106,8 +108,7 @@ export const getSuggestedSpielplaetze = async () => {
   try {
     const { data, error } = await supabaseAdmin
       .from("spielplaetze")
-      .select("*")
-      .neq("status", "approved");
+      .select("*");
     if (error) {
       return false;
     }
@@ -136,6 +137,7 @@ export const getSpielplaetzeFromBezirk = async (bezirk: iBezirk) => {
     const { data, error } = await supabaseAdmin
       .from("spielplaetze")
       .select("*")
+      .neq("status", "rejected")
       .ilike("bezirk", bezirk);
     if (error) {
       throw new Error("There was a problem getting the posts for this Bezirk.");
@@ -151,6 +153,7 @@ export const getSpielplaetzeFromStadtteile = async (stadtteile: string[]) => {
     const { data, error } = await supabaseAdmin
       .from("spielplaetze")
       .select("*")
+      .neq("status", "rejected")
       .in("stadtteil", stadtteile);
     if (error) {
       throw new Error(
@@ -222,10 +225,16 @@ export const getApprovedSpielplaetzeWithBezirk = async (bezirk: iBezirk) => {
 // POST
 export const addSpielplatz = async (spielplatz: iSpielplatz) => {
   try {
-    const session = await getServerUser();
-    if (!session?.user?.email) {
+    const user = await getServerUser();
+    if (!user) {
       return "Not logged in";
     }
+    const addedBy = spielplatz.addedBy
+      ? {
+          ...spielplatz.addedBy,
+          image: spielplatz.addedBy.image || user.picture,
+        }
+      : { name: user.full_name, email: user.email, image: user.picture };
     const submittedSpielplatz = {
       ...spielplatz,
       type: JSON.stringify(spielplatz.type),
@@ -236,7 +245,7 @@ export const addSpielplatz = async (spielplatz: iSpielplatz) => {
         : null,
       image: spielplatz.image ? JSON.stringify(spielplatz.image) : null,
       address: JSON.stringify(spielplatz.address),
-      addedBy: JSON.stringify(session.user),
+      addedBy: addedBy,
     };
     const { error } = await supabaseAdmin
       .from("spielplaetze")
