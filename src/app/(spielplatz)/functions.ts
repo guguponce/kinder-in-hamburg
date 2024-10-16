@@ -14,7 +14,6 @@ export const submitNewSpielplatz = async (
   // if (!imagesUrlsReady.ready) return alert("Images are not ready yet");
   // if (!userInput.email || !userInput.name)
   //   return alert("Your name and email are required");
-
   const latlon = await getLatLong(
     [data.street, data.number, data.PLZ, data.city].join(" ")
   );
@@ -48,7 +47,6 @@ export const submitNewSpielplatz = async (
     tags: data.tags.split("*").map((tag: string) => tag.trim()),
     image: [],
   };
-
   return await addSpielplatz(suggestedSpielplatz);
 };
 

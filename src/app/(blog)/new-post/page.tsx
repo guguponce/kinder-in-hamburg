@@ -7,13 +7,9 @@ import dynamic from "next/dynamic";
 const PostForm = dynamic(() => import("@app/components/@PostForm/PostForm"));
 
 export default async function AddPostPage() {
-  const session = await getServerUser();
-  if (!session?.user) redirect("/");
-  const {
-    email,
-    name,
-    avatar_url: image,
-  } = session.user.user_metadata as iUserMetadata;
+  const user = await getServerUser();
+  if (!user) redirect("/");
+  const { email, full_name: name, picture: image } = user;
   return (
     <AdminRoute>
       <section className="relative mb-10 mt-6 max-w-[1000px] bg-hh-100 rounded-xl p-4 text-gray-200 lg:mx-8">

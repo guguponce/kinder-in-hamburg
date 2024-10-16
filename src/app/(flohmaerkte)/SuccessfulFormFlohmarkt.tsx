@@ -18,12 +18,10 @@ export default async function SuccessfulFormFlohmarkt({
   }
   const flohmarkt = await getFlohmarktWithID(flohmarktID);
   if (!flohmarkt) return <NotFound />;
-  const session = await getServerUser();
+  const user = await getServerUser();
   if (
-    !session?.user?.email ||
-    ![process.env.ADMIN_EMAIL, flohmarkt.addedBy.email].includes(
-      session.user.user_metadata.email
-    )
+    !user?.email ||
+    ![process.env.ADMIN_EMAIL, flohmarkt.addedBy.email].includes(user.email)
   ) {
     redirect("/");
   }

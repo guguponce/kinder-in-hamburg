@@ -15,11 +15,8 @@ export default async function SuccessfulPage({
   }
   const post = await getApprovedPostWithID(postID);
   if (!post) return <NotFound />;
-  const session = await getServerUser();
-  if (
-    session?.user?.user_metadata.email !== process.env.ADMIN_EMAIL &&
-    !post.id
-  ) {
+  const user = await getServerUser();
+  if (!user || (user.email !== process.env.ADMIN_EMAIL && !post.id)) {
     redirect("/");
   }
   return (

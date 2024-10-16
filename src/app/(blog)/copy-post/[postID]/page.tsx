@@ -14,18 +14,14 @@ export default async function AddCopiedFlohmarkt({
 }: {
   params: { postID: string };
 }) {
-  const session = await getServerUser();
-  if (!session?.user) redirect("/");
+  const user = await getServerUser();
+  if (!user) redirect("/");
   const flohmarkt =
     (await getApprovedPostWithID(params.postID)) ||
     (await getSuggestedPostWithID(params.postID));
   if (!flohmarkt) redirect("/new-flohmarkt");
   const id = new Date().getTime();
-  const {
-    email,
-    name,
-    avatar_url: image,
-  } = session.user.user_metadata as iUserMetadata;
+  const { email, full_name: name, picture: image } = user;
 
   return (
     <AdminRoute>

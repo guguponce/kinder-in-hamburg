@@ -15,13 +15,8 @@ export default async function SuccessfulPage({
   }
   const post = await getSuggestedPostWithID(postID);
   if (!post) return <NotFound />;
-  const session = await getServerUser();
-  if (
-    !session?.user?.email ||
-    ![process.env.ADMIN_EMAIL, post.user_id].includes(
-      session.user.user_metadata.email
-    )
-  ) {
+  const user = await getServerUser();
+  if (!user || ![process.env.ADMIN_EMAIL, post.user_id].includes(user.email)) {
     redirect("/");
   }
   return <SuccessfulSubmit submitType="suggestion" postID={postID} />;

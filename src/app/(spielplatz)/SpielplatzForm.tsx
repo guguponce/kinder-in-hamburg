@@ -71,7 +71,6 @@ export default function SpielplatzForm({
     urls: string[];
   }>({ ready: true, urls: [] });
   const [successfulSubmit, setSuccessfulSubmit] = useState<boolean>(false);
-
   const [userInput, setUserInput] = useState<iSessionUser>(addedBy || user);
   const [submitError, setSubmitError] = useState<{
     isError: boolean;
@@ -122,8 +121,8 @@ export default function SpielplatzForm({
 
   const onSubmitNewSpielplatz = (data: FieldValues) => {
     // if (!imagesUrlsReady.ready) return alert("Images are not ready yet");
-    // if (!userInput.email || !userInput.name)
-    //   return alert("Your name and email are required");
+    if (!userInput.email || !userInput.name)
+      return alert("Your name and email are required");
     if (!data.street || !data.city || !data.PLZ)
       return alert("Please provide the address of the Spielplatz");
 

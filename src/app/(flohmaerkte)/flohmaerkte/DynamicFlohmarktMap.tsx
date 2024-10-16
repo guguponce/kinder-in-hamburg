@@ -204,7 +204,6 @@ export default function DynamicFlohmarktMap({
                 <button
                   onClick={() => {
                     setSelectedDate(undefined);
-
                     setFutureSelected((prev) => !prev);
                   }}
                   className={`text-sm p-1 w-fit border-2 border-hh-600 rounded-md ${

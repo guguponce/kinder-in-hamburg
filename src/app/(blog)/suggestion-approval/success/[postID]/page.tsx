@@ -15,20 +15,12 @@ export default async function updateSuggestedPostPage({
 }: {
   params: { postID: string };
 }) {
-  const session = await getServerUser();
-  if (
-    !session?.user ||
-    session.user.user_metadata.email !== process.env.ADMIN_EMAIL
-  )
-    redirect("/");
+  const user = await getServerUser();
+  if (!user || user.email !== process.env.ADMIN_EMAIL) redirect("/");
   const { postID } = params;
   const post = await getSuggestedPostWithID(postID);
   if (!post) return <NotFound />;
-  const {
-    email,
-    name,
-    avatar_url: image,
-  } = session.user.user_metadata as iUserMetadata;
+  const { email, full_name: name, picture: image } = user;
   return (
     <AdminRoute>
       <main className="relative mb-10 mt-6 max-w-[1000px] bg-hh-100 rounded-xl p-4 text-gray-200 lg:mx-8">

@@ -14,12 +14,8 @@ export default async function ApproveSuggestedPostPage({
 }: {
   params: { suggestionID: string };
 }) {
-  const session = await getServerUser();
-  if (
-    !session?.user ||
-    session.user.user_metadata.email !== process.env.ADMIN_EMAIL
-  )
-    redirect("/");
+  const user = await getServerUser();
+  if (!user || user.email !== process.env.ADMIN_EMAIL) redirect("/");
   const { suggestionID } = params;
 
   const post = await getSuggestedPostWithID(suggestionID);
@@ -39,7 +35,7 @@ export default async function ApproveSuggestedPostPage({
         >
           Go check it out!
         </Link>
-        {session.user.user_metadata.email === process.env.ADMIN_EMAIL && (
+        {user.email === process.env.ADMIN_EMAIL && (
           <div className="flex flex-col items-center mt-4 p-4">
             <h3 className="font-semibold text-xl">
               You could though update the approved post
@@ -69,11 +65,7 @@ export default async function ApproveSuggestedPostPage({
         </Link>
       </div>
     );
-  const {
-    email,
-    name,
-    avatar_url: image,
-  } = session.user.user_metadata as iUserMetadata;
+  const { email, full_name: name, picture: image } = user;
   return (
     <main className="relative mb-10 mt-6 max-w-[1000px] bg-hh-100 rounded-xl p-4 text-gray-200 lg:mx-8">
       <section className="h-full w-full bg-hh-200 p-5 px-5">

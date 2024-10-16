@@ -5,8 +5,6 @@ import { parseAddress } from "@app/utils/functions";
 import { redirect } from "next/navigation";
 import NotFound from "@components/@NotFound/NotFound";
 import AdminRoute from "@app/providers/AdminRoute";
-import AddLatLon from "@app/components/AddLatLon";
-import { iUserMetadata } from "@app/api/auth/types";
 import dynamic from "next/dynamic";
 import AdminEditButtons from "@app/components/AdminEditButtons";
 const PostForm = dynamic(() => import("@app/components/@PostForm/PostForm"));
@@ -16,20 +14,12 @@ export default async function updateApprovedPostPage({
 }: {
   params: { postID: string };
 }) {
-  const session = await getServerUser();
-  if (
-    !session?.user ||
-    session.user.user_metadata.email !== process.env.ADMIN_EMAIL
-  )
-    redirect("/");
+  const user = await getServerUser();
+  if (!user || user.email !== process.env.ADMIN_EMAIL) redirect("/");
   const { postID } = params;
   const post = await getApprovedPostWithID(postID);
   if (!post) return <NotFound />;
-  const {
-    email,
-    name,
-    avatar_url: image,
-  } = session.user.user_metadata as iUserMetadata;
+  const { email, full_name: name, picture: image } = user;
   return (
     <AdminRoute>
       <>

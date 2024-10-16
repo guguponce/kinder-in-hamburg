@@ -16,15 +16,13 @@ export default async function UpdateApprovedFlohmarktPage({
 }: {
   params: { flohmarktID: string };
 }) {
-  const session = await getServerUser();
+  const user = await getServerUser();
   const flohmarkt = await getFlohmarktWithID(flohmarktID);
   if (!flohmarkt) return <NotFound />;
   if (
     !flohmarkt.addedBy.email ||
-    !session?.user?.user_metadata.email ||
-    ![flohmarkt.addedBy.email, process.env.ADMIN_EMAIL].includes(
-      session.user.user_metadata.email
-    )
+    !user?.email ||
+    ![flohmarkt.addedBy.email, process.env.ADMIN_EMAIL].includes(user.email)
   )
     redirect("/flohmaerkte/" + flohmarktID);
 
@@ -44,11 +42,7 @@ export default async function UpdateApprovedFlohmarktPage({
         </Link>
       </main>
     );
-  const {
-    email,
-    name,
-    avatar_url: image,
-  } = session.user.user_metadata as iUserMetadata;
+  const { email, full_name: name, picture: image } = user;
   return (
     <AdminRoute>
       <main className="relative mb-10 mt-6 max-w-[1000px] w-full bg-hh-100 rounded-xl p-4 text-gray-200 lg:mx-8">
@@ -62,11 +56,15 @@ export default async function UpdateApprovedFlohmarktPage({
               type: "flohmarkt",
               size: "medium",
             }}
-            approveButton={{
-              flohmarktID,
-              size: "medium",
-              contributor: flohmarkt.addedBy,
-            }}
+            approveButton={
+              flohmarkt.status !== "approved"
+                ? {
+                    flohmarktID,
+                    size: "medium",
+                    contributor: flohmarkt.addedBy,
+                  }
+                : undefined
+            }
             addLatLonButton={
               !flohmarkt.lat || !flohmarkt.lon ? { item: flohmarkt } : undefined
             }

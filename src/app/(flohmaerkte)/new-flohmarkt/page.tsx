@@ -6,13 +6,9 @@ import AdminRoute from "@app/providers/AdminRoute";
 import { iUserMetadata } from "@app/api/auth/types";
 
 export default async function AddFlohmarkt() {
-  const session = await getServerUser();
-  if (!session?.user) redirect("/");
-  const {
-    email,
-    name,
-    avatar_url: image,
-  } = session.user.user_metadata as iUserMetadata;
+  const user = await getServerUser();
+  if (!user) redirect("/");
+  const { email, full_name: name, picture: image } = user;
   return (
     <AdminRoute>
       <main className="relative mb-10 mt-6 max-w-[1000px] w-full bg-hh-100 rounded-xl p-4 text-gray-200 lg:mx-8">

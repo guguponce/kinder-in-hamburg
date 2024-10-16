@@ -6,11 +6,8 @@ import { redirect } from "next/navigation";
 import React from "react";
 
 export default async function ApprovalPage() {
-  const session = await getServerUser();
-  if (
-    !session?.user?.email ||
-    session.user.user_metadata.email !== process.env.ADMIN_EMAIL
-  )
+  const user = await getServerUser();
+  if (!user || user.email !== process.env.ADMIN_EMAIL)
     redirect("/flohmaerkte/");
   const flohmaerkte = await getSuggestedFlohmaerkte();
   if (!flohmaerkte)

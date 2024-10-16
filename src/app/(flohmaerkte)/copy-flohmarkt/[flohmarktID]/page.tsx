@@ -11,16 +11,12 @@ export default async function AddCopiedFlohmarkt({
 }: {
   params: { flohmarktID: string };
 }) {
-  const session = await getServerUser();
-  if (!session?.user) redirect("/");
+  const user = await getServerUser();
+  if (!user) redirect("/");
   const flohmarkt = await getFlohmarktWithID(params.flohmarktID);
   if (!flohmarkt) redirect("/new-flohmarkt");
   const id = new Date().getTime();
-  const {
-    email,
-    name,
-    avatar_url: image,
-  } = session.user.user_metadata as iUserMetadata;
+  const { email, full_name: name, picture: image } = user;
   return (
     <AdminRoute>
       <main className="relative mb-10 mt-6 max-w-[1000px] w-full bg-hh-100 rounded-xl p-4 text-gray-200 lg:mx-8">

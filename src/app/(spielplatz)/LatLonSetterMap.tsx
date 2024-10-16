@@ -6,7 +6,7 @@ import { divIcon } from "leaflet";
 import { createStandortMapIcon } from "@app/utils/functions";
 
 const MainLocationIcon = divIcon({
-  html: createStandortMapIcon("#BC251F", 35),
+  html: createStandortMapIcon("#b72f1e", 35),
   className: "bg-transparent",
   iconSize: [35, 35],
   iconAnchor: [17, 35],
