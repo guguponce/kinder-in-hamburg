@@ -79,13 +79,15 @@ export const getContributorData = async (email: string) => {
 };
 
 export const addNewContributor = async (
-  type: "post" | "flohmarkt" | "spielplatz",
+  type: "post" | "flohmarkt" | "spielplatz" | "event",
   contributor: iSessionUser,
   id: number | string
 ) => {
   try {
     const contributorData = {
-      flohmaerkteSubmitted: JSON.stringify(type === "flohmarkt" ? [id] : []),
+      flohmaerkteSubmitted: JSON.stringify(
+        type === "flohmarkt" || type === "event" ? [id] : []
+      ),
       spielplaetzeSubmitted: JSON.stringify(type === "spielplatz" ? [id] : []),
       name: contributor.name,
       image: contributor.image,
@@ -105,7 +107,7 @@ export const addNewContributor = async (
 };
 
 export const updateContributor = async (
-  type: "post" | "flohmarkt" | "spielplatz",
+  type: "post" | "flohmarkt" | "spielplatz" | "event",
   user: iSessionUser,
   id: number
 ) => {
@@ -115,7 +117,7 @@ export const updateContributor = async (
       await addNewContributor(type, user, id);
       return;
     }
-    if (type === "flohmarkt") {
+    if (type === "flohmarkt" || type === "event") {
       if (contributor.flohmaerkteSubmitted?.includes(id)) return;
       const { error } = await supabaseAdmin
         .from("contributors")
@@ -423,7 +425,7 @@ export const updateSuggestionStatus = async (id: number, status: string) => {
 };
 
 export const updatePostStatus = async <
-  T extends "rejected" | "approved" | "pending" | "old"
+  T extends "rejected" | "approved" | "pending" | "old",
 >(
   id: number,
   oldStatus: T,
@@ -526,19 +528,20 @@ export const getUserApprovedPosts = async (user: iSessionUser) => {
   }
 };
 
-export const getFlohmaerkteFromBezirkStadtteil = async (
+export const getEventsFromBezirkStadtteil = async (
   bezirk: iBezirk,
-  stadtteile: string[]
+  stadtteile: string[],
+  eventTable: string = "flohmaerkte"
 ) => {
   const combinedCondition = await createQueryCondition(bezirk, stadtteile);
   try {
     const { data, error } = await supabaseAdmin
-      .from("flohmaerkte")
+      .from(eventTable)
       .select("*")
       .or(combinedCondition)
       .gte("date", new Date().getTime());
     if (error) {
-      throw new Error("There was a problem getting flea markets from nearby.");
+      throw new Error("There was a problem getting events from nearby.");
     }
     return data.map((floh) => parseFlohmarkt(floh));
   } catch (error) {
@@ -644,18 +647,19 @@ export const getPinnedPostsWithFilter = async (
 };
 
 export const getAllFlohmaerteSeparatedByStatus = async (
-  futureFlohmarkte: boolean = true
+  futureFlohmarkte: boolean = true,
+  eventTable: string = "flohmaerkte"
 ) => {
   try {
     const { data, error } = await supabaseAdmin
-      .from("flohmaerkte")
+      .from(eventTable)
       .select("*")
       .gte("date", futureFlohmarkte ? new Date().getTime() : 0);
     if (error) {
-      throw new Error("There was a problem getting the approved posts.");
+      throw new Error("There was a problem getting the event posts.");
     }
-    const parsedFlohmaerkte = parseAllFlohmaerkte(data);
-    const serparatedByStatus = separateByStatus(parsedFlohmaerkte);
+    const parsedEvents = parseAllFlohmaerkte(data);
+    const serparatedByStatus = separateByStatus(parsedEvents);
     return serparatedByStatus;
   } catch (error) {
     return false;
@@ -844,43 +848,48 @@ export const updateApprovedPost = async (post: iPost) => {
     throw new Error("There was a problem updating the post.");
   }
 };
-export const setFlohmarktAsOld = async (id: number) => {
+export const setEventAsOld = async (
+  id: number,
+  eventTable: string = "flohmaerkte"
+) => {
   try {
     const { error } = await supabaseAdmin
-      .from("flohmaerkte")
+      .from(eventTable)
       .update({ status: "old" })
       .match({ id });
     if (error) {
-      throw new Error("There was a problem setting the Flea Market as old.");
+      throw new Error("There was a problem setting the event as old.");
     }
     return true;
   } catch (error) {
-    throw new Error("There was a problem setting the Flea Market as old.");
+    throw new Error("There was a problem setting the event as old.");
   }
 };
-export const setAllPreviousFlohmaerkteAsOld = async () => {
+export const setAllPreviousEventsAsOld = async (
+  eventTable: string = "flohmaerkte"
+) => {
   try {
     const { today } = getTodayNexMonday();
-    const flohs = ((await getAllApprovedFlohmaerkte()) || []).filter(
+    const flohs = ((await getAllApprovedEvents()) || []).filter(
       (f) => f.date < today && f.status === "approved"
     );
     if (!flohs || flohs.length === 0) return false;
 
-    const oldFlohs = await Promise.all(
-      flohs.map((f) => setFlohmarktAsOld(f.id))
-    );
+    const oldFlohs = await Promise.all(flohs.map((f) => setEventAsOld(f.id)));
     return oldFlohs;
   } catch (error) {
-    throw new Error("There was a problem setting the Flea Market as old.");
+    throw new Error("There was a problem setting the event as old.");
   }
 };
 
 // FLOHMAERKTE
 // GET
-export const getSuggestedFlohmaerkte = async () => {
+export const getSuggestedEvents = async (
+  eventTable: string = "flohmaerkte"
+) => {
   try {
     const { data, error } = await supabaseAdmin
-      .from("flohmaerkte")
+      .from(eventTable)
       .select("*")
       .neq("status", "approved");
     if (error) {
@@ -891,12 +900,12 @@ export const getSuggestedFlohmaerkte = async () => {
     return false;
   }
 };
-export const getFlohmarktWithID = async (id: string) => {
+export const getEventWithID = async (
+  id: string,
+  eventTable: string = "flohmaerkte"
+) => {
   try {
-    const { data, error } = await supabaseAdmin
-      .from("flohmaerkte")
-      .select("*")
-      .match({ id });
+    const { data, error } = await supabaseAdmin.from("events").select("*");
     if (error) {
       return false;
     }
@@ -907,14 +916,14 @@ export const getFlohmarktWithID = async (id: string) => {
   }
 };
 
-export const getFlohmarktMetadata = async (
+export const getEventMetadata = async (
   id: string,
-  cookies?: ReadonlyRequestCookies
+  eventTable: string = "flohmaerkte"
 ) => {
-  const supabase = createClient(cookies);
+  const supabase = createClient();
   try {
     const { data, error } = await supabase
-      .from("flohmaerkte")
+      .from(eventTable)
       .select("title,bezirk,optionalComment")
       .match({ id })
       .single();
@@ -932,28 +941,39 @@ export const getFlohmarktMetadata = async (
   }
 };
 
-export const getAllFlohmaerkte = async () => {
+export const getApprovedEventsAndFlohmaerkte = async () => {
   try {
-    const { data, error } = await supabaseAdmin.from("flohmaerkte").select("*");
-    if (error) {
-      throw new Error("There was a problem getting the Flea Markets.");
+    const now = new Date().getTime();
+    const { data: flohmaerkte, error: flohError } = await supabaseAdmin
+      .from("flohmaerkte")
+      .select("*")
+      .gte("date", now);
+    const { data: events, error: eventError } = await supabaseAdmin
+      .from("events")
+      .select("*")
+      .gte("date", now);
+    if (flohError || eventError) {
+      throw new Error("There was a problem getting the events.");
     }
-    return data.map((f) => parseFlohmarkt(f)) as iFlohmarkt[];
+    return {
+      flohmaerkte: flohmaerkte.map((f) => parseFlohmarkt(f)) as iFlohmarkt[],
+      events: events.map((e) => parseFlohmarkt(e)) as iFlohmarkt[],
+    };
   } catch (error) {
     return false;
   }
 };
 
-export const getApprovedFlohmaerkte = async () => {
+export const getApprovedEvents = async (eventTable: string = "flohmaerkte") => {
   const { today } = getTodayNexMonday();
   try {
     const { data, error } = await supabaseAdmin
-      .from("flohmaerkte")
+      .from(eventTable)
       .select("*")
       .ilike("status", "approved")
       .gte("date", today - 1000 * 60 * 60);
     if (error) {
-      throw new Error("There was a problem getting the Flea Markets.");
+      throw new Error("There was a problem getting the events.");
     }
     return data.map((f) => parseFlohmarkt(f)) as iFlohmarkt[];
   } catch (error) {
@@ -961,14 +981,16 @@ export const getApprovedFlohmaerkte = async () => {
   }
 };
 
-export const getAllApprovedFlohmaerkte = async () => {
+export const getAllApprovedEvents = async (
+  eventTable: string = "flohmaerkte"
+) => {
   try {
     const { data, error } = await supabaseAdmin
-      .from("flohmaerkte")
+      .from(eventTable)
       .select("*")
       .ilike("status", "approved");
     if (error) {
-      throw new Error("There was a problem getting the Flea Markets.");
+      throw new Error("There was a problem getting the events.");
     }
     return data.map((f) => parseFlohmarkt(f)) as iFlohmarkt[];
   } catch (error) {
@@ -976,17 +998,20 @@ export const getAllApprovedFlohmaerkte = async () => {
   }
 };
 
-export const getApprovedFlohmaerkteWithBezirk = async (bezirk: iBezirk) => {
+export const getApprovedEventsWithBezirk = async (
+  bezirk: iBezirk,
+  eventTable: string = "flohmaerkte"
+) => {
   const { today } = getTodayNexMonday();
   try {
     const { data, error } = await supabaseAdmin
-      .from("flohmaerkte")
+      .from(eventTable)
       .select("*")
       .ilike("status", "approved")
       .gte("date", today)
       .ilike("bezirk", bezirk);
     if (error) {
-      throw new Error("There was a problem getting the Flea Markets.");
+      throw new Error("There was a problem getting the events.");
     }
     return parseAllFlohmaerkte(data);
   } catch (error) {
@@ -994,30 +1019,31 @@ export const getApprovedFlohmaerkteWithBezirk = async (bezirk: iBezirk) => {
   }
 };
 
-export const getUserFlohmaerkte = async (email: string) => {
+export const getUserEvents = async (
+  email: string,
+  eventTable: string = "flohmaerkte"
+) => {
   try {
     const { data, error } = await supabaseAdmin
-      .from("flohmaerkte")
+      .from(eventTable)
       .select("*")
       .ilike("addedBy", `%"email":"${email}"%`);
 
     if (error) {
-      throw new Error(
-        "There was a problem getting your suggested Flea Markets."
-      );
+      throw new Error("There was a problem getting your suggested events.");
     }
-    const parsedFlohmaerkte = parseAllFlohmaerkte(data);
+    const parsedEvents = parseAllFlohmaerkte(data);
 
-    return separateByStatus(parsedFlohmaerkte);
+    return separateByStatus(parsedEvents);
   } catch (error) {
     return false;
   }
 };
-export const getThisWeekFlohmaerkte = async () => {
+export const getThisWeekEvents = async (eventTable: string = "flohmaerkte") => {
   const { today, nextMonday } = getTodayNexMonday();
   try {
     const { data, error } = await supabaseAdmin
-      .from("flohmaerkte")
+      .from(eventTable)
       .select("*")
       .match({ status: "approved" })
       .gte("date", today - 1000 * 60 * 60)
@@ -1031,133 +1057,148 @@ export const getThisWeekFlohmaerkte = async () => {
   }
 };
 // POST
-export const addFlohmarkt = async (flohmarkt: iFlohmarkt) => {
+export const addEvent = async (
+  flohmarkt: iFlohmarkt,
+  eventTable: string = "flohmaerkte"
+) => {
   try {
     const user = await getServerUser();
     if (!user?.email) {
       return "Not logged in";
     }
-    const submittedFlohmarkt = {
+    const submittedEvent = {
       ...flohmarkt,
       addedBy: JSON.stringify(user),
     };
     const { error } = await supabaseAdmin
-      .from("flohmaerkte")
-      .insert(submittedFlohmarkt);
+      .from(eventTable)
+      .insert(submittedEvent);
     if (error) {
-      throw new Error("Error adding flohmarkt: " + error.message);
+      throw new Error("Error adding event: " + error.message);
     }
-    return "Flohmarkt added";
+    return "Event added";
   } catch (error) {
-    throw new Error(
-      "Error adding flohmarkt" + (error as PostgrestError).message
-    );
+    throw new Error("Error adding event" + (error as PostgrestError).message);
   }
 };
 
 // DELETE
-export const deleteFlohmarkt = async (id: string) => {
+export const deleteEvent = async (
+  id: string,
+  eventTable: string = "flohmaerkte"
+) => {
   try {
     const { data, error } = await supabaseAdmin
-      .from("flohmaerkte")
+      .from(eventTable)
       .delete()
       .match({ id });
     deletePreviousFlohmaerkteImages(parseInt(id));
     if (error) {
-      throw new Error("Error deleting flohmarkt");
+      throw new Error("Error deleting event");
     }
     return data;
   } catch (error) {
-    throw new Error("Error deleting flohmarkt");
+    throw new Error("Error deleting event");
   }
 };
-export const rejectFlohmarkt = async (id: string) => {
+export const rejectEvent = async (
+  id: string,
+  eventTable: string = "flohmaerkte"
+) => {
   try {
     const { data, error } = await supabaseAdmin
-      .from("flohmaerkte")
+      .from(eventTable)
       .update({ status: "rejected" })
       .match({ id });
     if (error) {
-      throw new Error("There was a problem rejecting the Flea Market.");
+      throw new Error("There was a problem rejecting the event.");
     }
     return true;
   } catch (error) {
-    throw new Error("There was a problem rejecting the Flea Market.");
+    throw new Error("There was a problem rejecting the event.");
   }
 };
 
 // UPDATE
-export const updateFlohmarkt = async (flohmarkt: iFlohmarkt) => {
-  try {
-    const { data, error } = await supabaseAdmin
-      .from("flohmaerkte")
-      .update(flohmarkt)
-      .match({ id: flohmarkt.id });
-    if (error) {
-      throw new Error("Error updating flohmarkt");
-    }
-    return data;
-  } catch (error) {
-    throw new Error("Error updating flohmarkt");
-  }
-};
-
-export const approveSuggestedFlohmarkt = async (id: string) => {
-  try {
-    const { data, error } = await supabaseAdmin
-      .from("flohmaerkte")
-      .update({ status: "approved" })
-      .match({ id });
-    if (error) {
-      throw new Error("There was a problem approving the Flea Market.");
-    }
-    return true;
-  } catch (error) {
-    throw new Error("There was a problem approving the Flea Market.");
-  }
-};
-
-export const updateFlohmarktStatus = async (
-  id: number | string,
-  status: string
+export const updateEvent = async (
+  flohmarkt: iFlohmarkt,
+  eventTable: string = "flohmaerkte"
 ) => {
   try {
     const { data, error } = await supabaseAdmin
-      .from("flohmaerkte")
-      .update({ status })
-      .match({ id });
+      .from(eventTable)
+      .update(flohmarkt)
+      .match({ id: flohmarkt.id });
     if (error) {
-      throw new Error("There was a problem updating the Flea Market.");
+      throw new Error("Error updating event");
     }
-    return true;
+    return data;
   } catch (error) {
-    throw new Error("There was a problem updating the Flea Market.");
+    throw new Error("Error updating event");
   }
 };
 
-export const clearLatLonFromFlohmarkt = async (id: string) => {
+export const approveSuggestedEvent = async (
+  id: string,
+  eventTable: string = "flohmaerkte"
+) => {
   try {
     const { data, error } = await supabaseAdmin
-      .from("flohmaerkte")
+      .from(eventTable)
+      .update({ status: "approved" })
+      .match({ id });
+    if (error) {
+      throw new Error("There was a problem approving the event.");
+    }
+    return true;
+  } catch (error) {
+    throw new Error("There was a problem approving the event.");
+  }
+};
+
+export const updateEventStatus = async (
+  id: number | string,
+  status: string,
+  eventTable: string = "flohmaerkte"
+) => {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from(eventTable)
+      .update({ status })
+      .match({ id });
+    if (error) {
+      throw new Error("There was a problem updating the event.");
+    }
+    return true;
+  } catch (error) {
+    throw new Error("There was a problem updating the event.");
+  }
+};
+
+export const clearLatLonFromEvent = async (
+  id: string,
+  eventTable: string = "flohmaerkte"
+) => {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from(eventTable)
       .update({ lat: null, lon: null })
       .match({ id });
     if (error) {
-      throw new Error("There was a problem updating the Flea Market.");
+      throw new Error("There was a problem updating the event.");
     }
     await revalidateFlohmarkt();
     return true;
   } catch (error) {
-    throw new Error("There was a problem updating the Flea Market.");
+    throw new Error("There was a problem updating the event.");
   }
 };
 
-export const getAllFlohmaerkteIds = async () => {
+export const getAllEventsIds = async (eventTable: string = "flohmaerkte") => {
   try {
-    const { data, error } = await supabaseAdmin
-      .from("flohmaerkte")
-      .select("id");
+    const { data, error } = await supabaseAdmin.from(eventTable).select("id");
     if (error) {
-      throw new Error("Error getting posts IDs from a db");
+      throw new Error("Error getting events IDs from a db");
     }
     return data.map((d) => d.id);
   } catch (error) {
