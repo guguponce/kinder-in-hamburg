@@ -6,30 +6,28 @@ import PaperPlane from "./@Icons/PaperPlane";
 import { bezirke } from "@app/utils/constants";
 import { separateInBezirke } from "@app/utils/functions";
 
-export default async function BezirkeScrollableFlohmaerkte({
-  flohmaerkte,
+export default async function BezirkeScrollableEvents({
+  events,
   bezirk,
   title,
+  type = "flohmaerkte",
 }: {
-  flohmaerkte: iFlohmarkt[];
+  type?: "flohmaerkte" | "events";
+  events: iFlohmarkt[];
   bezirk?: string;
   title?: string;
 }) {
-  const reducedFlohmaerkte = separateInBezirke(
-    [...flohmaerkte].sort((a, b) => a.date - b.date)
+  const eventsByBezirke = separateInBezirke(
+    [...events].sort((a, b) => a.date - b.date)
   );
 
-  const flohsBezirke = Array.from(
-    new Set(flohmaerkte.map((floh) => floh.bezirk))
-  );
+  const eventsBezirke = Array.from(new Set(events.map((floh) => floh.bezirk)));
   const displayBezirke = bezirke
-    .filter((bez) => flohsBezirke.includes(bez))
-    .sort(
-      (a, b) => reducedFlohmaerkte[b].length - reducedFlohmaerkte[a].length
-    );
+    .filter((bez) => eventsBezirke.includes(bez))
+    .sort((a, b) => eventsByBezirke[b].length - eventsByBezirke[a].length);
   const filteredList = bezirk
-    ? flohmaerkte.filter((floh) => floh.bezirk === bezirk)
-    : flohmaerkte;
+    ? events.filter((floh) => floh.bezirk === bezirk)
+    : events;
   return (
     <div className="w-fit max-w-full rounded">
       {title &&
@@ -42,7 +40,8 @@ export default async function BezirkeScrollableFlohmaerkte({
         ) : (
           <div className="max-w-full flex flex-col items-center">
             <h2 className="text-2xl font-semibold text-white text-center p-1 lg:p-2">
-              Keine für diese Woche
+              Keine {type === "flohmaerkte" ? "Flohmärkte" : "Veranstaltungen"}{" "}
+              gefunden
             </h2>
             <p className="text-hh-100">
               Wenn ihr einen veranstaltet oder kennt, schreibt uns gerne eine
@@ -67,7 +66,7 @@ export default async function BezirkeScrollableFlohmaerkte({
                 <article
                   key={id}
                   className={`overflow-hidden h-[270px] min-w-[180px] shadow-md ${
-                    i === flohmaerkte.length - 1 ? "" : "mr-4"
+                    i === events.length - 1 ? "" : "mr-4"
                   }`}
                 >
                   <FlohmarktPoster
@@ -77,7 +76,7 @@ export default async function BezirkeScrollableFlohmaerkte({
                     title={title}
                     date={date}
                     image={image}
-                    prefixLink={`/flohmaerkte/`}
+                    prefixLink={`/${type}/`}
                   />
                   <h3 className="h-[20px] w-full font-semibold text-xs truncate-1">
                     <span>
@@ -94,20 +93,20 @@ export default async function BezirkeScrollableFlohmaerkte({
               <div
                 key={bezirk}
                 className={`min-w-[248px] flex items-center flex-col rounded bg-hh-600 bg-opacity-50 p-2 ${
-                  reducedFlohmaerkte[bezirk].length > 4
+                  eventsByBezirke[bezirk].length > 4
                     ? "w-fit"
                     : "xl:w-[calc(33%-0.5rem)] lg:w-[calc(50%-1rem)]"
                 } max-w-full shadow-md`}
               >
                 <h3
                   className={`${
-                    reducedFlohmaerkte[bezirk].length > 1 ? "ml-4" : "mx-auto"
+                    eventsByBezirke[bezirk].length > 1 ? "ml-4" : "mx-auto"
                   } text-2xl font-semibold p-2 pb-0 text-white self-start text-center`}
                 >
                   {bezirk}
                 </h3>
                 <ScrollableContainer>
-                  {reducedFlohmaerkte[bezirk].map(
+                  {eventsByBezirke[bezirk].map(
                     (
                       { id, title, date, image, bezirk: flohBezirk, stadtteil },
                       i
