@@ -398,7 +398,10 @@ export interface iFlohmarkt {
   optionalComment?: string;
   lat?: number;
   lon?: number;
+  type?: iEventType;
 }
+
+export type iEventType = "flohmarkt" | "laterne" | "weinachtsmarkt";
 
 export interface iStringifiedFlohmarkt extends Omit<iFlohmarkt, "addedBy"> {
   addedBy: string;

@@ -1,4 +1,10 @@
-import { categoryName, iBezirk, iSpielgeräte, overallCondition } from "./types";
+import {
+  categoryName,
+  iBezirk,
+  iEventType,
+  iSpielgeräte,
+  overallCondition,
+} from "./types";
 
 export const bezirke: iBezirk[] = [
   "Hamburg-Mitte",
@@ -9,6 +15,12 @@ export const bezirke: iBezirk[] = [
   "Bergedorf",
   "Harburg",
   "Außerhalb Hamburg",
+];
+
+export const eventTypes: iEventType[] = [
+  "flohmarkt",
+  "laterne",
+  "weinachtsmarkt",
 ];
 
 export const categoryNames = [
