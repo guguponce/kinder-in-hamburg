@@ -1,4 +1,4 @@
-import { getFlohmarktMetadata, getFlohmarktWithID } from "@app/api/dbActions";
+import { getEventMetadata, getEventWithID } from "@app/api/dbActions";
 import NotFound from "@components/@NotFound/NotFound";
 import FlohmarktTemplate from "@app/components/FlohmarktTemplate";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
@@ -9,6 +9,7 @@ import { getSpielplatzFromBezirkStadtteil } from "@app/api/spActions";
 import { PROXIMATE_STADTTEILE_FROM_OTHER_BEZIRK } from "@app/utils/constants";
 import SpielplaetzeNearby from "./SpielplaetzeNearby";
 import AdminEditButtons from "@app/components/AdminEditButtons";
+import OldFlohmarktSign from "./OldFlohmarktSign";
 
 interface FlohmarktPageProps {
   params: { flohmarktID: string };
@@ -17,7 +18,7 @@ interface FlohmarktPageProps {
 export async function generateMetadata({
   params,
 }: FlohmarktPageProps): Promise<Metadata> {
-  const flohInfo = await getFlohmarktMetadata(params.flohmarktID);
+  const flohInfo = await getEventMetadata(params.flohmarktID);
   if (!flohInfo)
     return {
       title: "Flohmarkt nicht gefunden",
@@ -33,7 +34,7 @@ export async function generateMetadata({
 export default async function FlohmarktPage({
   params: { flohmarktID },
 }: FlohmarktPageProps) {
-  const flohmarkt = await getFlohmarktWithID(flohmarktID);
+  const flohmarkt = await getEventWithID(flohmarktID);
   if (
     !flohmarkt ||
     flohmarkt.status === null ||
@@ -52,6 +53,7 @@ export default async function FlohmarktPage({
   return (
     <>
       <FlohmarktTemplate flohmarkt={flohmarkt}>
+        {flohmarkt.status === "old" && <OldFlohmarktSign />}
         <AdminServerComponent>
           <AdminEditButtons
             updateButton={{

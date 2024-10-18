@@ -1,4 +1,4 @@
-import { getUserFlohmaerkte, getUsersSuggestions } from "@app/api/dbActions";
+import { getUserEvents, getUsersSuggestions } from "@app/api/dbActions";
 import AdminComponents from "@app/providers/AdminServerComponents";
 import { getServerUser } from "@app/api/auth/supabaseAuth";
 import Link from "next/link";
@@ -15,7 +15,7 @@ export default async function DashboardPage() {
     redirect("/");
   }
   const userPosts = await getUsersSuggestions(user.email);
-  const userFlohs = await getUserFlohmaerkte(user.email);
+  const userFlohs = await getUserEvents(user.email);
   return (
     <AdminRoute>
       <main className="w-[calc(100%-2rem)] max-w-[1000px] p-4 bg-hh-100 rounded-md mx-auto flex flex-col items-center gap-8">

@@ -3,15 +3,17 @@ import { iFlohmarkt, iPost, iSpielplatz } from "@app/utils/types";
 import WeitereFlohmaerkte from "@components/WeitereFlohmaerkte";
 import RecommendationsMap from "@app/components/@Map/RecommendationsMap";
 
-export default async function FlohmarktPageMapContainer({
+export default async function EventPageMapContainer({
   currentTarget,
   spielplaetzeAround,
 }: {
   currentTarget: iFlohmarkt | iSpielplatz | iPost;
   spielplaetzeAround?: iSpielplatz[];
 }) {
+  const thisWeekEvents = (await getThisWeekEvents("events")) || [];
+
   const thisWeekFlohmaerkte = (await getThisWeekEvents()) || [];
-  const weitereFlohmaerkte = thisWeekFlohmaerkte.filter(
+  const weitereVeranstaltungen = thisWeekEvents.filter(
     ({ id }) => id !== currentTarget.id
   );
 
@@ -29,14 +31,19 @@ export default async function FlohmarktPageMapContainer({
         }}
       />
 
-      {weitereFlohmaerkte.length > 0 && (
+      {weitereVeranstaltungen.length > 0 && (
         <>
           <hr className="w-full border-t border-hh-800 mt-4" />
           <section className="w-full max-w-[800px] flex flex-col gap-2 items-center my-4 px-1 xs:px-4 sm:px-8">
             <h3 className="font-bold text-2xl text-hh-800">
-              Weitere Märkte dieser Woche:
+              Weitere Veranstaltungen dieser Woche:
             </h3>
-            <WeitereFlohmaerkte displayedMarkers={weitereFlohmaerkte} />
+            <WeitereFlohmaerkte
+              displayedMarkers={[
+                ...weitereVeranstaltungen,
+                ...thisWeekFlohmaerkte,
+              ]}
+            />
           </section>
         </>
       )}

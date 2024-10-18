@@ -10,14 +10,14 @@ import Button from "./Button";
 
 interface iAdminEditButtons {
   updateButton?: {
-    type: "flohmarkt" | "post" | "spielplatz";
+    type: "flohmarkt" | "post" | "spielplatz" | "event";
     size: "small" | "medium" | "large";
     link: string;
     status: "approved" | "rejected" | "pending" | "old";
   };
   deleteButton?: {
     id: number;
-    type: "flohmarkt" | "post" | "spielplatz";
+    type: "flohmarkt" | "post" | "spielplatz" | "event";
     title: string;
     deleteFrom: "suggested" | "approved" | "all";
     size?: "small" | "medium" | "large";
@@ -27,10 +27,11 @@ interface iAdminEditButtons {
     item: iFlohmarkt | iSpielplatz | iPost;
   };
   copyButton?: {
-    type: "flohmarkt" | "post" | "spielplatz";
+    type: "flohmarkt" | "post" | "spielplatz" | "event";
     id: number;
   };
   restoreButton?: {
+    eventID?: string | number;
     flohmarktID?: string | number;
     spielplatzID?: string | number;
     postID?: string | number;
@@ -39,6 +40,7 @@ interface iAdminEditButtons {
   approveButton?: {
     redirect?: boolean;
     post?: iPost;
+    eventID?: string;
     flohmarktID?: string;
     spielplatzID?: string;
     contributor?: iSessionUser;
@@ -64,6 +66,7 @@ export default function AdminEditButtons({
         {approveButton && (
           <ApproveButton
             post={approveButton.post}
+            eventID={approveButton.eventID}
             flohmarktID={approveButton.flohmarktID}
             spielplatzID={approveButton.spielplatzID}
             contributor={approveButton.contributor}

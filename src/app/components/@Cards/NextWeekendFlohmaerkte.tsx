@@ -1,10 +1,10 @@
-import { getThisWeekFlohmaerkte } from "@app/api/dbActions";
+import { getThisWeekEvents } from "@app/api/dbActions";
 import React from "react";
 import ScrollableContainer from "../ScrollableContainer";
 import FlohPostersList from "../FlohPostersList";
 
 export default async function ThisWeekFlohmaerkte() {
-  const thisWeek = await getThisWeekFlohmaerkte();
+  const thisWeek = await getThisWeekEvents();
   if (!thisWeek || !thisWeek.length) return <></>;
   const sortedFlohmaerkte = thisWeek.sort((a, b) => a.date - b.date);
   return (

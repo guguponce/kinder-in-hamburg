@@ -7,7 +7,7 @@ export default function UpdateButton({
   size = "small",
   link,
 }: {
-  type: "flohmarkt" | "post" | "spielplatz";
+  type: "flohmarkt" | "post" | "spielplatz" | "event";
   size: "small" | "medium" | "large";
   status: "approved" | "rejected" | "pending" | "old";
   link: string;
@@ -17,8 +17,8 @@ export default function UpdateButton({
     size === "large"
       ? "w-full max-w-[1000px]"
       : size === "medium"
-      ? "w-fit"
-      : "max-w-24";
+        ? "w-fit"
+        : "max-w-24";
   return (
     <Link
       href={link}

@@ -1,4 +1,4 @@
-import { getThisWeekFlohmaerkte } from "@app/api/dbActions";
+import { getThisWeekEvents } from "@app/api/dbActions";
 import React from "react";
 import ArrowGalleryContainer from "./ArrowGalleryContainer";
 import { PROXIMATE_STADTTEILE_FROM_OTHER_BEZIRK } from "@app/utils/constants";
@@ -19,7 +19,7 @@ export default async function FlohmaerkteNearby({
   lat: number;
   lon: number;
 }) {
-  const flohmaerkte = await getThisWeekFlohmaerkte();
+  const flohmaerkte = await getThisWeekEvents();
   if (!flohmaerkte) return null;
   const list = flohmaerkte
     .filter(

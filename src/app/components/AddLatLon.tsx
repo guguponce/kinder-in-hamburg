@@ -1,11 +1,12 @@
 "use client";
 import {
   updateApprovedPost,
-  updateFlohmarkt,
+  updateEvent,
   updateSuggestedPost,
 } from "@app/api/dbActions";
 import {
   getLatLong,
+  isTypeEvent,
   isTypeFlohmarkt,
   isTypePost,
   isTypeSpielplatz,
@@ -24,11 +25,14 @@ const addLatLon = async (item: iFlohmarkt | iSpielplatz | iPost) => {
     const { lat, lon } = await getLatLong(flohmarkt.address);
     if (lat === "0" || lon === "0") return false;
     try {
-      await updateFlohmarkt({
-        ...flohmarkt,
-        lat: parseFloat(lat),
-        lon: parseFloat(lon),
-      });
+      await updateEvent(
+        {
+          ...flohmarkt,
+          lat: parseFloat(lat),
+          lon: parseFloat(lon),
+        },
+        flohmarkt.type ? "events" : "flohmaerkte"
+      );
       return { lat, lon };
     } catch (e) {
       console.error(e);
@@ -85,9 +89,11 @@ export default function AddLatLon({
         type={
           isTypeFlohmarkt(item)
             ? "flohmarkt"
-            : isTypePost(item)
-              ? "post"
-              : "spielplatz"
+            : isTypeEvent(item)
+              ? "event"
+              : isTypePost(item)
+                ? "post"
+                : "spielplatz"
         }
         id={item.id.toString()}
       />

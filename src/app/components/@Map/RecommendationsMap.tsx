@@ -1,6 +1,6 @@
 import {
-  getFlohmaerkteFromBezirkStadtteil,
-  getFlohmarktWithID,
+  getEventsFromBezirkStadtteil,
+  getEventWithID,
   getPostsFromBezirkStadtteile,
   getSuggestedPostWithID,
 } from "@app/api/dbActions";
@@ -48,9 +48,7 @@ async function getItemsNearby(
 ) {
   switch (type) {
     case "flohmaerkte":
-      return (
-        (await getFlohmaerkteFromBezirkStadtteil(bezirk, stadtteile)) || []
-      );
+      return (await getEventsFromBezirkStadtteil(bezirk, stadtteile)) || [];
     case "posts":
       return (await getPostsFromBezirkStadtteile(bezirk, stadtteile)) || [];
     case "spielplaetze":
@@ -60,7 +58,7 @@ async function getItemsNearby(
   }
 }
 async function getList(
-  type: "flohmarkt" | "post" | "spielplatz",
+  type: "flohmarkt" | "post" | "spielplatz" | "event",
   id: number,
   bezirk: iBezirk,
   stadtteile: string[],
@@ -87,10 +85,12 @@ async function getList(
         (type === "post"
           ? await getSuggestedPostWithID(id.toString())
           : type === "flohmarkt"
-            ? await getFlohmarktWithID(id.toString())
+            ? await getEventWithID(id.toString())
             : type === "spielplatz"
               ? await getSpielplatzWithID(id.toString())
-              : false);
+              : type === "event"
+                ? await getEventWithID(id.toString(), "events")
+                : false);
 
       acc.currentItem = current;
     });
@@ -114,7 +114,7 @@ export default async function RecommendationsMap({
   showPosts?: boolean;
   showSpielplaetze?: boolean;
   maxDistance?: number;
-  currentType: "flohmarkt" | "post" | "spielplatz";
+  currentType: "flohmarkt" | "post" | "spielplatz" | "event";
   id: number;
   bezirk: iBezirk;
   stadtteil: string;

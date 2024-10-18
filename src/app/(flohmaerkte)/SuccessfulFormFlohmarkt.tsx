@@ -1,7 +1,7 @@
 import React from "react";
 import { revalidatePost } from "@app/utils/actions/revalidate";
 import SuccessfulSubmit from "@components/@PostForm/SuccessfulSubmit";
-import { getFlohmarktWithID } from "@app/api/dbActions";
+import { getEventWithID } from "@app/api/dbActions";
 import { getServerUser } from "@app/api/auth/supabaseAuth";
 import { redirect } from "next/navigation";
 import NotFound from "@components/@NotFound/NotFound";
@@ -16,7 +16,7 @@ export default async function SuccessfulFormFlohmarkt({
   if (flohmarktID) {
     revalidatePost();
   }
-  const flohmarkt = await getFlohmarktWithID(flohmarktID);
+  const flohmarkt = await getEventWithID(flohmarktID);
   if (!flohmarkt) return <NotFound />;
   const user = await getServerUser();
   if (

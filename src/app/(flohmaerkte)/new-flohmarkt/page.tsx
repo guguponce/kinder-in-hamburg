@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import AdminRoute from "@app/providers/AdminRoute";
 import { iUserMetadata } from "@app/api/auth/types";
 
-export default async function AddFlohmarkt() {
+export default async function addEvent() {
   const user = await getServerUser();
   if (!user) redirect("/");
   const { email, full_name: name, picture: image } = user;

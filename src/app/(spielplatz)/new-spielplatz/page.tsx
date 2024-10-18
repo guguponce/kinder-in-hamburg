@@ -3,7 +3,6 @@ import { redirect } from "next/navigation";
 import React from "react";
 import dynamic from "next/dynamic";
 import AdminRoute from "@app/providers/AdminRoute";
-import { iUserMetadata } from "@app/api/auth/types";
 
 const DynamicForm = dynamic(() => import("../SpielplatzForm"), {
   ssr: false,

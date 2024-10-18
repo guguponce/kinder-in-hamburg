@@ -4,9 +4,11 @@ import Link from "next/link";
 import DataDisplay from "./SuggestedDataDisplay";
 import DeleteButton from "./DeleteButton";
 
-export default function MinimalFlohmarktDisplay({
+export default function MinimalEventDisplay({
+  type = "flohmarkt",
   flohmarkt: { title, date, bezirk, id, addedBy, image },
 }: {
+  type?: "flohmarkt" | "event";
   flohmarkt: iFlohmarkt;
 }) {
   return (
@@ -35,14 +37,17 @@ export default function MinimalFlohmarktDisplay({
         <div className="flex gap-4 flex-wrap items-center">
           <Link
             className={`rounded bg-hh-500 px-2 md:py-1 py-2 font-bold text-white hover:bg-hh-700 `}
-            href={`/flohmarkt-suggestion/${id}`}
+            href={`/${type === "flohmarkt" ? "flohmarkt-suggestion" : "events"}/${id}`}
           >
             Check Suggestion
           </Link>
           <DeleteButton
-            type="flohmarkt"
+            type={type}
             size="small"
             id={id}
+            callbackURL={
+              type === "flohmarkt" ? "/flohmarkt-approval" : "/events-approval"
+            }
             title={title}
             deleteFrom="suggested"
           />

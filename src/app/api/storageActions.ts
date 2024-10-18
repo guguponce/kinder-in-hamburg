@@ -1,5 +1,5 @@
 import React from "react";
-import { getAllFlohmaerkteIds, getAllPostsIds } from "@app/api/dbActions";
+import { getAllEventsIds, getAllPostsIds } from "@app/api/dbActions";
 import {
   FullMetadata,
   deleteObject,
@@ -266,9 +266,7 @@ export const deletePreviousFlohmaerkteImages = async (id: number) => {
 };
 
 export const deleteUnusedFlohmaerkteImages = async () => {
-  const activeFlohmaerkte = await getAllFlohmaerkteIds().then(
-    (res) => res || []
-  );
+  const activeFlohmaerkte = await getAllEventsIds().then((res) => res || []);
 
   const allImgFolders = await getFlohmaerkteFoldersList();
   const deletableFolders = allImgFolders.filter(

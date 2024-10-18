@@ -8,30 +8,29 @@ import { getServerUser } from "@app/api/auth/supabaseAuth";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import React from "react";
-import { iUserMetadata } from "@app/api/auth/types";
 import AdminEditButtons from "@app/components/AdminEditButtons";
 
-export default async function UpdateApprovedFlohmarktPage({
-  params: { flohmarktID },
+export default async function UpdateEventPage({
+  params: { eventID },
 }: {
-  params: { flohmarktID: string };
+  params: { eventID: string };
 }) {
   const user = await getServerUser();
-  const flohmarkt = await getEventWithID(flohmarktID);
-  if (!flohmarkt) return <NotFound />;
+  const event = await getEventWithID(eventID, "events");
+  if (!event) return <NotFound />;
   if (
-    !flohmarkt.addedBy.email ||
+    !event.addedBy.email ||
     !user?.email ||
-    ![flohmarkt.addedBy.email, process.env.ADMIN_EMAIL].includes(user.email)
+    ![event.addedBy.email, process.env.ADMIN_EMAIL].includes(user.email)
   )
-    redirect("/flohmaerkte/" + flohmarktID);
+    redirect("/events/" + eventID);
 
-  if (flohmarkt.status === "rejected")
+  if (event.status === "rejected")
     return (
       <main className="mx-auto flex h-fit w-full max-w-[400px] flex-col items-center justify-center rounded-md bg-hh-100 p-4 gap-4 text-center">
         <h2 className="font-semibold text-xl">
-          For some reason the suggested flohmarkt {'"'}
-          {flohmarkt.title}
+          For some reason the suggested event {'"'}
+          {event.title}
           {'"'} was rejected
         </h2>
         <Link
@@ -50,39 +49,37 @@ export default async function UpdateApprovedFlohmarktPage({
           <AdminEditButtons
             deleteButton={{
               deleteFrom:
-                flohmarkt.status === "approved" ? "approved" : "suggested",
-              id: flohmarkt.id,
-              title: flohmarkt.title,
-              type: "flohmarkt",
+                event.status === "approved" ? "approved" : "suggested",
+              id: event.id,
+              title: event.title,
+              type: "event",
               size: "medium",
             }}
             approveButton={
-              flohmarkt.status !== "approved"
+              event.status !== "approved"
                 ? {
-                    flohmarktID,
+                    eventID,
                     size: "medium",
-                    contributor: flohmarkt.addedBy,
+                    contributor: event.addedBy,
                   }
                 : undefined
             }
             addLatLonButton={
-              !flohmarkt.lat || !flohmarkt.lon ? { item: flohmarkt } : undefined
+              !event.lat || !event.lon ? { item: event } : undefined
             }
           >
-            {flohmarkt.lat ||
-              (flohmarkt.lon && (
-                <ClearLatLonButton type="flohmarkt" id={flohmarktID} />
-              ))}
+            {event.lat ||
+              (event.lon && <ClearLatLonButton type="event" id={eventID} />)}
           </AdminEditButtons>
         </AdminServerComponent>
         <div className="h-full w-full bg-hh-200 p-5 px-5">
           <h1 className="title-font mb-4 text-center text-xl font-bold text-gray-900 sm:text-3xl">
-            UPDATE {flohmarkt.status === "approved" ? "APPROVED" : "SUGGESTED"}{" "}
-            FLOHMARKT
+            UPDATE {event.status === "approved" ? "APPROVED" : "SUGGESTED"}{" "}
+            EVENT
           </h1>
           <FlohForm
-            flohFormType="update-flohmarkt"
-            FlohForm={flohmarkt}
+            flohFormType="update-event"
+            FlohForm={event}
             user={{ email, name, image }}
           />
         </div>

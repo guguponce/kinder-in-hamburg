@@ -13,6 +13,7 @@ export default function NotFound({
     | "categories"
     | "bezirk"
     | "spielplatz"
+    | "event"
     | "spielplatzType";
 }) {
   const text = {
@@ -28,6 +29,12 @@ export default function NotFound({
       text: "Schaue dich mal unsere aktiven Spielplätze an",
       linkText: "Alle Spielplätze",
       link: "/spielplaetze",
+    },
+    event: {
+      title: multiples ? "Veranstaltungen" : "Veranstaltung",
+      text: "Schaue dich mal unsere aktiven Veranstaltungen an",
+      linkText: "Alle Veranstaltungen",
+      link: "/events",
     },
     flohmarkt: {
       title: multiples ? "Flohmärkte" : "Flohmarkt",

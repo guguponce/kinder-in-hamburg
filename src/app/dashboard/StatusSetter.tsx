@@ -1,5 +1,5 @@
 "use client";
-import { updateFlohmarktStatus, updatePostStatus } from "@app/api/dbActions";
+import { updateEventStatus, updatePostStatus } from "@app/api/dbActions";
 import DeleteButton from "@app/components/DeleteButton";
 import { iFlohmarkt, iPost } from "@app/utils/types";
 import React, { useState } from "react";
@@ -19,7 +19,7 @@ export default function StatusSetter({
     if (type === "post")
       await updatePostStatus(target.id, status, currentStatus, target as iPost);
     if (type === "flohmarkt")
-      await updateFlohmarktStatus(target.id.toString(), currentStatus);
+      await updateEventStatus(target.id.toString(), currentStatus);
   };
 
   return (
@@ -33,8 +33,8 @@ export default function StatusSetter({
               currentStatus === "approved"
                 ? "bg-positive-400"
                 : currentStatus === "rejected"
-                ? "bg-negative-400"
-                : "bg-hh-400"
+                  ? "bg-negative-400"
+                  : "bg-hh-400"
             }`}
             value={currentStatus}
             onChange={(e) =>

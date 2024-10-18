@@ -25,7 +25,6 @@ import {
   revalidatePost,
 } from "@app/utils/actions/revalidate";
 import { PostgrestError } from "@supabase/supabase-js";
-import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
 
 const supabaseAdmin = createClient();
 

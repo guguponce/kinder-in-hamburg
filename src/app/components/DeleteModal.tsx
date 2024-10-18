@@ -2,9 +2,9 @@
 import React from "react";
 import {
   deleteApprovedPost,
-  deleteFlohmarkt,
+  deleteEvent,
   deleteSuggestion,
-  rejectFlohmarkt,
+  rejectEvent,
   updatePostStatus,
 } from "@app/api/dbActions";
 import { useRouter } from "next/navigation";
@@ -28,7 +28,7 @@ export default function DeleteModal({
   callbackURL,
 }: {
   callbackURL?: string;
-  type: "flohmarkt" | "post" | "spielplatz";
+  type: "flohmarkt" | "post" | "spielplatz" | "event";
   id: number;
   title: string;
   setDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -50,11 +50,17 @@ export default function DeleteModal({
         await deleteApprovedPost(id);
         await deleteAllImagesFromPost(id.toString());
       }
-    } else if (type === "flohmarkt") {
+    } else if (type === "flohmarkt" || type === "event") {
       if (deleteFrom === "all" || deleteFrom === "suggested") {
-        await deleteFlohmarkt(id.toString());
+        await deleteEvent(
+          id.toString(),
+          type === "flohmarkt" ? "flohmaerkte" : "events"
+        );
       } else {
-        await rejectFlohmarkt(id.toString());
+        await rejectEvent(
+          id.toString(),
+          type === "flohmarkt" ? "flohmaerkte" : "events"
+        );
       }
     } else if (type === "spielplatz") {
       if (deleteFrom === "approved" || deleteFrom === "suggested") {
@@ -69,9 +75,11 @@ export default function DeleteModal({
         router.push(callbackURL || "/posts");
       });
     }
-    if (type === "flohmarkt") {
+    if (type === "flohmarkt" || type === "event") {
       revalidateFlohmarkt().then(() => {
-        router.push(callbackURL || "/flohmaerkte");
+        router.push(
+          callbackURL || type === "flohmarkt" ? "/flohmaerkte" : "/events"
+        );
       });
     }
     if (type === "spielplatz") {

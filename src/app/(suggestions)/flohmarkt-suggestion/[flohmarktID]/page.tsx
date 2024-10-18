@@ -1,4 +1,4 @@
-import { getFlohmarktWithID } from "@app/api/dbActions";
+import { getEventWithID } from "@app/api/dbActions";
 import FlohmarktTemplate from "@components/FlohmarktTemplate";
 import React from "react";
 import { getServerUser } from "@app/api/auth/supabaseAuth";
@@ -9,8 +9,8 @@ import AdminEditButtons from "@app/components/AdminEditButtons";
 import AdminRoute from "@app/providers/AdminRoute";
 import StatusDisplay from "@app/components/StatusDisplay";
 
-const FlohmaerkteMap = dynamic(
-  () => import("@app/components/@Map/FlohmaerkteMap"),
+const SuggestedFlohmarktMap = dynamic(
+  () => import("@app/components/@Map/GeneralMap"),
   {
     ssr: false,
   }
@@ -21,7 +21,7 @@ export default async function FlohmarktSuggestionPage({
 }: {
   params: { flohmarktID: string };
 }) {
-  const suggestion = await getFlohmarktWithID(flohmarktID);
+  const suggestion = await getEventWithID(flohmarktID);
   if (!suggestion) return <NotFound type="flohmarkt" />;
   const user = await getServerUser();
   if (
@@ -91,11 +91,7 @@ export default async function FlohmarktSuggestionPage({
             }
           />
           {suggestion.lat && suggestion.lon && (
-            <FlohmaerkteMap
-              flohmaerkte={[]}
-              currentTarget={suggestion}
-              flohmarktID={flohmarktID}
-            ></FlohmaerkteMap>
+            <SuggestedFlohmarktMap currentTarget={suggestion} zoom={13} />
           )}
         </FlohmarktTemplate>
       </>

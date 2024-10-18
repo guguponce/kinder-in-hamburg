@@ -1,7 +1,7 @@
 "use client";
-import FlohmarktPopUP from "@app/components/@Map/PopUpsMarkers/FlohmarktPopUP";
-import PostPopUP from "@app/components/@Map/PopUpsMarkers/PostPopUP";
-import SpielplatzPopUP from "@app/components/@Map/PopUpsMarkers/SpielplatzPopUP";
+import FlohmarktPopUP from "@components/@Map/PopUpsMarkers/FlohmarktPopUP";
+import PostPopUP from "@components/@Map/PopUpsMarkers/PostPopUP";
+import SpielplatzPopUP from "@components/@Map/PopUpsMarkers/SpielplatzPopUP";
 import { createStandortMapIcon, joinAddress } from "@app/utils/functions";
 import { iAddress, iListsFPS } from "@app/utils/types";
 import { divIcon, point } from "leaflet";

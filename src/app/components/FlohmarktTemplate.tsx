@@ -12,7 +12,6 @@ import {
 } from "@app/utils/functions";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
 import FlohmarktBackground from "./@Icons/@Flohmarkt/FlohmarktBackground";
-import OldFlohmarktSign from "@app/(flohmaerkte)/flohmaerkte/[flohmarktID]/OldFlohmarktSign";
 
 export default function FlohmarktTemplate({
   flohmarkt: {
@@ -41,8 +40,6 @@ export default function FlohmarktTemplate({
   const endTime = getEndTime(time);
   return (
     <>
-      {status === "old" && <OldFlohmarktSign />}
-
       {children}
       <section
         className={`w-full ${

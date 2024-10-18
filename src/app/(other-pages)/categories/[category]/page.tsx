@@ -1,7 +1,4 @@
-import {
-  getApprovedPostWithCat,
-  getSuggestedPostWithCat,
-} from "@app/api/dbActions";
+import { getSuggestedPostWithCat } from "@app/api/dbActions";
 import RandomRecommendation from "@app/components/@Cards/RandomRecommendation";
 import DynamicCategoryMap from "@app/components/@Map/DynamicCategoryMap";
 import PointsGallery from "@app/components/@PostForm/PointsGallery";

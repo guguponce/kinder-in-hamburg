@@ -12,7 +12,7 @@ export default function DeleteButton({
 }: {
   callbackURL?: string;
   id: number;
-  type: "flohmarkt" | "post" | "spielplatz";
+  type: "flohmarkt" | "post" | "spielplatz" | "event";
   title: string;
   deleteFrom: "suggested" | "approved" | "all";
   size?: "small" | "medium" | "large";
@@ -23,8 +23,8 @@ export default function DeleteButton({
     size === "large"
       ? "w-full max-w-[1000px]"
       : size === "medium"
-      ? "w-fit"
-      : "max-w-24";
+        ? "w-fit"
+        : "max-w-24";
   return (
     <>
       {deleteModal && (
@@ -49,8 +49,10 @@ export default function DeleteButton({
         {deleteFrom === "suggested"
           ? "Suggestion"
           : type === "post"
-          ? "Post"
-          : "Flohmarkt"}
+            ? "Post"
+            : type === "event"
+              ? "Event"
+              : "Flohmarkt"}
         {deleteFrom === "all" ? " Forever" : ""}
       </button>
     </>

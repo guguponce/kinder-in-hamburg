@@ -20,6 +20,7 @@ type inputLabelType =
   | "date"
   | "time"
   | "approved"
+  | "type"
   | "optionalComment"
   | "location"
   | "stadtteil";

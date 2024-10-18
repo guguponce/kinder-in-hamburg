@@ -1,8 +1,5 @@
 "use client";
-import {
-  setAllPreviousFlohmaerkteAsOld,
-  setFlohmarktAsOld,
-} from "@app/api/dbActions";
+import { setAllPreviousEventsAsOld } from "@app/api/dbActions";
 import React from "react";
 
 export default function OldButtonSetter() {
@@ -10,7 +7,7 @@ export default function OldButtonSetter() {
     <button
       className="bg-orange-300 p-2"
       onClick={async () => {
-        const oldFlohs = await setAllPreviousFlohmaerkteAsOld();
+        const oldFlohs = await setAllPreviousEventsAsOld();
         if (!oldFlohs) return false;
       }}
     >
