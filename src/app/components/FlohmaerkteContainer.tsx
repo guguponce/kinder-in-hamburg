@@ -1,17 +1,29 @@
-import BezirkeScrollableFlohmaerkte from "@app/components/BezirkeScrollableFlohmaerkte";
+import BezirkeScrollableEvents from "@app/components/BezirkeScrollableEvents";
 import React from "react";
-import BezirkableFlohmaerkteList from "../(flohmaerkte)/flohmaerkte/BezirkableFlohmaerkteList";
+import BezirkableFlohmaerkteList from "@app/components/BezirkableEventsList";
 import { getTodayNexMonday } from "@app/utils/functions";
-import { getApprovedFlohmaerkte } from "@app/api/dbActions";
+import { getApprovedEvents } from "@app/api/dbActions";
 import dynamic from "next/dynamic";
 import TodaysFlohmaerkte from "./TodaysFlohmaerkte";
 import ErrorFetchingData from "./@NotFound/ErrorFetchingData";
 
-const FlohmaerkteMap = dynamic(() => import("./@Map/FlohmaerkteMap"), {
-  ssr: false,
-});
+const DynamicEventsMap = dynamic(
+  () => import("../components/@Map/DynamicEventsMap"),
+  {
+    ssr: false,
+    loading: () => (
+      <article className="w-full max-w-[800px] aspect-square sm:aspect-video max-h-[60vh]">
+        <img
+          src="/assets/bezirke/hamburg.webp"
+          alt="Hamburg"
+          className="w-full h-full object-cover"
+        />
+      </article>
+    ),
+  }
+);
 export default async function FlohmaerkteContainer() {
-  const flohmaerkte = await getApprovedFlohmaerkte();
+  const flohmaerkte = await getApprovedEvents();
   if (!flohmaerkte) return <ErrorFetchingData type="Flohmärkte" />;
   const { today, nextMonday } = getTodayNexMonday();
   const yesterdayNight = today - 1000 * 60 * 60;
@@ -27,7 +39,6 @@ export default async function FlohmaerkteContainer() {
   const nextMidnight = utcMidnight.getTime() + timezoneOffset;
   const todayFlohmaerkte = thisWeekFlohmaerkte.filter(
     ({ date }) => date < nextMidnight
-    //  today + 1000 * 60 * 60 * 24
   );
   const isSunday = new Date().getDay() === 0;
   return (
@@ -45,33 +56,32 @@ export default async function FlohmaerkteContainer() {
         >
           <div
             id="heute-map-container"
-            className="w-full lg:max-w-[400px] flex flex-col gap-4 items-center rounded bg-hh-200 bg-opacity-50 p-2 md:pb-6 shadow-md"
+            className="w-full lg:max-w-[400px] flex flex-col gap-4 items-center rounded bg-hh-200 bg-opacity-50 p-2 shadow-md"
           >
             {!!todayFlohmaerkte.length && !isSunday && (
               <TodaysFlohmaerkte todayFlohmaerkte={todayFlohmaerkte} />
             )}
-            <FlohmaerkteMap
-              displayList={false}
-              flohmaerkte={thisWeekFlohmaerkte.filter(
+            <DynamicEventsMap
+              thisWeek={thisWeekFlohmaerkte.filter(
                 (floh) => floh.lat && floh.lon
               )}
-              flohmarktID={thisWeekFlohmaerkte[0].id}
-            ></FlohmaerkteMap>
+              today={getTodayNexMonday().today}
+            />
           </div>
           <div className="flex flex-grow w-full sm:min-w-[400px] justify-center sm:w-1/4">
-            <BezirkeScrollableFlohmaerkte
+            <BezirkeScrollableEvents
               title={`${isSunday ? "Heute" : "Diese Woche"} gibt es ${
                 thisWeekFlohmaerkte.length
               } ${
                 thisWeekFlohmaerkte.length === 1 ? "Flohmarkt" : "Flohmärkte"
               }`}
-              flohmaerkte={thisWeekFlohmaerkte}
+              events={thisWeekFlohmaerkte}
             />
           </div>
         </section>
         <BezirkableFlohmaerkteList
           title="Ab nächster Woche"
-          flohList={futureFlohmaerkte}
+          eventsList={futureFlohmaerkte}
         ></BezirkableFlohmaerkteList>
       </div>
     </div>

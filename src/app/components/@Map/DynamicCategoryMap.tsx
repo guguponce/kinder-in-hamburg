@@ -1,13 +1,10 @@
-import {
-  getApprovedPostWithCat,
-  getFlohmarktWithID,
-  getPostWithBezirk,
-} from "@app/api/dbActions";
+import { getApprovedPostWithCat } from "@app/api/dbActions";
 import { addLatLongToPost } from "@app/utils/functions";
 import { categoryName, iPost } from "@app/utils/types";
 import dynamic from "next/dynamic";
+import MarkersLists from "./PopUpsMarkers/MarkersLists";
 
-const Map = dynamic(() => import("./Map"), { ssr: false });
+const GeneralMap = dynamic(() => import("./GeneralMap"), { ssr: false });
 
 export default async function DynamicCategoryMap({
   category,
@@ -24,9 +21,8 @@ export default async function DynamicCategoryMap({
   ).filter(Boolean) as iPost[];
 
   return (
-    <Map
-      postID={postsWithCoordinates[0].id.toString()}
-      postsNearby={postsWithCoordinates}
-    />
+    <GeneralMap>
+      <MarkersLists lists={{ posts: postsWithCoordinates }} showPosts={true} />
+    </GeneralMap>
   );
 }

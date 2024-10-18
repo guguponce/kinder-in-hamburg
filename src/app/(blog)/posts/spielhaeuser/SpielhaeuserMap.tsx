@@ -14,8 +14,6 @@ import { divIcon } from "leaflet";
 import Link from "next/link";
 import HorizontalCard from "@app/components/@Cards/HorizontalCard";
 import ExpandableContainer from "@app/components/ExpandableContainer";
-import ImgPriorityCard from "@app/components/@Cards/ImgPriorityCard";
-import AdminRoute from "@app/providers/AdminRoute";
 
 const OptionalExpandableContainer = ({
   children,
@@ -94,16 +92,18 @@ const PostMarker = ({
 );
 
 export default function SpielhaeuserMap({ sphList }: { sphList: iPost[] }) {
-  const sphListRef = useRef(sphList);
   const bezirke = useRef(
     Array.from(new Set(sphList.map(({ bezirk }) => bezirk))).sort()
   );
   const bezirkeSph = useRef(
-    sphList.reduce((acc, sph) => {
-      if (!acc[sph.bezirk]) acc[sph.bezirk] = [sph];
-      else acc[sph.bezirk] = [...acc[sph.bezirk], sph];
-      return acc;
-    }, {} as { [x: string]: iPost[] })
+    sphList.reduce(
+      (acc, sph) => {
+        if (!acc[sph.bezirk]) acc[sph.bezirk] = [sph];
+        else acc[sph.bezirk] = [...acc[sph.bezirk], sph];
+        return acc;
+      },
+      {} as { [x: string]: iPost[] }
+    )
   );
 
   const [alter, setAlter] = useState<undefined | string>();
@@ -245,18 +245,6 @@ export default function SpielhaeuserMap({ sphList }: { sphList: iPost[] }) {
                             stadtteil={post.stadtteil}
                           />
                         </HorizontalCard>
-                        {/* </div>
-                          <ImgPriorityCard
-                            id={post.id + 1}
-                            title={post.title}
-                            image={(post.image && post.image[0]) || ""}
-                            description={
-                              getPlainText(post.text).slice(0, 100) + "..."
-                            }
-                            link={post.link}
-                            stadtteil={post.stadtteil}
-                          />
-                        </div> */}
                       </React.Fragment>
                     ))}
                   </article>

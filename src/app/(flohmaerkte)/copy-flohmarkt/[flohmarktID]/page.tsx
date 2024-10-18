@@ -4,7 +4,6 @@ import { getServerUser } from "@app/api/auth/supabaseAuth";
 import { redirect } from "next/navigation";
 import AdminRoute from "@app/providers/AdminRoute";
 import { getEventWithID } from "@app/api/dbActions";
-import { iUserMetadata } from "@app/api/auth/types";
 
 export default async function AddCopiedFlohmarkt({
   params,

@@ -1,5 +1,5 @@
 import {
-  getApprovedFlohmaerkteWithBezirk,
+  getApprovedEventsWithBezirk,
   getSuggestionsWithBezirk,
 } from "@app/api/dbActions";
 import {
@@ -12,7 +12,7 @@ import React from "react";
 import FilterablePostList from "@app/components/FilterablePostList";
 import NotFound from "@components/@NotFound/NotFound";
 import WeatherBox from "@app/components/WeatherBox";
-import BezirkeScrollableFlohmaerkte from "@app/components/BezirkeScrollableFlohmaerkte";
+import BezirkeScrollableEvents from "@app/components/BezirkeScrollableEvents";
 import PointsGallery from "@app/components/@PostForm/PointsGallery";
 import AdminRoute from "@app/providers/AdminRoute";
 
@@ -26,7 +26,7 @@ export default async function BezirkPage({
   const bezirkPosts = await getSuggestionsWithBezirk(bezirk as iBezirk);
   if (!bezirkPosts) return <NotFound multiples />;
 
-  const flohmaerkte = await getApprovedFlohmaerkteWithBezirk(bezirk as iBezirk);
+  const flohmaerkte = await getApprovedEventsWithBezirk(bezirk as iBezirk);
   const pinnedPosts = bezirkPosts.filter((post) => post.pinnedPost);
   return (
     <AdminRoute>
@@ -57,8 +57,8 @@ export default async function BezirkPage({
         </section>
         {!!flohmaerkte && !!flohmaerkte.length && (
           <section className="w-full flex justify-center items-center bg-gradient-to-b from-hh-600 to-hh-500 bg-opacity-25 rounded">
-            <BezirkeScrollableFlohmaerkte
-              flohmaerkte={flohmaerkte.sort((a, b) => a.date - b.date)}
+            <BezirkeScrollableEvents
+              events={flohmaerkte.sort((a, b) => a.date - b.date)}
               bezirk={bezirk}
               title="Flea Markets"
             />

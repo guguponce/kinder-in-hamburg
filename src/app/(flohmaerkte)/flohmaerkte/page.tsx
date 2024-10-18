@@ -1,17 +1,29 @@
-import { getApprovedFlohmaerkte } from "@app/api/dbActions";
+import { getApprovedEvents } from "@app/api/dbActions";
 import NotFound from "@components/@NotFound/NotFound";
-import BezirkeScrollableFlohmaerkte from "@app/components/BezirkeScrollableFlohmaerkte";
+import BezirkeScrollableEvents from "@components/BezirkeScrollableEvents";
 import { getTodayNexMonday } from "@app/utils/functions";
 import Link from "next/link";
 import React from "react";
-import BezirkableFlohmaerkteList from "./BezirkableFlohmaerkteList";
+import BezirkableEventsList from "@app/components/BezirkableEventsList";
 import dynamic from "next/dynamic";
 import { Metadata } from "next";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
 
-const DynamicFlohmarktMap = dynamic(() => import("./DynamicFlohmarktMap"), {
-  ssr: false,
-});
+const DynamicFlohmarktMap = dynamic(
+  () => import("../../components/@Map/DynamicEventsMap"),
+  {
+    ssr: false,
+    loading: () => (
+      <article className="w-full max-w-[800px] aspect-square sm:aspect-video max-h-[60vh]">
+        <img
+          src="/assets/bezirke/hamburg.webp"
+          alt="Hamburg"
+          className="w-full h-full object-cover"
+        />
+      </article>
+    ),
+  }
+);
 export const revalidate = 120;
 
 export const metadata: Metadata = {
@@ -32,7 +44,7 @@ export const metadata: Metadata = {
 };
 
 export default async function FlohmarktPage() {
-  const flohmaerkte = await getApprovedFlohmaerkte();
+  const flohmaerkte = await getApprovedEvents();
   if (!flohmaerkte) return <NotFound multiples={true} type="flohmarkt" />;
   if (flohmaerkte.length === 0)
     return (
@@ -70,20 +82,23 @@ export default async function FlohmarktPage() {
       <h1 className="text-4xl font-bold my-2 p-2 rounded bg-opacity-50 bg-hh-50">
         Flohmärkte
       </h1>
-      <BezirkeScrollableFlohmaerkte
+      <BezirkeScrollableEvents
         title="Diese Woche"
-        flohmaerkte={thisWeekFlohmaerkte}
-      ></BezirkeScrollableFlohmaerkte>
-      <DynamicFlohmarktMap
-        nextMonday={nextMonday}
-        future={futureFlohmaerkte}
-        thisWeek={thisWeekFlohmaerkte}
-        today={today}
-      />
-      <BezirkableFlohmaerkteList
+        events={thisWeekFlohmaerkte}
+        type="flohmaerkte"
+      ></BezirkeScrollableEvents>
+      <section className="flex flex-col h-fit max-w-[1200px] p-2 bg-gradient-to-b from-hh-100 to-50 shadow-md md:shadow-xl my-4 md:my-8 rounded">
+        <DynamicFlohmarktMap
+          future={futureFlohmaerkte}
+          thisWeek={thisWeekFlohmaerkte}
+          today={today}
+          square={false}
+        />
+      </section>
+      <BezirkableEventsList
         title="Ab nächster Woche"
-        flohList={futureFlohmaerkte}
-      ></BezirkableFlohmaerkteList>
+        eventsList={futureFlohmaerkte}
+      ></BezirkableEventsList>
     </main>
   );
 }

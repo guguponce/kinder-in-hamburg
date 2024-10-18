@@ -7,9 +7,12 @@ import AdminClientComponents from "@app/providers/AdminClientComponents";
 import UserInputBox from "@app/components/@FlohForm/UserInputBox";
 import PostFormInput from "@app/components/@PostForm/PostFormInput";
 
-const LatLonSetterMap = dynamic(() => import("./LatLonSetterMap"), {
-  ssr: false,
-});
+const LatLonSetterMap = dynamic(
+  () => import("../components/@Map/LatLonSetterMap"),
+  {
+    ssr: false,
+  }
+);
 
 import {
   BEZIRK_TO_STADTTEILE,
@@ -157,7 +160,6 @@ export default function SpielplatzForm({
     // if (!imagesUrlsReady.ready) return alert("Images are not ready yet");
     // if (!userInput.email || !userInput.name)
     //   return alert("Your name and email are required");
-
     if (!data.street || !data.city || !data.PLZ)
       return alert("Please provide the address of the Spielplatz");
 

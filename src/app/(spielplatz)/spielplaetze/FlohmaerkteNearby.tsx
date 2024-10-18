@@ -11,7 +11,6 @@ export default async function FlohmaerkteNearby({
   stadtteil,
   lat,
   lon,
-  title,
 }: {
   title?: string;
   bezirk: string;

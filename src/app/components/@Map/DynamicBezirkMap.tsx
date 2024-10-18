@@ -2,8 +2,9 @@ import { getPostWithBezirk } from "@app/api/dbActions";
 import { addLatLongToPost, getLatLong } from "@app/utils/functions";
 import { iBezirk, iPost } from "@app/utils/types";
 import dynamic from "next/dynamic";
+import MarkersLists from "./PopUpsMarkers/MarkersLists";
 
-const Map = dynamic(() => import("./Map"), { ssr: false });
+const GeneralMap = dynamic(() => import("./GeneralMap"), { ssr: false });
 
 export default async function DynamicMap({
   postID,
@@ -22,10 +23,8 @@ export default async function DynamicMap({
   );
   if (!currentTarget) return <></>;
   return (
-    <Map
-      postID={postID}
-      currentTarget={currentTarget}
-      postsNearby={postsWithCoordinates}
-    />
+    <GeneralMap>
+      <MarkersLists lists={{ posts: postsWithCoordinates }} showPosts={true} />
+    </GeneralMap>
   );
 }

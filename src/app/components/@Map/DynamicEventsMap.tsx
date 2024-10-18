@@ -1,13 +1,13 @@
 "use client";
-import GeneralMap from "@app/components/@Map/GeneralMap";
-import FlohmarktPopUP from "@app/components/@Map/PopUpsMarkers/FlohmarktPopUP";
-import MarkersLists from "@app/components/@Map/PopUpsMarkers/MarkersLists";
+import GeneralMap from "@components/@Map/GeneralMap";
+import FlohmarktPopUP from "@components/@Map/PopUpsMarkers/FlohmarktPopUP";
+import MarkersLists from "@components/@Map/PopUpsMarkers/MarkersLists";
 import { iBezirk, iFlohmarkt } from "@app/utils/types";
 import { Marker } from "react-leaflet";
 import React, { useMemo, useRef } from "react";
 import { divIcon, point } from "leaflet";
 import { createStandortMapIcon, getDate } from "@app/utils/functions";
-import ScrollableContainer from "@app/components/ScrollableContainer";
+import ScrollableContainer from "@components/ScrollableContainer";
 import MarkerClusterGroup from "react-leaflet-cluster";
 
 const createNormalSizeIcon = (color: string, size: number = 30) =>
@@ -17,19 +17,19 @@ const createNormalSizeIcon = (color: string, size: number = 30) =>
     iconAnchor: [size / 2, size],
     className: "bg-transparent",
   });
-const futureIcon = createNormalSizeIcon("#1F262E");
-const todayIcon = createNormalSizeIcon("#E04945");
+const futureIcon = createNormalSizeIcon("#22111a");
+const todayIcon = createNormalSizeIcon("#7B3E5E");
 
-export default function DynamicFlohmarktMap({
+export default function DynamicEventsMap({
   today,
-  nextMonday,
   thisWeek,
-  future,
+  future = [],
+  square = true,
 }: {
-  nextMonday: number;
   today: number;
   thisWeek: iFlohmarkt[];
-  future: iFlohmarkt[];
+  future?: iFlohmarkt[];
+  square?: boolean;
 }) {
   const [selectedDate, setSelectedDate] = React.useState<number | undefined>(
     undefined
@@ -43,31 +43,35 @@ export default function DynamicFlohmarktMap({
     Array.from(new Set([...thisWeek, ...future].map((p) => p.bezirk).flat()))
   );
 
-  const thisWeekFlohs = useRef(
-    thisWeek.reduce((acc, curr) => {
-      if (acc[curr.date]) {
-        acc[curr.date].push(curr);
-      } else {
-        acc[curr.date] = [curr];
-      }
-      return acc;
-    }, {} as { [key: string]: iFlohmarkt[] })
+  const eventsByDate = useRef(
+    thisWeek.reduce(
+      (acc, curr) => {
+        if (acc[curr.date]) {
+          acc[curr.date].push(curr);
+        } else {
+          acc[curr.date] = [curr];
+        }
+        return acc;
+      },
+      {} as { [key: string]: iFlohmarkt[] }
+    )
   );
-  const futureFlohs = useRef(future);
 
   const displayedMarkers = useMemo(() => {
     if (selectedDate) {
-      return { [selectedDate]: thisWeekFlohs.current[selectedDate] };
+      return { [selectedDate]: eventsByDate.current[selectedDate] };
     }
-    return thisWeekFlohs.current;
+    return eventsByDate.current;
   }, [selectedDate]);
 
   return (
-    <div className="flex flex-col h-fit max-w-[1200px] p-2 bg-gradient-to-b from-hh-100 to-white shadow-md md:shadow-xl my-4 md:my-8">
-      <section className="flex-grow h-[60vh] w-full">
+    <div className="w-full sm:w-full flex flex-col md:flex-row md:flex-wrap items-stretch gap-2 rounded">
+      <section
+        className={`max-h-[60vh] min-h-[250px] flex-grow xs:min-w-[300px] max-w-[800px] aspect-[3/2] md:aspect-auto ${square ? "w-full lg:aspect-square  lg:max-w-full" : "md:aspect-video lg:aspect-auto lg:h-[50vh] lg:max-w-full"} flex justify-center rounded overflow-hidden`}
+      >
         <GeneralMap zoom={11}>
           {!selectedDate && !futureSelected
-            ? Object.entries(displayedMarkers).map(([day, flohs]) =>
+            ? Object.entries(displayedMarkers).map(([day, events]) =>
                 day !== today.toString() ? (
                   <React.Fragment key={day}>
                     <MarkersLists
@@ -75,19 +79,42 @@ export default function DynamicFlohmarktMap({
                       showFlohmaerkte
                       lists={{
                         flohmaerkte: selectedBezirk
-                          ? flohs.filter(
+                          ? events.filter(
                               ({ bezirk }) => bezirk === selectedBezirk
                             )
-                          : flohs,
+                          : events,
                       }}
                     />
                   </React.Fragment>
                 ) : (
-                  flohs.map(({ id, lat, lon, address, date, title, bezirk }) =>
+                  events.map(
+                    ({ id, lat, lon, address, date, title, bezirk }) =>
+                      selectedBezirk && bezirk !== selectedBezirk ? null : (
+                        <React.Fragment key={id}>
+                          <Marker
+                            icon={futureIcon}
+                            key={id}
+                            position={[lat || 53.5511, lon || 9.9937]}
+                          >
+                            <FlohmarktPopUP
+                              id={id}
+                              address={address}
+                              date={date}
+                              title={title}
+                            />
+                          </Marker>
+                        </React.Fragment>
+                      )
+                  )
+                )
+              )
+            : selectedDate === today
+              ? displayedMarkers[selectedDate].map(
+                  ({ id, lat, lon, address, date, title, bezirk }) =>
                     selectedBezirk && bezirk !== selectedBezirk ? null : (
                       <React.Fragment key={id}>
                         <Marker
-                          icon={futureIcon}
+                          icon={todayIcon}
                           key={id}
                           position={[lat || 53.5511, lon || 9.9937]}
                         >
@@ -100,43 +127,21 @@ export default function DynamicFlohmarktMap({
                         </Marker>
                       </React.Fragment>
                     )
-                  )
                 )
-              )
-            : selectedDate === today
-            ? displayedMarkers[selectedDate].map(
-                ({ id, lat, lon, address, date, title, bezirk }) =>
-                  selectedBezirk && bezirk !== selectedBezirk ? null : (
-                    <React.Fragment key={id}>
-                      <Marker
-                        icon={todayIcon}
-                        key={id}
-                        position={[lat || 53.5511, lon || 9.9937]}
-                      >
-                        <FlohmarktPopUP
-                          id={id}
-                          address={address}
-                          date={date}
-                          title={title}
-                        />
-                      </Marker>
-                    </React.Fragment>
-                  )
-              )
-            : selectedDate && (
-                <MarkersLists
-                  cluster={false}
-                  showFlohmaerkte
-                  lists={{
-                    flohmaerkte: selectedBezirk
-                      ? displayedMarkers[selectedDate].filter(
-                          ({ bezirk }) => bezirk === selectedBezirk
-                        )
-                      : displayedMarkers[selectedDate],
-                  }}
-                />
-              )}
-          {!selectedDate && futureFlohs.current.length > 0 && (
+              : selectedDate && (
+                  <MarkersLists
+                    cluster={false}
+                    showFlohmaerkte
+                    lists={{
+                      flohmaerkte: selectedBezirk
+                        ? displayedMarkers[selectedDate].filter(
+                            ({ bezirk }) => bezirk === selectedBezirk
+                          )
+                        : displayedMarkers[selectedDate],
+                    }}
+                  />
+                )}
+          {!selectedDate && future.length > 0 && (
             <MarkerClusterGroup
               chunkedLoading
               iconCreateFunction={(cluster: any) =>
@@ -147,24 +152,23 @@ export default function DynamicFlohmarktMap({
                 })
               }
             >
-              {futureFlohs.current.map(
-                ({ id, lat, lon, address, date, title, bezirk }) =>
-                  selectedBezirk && bezirk !== selectedBezirk ? null : (
-                    <React.Fragment key={id}>
-                      <Marker
-                        icon={futureIcon}
-                        key={id}
-                        position={[lat || 53.5511, lon || 9.9937]}
-                      >
-                        <FlohmarktPopUP
-                          id={id}
-                          address={address}
-                          date={date}
-                          title={title}
-                        />
-                      </Marker>
-                    </React.Fragment>
-                  )
+              {future.map(({ id, lat, lon, address, date, title, bezirk }) =>
+                selectedBezirk && bezirk !== selectedBezirk ? null : (
+                  <React.Fragment key={id}>
+                    <Marker
+                      icon={futureIcon}
+                      key={id}
+                      position={[lat || 53.5511, lon || 9.9937]}
+                    >
+                      <FlohmarktPopUP
+                        id={id}
+                        address={address}
+                        date={date}
+                        title={title}
+                      />
+                    </Marker>
+                  </React.Fragment>
+                )
               )}
             </MarkerClusterGroup>
           )}
@@ -172,14 +176,14 @@ export default function DynamicFlohmarktMap({
       </section>
       <aside
         id="flohmaerkte-map-filters-aside"
-        className="w-full h-full flex md:flex-wrap  p-2"
+        className="px-2 pb-2 w-full md:w-1/4 xs:min-w-[300px] max-w-[80vw] lg:w-full flex flex-col"
       >
         <ScrollableContainer vertical>
-          <div className="w-full h-full flex flex-wrap  p-2">
+          <div className="w-full h-full flex flex-wrap px-2 md:px-0">
             <div className="flex w-full flex-col">
               <h3 className="font-bold text-lg p-2 text-hh-800">Termine</h3>
               <div className="flex flex-wrap gap-2 items-center">
-                {Object.keys(thisWeekFlohs.current)
+                {Object.keys(eventsByDate.current)
                   .sort((a, b) => parseInt(a) - parseInt(b))
                   .map((date) => (
                     <button
@@ -201,19 +205,21 @@ export default function DynamicFlohmarktMap({
                         : getDate(parseInt(date))}
                     </button>
                   ))}
-                <button
-                  onClick={() => {
-                    setSelectedDate(undefined);
-                    setFutureSelected((prev) => !prev);
-                  }}
-                  className={`text-sm p-1 w-fit border-2 border-hh-600 rounded-md ${
-                    !futureSelected
-                      ? "bg-hh-50 text-hh-800  hover:bg-hh-600 hover:text-hh-50"
-                      : "bg-hh-800 text-hh-50  hover:bg-hh-600 hover:text-hh-50"
-                  } transition-all`}
-                >
-                  Zukünftige Flohmärkte
-                </button>
+                {!!future.length && (
+                  <button
+                    onClick={() => {
+                      setSelectedDate(undefined);
+                      setFutureSelected((prev) => !prev);
+                    }}
+                    className={`text-sm p-1 w-fit border-2 border-hh-600 rounded-md ${
+                      !futureSelected
+                        ? "bg-hh-50 text-hh-800  hover:bg-hh-600 hover:text-hh-50"
+                        : "bg-hh-800 text-hh-50  hover:bg-hh-600 hover:text-hh-50"
+                    } transition-all`}
+                  >
+                    Zukünftige Flohmärkte
+                  </button>
+                )}
               </div>
             </div>
 
