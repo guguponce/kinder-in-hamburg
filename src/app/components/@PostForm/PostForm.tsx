@@ -32,7 +32,7 @@ import IgAccountInput from "./IgAccountInput";
 import { deleteUnusedImages } from "@app/api/storageActions";
 import AdminClientComponents from "@app/providers/AdminClientComponents";
 import { revalidatePost } from "@app/utils/actions/revalidate";
-import LatLonSetterMap from "@app/(spielplatz)/LatLonSetterMap";
+import LatLonSetterMap from "@app/components/@Map/LatLonSetterMap";
 import { getLatLong } from "@app/utils/functions";
 
 interface PostFormProps {
@@ -358,14 +358,14 @@ export default function PostForm({
           postType === "update-suggestion"
             ? onUpdateSuggestedPost
             : postType === "new-suggestion"
-            ? onSubmitNewSuggestion
-            : postType === "suggested-to-approved"
-            ? onApproveSuggestion
-            : postType === "update-approved-post"
-            ? onUpdateApprovedPost
-            : () => {
-                console.error("missing handler");
-              }
+              ? onSubmitNewSuggestion
+              : postType === "suggested-to-approved"
+                ? onApproveSuggestion
+                : postType === "update-approved-post"
+                  ? onUpdateApprovedPost
+                  : () => {
+                      console.error("missing handler");
+                    }
         )}
         className="postForm mx-auto flex w-full flex-col items-center gap-1 text-gray-900"
       >
@@ -736,10 +736,10 @@ export default function PostForm({
               ? postType === "suggested-to-approved"
                 ? "Approve Post"
                 : postType === "update-approved-post"
-                ? "Update Approved Post"
-                : postType === "update-suggestion"
-                ? "Update Suggestion"
-                : postType === "new-suggestion" && "Add New Suggestion"
+                  ? "Update Approved Post"
+                  : postType === "update-suggestion"
+                    ? "Update Suggestion"
+                    : postType === "new-suggestion" && "Add New Suggestion"
               : "Nothing to submit"}
           </button>
           {/* )} */}

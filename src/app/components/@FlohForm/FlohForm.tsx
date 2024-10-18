@@ -1,17 +1,19 @@
 "use client";
 
-import React, { useMemo, useRef } from "react";
+import React, { useCallback, useMemo, useRef } from "react";
 import { useForm, type FieldValues } from "react-hook-form";
-import { addFlohmarkt, updateFlohmarkt } from "@app/api/dbActions";
+import { addEvent, updateEvent } from "@app/api/dbActions";
 import type { iSessionUser, iFlohmarkt, iBezirk } from "../../utils/types";
 import { useRouter } from "next/navigation";
 import {
   BEZIRK_TO_STADTTEILE,
   addressPartsArray,
   bezirke,
+  eventTypes,
 } from "@app/utils/constants";
 import {
   getEndTime,
+  getLatLong,
   getStartTime,
   joinAddress,
   joinTime,
@@ -26,6 +28,11 @@ import {
 } from "@app/utils/actions/revalidate";
 import UserInputBox from "./UserInputBox";
 import { deleteUnusedFlohmaerkteImages } from "@app/api/storageActions";
+import dynamic from "next/dynamic";
+
+const LatLonSetterMap = dynamic(() => import("../@Map/LatLonSetterMap"), {
+  ssr: false,
+});
 
 interface FlohFormProps {
   FlohForm: Partial<iFlohmarkt>;
@@ -35,7 +42,9 @@ interface FlohFormProps {
     | "new-flohmarkt"
     | "update-flohmarkt"
     | "update-suggestion"
-    | "approve-suggestion";
+    | "approve-suggestion"
+    | "new-event"
+    | "update-event";
 }
 export default function FlohForm({
   FlohForm: {
@@ -51,6 +60,7 @@ export default function FlohForm({
     location,
     time,
     optionalComment,
+    type,
     stadtteil,
     lat,
     lon,
@@ -83,12 +93,14 @@ export default function FlohForm({
   const [bezirkInput, setBezirkInput] = React.useState<iBezirk>(
     bezirk || "Altona"
   );
+  const [latlon, setLatLon] = React.useState({ lat, lon });
 
   const newID = useRef(new Date().getTime());
   const {
     register,
     handleSubmit,
     setValue,
+    getValues,
     formState: { errors, isSubmitSuccessful, isDirty, isSubmitting, isLoading },
   } = useForm({
     defaultValues: {
@@ -111,71 +123,91 @@ export default function FlohForm({
       location: location,
       image: image,
       optionalComment: optionalComment || "",
+      type: type || "",
     },
   });
+  const onSubmitNewFlohmarkt = useCallback(
+    () => (data: FieldValues) => {
+      if (!imagesUrlsReady.ready) {
+        alert("Images are not ready yet");
+        return;
+      }
+      if (!userInput.email || !userInput.name)
+        return alert("Your name and email are required");
+      if (!data.date) {
+        alert("The date of the Flohmarkt is required");
+        return;
+      }
+      if (!data.startTime && data.endTime) {
+        alert("Please provide the start and end time of the Flohmarkt");
+        return;
+      }
+      if (
+        (flohFormType === "update-event" || flohFormType === "new-event") &&
+        !data.type
+      )
+        return alert("Please provide the type of the event");
+      const eventSuggestion: iFlohmarkt = {
+        id: data.id,
+        status: data.status,
+        createdAt: createdAt || newID.current,
+        title: data.title,
+        addedBy: userInput,
+        bezirk: data.bezirk,
+        stadtteil: data.stadtteil,
+        date: data.date,
+        lat: data.lat,
+        lon: data.lon,
+        address: joinAddress(data),
+        location: data.location,
+        time: joinTime(data.startTime, data.endTime),
+        image: imagesUrlsReady.urls[0] || "",
+        optionalComment: data.optionalComment,
+        type: data.type,
+      };
 
-  const onSubmitNewFlohmarkt = (data: FieldValues) => {
-    if (!imagesUrlsReady.ready) {
-      alert("Images are not ready yet");
-      return;
-    }
-    if (!userInput.email || !userInput.name)
-      return alert("Your name and email are required");
-    if (!data.date) {
-      alert("The date of the Flohmarkt is required");
-      return;
-    }
-    if (!data.startTime && data.endTime) {
-      alert("Please provide the start and end time of the Flohmarkt");
-      return;
-    }
-    const suggestionFloh: iFlohmarkt = {
-      id: data.id,
-      status: data.status,
-      createdAt: createdAt || newID.current,
-      title: data.title,
-      addedBy: userInput,
-      bezirk: data.bezirk,
-      stadtteil: data.stadtteil,
-      date: data.date,
-      lat: data.lat,
-      lon: data.lon,
-      address: joinAddress(data),
-      location: data.location,
-      time: joinTime(data.startTime, data.endTime),
-      image: imagesUrlsReady.urls[0] || "",
-      optionalComment: data.optionalComment,
-    };
+      addEvent(
+        eventSuggestion,
+        flohFormType === "new-event" ? "events" : "flohmaerkte"
+      )
+        .then(() => {
+          revalidatePost();
+          revalidateFlohmarkt();
 
-    addFlohmarkt(suggestionFloh)
-      .then(() => {
-        revalidatePost();
-        revalidateFlohmarkt();
+          setSubmitError({ isError: false, errorMessage: "" });
+          setSuccessfulSubmit(true);
+        })
+        .then(() => {
+          deleteUnusedFlohmaerkteImages();
+        })
+        .then(async () => {
+          sleep(3000);
+          router.push(
+            flohFormType === "new-flohmarkt"
+              ? `/flohmarkt-suggestion/${data.id}`
+              : `/events/${data.id}`
+          );
+        })
+        .catch((error) =>
+          setSubmitError({ isError: true, errorMessage: error.message })
+        );
+    },
+    [imagesUrlsReady, userInput, flohFormType, createdAt, newID, router]
+  );
 
-        setSubmitError({ isError: false, errorMessage: "" });
-        setSuccessfulSubmit(true);
-      })
-      .then(() => {
-        deleteUnusedFlohmaerkteImages();
-      })
-      .then(async () => {
-        sleep(3000);
-        router.push(`/flohmarkt-suggestion/${data.id}`);
-      })
-      .catch((error) =>
-        setSubmitError({ isError: true, errorMessage: error.message })
-      );
-  };
-
-  const onUpdateFlohmarkt = (data: FieldValues) => {
+  const onupdateEvent = (data: FieldValues) => {
     if (!imagesUrlsReady.ready) return alert("Images are not ready yet");
     if (!userInput.email || !addedBy)
       return alert("User data from creator needed");
-    if (!data.date) return alert("The date of the Flohmarkt is required");
+    if (!data.date) return alert("The date of the Event is required");
     if (!data.startTime && data.endTime)
-      return alert("Please provide the start and end time of the Flohmarkt");
-
-    const updatedFlohmarkt: iFlohmarkt = {
+      return alert("Please provide the start and end time of the Event");
+    if (
+      (flohFormType === "update-event" || flohFormType === "new-event") &&
+      !data.type
+    )
+      return alert("Please provide the type of the event");
+    const updatedEvent: iFlohmarkt = {
       id: id || newID.current,
       status: data.status,
       createdAt: createdAt || newID.current,
@@ -191,8 +223,14 @@ export default function FlohForm({
       lon: data.lon,
       image: imagesUrlsReady.urls[0] || "",
       optionalComment: data.optionalComment,
+      type: data.type,
     };
-    updateFlohmarkt(updatedFlohmarkt)
+    updateEvent(
+      updatedEvent,
+      ["new-event", "update-event"].includes(flohFormType)
+        ? "events"
+        : "flohmaerkte"
+    )
       .then(() => {
         setSubmitError({ isError: false, errorMessage: "" });
         revalidatePost();
@@ -202,9 +240,14 @@ export default function FlohForm({
       .then(async () => {
         await sleep(2500);
         router.push(
-          data.status === "approved"
-            ? `/flohmaerkte/${data.id}`
-            : `/flohmarkt-suggestion/${data.id}`
+          flohFormType === "update-flohmarkt" ||
+            flohFormType === "new-flohmarkt"
+            ? data.status === "approved"
+              ? `/flohmaerkte/${data.id}`
+              : `/flohmarkt-suggestion/${data.id}`
+            : flohFormType === "update-event" || flohFormType === "new-event"
+              ? `/events/${data.id}`
+              : "/"
         );
       })
       .catch((error) =>
@@ -216,6 +259,9 @@ export default function FlohForm({
     router.push("/");
   }
   if (!user || !user.name) return;
+  const handleSetLatLon = (key: "lat" | "lon", value: any) => {
+    setValue(key, value);
+  };
 
   return (
     <section id="flohmarkt-form-container" className="w-full">
@@ -227,15 +273,15 @@ export default function FlohForm({
       />
       <form
         onSubmit={handleSubmit(
-          flohFormType === "new-flohmarkt"
+          ["new-flohmarkt", "new-event"].includes(flohFormType)
             ? onSubmitNewFlohmarkt
-            : onUpdateFlohmarkt
+            : onupdateEvent
         )}
         className="flohForm mx-auto w-full text-gray-900 lg:w-3/4 my-2 flex flex-col gap-2"
       >
         <div className="mx-auto flex w-full flex-col items-center gap-2 ">
           <div
-            id="date-time-box"
+            id="title-type"
             className="flex flex-wrap gap-4 w-full max-w-[600px] justify-center items-center bg-hh-300 rounded py-2"
           >
             <PostFormInput inputLabel="Title" inputID="title" required={true}>
@@ -252,7 +298,29 @@ export default function FlohForm({
                 )}
               </>
             </PostFormInput>
+            {(flohFormType === "new-event" ||
+              flohFormType === "update-event") && (
+              <PostFormInput
+                inputLabel="Event Type"
+                inputID="type"
+                required={true}
+              >
+                <select
+                  {...register("type", { required: "Event Type is required" })}
+                  defaultValue={type || "flohmarkt"}
+                  required
+                  className="mx  rounded border border-gray-300 bg-gray-100 bg-opacity-95 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
+                >
+                  {eventTypes.map((t) => (
+                    <option key={t} value={t}>
+                      {t}
+                    </option>
+                  ))}
+                </select>
+              </PostFormInput>
+            )}
           </div>
+
           <div
             id="address-box"
             className=" w-full max-w-[600px] flex flex-wrap gap-4 border-2 border-hh-300 rounded"
@@ -368,6 +436,33 @@ export default function FlohForm({
                   )
                 )}
             </div>{" "}
+            <button
+              type="button"
+              onClick={async (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const { lat, lon } = await getLatLong(
+                  [
+                    getValues("street"),
+                    getValues("number"),
+                    getValues("PLZ"),
+                    getValues("city"),
+                  ].join(" ")
+                );
+                setLatLon({ lat: parseFloat(lat), lon: parseFloat(lon) });
+              }}
+              className="bg-green-700 hover:bg-green-600 hover:shadow-md w-full active:scale-[0.99] border-0px-8  flex rounded p-2 text-lg text-white transition-colors  duration-200 ease-in-out  focus:outline-2 focus:ring-2 focus:ring-green-600 focus:ring-offset-2 disabled:bg-gray-500"
+            >
+              Get LatLon
+            </button>
+            {latlon.lon && latlon.lat && (
+              <LatLonSetterMap
+                lat={latlon.lat}
+                lon={latlon.lon}
+                latlonSetter={setLatLon}
+                setValue={handleSetLatLon}
+              />
+            )}
           </div>
 
           <div
