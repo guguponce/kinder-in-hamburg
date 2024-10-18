@@ -904,7 +904,11 @@ export const getEventWithID = async (
   eventTable: string = "flohmaerkte"
 ) => {
   try {
-    const { data, error } = await supabaseAdmin.from("events").select("*");
+    const { data, error } = await supabaseAdmin
+      .from(eventTable)
+      .select("*")
+      .match({ id });
+
     if (error) {
       return false;
     }
