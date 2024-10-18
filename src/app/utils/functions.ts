@@ -461,6 +461,9 @@ export function isTypeFlohmarkt(item: any) {
 export function isTypePost(item: any) {
   return "categories" in item;
 }
+export function isTypeEvent(item: any) {
+  return "type" in item;
+}
 
 export function haversineDistance(
   lat1: number,
