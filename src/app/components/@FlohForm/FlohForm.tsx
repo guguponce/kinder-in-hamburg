@@ -127,7 +127,7 @@ export default function FlohForm({
     },
   });
   const onSubmitNewFlohmarkt = useCallback(
-    () => (data: FieldValues) => {
+    (data: FieldValues) => {
       if (!imagesUrlsReady.ready) {
         alert("Images are not ready yet");
         return;
@@ -163,9 +163,9 @@ export default function FlohForm({
         time: joinTime(data.startTime, data.endTime),
         image: imagesUrlsReady.urls[0] || "",
         optionalComment: data.optionalComment,
-        type: data.type,
+        type: !!data.type ? data.type : undefined,
       };
-
+      console.log("e", eventSuggestion);
       addEvent(
         eventSuggestion,
         flohFormType === "new-event" ? "events" : "flohmaerkte"
@@ -192,68 +192,71 @@ export default function FlohForm({
           setSubmitError({ isError: true, errorMessage: error.message })
         );
     },
-    [imagesUrlsReady, userInput, flohFormType, createdAt, newID, router]
+    [imagesUrlsReady, userInput, router, flohFormType, createdAt]
   );
 
-  const onupdateEvent = (data: FieldValues) => {
-    if (!imagesUrlsReady.ready) return alert("Images are not ready yet");
-    if (!userInput.email || !addedBy)
-      return alert("User data from creator needed");
-    if (!data.date) return alert("The date of the Event is required");
-    if (!data.startTime && data.endTime)
-      return alert("Please provide the start and end time of the Event");
-    if (
-      (flohFormType === "update-event" || flohFormType === "new-event") &&
-      !data.type
-    )
-      return alert("Please provide the type of the event");
-    const updatedEvent: iFlohmarkt = {
-      id: id || newID.current,
-      status: data.status,
-      createdAt: createdAt || newID.current,
-      time: joinTime(data.startTime, data.endTime),
-      title: data.title,
-      addedBy: userInput,
-      bezirk: data.bezirk,
-      stadtteil: data.stadtteil,
-      date: data.date,
-      address: `${data.street} ${data.number}, ${data.PLZ} ${data.city}`,
-      location: data.location,
-      lat: data.lat,
-      lon: data.lon,
-      image: imagesUrlsReady.urls[0] || "",
-      optionalComment: data.optionalComment,
-      type: data.type,
-    };
-    updateEvent(
-      updatedEvent,
-      ["new-event", "update-event"].includes(flohFormType)
-        ? "events"
-        : "flohmaerkte"
-    )
-      .then(() => {
-        setSubmitError({ isError: false, errorMessage: "" });
-        revalidatePost();
-        revalidateFlohmarkt();
-        setSuccessfulSubmit(true);
-      })
-      .then(async () => {
-        await sleep(2500);
-        router.push(
-          flohFormType === "update-flohmarkt" ||
-            flohFormType === "new-flohmarkt"
-            ? data.status === "approved"
-              ? `/flohmaerkte/${data.id}`
-              : `/flohmarkt-suggestion/${data.id}`
-            : flohFormType === "update-event" || flohFormType === "new-event"
-              ? `/events/${data.id}`
-              : "/"
+  const onupdateEvent = useCallback(
+    (data: FieldValues) => {
+      if (!imagesUrlsReady.ready) return alert("Images are not ready yet");
+      if (!userInput.email || !addedBy)
+        return alert("User data from creator needed");
+      if (!data.date) return alert("The date of the Event is required");
+      if (!data.startTime && data.endTime)
+        return alert("Please provide the start and end time of the Event");
+      if (
+        (flohFormType === "update-event" || flohFormType === "new-event") &&
+        !data.type
+      )
+        return alert("Please provide the type of the event");
+      const updatedEvent: iFlohmarkt = {
+        id: id || newID.current,
+        status: data.status,
+        createdAt: createdAt || newID.current,
+        time: joinTime(data.startTime, data.endTime),
+        title: data.title,
+        addedBy: userInput,
+        bezirk: data.bezirk,
+        stadtteil: data.stadtteil,
+        date: data.date,
+        address: `${data.street} ${data.number}, ${data.PLZ} ${data.city}`,
+        location: data.location,
+        lat: data.lat,
+        lon: data.lon,
+        image: imagesUrlsReady.urls[0] || "",
+        optionalComment: data.optionalComment,
+        type: !!data.type ? data.type : undefined,
+      };
+      updateEvent(
+        updatedEvent,
+        ["new-event", "update-event"].includes(flohFormType)
+          ? "events"
+          : "flohmaerkte"
+      )
+        .then(() => {
+          setSubmitError({ isError: false, errorMessage: "" });
+          revalidatePost();
+          revalidateFlohmarkt();
+          setSuccessfulSubmit(true);
+        })
+        .then(async () => {
+          await sleep(2500);
+          router.push(
+            flohFormType === "update-flohmarkt" ||
+              flohFormType === "new-flohmarkt"
+              ? data.status === "approved"
+                ? `/flohmaerkte/${data.id}`
+                : `/flohmarkt-suggestion/${data.id}`
+              : flohFormType === "update-event" || flohFormType === "new-event"
+                ? `/events/${data.id}`
+                : "/"
+          );
+        })
+        .catch((error) =>
+          setSubmitError({ isError: true, errorMessage: error.message })
         );
-      })
-      .catch((error) =>
-        setSubmitError({ isError: true, errorMessage: error.message })
-      );
-  };
+    },
+    [imagesUrlsReady, userInput, id, createdAt, router, addedBy, flohFormType]
+  );
 
   if (!user) {
     router.push("/");
