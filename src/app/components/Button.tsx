@@ -90,7 +90,7 @@ export default function Button<C extends React.ElementType = "button">({
   } ${
     style.fontSize[fontGrow ? "grow" : "still"][fontSize]
   } rounded-md text-center transition-all`;
-  if (as === "link")
+  if (as === "link" || !!href)
     return (
       <Link className={className} href={href}>
         {children}
