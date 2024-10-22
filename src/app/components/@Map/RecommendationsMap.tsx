@@ -1,8 +1,8 @@
 import {
+  getApprovedPostWithID,
   getEventsFromBezirkStadtteil,
   getEventWithID,
   getPostsFromBezirkStadtteile,
-  getSuggestedPostWithID,
 } from "@app/api/dbActions";
 import {
   getSpielplatzFromBezirkStadtteil,
@@ -78,12 +78,11 @@ async function getList(
       const itemsNearby =
         items || (await getItemsNearby(itemType, bezirk, stadtteile)) || [];
       acc.list[itemType] = itemsNearby;
-
       const current =
         acc.currentItem ||
         acc.list[itemType]?.find((post) => post.id === id) ||
         (type === "post"
-          ? await getSuggestedPostWithID(id.toString())
+          ? await getApprovedPostWithID(id.toString())
           : type === "flohmarkt"
             ? await getEventWithID(id.toString())
             : type === "spielplatz"
@@ -222,7 +221,6 @@ export default async function RecommendationsMap({
   };
 
   const listsLength = Object.values(defList).filter((l) => !!l?.length).length;
-
   return (
     <article
       id="map"
