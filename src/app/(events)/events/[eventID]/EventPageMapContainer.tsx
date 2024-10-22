@@ -11,26 +11,24 @@ export default async function EventPageMapContainer({
   spielplaetzeAround?: iSpielplatz[];
 }) {
   const thisWeekEvents = (await getThisWeekEvents("events")) || [];
-
   const thisWeekFlohmaerkte = (await getThisWeekEvents()) || [];
   const weitereVeranstaltungen = thisWeekEvents.filter(
     ({ id }) => id !== currentTarget.id
   );
-
   return (
     <div className="flex flex-col items-center gap-2 w-full max-w-[600px] md:max-w-[800px] rounded p-2">
       <RecommendationsMap
         bezirk={currentTarget.bezirk}
-        currentType="flohmarkt"
+        currentType="event"
         stadtteil={currentTarget.stadtteil}
         id={currentTarget.id}
         maxDistance={2000}
+        showFlohmaerkte={false}
         recommendationsList={{
           flohmaerkte: thisWeekFlohmaerkte,
           spielplaetze: spielplaetzeAround,
         }}
       />
-
       {weitereVeranstaltungen.length > 0 && (
         <>
           <hr className="w-full border-t border-hh-800 mt-4" />

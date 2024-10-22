@@ -22,7 +22,7 @@ type iButtonProps<C extends React.ElementType = "button"> = {
   children: React.ReactNode;
 } & React.ComponentPropsWithRef<C>;
 
-export default function Button<C extends React.ElementType = "button">({
+export default function Button({
   as,
   href = "/",
   children,
