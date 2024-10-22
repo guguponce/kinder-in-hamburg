@@ -303,6 +303,7 @@ export const getApprovedPostsWithCatAndBezirk = async (
     const { data, error } = await supabaseAdmin
       .from("kih-approved-blogposts")
       .select()
+      .ilike("status", "approved")
       .ilike("categories", `%${category}%`)
       .like("bezirk", bezirk);
     if (error) {
@@ -453,6 +454,7 @@ export const getApprovedPostWithCat = async (category: string) => {
     const { data, error } = await supabaseAdmin
       .from("kih-approved-blogposts")
       .select()
+      .ilike("status", "approved")
       .ilike("categories", `%${category}%`);
     if (error) {
       throw new Error(
@@ -500,6 +502,7 @@ export const getPostsByCategoryBezirkStadtteile = async (
     const { data, error } = await supabaseAdmin
       .from("kih-approved-blogposts")
       .select("*")
+      .ilike("status", "approved")
       .or(combinedCondition);
     if (error) {
       throw new Error(
@@ -517,6 +520,7 @@ export const getUserApprovedPosts = async (user: iSessionUser) => {
     const { data, error } = await supabaseAdmin
       .from("kih-approved-blogposts")
       .select("*")
+      .ilike("status", "approved")
       .match({ user_id: user.email });
     if (error) {
       throw new Error("There was a problem getting your approved posts.");
@@ -570,6 +574,7 @@ export const getPostsFromBezirkStadtteile = async (
     const { data, error } = await supabaseAdmin
       .from("kih-approved-blogposts")
       .select("*")
+      .ilike("status", "approved")
       .or(combinedCondition);
     if (error) {
       throw new Error("There was a problem getting posts from nearby.");
@@ -587,6 +592,7 @@ export const getPostWithBezirk = async (bezirk: iBezirk) => {
     const { data, error } = await supabaseAdmin
       .from("kih-approved-blogposts")
       .select("*")
+      .ilike("status", "approved")
       .in("bezirk", [bezirk]);
     if (error) {
       throw new Error("There was a problem getting the posts for this Bezirk.");
@@ -686,6 +692,7 @@ export const getApprovedPostWithID = async (id: string) => {
     const res = await supabaseAdmin
       .from("kih-approved-blogposts")
       .select("*")
+      .ilike("status", "approved")
       .match({ id });
     if (res.error) {
       throw new Error("The post with the id " + id + " was not found.");
@@ -723,6 +730,7 @@ export const getAllNearPosts = async (
     const { data, error } = await supabaseAdmin
       .from("kih-approved-blogposts")
       .select("*")
+      .ilike("status", "approved")
       .ilike(stadtteil ? "stadtteil" : "bezirk", stadtteil || bezirk)
       .like("bezirk", bezirk);
     if (error) {
@@ -992,6 +1000,21 @@ export const getAllApprovedEvents = async (
       .from(eventTable)
       .select("*")
       .ilike("status", "approved");
+    if (error) {
+      throw new Error("There was a problem getting the events.");
+    }
+    return data.map((f) => parseFlohmarkt(f)) as iFlohmarkt[];
+  } catch (error) {
+    return false;
+  }
+};
+
+export const getAllEventsFromType = async (type: string) => {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("events")
+      .select("*")
+      .ilike("type", type);
     if (error) {
       throw new Error("There was a problem getting the events.");
     }
