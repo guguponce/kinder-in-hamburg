@@ -165,7 +165,6 @@ export default function FlohForm({
         optionalComment: data.optionalComment,
         type: !!data.type ? data.type : undefined,
       };
-      console.log("e", eventSuggestion);
       addEvent(
         eventSuggestion,
         flohFormType === "new-event" ? "events" : "flohmaerkte"
