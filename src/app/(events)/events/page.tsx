@@ -56,7 +56,6 @@ export const metadata: Metadata = {
 export default async function EventPage() {
   const { events, flohmaerkte } =
     (await getApprovedEventsAndFlohmaerkte()) || {};
-  console.log(events?.length, flohmaerkte?.length);
   if (!events || !flohmaerkte)
     return <NotFound multiples={true} type="event" />;
 

@@ -1,7 +1,7 @@
 import WIcon from "@app/components/@Icons/@WeatherIcon/WeatherIcon";
 import { WEATHER_CODES } from "@app/utils/constants";
 import { whenWillRainLater } from "@app/utils/functions";
-import { iCurrentWeather, iWeatherData } from "@app/utils/types";
+import { iWeatherData } from "@app/utils/types";
 import React from "react";
 
 const dia = (date: Date) => {

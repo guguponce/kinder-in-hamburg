@@ -5,6 +5,7 @@ import BadenGallery from "./BadenGallery";
 import Link from "next/link";
 import { getWeatherData } from "@app/api/weatherAPI";
 import WeatherDisplay from "./WeatherDisplay";
+import Banner from "@app/components/Banner";
 
 export default async function SommerInHamburgBanner() {
   const weather = await getWeatherData();
@@ -25,25 +26,24 @@ export default async function SommerInHamburgBanner() {
   return (
     <section className="p-4 rounded-lg bg-gradient-to-b from-hh-600 to-hh-500 w-full flex gap-4 flex-col items-center max-w-[420px] sm:max-w-[800px] text-white shadow-xl bg-opacity-10 transition-all">
       <div className="sm:gap-2 flex flex-col sm:flex-row w-full items-stretch">
-        <div className="flex flex-col items-center gap-1 flex-grow">
-          <Link
-            href={"/sommer-in-hamburg"}
-            className="text-3xl md:py-4 sm:py-4 text-center font-bold p-1 sm:mb-none hover:text-hh-50 hover:scale-[1.01] transition-all"
-          >
+        <Banner.TextSide>
+          <Banner.Title href={"/sommer-in-hamburg"}>
             Sommer in Hamburg
-          </Link>
-          <p className="italic text-sm px-2">
+          </Banner.Title>
+          <Banner.Text>
             Der Sommer ist fast vorbei, aber wir haben noch ein paar
             Empfehlungen für den letzten warmen Wochen!
-          </p>
+          </Banner.Text>
           {weather && <WeatherDisplay weather={weather} />}
-        </div>
-        <BadenGallery
-          badeseen={badeseen}
-          freibaeder={freibaeder}
-          wasserspiele={wasserspiele}
-          planschbecken={planschbecken}
-        />
+        </Banner.TextSide>
+        <Banner.ImagesSide>
+          <BadenGallery
+            badeseen={badeseen}
+            freibaeder={freibaeder}
+            wasserspiele={wasserspiele}
+            planschbecken={planschbecken}
+          />
+        </Banner.ImagesSide>
       </div>
 
       <Link
