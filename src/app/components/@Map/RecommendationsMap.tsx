@@ -108,13 +108,17 @@ export default async function RecommendationsMap({
   showFlohmaerkte = true,
   showSpielplaetze = true,
   showPosts = true,
+  onlyCurrentRef = false,
 }: {
   showFlohmaerkte?: boolean;
   showPosts?: boolean;
   showSpielplaetze?: boolean;
+  onlyCurrentRef?: boolean;
   maxDistance?: number;
+
   currentType: "flohmarkt" | "post" | "spielplatz" | "event";
   id: number;
+
   bezirk: iBezirk;
   stadtteil: string;
   recommendationsList?: iListsFPS;
@@ -227,7 +231,9 @@ export default async function RecommendationsMap({
       className="w-full max-w-[800px] min-h-[400px] rounded-md bg-gradient-to-b from-hh-500 to-hh-400 flex flex-col gap-2 p-2 mx-auto text-hh-50"
     >
       <div className="w-full h-[400px] flex-grow flex flex-col">
-        <h3 className="text-xl font-semibold w-fit px-8">in der Nähe</h3>
+        {!onlyCurrentRef && (
+          <h3 className="text-xl font-semibold w-fit px-8">in der Nähe</h3>
+        )}
         <GeneralMap zoom={14} currentTarget={currentItem || undefined}>
           <MarkersLists
             lists={defList}
@@ -246,7 +252,7 @@ export default async function RecommendationsMap({
               <StandortIcon color="#b72f1e" />
               <p>{currentItem.title}</p>
             </div>
-            {showFlohmaerkte && !!defList.flohmaerkte?.length && (
+            {!onlyCurrentRef && !!defList.flohmaerkte?.length && (
               <div className="flex bg-hh-800 bg-opacity-20 rounded p-1">
                 <StandortIcon color={tags.flohmaerkte.color} />
                 <p>
@@ -260,33 +266,35 @@ export default async function RecommendationsMap({
             )}
           </div>
 
-          <div
-            className={`flex flex-col items-center ${listsLength === 3 ? (currentType === "post" ? "md:items-start" : "md:items-end") : "md:items-start"} gap-1`}
-          >
-            {Object.entries(tags).map(
-              ([key, { color, singular, plural, show }]) => {
-                const type = key as "flohmaerkte" | "posts" | "spielplaetze";
-                const list = defList[type] as iFlohmarkt[] &
-                  iPost[] &
-                  iSpielplatz[];
-                if (type === "flohmaerkte") return null;
-                return (
-                  show &&
-                  !!list?.length && (
-                    <div
-                      key={type}
-                      className="flex gap-2 bg-hh-800 bg-opacity-20 rounded p-1"
-                    >
-                      <StandortIcon color={color} />
-                      <p>
-                        {list?.length} {list?.length < 2 ? singular : plural}
-                      </p>
-                    </div>
-                  )
-                );
-              }
-            )}
-          </div>
+          {!onlyCurrentRef && (
+            <div
+              className={`flex flex-col items-center ${listsLength === 3 ? (currentType === "post" ? "md:items-start" : "md:items-end") : "md:items-start"} gap-1`}
+            >
+              {Object.entries(tags).map(
+                ([key, { color, singular, plural, show }]) => {
+                  const type = key as "flohmaerkte" | "posts" | "spielplaetze";
+                  const list = defList[type] as iFlohmarkt[] &
+                    iPost[] &
+                    iSpielplatz[];
+                  if (type === "flohmaerkte") return null;
+                  return (
+                    show &&
+                    !!list?.length && (
+                      <div
+                        key={type}
+                        className="flex gap-2 bg-hh-800 bg-opacity-20 rounded p-1"
+                      >
+                        <StandortIcon color={color} />
+                        <p>
+                          {list?.length} {list?.length < 2 ? singular : plural}
+                        </p>
+                      </div>
+                    )
+                  );
+                }
+              )}
+            </div>
+          )}
         </div>
       </div>
     </article>
