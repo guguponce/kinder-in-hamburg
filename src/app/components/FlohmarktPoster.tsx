@@ -11,8 +11,10 @@ export default function FlohmarktPoster({
   prefixLink,
   id,
   index,
+  contain = false,
   size = "medium",
 }: {
+  contain?: boolean;
   size?: "small" | "medium" | "large";
   index?: number;
   title: string;
@@ -54,7 +56,7 @@ export default function FlohmarktPoster({
           loading="lazy"
           src={image}
           alt={title}
-          className="w-full h-full object-cover rounded"
+          className={`w-full h-full rounded ${contain ? "object-contain" : "object-cover"}`}
         />
       ) : (
         <>

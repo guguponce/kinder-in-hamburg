@@ -19,7 +19,6 @@ export default function RandomRecommendation({
   const [sortedPosts, setSortedPosts] = React.useState<iPost[]>(
     originalPosts.current
   );
-  const pastIDs = useRef<number[]>([]);
   const [currentIndex, setCurrentIndex] = React.useState(0);
 
   const currentPost = useMemo(() => {
