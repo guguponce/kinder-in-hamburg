@@ -11,7 +11,7 @@ export default function Banner({
   linkText?: string;
 }) {
   return (
-    <section className="p-4 rounded-lg bg-gradient-to-b from-hh-950 to-hh-800 w-full flex gap-4 flex-col items-center max-w-[420px] sm:max-w-[800px] text-white shadow-xl bg-opacity-10 transition-all">
+    <section className="p-4 rounded-lg bg-gradient-to-b from-hh-950 to-hh-800 w-full flex gap-4 flex-col items-center max-w-[420px] sm:max-w-[600px] text-white shadow-xl bg-opacity-10 transition-all">
       <div className="sm:gap-2 flex flex-col sm:flex-row w-full items-stretch">
         {children}
       </div>
@@ -58,7 +58,7 @@ Banner.Title = function BannerTitle({
   return (
     <Link
       href={href}
-      className="text-3xl md:py-4 sm:py-4 text-center font-bold p-1 sm:mb-none hover:text-hh-50 hover:scale-[1.01] transition-all"
+      className="text-3xl sm:pt-4 text-center font-bold p-1 sm:mb-none hover:text-hh-50 hover:scale-[1.01] transition-all"
     >
       {children}
     </Link>
@@ -66,7 +66,7 @@ Banner.Title = function BannerTitle({
 };
 
 Banner.Text = function BannerText({ children }: { children: React.ReactNode }) {
-  return <p className="italic text-sm px-2">{children}</p>;
+  return <p className="italic text-sm">{children}</p>;
 };
 
 Banner.Image = function BannerImage({
