@@ -8,10 +8,12 @@ import React, { useMemo } from "react";
 export default function BezirkableEventsList({
   title,
   eventsList,
+  variant = "light",
   type = "flohmaerkte",
 }: {
   type?: "flohmaerkte" | "events";
   title?: string;
+  variant?: "light" | "dark" | "transparent-light" | "transparent-dark";
   eventsList: iFlohmarkt[];
 }) {
   const [bezirk, setBezirk] = React.useState<iBezirk | "all">("all");
@@ -29,10 +31,25 @@ export default function BezirkableEventsList({
         : eventsList.filter((ev) => ev.bezirk === bezirk),
     [bezirk, eventsList]
   );
+  const style = useMemo(() => {
+    switch (variant) {
+      case "light":
+        return "bg-white bg-opacity-75 text-hh-700";
+      case "dark":
+        return "bg-hh-700 text-white";
+      case "transparent-light":
+        return "bg-transparent text-hh-700";
+      case "transparent-dark":
+        return "bg-transparent text-white";
+      default:
+        return "bg-white bg-opacity-75 text-hh-700";
+    }
+  }, [variant]);
+
   return (
-    <section className="w-full  rounded bg-white bg-opacity-75 p-4 flex flex-col">
+    <section className={`w-full rounded  p-4 flex flex-col ${style}`}>
       {title && title !== "" && (
-        <h2 className="text-2xl font-semibold text-hh-700 text-start self-start p-2">
+        <h2 className="text-2xl font-semibold text-start self-start p-2">
           {title}{" "}
         </h2>
       )}
