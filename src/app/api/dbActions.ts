@@ -907,6 +907,24 @@ export const getSuggestedEvents = async (
     return false;
   }
 };
+
+export const getFutureApprovedEventsFromType = async (eventType: string) => {
+  const { today } = getTodayNexMonday();
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("events")
+      .select("*")
+      .ilike("type", eventType)
+      .ilike("status", "approved")
+      .gte("date", today - 1000 * 60 * 60);
+    if (error) {
+      throw new Error("There was a problem getting the events.");
+    }
+    return data.map((f) => parseFlohmarkt(f)) as iFlohmarkt[];
+  } catch (error) {
+    return false;
+  }
+};
 export const getEventWithID = async (
   id: string,
   eventTable: string = "flohmaerkte"
