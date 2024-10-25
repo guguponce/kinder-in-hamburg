@@ -452,16 +452,16 @@ export const getFirstDate = (strings: string[]) => {
   return null;
 };
 
-export function isTypeSpielplatz(item: any) {
+export function isTypeSpielplatz(item: any): item is iSpielplatz {
   return "spielgeraete" in item;
 }
-export function isTypeFlohmarkt(item: any) {
+export function isTypeFlohmarkt(item: any): item is iFlohmarkt {
   return "date" in item;
 }
-export function isTypePost(item: any) {
+export function isTypePost(item: any): item is iPost {
   return "categories" in item;
 }
-export function isTypeEvent(item: any) {
+export function isTypeEvent(item: any): item is iFlohmarkt {
   return "type" in item;
 }
 
