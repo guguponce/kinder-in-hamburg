@@ -25,9 +25,8 @@ export default function FlohmarktTemplate({
     time,
     optionalComment,
     stadtteil,
-    status,
+    type,
   },
-  creator,
   children,
 }: {
   flohmarkt: iFlohmarkt;
@@ -48,10 +47,21 @@ export default function FlohmarktTemplate({
       >
         <div className="flex justify-between items-center gap-4 w-full">
           <Link
-            href={creator ? "/dashboard" : "/flohmaerkte"}
+            href={
+              type === "laterne"
+                ? "/laternenumzuege"
+                : !!type
+                  ? "/events"
+                  : "/flohmaerkte"
+            }
             className="text-sm text-hh-700 px-2 py-1 hover:underline hover:underline-offset-4 min-w-fit"
           >
-            ← {creator ? "Dashboard" : "Alle Flohmärkte"}
+            ← Alle
+            {type === "laterne"
+              ? " Laternenumzüge"
+              : !!type
+                ? " Events"
+                : " Flohmärkte"}
           </Link>
           <div
             id="categories"
