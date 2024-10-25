@@ -47,7 +47,9 @@ export default function BezirkableEventsList({
   }, [variant]);
 
   return (
-    <section className={`w-full rounded  p-4 flex flex-col ${style}`}>
+    <section
+      className={`w-full rounded sm:px-2 md:px-4 my-2 flex flex-col ${style}`}
+    >
       {title && title !== "" && (
         <h2 className="text-2xl font-semibold text-start self-start p-2">
           {title}{" "}
@@ -56,10 +58,10 @@ export default function BezirkableEventsList({
       <select
         name="bezirk"
         id="bezirk-select"
-        className="px-2 py-1 ml-4 rounded-md bg-hh-600 font-semibold text-white w-fit"
+        className="px-2 py-1 ml-2 rounded-md bg-hh-600 font-semibold text-white w-fit"
         onChange={(e) => setBezirk(e.target.value as iBezirk)}
       >
-        <option value="all">In alle Bezirke</option>
+        <option value="all">In allen Bezirken</option>
         {bezirkeList.map((bezirk) => (
           <option key={bezirk} value={bezirk}>
             {bezirk}

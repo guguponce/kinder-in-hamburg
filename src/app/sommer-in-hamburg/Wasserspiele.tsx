@@ -35,7 +35,7 @@ export default function Wasserspiele({
           className="px-2 py-1 rounded-md bg-hh-600 font-semibold text-white w-fit"
           onChange={(e) => setBezirk(e.target.value as iBezirk)}
         >
-          <option value="all">In alle Bezirke</option>
+          <option value="all">In allen Bezirken</option>
           {availableBezirke.map((bezirk) => (
             <option key={bezirk} value={bezirk}>
               {bezirk}
