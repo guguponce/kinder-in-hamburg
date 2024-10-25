@@ -1,16 +1,22 @@
 "use client";
-import { iPost, iSpielplatz } from "@app/utils/types";
+import { iFlohmarkt, iPost, iSpielplatz } from "@app/utils/types";
 import React, { useMemo, useRef } from "react";
 import TriangleIcon from "./@Icons/TriangleIcon";
 import ShuffleIcon from "./@Icons/ShuffleIcon";
 import SpielplatzPoster from "./SpielplatzPoster";
 import Link from "next/link";
-import { isTypeSpielplatz } from "@app/utils/functions";
+import {
+  isTypeFlohmarkt,
+  isTypePost,
+  isTypeSpielplatz,
+} from "@app/utils/functions";
 import PostPoster from "./PostPoster";
+import FlohmarktPoster from "./FlohmarktPoster";
 
 export default function ShuffleGallery({
   children,
   list,
+  size = "medium",
   shuffle,
   idSetter,
   titleUnder = false,
@@ -20,7 +26,7 @@ export default function ShuffleGallery({
   dark?: boolean;
   shuffle?: boolean;
   size?: "small" | "medium" | "large";
-  list: iSpielplatz[] | iPost[] | Array<iPost | iSpielplatz>;
+  list: iSpielplatz[] | iPost[] | Array<iPost | iSpielplatz> | iFlohmarkt[];
   children?: React.ReactNode;
   idSetter?: React.Dispatch<React.SetStateAction<number>>;
 }) {
@@ -34,7 +40,7 @@ export default function ShuffleGallery({
 
   const article = useMemo(() => {
     if (originalList.length === 0) return undefined;
-    const currentArticle = originalList[currentIndex] || originalList[0];
+    const currentArticle = originalList[currentIndex];
     if (isTypeSpielplatz(currentArticle)) {
       const { spielgeraete = [] } = currentArticle as iSpielplatz;
       const backupImg = ["spielplatz", ...(spielgeraete || [])][
@@ -43,10 +49,13 @@ export default function ShuffleGallery({
           spielgeraete.length
       ];
       return { currentArticle, backupImg };
-    } else {
+    } else if (isTypePost(currentArticle)) {
       const backupImg = currentArticle.image
         ? currentArticle.image[0]
         : undefined;
+      return { currentArticle, backupImg };
+    } else {
+      const backupImg = currentArticle.image ? currentArticle.image : undefined;
       return { currentArticle, backupImg };
     }
   }, [currentIndex, originalList]);
@@ -58,41 +67,62 @@ export default function ShuffleGallery({
         dark ? "bg-hh-700" : "bg-hh-400"
       } bg-opacity-25 h-full gap-2 p-2 ${shuffle ? "pb-12" : ""}`}
     >
-      <article className="h-full w-full md:aspect-square border border-hh-200 shadow-sm rounded bg-hh-400 bg-opacity-25 flex flex-col items-center gap-2 relative">
-        <Link
-          href={`${
-            isTypeSpielplatz(currentArticle) ? "/spielplaetze/" : "/posts/"
-          }${currentArticle.id}`}
-          className="hover:brightness-110 hover:shadow-2xl shadow-sm w-full h-full rounded-md overflow-hidden"
-        >
-          {isTypeSpielplatz(currentArticle) ? (
-            <SpielplatzPoster
-              titleUnder={titleUnder}
+      <article className="h-full w-full md:aspect-square border border-hh-200 shadow-sm rounded overflow-hidden bg-hh-400 bg-opacity-25 flex flex-col items-center gap-2 relative">
+        {isTypeFlohmarkt(currentArticle) ? (
+          <div className="mx-auto h-full object-contain aspect-square sm:w-full  flex justify-center items-center">
+            <FlohmarktPoster
+              contain
               bezirk={currentArticle.bezirk}
-              stadtteil={currentArticle.stadtteil}
-              backupImg={backupImg as string}
+              date={currentArticle.date}
               title={currentArticle.title}
-              image={currentArticle.image ? currentArticle.image[0] : undefined}
-              spielgeraete={(currentArticle as iSpielplatz).spielgeraete}
+              image={currentArticle.image ? currentArticle.image : backupImg}
+              prefixLink={!!currentArticle.type ? "/events/" : "/flohmaerkte/"}
+              size={size}
+              id={currentArticle.id}
             />
-          ) : (
-            <PostPoster
-              titleUnder={titleUnder}
-              title={currentArticle.title}
-              image={currentArticle.image ? currentArticle.image[0] : undefined}
-              bezirk={currentArticle.bezirk}
-              stadtteil={currentArticle.stadtteil}
-            />
-          )}
-        </Link>
+          </div>
+        ) : (
+          <Link
+            href={`${
+              isTypeSpielplatz(currentArticle) ? "/spielplaetze/" : "/posts/"
+            }${currentArticle.id}`}
+            className="hover:brightness-110 hover:shadow-2xl shadow-sm w-full h-full overflow-hidden"
+          >
+            {isTypeSpielplatz(currentArticle) ? (
+              <SpielplatzPoster
+                titleUnder={titleUnder}
+                bezirk={currentArticle.bezirk}
+                stadtteil={currentArticle.stadtteil}
+                backupImg={backupImg as string}
+                title={currentArticle.title}
+                image={
+                  currentArticle.image ? currentArticle.image[0] : undefined
+                }
+                spielgeraete={currentArticle.spielgeraete}
+              />
+            ) : (
+              isTypePost(currentArticle) && (
+                <PostPoster
+                  titleUnder={titleUnder}
+                  title={currentArticle.title}
+                  image={
+                    currentArticle.image ? currentArticle.image[0] : undefined
+                  }
+                  bezirk={currentArticle.bezirk}
+                  stadtteil={currentArticle.stadtteil}
+                />
+              )
+            )}
+          </Link>
+        )}
       </article>
       {originalList.length > 1 && (
         <div
           className={`absolute ${
             shuffle
-              ? "bottom-1 justify-around"
-              : "top-1/2 -translate-y-1/2 -translate-x-1/2 left-1/2 justify-between px-1"
-          } flex items-center w-3/4 gap-2`}
+              ? "bottom-1 justify-around w-3/4"
+              : "top-1/2 -translate-y-1/2 -translate-x-1/2 left-1/2 justify-between px-1 w-[calc(100%-1rem)]"
+          } flex items-center  gap-2`}
         >
           <button
             title="Previous Post"
