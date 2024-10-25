@@ -25,8 +25,10 @@ export default function DynamicEventsMap({
   thisWeek,
   future = [],
   square = true,
+  darkBackground = false,
 }: {
   today: number;
+  darkBackground?: boolean;
   thisWeek: iFlohmarkt[];
   future?: iFlohmarkt[];
   square?: boolean;
@@ -179,10 +181,12 @@ export default function DynamicEventsMap({
         className="px-2 pb-2 w-full md:w-1/4 xs:min-w-[300px] max-w-[80vw] lg:w-full flex flex-col"
       >
         <ScrollableContainer vertical>
-          <div className="w-full h-full flex flex-wrap px-2 md:px-0">
+          <div
+            className={`w-full h-full flex flex-wrap px-2 md:px-0 ${darkBackground ? "text-hh-100" : "text-hh-800"}`}
+          >
             <div className="flex w-full flex-col">
-              <h3 className="font-bold text-lg p-2 text-hh-800">Termine</h3>
-              <div className="flex flex-wrap gap-2 items-center">
+              <h3 className="font-bold text-lg p-2">Termine</h3>
+              <div className="flex flex-wrap gap-2 items-center  pb-2 px-2">
                 {Object.keys(eventsByDate.current)
                   .sort((a, b) => parseInt(a) - parseInt(b))
                   .map((date) => (
@@ -195,12 +199,16 @@ export default function DynamicEventsMap({
                         );
                       }}
                       className={`text-sm p-1 border-2  border-hh-600 rounded-md ${
-                        selectedDate === parseInt(date)
-                          ? "bg-hh-800 text-hh-50  hover:bg-hh-600 hover:text-hh-50"
-                          : "bg-hh-50 text-hh-800  hover:bg-hh-600 hover:text-hh-50"
+                        darkBackground
+                          ? selectedDate === parseInt(date)
+                            ? "bg-hh-50 text-hh-800  hover:bg-hh-600 hover:text-hh-50 outline outline-1 outline-hh-200 outline-offset-1 "
+                            : "bg-hh-800 text-hh-50  hover:bg-hh-600 hover:text-hh-50"
+                          : selectedDate === parseInt(date)
+                            ? "bg-hh-800 text-hh-50  hover:bg-hh-600 hover:text-hh-50"
+                            : "bg-hh-50 text-hh-800  hover:bg-hh-600 hover:text-hh-50"
                       } transition-all`}
                     >
-                      {selectedDate === today
+                      {getDate(parseInt(date)) === getDate(today)
                         ? "Heute"
                         : getDate(parseInt(date))}
                     </button>
@@ -212,20 +220,24 @@ export default function DynamicEventsMap({
                       setFutureSelected((prev) => !prev);
                     }}
                     className={`text-sm p-1 w-fit border-2 border-hh-600 rounded-md ${
-                      !futureSelected
-                        ? "bg-hh-50 text-hh-800  hover:bg-hh-600 hover:text-hh-50"
-                        : "bg-hh-800 text-hh-50  hover:bg-hh-600 hover:text-hh-50"
+                      darkBackground
+                        ? futureSelected
+                          ? "bg-hh-50 text-hh-800  hover:bg-hh-600 hover:text-hh-50  outline outline-1 outline-hh-200 outline-offset-1"
+                          : "bg-hh-800 text-hh-50  hover:bg-hh-600 hover:text-hh-50"
+                        : futureSelected
+                          ? "bg-hh-800 text-hh-50  hover:bg-hh-600 hover:text-hh-50"
+                          : "bg-hh-50 text-hh-800  hover:bg-hh-600 hover:text-hh-50"
                     } transition-all`}
                   >
-                    Zukünftige Flohmärkte
+                    Zukünftige Veranstaltungen
                   </button>
                 )}
               </div>
             </div>
 
             <div className="flex w-full flex-col">
-              <h3 className="font-bold text-lg p-2 text-hh-800">Bezirke</h3>
-              <div className="flex flex-wrap gap-2 items-center">
+              <h3 className="font-bold text-lg p-2">Bezirke</h3>
+              <div className="flex flex-wrap gap-2 items-center pb-2 px-2">
                 {bezirke.current.map((item) => (
                   <button
                     key={item}
@@ -237,9 +249,13 @@ export default function DynamicEventsMap({
                       );
                     }}
                     className={`text-sm p-1 border-2 border-hh-600 rounded-md ${
-                      selectedBezirk === item
-                        ? "bg-hh-800 text-hh-50  hover:bg-hh-600 hover:text-hh-50"
-                        : "bg-hh-50 text-hh-800  hover:bg-hh-600 hover:text-hh-50"
+                      darkBackground
+                        ? selectedBezirk === item
+                          ? "bg-hh-50 text-hh-800  hover:bg-hh-600 hover:text-hh-50 outline outline-1 outline-hh-200 outline-offset-1"
+                          : "bg-hh-800 text-hh-50  hover:bg-hh-600 hover:text-hh-50"
+                        : selectedBezirk === item
+                          ? "bg-hh-800 text-hh-50  hover:bg-hh-600 hover:text-hh-50"
+                          : "bg-hh-50 text-hh-800  hover:bg-hh-600 hover:text-hh-50"
                     } transition-all`}
                   >
                     {item}
