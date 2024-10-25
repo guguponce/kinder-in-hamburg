@@ -215,6 +215,22 @@ picture {
   background-color: $hh-500;
 }
 
+.laterneIcon {
+  background-image: url("/assets/icons/laterne/latMapIcon.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent;
+}
+
+.laterneWalkerIcon {
+  background-image: url("/assets/icons/laterne/laterne.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent;
+}
+
 .clusterIconFlohmarkt {
   background: radial-gradient(circle, #7b3e5e, #7b3e5e 50%, #7b3e5e80 50%);
   &:hover {
