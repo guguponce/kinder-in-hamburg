@@ -23,6 +23,7 @@ export default async function EventPageMapContainer({
         stadtteil={currentTarget.stadtteil}
         id={currentTarget.id}
         maxDistance={2000}
+        onlyCurrentRef
         showFlohmaerkte={false}
         recommendationsList={{
           flohmaerkte: thisWeekFlohmaerkte,
