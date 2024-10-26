@@ -7,7 +7,7 @@ export default function LaternenBanner() {
   return (
     <Banner href="/laternenumzuege" linkText="alle entdecken">
       <Banner.TextSide>
-        <Banner.Title href={"/laternenumzug"}>Laternenumzüge</Banner.Title>
+        <Banner.Title href={"/laternenumzuege"}>Laternenumzüge</Banner.Title>
         <Banner.Text>
           Eine der beliebtesten Herbsttraditionen für Kinder und Familien. Hier
           könnt ihr mit euren Laternen durch die Straßen ziehen und gemeinsam
