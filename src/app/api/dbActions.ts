@@ -914,6 +914,7 @@ export const getFutureApprovedEventsFromType = async (eventType: string) => {
     const { data, error } = await supabaseAdmin
       .from("events")
       .select("*")
+      .order("date", { ascending: true })
       .ilike("type", eventType)
       .ilike("status", "approved")
       .gte("date", today - 1000 * 60 * 60);

@@ -1,7 +1,6 @@
-import { getAllEventsFromType } from "@app/api/dbActions";
+import { getFutureApprovedEventsFromType } from "@app/api/dbActions";
 import NotFound from "@app/components/@NotFound/NotFound";
 import BezirkableEventsList from "@app/components/BezirkableEventsList";
-import AdminRoute from "@app/providers/AdminRoute";
 import React from "react";
 import { getTodayNexMonday } from "@app/utils/functions";
 import dynamic from "next/dynamic";
@@ -22,7 +21,7 @@ const DynamicEventsMap = dynamic(
   }
 );
 export default async function LaternenumzuegePage() {
-  const laternenEvents = await getAllEventsFromType("laterne");
+  const laternenEvents = await getFutureApprovedEventsFromType("laterne");
   if (!laternenEvents) return <NotFound multiples type="event" />;
   if (!laternenEvents.length) return;
   const { today, nextMonday } = getTodayNexMonday();
