@@ -2,10 +2,17 @@ import Banner from "@app/components/Banner";
 import React from "react";
 import LaternenGallery from "./LaternenGallery";
 import LaterneImage from "./LaterneImage";
+import Image from "next/image";
 
 export default function LaternenBanner() {
   return (
     <Banner href="/laternenumzuege" linkText="alle entdecken">
+      <Image
+        layout="fill"
+        src={"/assets/icons/laterne/stars.svg"}
+        alt="stars"
+        className="absolute top-0 -left-10 min-w-[1200px] max-h-[150px] bg-opacity-25 rounded-lg opacity-50 -z-1"
+      />
       <Banner.TextSide>
         <Banner.Title href={"/laternenumzuege"}>Laternenumzüge</Banner.Title>
         <Banner.Text>

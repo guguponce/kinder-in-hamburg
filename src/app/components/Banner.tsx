@@ -1,6 +1,5 @@
 import Link from "next/link";
 import React from "react";
-import Image from "next/image";
 
 export default function Banner({
   children,
@@ -13,12 +12,6 @@ export default function Banner({
 }) {
   return (
     <section className="p-4 relative rounded-lg bg-gradient-to-b from-hh-950 to-hh-800 w-full flex gap-4 flex-col items-center max-w-[420px] sm:max-w-[800px] text-white shadow-xl bg-opacity-10 transition-all overflow-hidden">
-      <Image
-        layout="fill"
-        src={"/assets/icons/laterne/stars.svg"}
-        alt="stars"
-        className="absolute top-0 w-fit h-[200px] w-auto md:h-fit max-h-24 bg-opacity-25 rounded-lg opacity-50 -z-1"
-      />
       <div className="sm:gap-2 flex flex-col sm:flex-row w-full items-stretch">
         {children}
       </div>
