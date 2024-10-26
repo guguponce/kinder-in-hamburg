@@ -953,18 +953,19 @@ export const getEventMetadata = async (
   try {
     const { data, error } = await supabase
       .from(eventTable)
-      .select("title,bezirk,optionalComment")
+      .select("title,bezirk,optionalComment,image")
       .match({ id })
       .single();
     if (error) {
       return false;
     }
-    const { title, bezirk, optionalComment } = data as {
+    const { title, bezirk, optionalComment, image } = data as {
       title: string;
       bezirk: iBezirk;
       optionalComment: string;
+      image?: string;
     };
-    return { title, bezirk, optionalComment };
+    return { title, bezirk, optionalComment, image };
   } catch (error) {
     return false;
   }
