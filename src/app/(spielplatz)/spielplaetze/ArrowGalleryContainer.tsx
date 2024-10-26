@@ -7,7 +7,7 @@ import { iFlohmarkt, iSpielplatz } from "@app/utils/types";
 import React, { useCallback, useMemo, useRef } from "react";
 
 export default function ArrowGalleryContainer<
-  T extends iSpielplatz[] | iFlohmarkt[]
+  T extends iSpielplatz[] | iFlohmarkt[],
 >({ list }: { list: T }) {
   const originalList = useRef(list || []);
   const randomSPGeraeteIndex = useRef(Math.random());
@@ -69,6 +69,7 @@ export default function ArrowGalleryContainer<
     return (
       <ArrowGallery handleIndex={handleIndex} length={list.length}>
         <FlohmarktPoster
+          contain
           bezirk={bezirk}
           date={date}
           id={id}

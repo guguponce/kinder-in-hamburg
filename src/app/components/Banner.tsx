@@ -1,6 +1,5 @@
 import Link from "next/link";
 import React from "react";
-import stars from "../../../public/assets/icons/laterne/stars.svg";
 import Image from "next/image";
 
 export default function Banner({
