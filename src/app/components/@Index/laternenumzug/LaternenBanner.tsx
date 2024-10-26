@@ -21,7 +21,7 @@ export default function LaternenBanner() {
           <LaterneImage />
         </div>
       </Banner.TextSide>
-      <div className="h-full self-center mt-4 flex items-center aspect-[2/3] max-w-52 sm:items-stretch justify-around flex-col sm:flex-row gap-4 p-2 rounded">
+      <div className="min-h-full min-w-[320px] self-center md:self-stretch mt-4 flex items-center md:max-w-none max-w-52 sm:items-stretch justify-around flex-col sm:flex-row gap-4 p-2 rounded rounded">
         <LaternenGallery />
       </div>
     </Banner>
