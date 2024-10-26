@@ -1,6 +1,7 @@
 "use client";
 import TriangleIcon from "@app/components/@Icons/TriangleIcon";
 import FlohmarktPoster from "@app/components/FlohmarktPoster";
+import { getDate } from "@app/utils/functions";
 import { iFlohmarkt } from "@app/utils/types";
 import React from "react";
 
@@ -70,18 +71,36 @@ export default function ClientGallery({
   if (!currentLatern.lat || !currentLatern.lon) handleIndex("next");
   return (
     <ArrowGallery length={laternenList.length} handleIndex={handleIndex}>
-      <div className="w-[180px] aspect-[2/3] flex flex-col rounded">
-        <FlohmarktPoster
-          bezirk={currentLatern.bezirk}
-          date={currentLatern.date}
-          id={currentLatern.id}
-          image={currentLatern.image}
-          title={currentLatern.title}
-          index={index}
-          prefixLink="/events/"
-          size="small"
-          contain
-        />
+      <div className="relative w-[180px] aspect-[2/3] flex flex-col rounded border-2 border-hh-600">
+        {!currentLatern.image ? (
+          <div className="absolute top-0 left-0 w-full h-full flex justify-around flex-col items-center text-orange-200">
+            <h3 className="text-center text-sm font-semibold bg-hh-950 bg-opacity-50 p-1 rounded">
+              {currentLatern.title}
+            </h3>
+            <div className="flex items-center flex-col gap-1">
+              <h4 className="text-center text-xs font-semibold bg-hh-950 bg-opacity-50 p-1 rounded">
+                {currentLatern.bezirk}
+              </h4>
+              <h4 className="text-center text-xs font-semibold bg-hh-950 bg-opacity-50 p-1 rounded">
+                {getDate(currentLatern.date)}
+              </h4>
+            </div>
+          </div>
+        ) : (
+          <div className="w-full h-full bg-hh-800 z-50">
+            <FlohmarktPoster
+              bezirk={currentLatern.bezirk}
+              date={currentLatern.date}
+              id={currentLatern.id}
+              image={currentLatern.image}
+              title={currentLatern.title}
+              index={index}
+              prefixLink="/events/"
+              size="small"
+              contain
+            />
+          </div>
+        )}
       </div>
     </ArrowGallery>
   );

@@ -15,7 +15,7 @@ export default function LaternenBanner() {
           Laternenumzüge in Hamburg.
         </Banner.Text>
         <div
-          className="flex-grow min-h-32 aspect-square"
+          className="flex-grow min-h-32 h-32 xs:h-fit aspect-square min-w-32 mt-2 relative"
           style={{ transform: "rotateY(180deg)" }}
         >
           <LaterneImage />

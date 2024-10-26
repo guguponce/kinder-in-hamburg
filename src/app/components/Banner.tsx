@@ -84,7 +84,7 @@ Banner.Image = function BannerImage({
   alt: string;
 }) {
   return (
-    <div className="w-full aspect-square">
+    <div className="w-full aspect-square outline-1 outline-hh-200">
       <img
         src={src}
         alt={alt}
