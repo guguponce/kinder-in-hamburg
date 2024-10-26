@@ -1,6 +1,6 @@
 import { getFutureApprovedEventsFromType } from "@app/api/dbActions";
-import ShuffleGallery from "@app/components/ShuffleGallery";
 import React from "react";
+import ClientGallery from "./ClientGallery";
 
 export default async function LaternenGallery() {
   const laterneEvents =
@@ -9,7 +9,7 @@ export default async function LaternenGallery() {
 
   return (
     <>
-      <ShuffleGallery list={laterneEvents} />
+      <ClientGallery laternenList={laterneEvents} />
     </>
   );
 }
