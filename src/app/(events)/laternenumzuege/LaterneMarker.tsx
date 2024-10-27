@@ -1,6 +1,5 @@
 "use client";
-import { createStandortMapIcon } from "@app/utils/functions";
-import { Marker, Popup } from "react-leaflet";
+import { Marker } from "react-leaflet";
 import { divIcon } from "leaflet";
 import FlohmarktPopUP from "@app/components/@Map/PopUpsMarkers/FlohmarktPopUP";
 
@@ -17,8 +16,10 @@ export const LaterneMarker = ({
   id,
   address,
   date,
+  type,
   image,
 }: {
+  type?: "flohmaerkte" | "events";
   date: number;
   image?: string;
   address: string;
@@ -35,6 +36,7 @@ export const LaterneMarker = ({
         date={date}
         image={image}
         id={id}
+        type="events"
       />
     </Marker>
   );

@@ -10,5 +10,5 @@ export default function LaternenMap({
 }: {
   children?: React.ReactNode;
 }) {
-  return <GeneralMap>{children}</GeneralMap>;
+  return <GeneralMap zoom={9}>{children}</GeneralMap>;
 }

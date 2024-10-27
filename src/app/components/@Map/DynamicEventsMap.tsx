@@ -112,7 +112,7 @@ export default function DynamicEventsMap({
               )
             : selectedDate === today
               ? displayedMarkers[selectedDate].map(
-                  ({ id, lat, lon, address, date, title, bezirk }) =>
+                  ({ id, lat, lon, address, date, title, bezirk, type }) =>
                     selectedBezirk && bezirk !== selectedBezirk ? null : (
                       <React.Fragment key={id}>
                         <Marker
@@ -125,6 +125,7 @@ export default function DynamicEventsMap({
                             address={address}
                             date={date}
                             title={title}
+                            type={!type ? "flohmaerkte" : "events"}
                           />
                         </Marker>
                       </React.Fragment>
@@ -154,23 +155,25 @@ export default function DynamicEventsMap({
                 })
               }
             >
-              {future.map(({ id, lat, lon, address, date, title, bezirk }) =>
-                selectedBezirk && bezirk !== selectedBezirk ? null : (
-                  <React.Fragment key={id}>
-                    <Marker
-                      icon={futureIcon}
-                      key={id}
-                      position={[lat || 53.5511, lon || 9.9937]}
-                    >
-                      <FlohmarktPopUP
-                        id={id}
-                        address={address}
-                        date={date}
-                        title={title}
-                      />
-                    </Marker>
-                  </React.Fragment>
-                )
+              {future.map(
+                ({ id, lat, lon, address, date, title, bezirk, type }) =>
+                  selectedBezirk && bezirk !== selectedBezirk ? null : (
+                    <React.Fragment key={id}>
+                      <Marker
+                        icon={futureIcon}
+                        key={id}
+                        position={[lat || 53.5511, lon || 9.9937]}
+                      >
+                        <FlohmarktPopUP
+                          id={id}
+                          address={address}
+                          date={date}
+                          title={title}
+                          type={!type ? "flohmaerkte" : "events"}
+                        />
+                      </Marker>
+                    </React.Fragment>
+                  )
               )}
             </MarkerClusterGroup>
           )}
