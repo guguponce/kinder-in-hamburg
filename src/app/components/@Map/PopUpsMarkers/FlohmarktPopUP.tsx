@@ -10,12 +10,14 @@ export default function FlohmarktPopUP({
   address,
   date,
   image,
+  type = "flohmaerkte",
 }: {
   image?: string;
   id: number;
   title: string;
   address: string;
   date: number;
+  type?: "flohmaerkte" | "events";
 }) {
   return (
     <Popup className="font-sans">
@@ -31,7 +33,7 @@ export default function FlohmarktPopUP({
         )}
         <div className="flex-1">
           <Link
-            href={`/flohmaerkte/${id}`}
+            href={`/${type}/${id}`}
             className="font-semibold text-base block"
           >
             {title}

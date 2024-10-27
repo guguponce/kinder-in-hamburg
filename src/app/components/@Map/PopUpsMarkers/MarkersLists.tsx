@@ -99,7 +99,7 @@ export default function MarkersLists({
         <ConditionalCluster cluster={cluster} type="flohmarkt">
           {flohmaerkte
             .filter(({ lat, lon }) => !!lat && !!lon)
-            .map(({ lon, lat, image, address, id, title, date }) => (
+            .map(({ lon, lat, image, address, id, title, date, type }) => (
               <Marker
                 icon={flohmarktIcon}
                 key={"marker" + id}
@@ -111,6 +111,7 @@ export default function MarkersLists({
                   title={title}
                   image={image}
                   id={id}
+                  type={!type ? "flohmaerkte" : "events"}
                 />
               </Marker>
             ))}
