@@ -4,6 +4,9 @@ import BezirkableEventsList from "@app/components/BezirkableEventsList";
 import React from "react";
 import { getTodayNexMonday } from "@app/utils/functions";
 import dynamic from "next/dynamic";
+import AdminServerComponent from "@app/providers/AdminServerComponents";
+import Link from "next/link";
+import AddLatLon from "@app/components/AddLatLon";
 
 const DynamicEventsMap = dynamic(
   () => import("../../components/@Map/DynamicEventsMap"),
@@ -29,6 +32,26 @@ export default async function LaternenumzuegePage() {
   const orderedEvents = laternenEvents.sort((a, b) => a.date - b.date);
   return (
     <main className="flex flex-col w-full max-w-[800px] p-1">
+      <AdminServerComponent>
+        <div className="flex flex-col gap-1 outline outline-2 outline-hh-200">
+          {laternenEvents.map((event) =>
+            event.status !== "approved" || !event.lat || !event.lon ? (
+              <Link
+                key={event.id}
+                href={"/events/" + event.id}
+                className="flex gap-2 items-center flex-wrap bg-hh-600 text-hh-50"
+              >
+                <span className="font-semibold">{event.title}</span>
+                {event.status !== "approved" && (
+                  <span className="font-semibold">{event.status}</span>
+                )}
+
+                {!event.lat || (!event.lon && <AddLatLon item={event} />)}
+              </Link>
+            ) : null
+          )}
+        </div>
+      </AdminServerComponent>
       <section className="p-4 rounded-lg bg-gradient-to-b from-hh-950 to-hh-800 w-full flex gap-4 flex-col items-center sm:max-w-[800px] text-white shadow-xl bg-opacity-10 transition-all">
         <div className="w-full flex gap-2 justify-between items-stretch">
           {/* <div className="h-10 laterneWalkerIcon aspect-square "></div> */}
