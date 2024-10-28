@@ -18,9 +18,10 @@ export const bezirke: iBezirk[] = [
 ];
 
 export const eventTypes: iEventType[] = [
-  "flohmarkt",
   "laterne",
+  "laternewerkstatt",
   "weinachtsmarkt",
+  "flohmarkt",
 ];
 
 export const categoryNames = [

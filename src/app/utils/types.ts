@@ -401,7 +401,11 @@ export interface iFlohmarkt {
   type?: iEventType;
 }
 
-export type iEventType = "flohmarkt" | "laterne" | "weinachtsmarkt";
+export type iEventType =
+  | "flohmarkt"
+  | "laterne"
+  | "weinachtsmarkt"
+  | "laternewerkstatt";
 
 export interface iStringifiedFlohmarkt extends Omit<iFlohmarkt, "addedBy"> {
   addedBy: string;
