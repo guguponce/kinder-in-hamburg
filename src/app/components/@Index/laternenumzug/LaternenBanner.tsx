@@ -8,10 +8,11 @@ export default function LaternenBanner() {
   return (
     <Banner href="/laternenumzuege" linkText="alle entdecken">
       <Image
-        layout="fill"
+        style={{ left: "-6px" }}
+        fill
         src={"/assets/icons/laterne/stars.svg"}
         alt="stars"
-        className="absolute top-0 -left-10 min-w-[1200px] max-h-[150px] bg-opacity-25 rounded-lg opacity-50 -z-1"
+        className="absolute top-0 min-w-[1200px] max-h-[150px] bg-opacity-25 rounded-lg opacity-50 -z-1"
       />
       <Banner.TextSide>
         <Banner.Title href={"/laternenumzuege"}>Laternenumzüge</Banner.Title>
@@ -28,7 +29,7 @@ export default function LaternenBanner() {
           <LaterneImage />
         </div>
       </Banner.TextSide>
-      <div className="min-h-full min-w-[320px] self-center md:self-stretch mt-4 flex items-center md:max-w-none max-w-52 sm:items-stretch justify-around flex-col sm:flex-row gap-4 p-2 rounded rounded">
+      <div className="min-h-full min-w-[320px] self-center md:self-stretch mt-4 flex items-center md:max-w-none max-w-52 sm:items-stretch justify-around flex-col sm:flex-row gap-4 rounded rounded">
         <LaternenGallery />
       </div>
     </Banner>

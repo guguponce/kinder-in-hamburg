@@ -11,7 +11,7 @@ export default function Banner({
   linkText?: string;
 }) {
   return (
-    <section className="p-4 relative rounded-lg bg-gradient-to-b from-hh-950 to-hh-800 w-full flex gap-4 flex-col items-center max-w-[420px] sm:max-w-[800px] text-white shadow-xl bg-opacity-10 transition-all overflow-hidden">
+    <section className="p-4 relative rounded-lg bg-gradient-to-b from-hh-950 to-hh-800 w-full flex gap-2 md:gap-4 flex-col items-center max-w-[420px] sm:max-w-[800px] text-white shadow-xl bg-opacity-10 transition-all overflow-hidden">
       <div className="sm:gap-2 flex flex-col sm:flex-row w-full items-stretch">
         {children}
       </div>
@@ -32,7 +32,9 @@ Banner.TextSide = function BannerTextSide({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col items-center gap-1 flex-grow">{children}</div>
+    <div className="flex flex-col items-center gap-1 flex-grow px-2">
+      {children}
+    </div>
   );
 };
 
