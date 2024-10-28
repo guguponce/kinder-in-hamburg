@@ -1,8 +1,8 @@
 "use client";
 import TriangleIcon from "@app/components/@Icons/TriangleIcon";
 import FlohmarktPoster from "@app/components/FlohmarktPoster";
-import { getDate } from "@app/utils/functions";
 import { iFlohmarkt } from "@app/utils/types";
+import Link from "next/link";
 import React from "react";
 
 export function ArrowGallery({
@@ -69,25 +69,35 @@ export default function ClientGallery({
   };
   const currentLatern = laternenList[index];
   if (!currentLatern.lat || !currentLatern.lon) handleIndex("next");
+  const date = new Date(currentLatern.date).toLocaleDateString("de-DE", {
+    day: "2-digit",
+    month: "2-digit",
+  });
   return (
     <ArrowGallery length={laternenList.length} handleIndex={handleIndex}>
-      <div className="relative w-[180px] aspect-[2/3] flex flex-col rounded border-2 border-hh-600">
+      <div className="relative w-[180px] aspect-[2/3] flex flex-col items-center">
         {!currentLatern.image ? (
-          <div className="absolute top-0 left-0 w-full h-full flex justify-around flex-col items-center text-orange-200">
-            <h3 className="text-center text-sm font-semibold bg-hh-950 bg-opacity-50 p-1 rounded">
+          <Link
+            href={`/events/${currentLatern.id}`}
+            className="w-full h-full flex justify-between  flex-col items-center text-orange-200 border-2 border-hh-600 rounded overflow-hidden"
+            style={{
+              backgroundImage: `url("/assets/icons/laterne/laterne.svg")`,
+              backgroundSize: "50%",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+            }}
+          >
+            <h3 className="text-center text-sm font-semibold bg-hh-950 bg-opacity-75 p-1 rounded">
               {currentLatern.title}
             </h3>
-            <div className="flex items-center flex-col gap-1">
-              <h4 className="text-center text-xs font-semibold bg-hh-950 bg-opacity-50 p-1 rounded">
+            <div className="flex items-center flex-col">
+              <h4 className="text-center text-xs font-semibold bg-hh-950 bg-opacity-75 p-1 rounded">
                 {currentLatern.bezirk}
               </h4>
-              <h4 className="text-center text-xs font-semibold bg-hh-950 bg-opacity-50 p-1 rounded">
-                {getDate(currentLatern.date)}
-              </h4>
             </div>
-          </div>
+          </Link>
         ) : (
-          <div className="w-full h-full bg-hh-800 z-50">
+          <div className="w-full h-full bg-hh-800 z-50  border-2 border-hh-600 rounded overflow-hidden">
             <FlohmarktPoster
               bezirk={currentLatern.bezirk}
               date={currentLatern.date}
@@ -101,6 +111,14 @@ export default function ClientGallery({
             />
           </div>
         )}
+        <div className="flex justify-between bg-gradient-to-r from-hh-800 to-hh-700 rounded-[0_0_4px_4px] w-[90%] py-1">
+          <h5 className="text-xs font-semibold text-orange-50 w-fit px-2">
+            {date}
+          </h5>
+          <h5 className="text-xs font-semibold text-orange-200 px-1 h-fit text-end">
+            {currentLatern.stadtteil}
+          </h5>
+        </div>
       </div>
     </ArrowGallery>
   );
