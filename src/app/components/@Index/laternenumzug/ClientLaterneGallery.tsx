@@ -52,11 +52,17 @@ export function ArrowGallery({
   );
 }
 
-export default function ClientGallery({
+export default function ClientLaterneGallery({
   laternenList,
 }: {
   laternenList: iFlohmarkt[];
 }) {
+  const { current: today } = React.useRef(
+    new Date().toLocaleDateString("de-DE", {
+      day: "2-digit",
+      month: "2-digit",
+    })
+  );
   const [index, setIndex] = React.useState(0);
   const handleIndex = (direction: "next" | "back") => {
     if (direction === "next") {
@@ -113,7 +119,7 @@ export default function ClientGallery({
         )}
         <div className="flex justify-between bg-gradient-to-r from-hh-800 to-hh-700 rounded-[0_0_4px_4px] w-[90%] py-1">
           <h5 className="text-xs font-semibold text-orange-50 w-fit px-2">
-            {date}
+            {today === date ? "Heute" : date}
           </h5>
           <h5 className="text-xs font-semibold text-orange-200 px-1 h-fit text-end">
             {currentLatern.stadtteil}

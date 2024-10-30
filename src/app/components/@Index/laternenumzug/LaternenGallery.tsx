@@ -1,6 +1,6 @@
 import { getFutureApprovedEventsFromType } from "@app/api/dbActions";
 import React from "react";
-import ClientGallery from "./ClientGallery";
+import ClientLaterneGallery from "./ClientLaterneGallery";
 
 export default async function LaternenGallery() {
   const laterneEvents =
@@ -9,7 +9,7 @@ export default async function LaternenGallery() {
 
   return (
     <>
-      <ClientGallery laternenList={laterneEvents} />
+      <ClientLaterneGallery laternenList={laterneEvents} />
     </>
   );
 }
