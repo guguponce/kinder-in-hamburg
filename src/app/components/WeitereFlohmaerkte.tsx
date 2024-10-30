@@ -2,7 +2,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import ExpandableContainer from "./ExpandableContainer";
 import { iFlohmarkt } from "@app/utils/types";
-import Link from "next/link";
 import { getDate } from "@app/utils/functions";
 import HorizontalCard from "./@Cards/HorizontalCard";
 
@@ -58,10 +57,19 @@ export default function WeitereFlohmaerkte({
                 <h3 className="text-lg font-semibold text-hh-900">{date}</h3>
                 <div className="flex flex-wrap justify-center gap-2 items-stretch">
                   {displayedFlohs.map(
-                    ({ title, address, date, id, time, image, stadtteil }) => (
+                    ({
+                      title,
+                      address,
+                      date,
+                      id,
+                      time,
+                      image,
+                      stadtteil,
+                      type,
+                    }) => (
                       <div key={id} className="w-[360px] md:w-[calc(50%-1rem)]">
                         <HorizontalCard
-                          type="flohmarkt"
+                          type={type || "flohmarkt"}
                           id={id}
                           title={title}
                           link={`/flohmaerkte/${id}`}
