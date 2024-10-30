@@ -48,7 +48,7 @@ export default function FlohmarktTemplate({
         <div className="flex justify-between items-center gap-4 w-full">
           <Link
             href={
-              type === "laterne"
+              type && ["laterne", "laternewerkstatt"].includes(type)
                 ? "/laternenumzuege"
                 : !!type
                   ? "/events"
@@ -57,7 +57,7 @@ export default function FlohmarktTemplate({
             className="text-sm text-hh-700 px-2 py-1 hover:underline hover:underline-offset-4 min-w-fit"
           >
             ← Alle
-            {type === "laterne"
+            {type && ["laterne", "laternewerkstatt"].includes(type)
               ? " Laternenumzüge"
               : !!type
                 ? " Events"
