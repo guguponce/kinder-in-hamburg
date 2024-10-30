@@ -2,6 +2,7 @@
 import type {
   categoryName,
   iBezirk,
+  iEventType,
   iFlohmarkt,
   iPost,
   iSessionUser,
@@ -908,7 +909,9 @@ export const getSuggestedEvents = async (
   }
 };
 
-export const getFutureApprovedEventsFromType = async (eventType: string) => {
+export const getFutureApprovedEventsFromType = async (
+  eventType: iEventType
+) => {
   const { today } = getTodayNexMonday();
   try {
     const { data, error } = await supabaseAdmin
