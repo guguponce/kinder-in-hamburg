@@ -274,6 +274,19 @@ export const getTimeRainAndActivity = (
   return { currentTime, currentHour, nextRain, activityType, sunsetIndex };
 };
 
+export const separateByDate = (events: iFlohmarkt[]) => {
+  return events.reduce(
+    (acc, flohmarkt) => {
+      const date = getDate(flohmarkt.date);
+      if (!acc[date]) {
+        acc[date] = [];
+      }
+      acc[date].push(flohmarkt);
+      return acc;
+    },
+    {} as Record<string, iFlohmarkt[]>
+  );
+};
 export const sortPostsByDate = (posts: iPost[]) =>
   [...posts].sort((a, b) => b.createdAt - a.createdAt);
 
