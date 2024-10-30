@@ -69,7 +69,7 @@ export default function DynamicEventsMap({
   return (
     <div className="w-full sm:w-full flex flex-col md:flex-row md:flex-wrap items-stretch gap-2 rounded">
       <section
-        className={`max-h-[60vh] min-h-[250px] flex-grow xs:min-w-[300px] max-w-[800px] aspect-[3/2] md:aspect-auto ${square ? "w-full lg:aspect-square  lg:max-w-full" : "md:aspect-video lg:aspect-auto lg:h-[50vh] lg:max-w-full"} flex justify-center rounded overflow-hidden`}
+        className={`max-h-[60vh] min-h-[250px] flex-grow xs:min-w-[300px] sm:max-w-[800px] aspect-square sm:aspect-[3/2] md:aspect-auto ${square ? "w-full lg:aspect-square  lg:max-w-full" : "md:aspect-video lg:aspect-auto lg:h-[50vh] lg:max-w-full"} flex justify-center rounded overflow-hidden`}
       >
         <GeneralMap zoom={11}>
           {!selectedDate && !futureSelected
@@ -181,7 +181,7 @@ export default function DynamicEventsMap({
       </section>
       <aside
         id="flohmaerkte-map-filters-aside"
-        className="px-2 pb-2 w-full md:w-1/4 xs:min-w-[300px] max-w-[80vw] lg:w-full flex flex-col"
+        className="px-2 pb-2 w-full md:w-1/4 xs:min-w-[300px] max-w-[80vw] md:w-full flex flex-col"
       >
         <ScrollableContainer vertical>
           <div
