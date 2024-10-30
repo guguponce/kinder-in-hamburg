@@ -1,9 +1,10 @@
-import { iCard } from "@app/utils/types";
 import Link from "next/link";
 import React from "react";
 import CardLogo from "../@Icons/CardLogo";
 import dynamic from "next/dynamic";
 import { addressWithoutCity, getDate } from "@app/utils/functions";
+import { iEventType } from "@app/utils/types";
+import LaterneImage from "../@Index/laternenumzug/LaterneImage";
 
 const SpielplatzgeraeteBackground = dynamic(
   () => import("../SpielplatzgeraeteBackground"),
@@ -11,7 +12,7 @@ const SpielplatzgeraeteBackground = dynamic(
 );
 
 interface iHorizontalCard {
-  type?: "spielplatz" | "flohmarkt" | "post";
+  type?: "spielplatz" | "flohmarkt" | "post" | iEventType;
   id: string | number;
   title: string;
   image?: string;
@@ -39,7 +40,7 @@ export default function HorizontalCard({
         <div
           className={`cardImage h-full aspect-square min-w-1/3 w-1/3 bg-hh-50 overflow-hidden flex justify-center items-center ${
             spielgeraete && "bg-opacity-5"
-          } ${!image && "p-2"}`}
+          } ${!image && "p-2"}  ${["laternewerkstatt", "laterne"].includes(type) && !image && "bg-hh-800"}`}
         >
           {!!image || type === "flohmarkt" ? (
             <img
@@ -48,6 +49,10 @@ export default function HorizontalCard({
               alt={title}
               className={`w-full h-full object-contain`}
             />
+          ) : ["laternewerkstatt", "laterne"].includes(type) ? (
+            <div className="h-full aspect-square relative">
+              <LaterneImage />
+            </div>
           ) : (
             <>
               {spielgeraete ? (
