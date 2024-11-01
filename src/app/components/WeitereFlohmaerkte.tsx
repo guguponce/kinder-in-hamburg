@@ -72,7 +72,7 @@ export default function WeitereFlohmaerkte({
                           type={type || "flohmarkt"}
                           id={id}
                           title={title}
-                          link={`/flohmaerkte/${id}`}
+                          link={`/events/${id}`}
                           image={image || ""}
                         >
                           <HorizontalCard.FlohmarktInfo
