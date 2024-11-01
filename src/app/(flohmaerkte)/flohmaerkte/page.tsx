@@ -63,7 +63,7 @@ export default async function FlohmarktPage() {
   const { today, nextMonday } = getTodayNexMonday();
 
   const thisWeekFlohmaerkte = flohmaerkte.filter(
-    ({ date }) => date > today && date < nextMonday
+    ({ date }) => date > today - 1000 * 60 * 60 && date < nextMonday
   );
   const futureFlohmaerkte = flohmaerkte
     .filter(({ date }) => date > nextMonday)
