@@ -122,7 +122,11 @@ export default function ClientLaterneGallery({
             {today === date ? "Heute" : date}
           </h5>
           <h5 className="text-xs font-semibold text-orange-200 px-1 h-fit text-end">
-            {currentLatern.stadtteil}
+            {currentLatern.stadtteil === "Andere Orte"
+              ? (currentLatern.address.match(
+                  /\d{5}\s([A-Za-zäöüÄÖÜß\s]+)/
+                )?.[1] ?? currentLatern.bezirk)
+              : currentLatern.stadtteil}
           </h5>
         </div>
       </div>
