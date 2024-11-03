@@ -6,6 +6,7 @@ import { getApprovedEvents } from "@app/api/dbActions";
 import dynamic from "next/dynamic";
 import TodaysFlohmaerkte from "./TodaysFlohmaerkte";
 import ErrorFetchingData from "./@NotFound/ErrorFetchingData";
+import PaperPlane from "./@Icons/PaperPlane";
 
 const DynamicEventsMap = dynamic(
   () => import("../components/@Map/DynamicEventsMap"),
@@ -48,37 +49,61 @@ export default async function FlohmaerkteContainer() {
       </h1>
 
       <div className="flex flex-col items-center gap-4 lg:gap-8 max-w-full">
-        <section
-          id="current-week-section"
-          className={`flex ${
-            isSunday ? "flex-wrap-reverse" : "flex-wrap"
-          } gap-4 w-full justify-center`}
-        >
-          <div
-            id="heute-map-container"
-            className="w-full lg:max-w-[400px] flex flex-col gap-4 items-center rounded bg-hh-200 bg-opacity-50 p-2 shadow-md"
+        {!!thisWeekFlohmaerkte.length ? (
+          <section
+            id="current-week-section"
+            className={`flex ${
+              isSunday ? "flex-wrap-reverse" : "flex-wrap"
+            } gap-4 w-full justify-center`}
           >
-            {!!todayFlohmaerkte.length && !isSunday && (
-              <TodaysFlohmaerkte todayFlohmaerkte={todayFlohmaerkte} />
-            )}
-            <DynamicEventsMap
-              thisWeek={thisWeekFlohmaerkte.filter(
-                (floh) => floh.lat && floh.lon
+            <div
+              id="heute-map-container"
+              className="w-full lg:max-w-[400px] flex flex-col gap-4 items-center rounded bg-hh-200 bg-opacity-50 p-2 shadow-md"
+            >
+              {!!todayFlohmaerkte.length && !isSunday && (
+                <TodaysFlohmaerkte todayFlohmaerkte={todayFlohmaerkte} />
               )}
-              today={getTodayNexMonday().today}
-            />
-          </div>
-          <div className="flex flex-grow w-full sm:min-w-[400px] justify-center sm:w-1/4">
-            <BezirkeScrollableEvents
-              title={`${isSunday ? "Heute" : "Diese Woche"} gibt es ${
-                thisWeekFlohmaerkte.length
-              } ${
-                thisWeekFlohmaerkte.length === 1 ? "Flohmarkt" : "Flohmärkte"
-              }`}
-              events={thisWeekFlohmaerkte}
-            />
-          </div>
-        </section>
+              <DynamicEventsMap
+                thisWeek={thisWeekFlohmaerkte.filter(
+                  (floh) => floh.lat && floh.lon
+                )}
+                today={getTodayNexMonday().today}
+              />
+            </div>
+            <div className="flex flex-grow w-full sm:min-w-[400px] justify-center sm:w-1/4">
+              <BezirkeScrollableEvents
+                title={`${isSunday ? "Heute" : "Diese Woche"} gibt es ${
+                  thisWeekFlohmaerkte.length
+                } ${
+                  thisWeekFlohmaerkte.length === 1 ? "Flohmarkt" : "Flohmärkte"
+                }`}
+                events={thisWeekFlohmaerkte}
+              />
+            </div>
+          </section>
+        ) : (
+          <section
+            id="current-week-section"
+            className={`flex gap-4 w-full justify-center`}
+          >
+            <div className="max-w-full flex flex-col items-center">
+              <h2 className="text-2xl font-semibold text-hh-800 text-center p-1 lg:p-2">
+                Für den Rest der Woche finden keine Flohmärkte statt
+              </h2>
+              <p className="text-hh-700">
+                Wenn ihr einen veranstaltet oder kennt, schreibt uns gerne eine
+                E-Mail.
+              </p>
+              <a
+                href="mailto:admin@kinder-in-hamburg.de"
+                className="flex items-center gap-2 self-center p-4 bg-hh-800 text-hh-100 font-semibold rounded-lg mt-4 w-max hover:bg-hh-700 transition-colors duration-300 ease-in-out"
+              >
+                <PaperPlane />
+                admin@kinder-in-hamburg.de
+              </a>
+            </div>
+          </section>
+        )}
         <BezirkableFlohmaerkteList
           title="Ab nächster Woche"
           eventsList={futureFlohmaerkte}
