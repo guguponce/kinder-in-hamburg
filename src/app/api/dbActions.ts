@@ -1076,7 +1076,7 @@ export const getThisWeekEvents = async (eventTable: string = "flohmaerkte") => {
 };
 // POST
 export const addEvent = async (
-  flohmarkt: iFlohmarkt,
+  event: iFlohmarkt,
   eventTable: string = "flohmaerkte"
 ) => {
   try {
@@ -1085,7 +1085,7 @@ export const addEvent = async (
       return "Not logged in";
     }
     const submittedEvent = {
-      ...flohmarkt,
+      ...event,
       addedBy: JSON.stringify(user),
     };
     const { error } = await supabaseAdmin
@@ -1139,14 +1139,19 @@ export const rejectEvent = async (
 
 // UPDATE
 export const updateEvent = async (
-  flohmarkt: iFlohmarkt,
+  event: iFlohmarkt,
   eventTable: string = "flohmaerkte"
 ) => {
+  const {
+    data: { user },
+  } = await supabaseAdmin.auth.getUser();
+
   try {
     const { data, error } = await supabaseAdmin
       .from(eventTable)
-      .update(flohmarkt)
-      .match({ id: flohmarkt.id });
+      .update(event)
+      .match({ id: event.id });
+
     if (error) {
       throw new Error("Error updating event");
     }

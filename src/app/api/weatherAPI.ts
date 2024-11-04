@@ -30,7 +30,6 @@ export const getHamburgsWeather = async () => {
 const supabaseAdmin = createClient();
 
 export const setFirstRow = async () => {
-  console.log("setting first row");
   const currentWeather = await getCurrentAccuWeather();
   const forecastHourly = await getHourlyForecastAccuWeather();
   const nextDays = await getDailyForecastAccuWeather();
@@ -178,11 +177,11 @@ export const getHourlyForecastAccuWeather = async () => {
           PrecipitationIntensity,
           PrecipitationProbability,
           IsDaylight,
-        } as iForecastHourly)
+        }) as iForecastHourly
     );
     return forecastHourly;
   } catch (error) {
-    console.log("error", error);
+    console.error("error", error);
     return false;
   }
 };
