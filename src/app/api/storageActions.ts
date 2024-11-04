@@ -1,3 +1,4 @@
+import { createClient } from "@auth/client";
 import React from "react";
 import { getAllEventsIds, getAllPostsIds } from "@app/api/dbActions";
 import {
@@ -284,3 +285,31 @@ export const deleteUnusedFlohmaerkteImages = async () => {
     })
   ).then(() => console.log("Unused images deleted"));
 };
+
+//SUPABASE
+//POST
+
+export async function handleUploadToSupabaseStorage(
+  id: number | string,
+  bucket: string,
+  file: File,
+  folder?: string
+) {
+  const supabaseAdminClient = createClient();
+  const path = folder ? `${folder}/${file.name}` : `${id}/${file.name}`;
+  try {
+    const { data, error } = await supabaseAdminClient.storage
+      .from("spielplaetze")
+      .upload(path, file);
+
+    if (error) {
+      console.error("Supabase upload error details:", error);
+      return { data: null, error: "File uploading failed" };
+    }
+    const imgURL = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${bucket}/${data.path}`;
+    return { data: { url: imgURL, fileName: file.name }, error: null };
+  } catch (error) {
+    console.error("Supabase upload error details:", error);
+    return { data: null, error: "File uploading failed" };
+  }
+}
