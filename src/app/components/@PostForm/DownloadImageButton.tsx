@@ -8,13 +8,30 @@ const DownloadImageButton: React.FC<DownloadImageButtonProps> = ({
   imageUrl,
   imageName,
 }) => {
-  const download = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+  const download = async (
+    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
+  ) => {
     e.preventDefault();
-    var element = document.createElement("a");
-    var file = new Blob([imageUrl], { type: "image/*" });
-    element.href = URL.createObjectURL(file);
-    element.download = imageName;
-    element.click();
+
+    try {
+      const response = await fetch(imageUrl);
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch image.");
+      }
+
+      const blob = await response.blob();
+
+      // Create a URL for the Blob
+      const element = document.createElement("a");
+      element.href = URL.createObjectURL(blob);
+      element.download = imageName; // Use the provided image name for download
+      element.click();
+
+      URL.revokeObjectURL(element.href);
+    } catch (error) {
+      console.error("Error downloading the image:", error);
+    }
   };
   return (
     <a
