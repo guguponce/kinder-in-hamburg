@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import React from "react";
 import SpielplatzForm from "../../SpielplatzForm";
 import {
-  getAllSpielplatzImagesURL,
+  getAllImagesURLFromSupabseFolder,
   getSpielplatzWithID,
 } from "@app/api/spActions";
 import NotFound from "@components/@NotFound/NotFound";
@@ -17,7 +17,7 @@ export default async function NewSpielplatzPage({
   const user = await getServerUser();
   if (!user) redirect("/");
   const spielplatz = await getSpielplatzWithID(spID);
-  const spImages = await getAllSpielplatzImagesURL(spID);
+  const spImages = await getAllImagesURLFromSupabseFolder("spielplaetze", spID);
   if (!spielplatz) return <NotFound type="spielplatz" />;
   if (
     !spielplatz.addedBy.email ||
