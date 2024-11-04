@@ -392,9 +392,9 @@ export const getAllSpielplaetzeIds = async () => {
 
 //images
 
-export async function listFilesInFolder(folderName: string) {
+export async function listFilesInFolder(bucket: string, folderName: string) {
   const { data, error } = await supabaseAdmin.storage
-    .from("spielplaetze")
+    .from(bucket)
     .list(folderName);
 
   if (error) {
@@ -405,93 +405,45 @@ export async function listFilesInFolder(folderName: string) {
   return data;
 }
 
-export const getImageURL = async (path: string) =>
-  supabaseAdmin.storage.from("spielplaetze").getPublicUrl(path).data.publicUrl;
+export const getImageURL = async (bucket: string, path: string) =>
+  supabaseAdmin.storage.from(bucket).getPublicUrl(path).data.publicUrl;
 
-export const getAllSpielplatzImagesURL = async (id: string) => {
-  const files = await listFilesInFolder(id);
-  const urls = files
-    ? Promise.all(
-        files.map(async (file) => await getImageURL(`${id}/${file.name}`))
-      )
-    : [];
-  return urls;
-};
-export async function handleUploadToSupabaseStorage(file: File) {
+export const getAllImagesURLFromSupabseFolder = async (
+  bucket: string,
+  id: string
+) => {
   try {
-    const { data, error } = await supabaseAdmin.storage
-      .from("spielplaetze")
-      .upload(`public/${file.name}`, file);
+    const files = await listFilesInFolder("spielplaetze", id);
+    const urls = files
+      ? await Promise.all(
+          files.map(async (file) => {
+            const url = await getImageURL(bucket, `${id}/${file.name}`);
+            return { url, fileName: file.name, metadata: file.metadata };
+          })
+        )
+      : [];
+    return urls;
+  } catch (error) {
+    return [];
+  }
+};
 
+export const deleteSupabaseFiles = async (
+  bucket: string,
+  pathWithFilename: string | string[]
+) => {
+  try {
+    const { error } = await supabaseAdmin.storage
+      .from(bucket)
+      .remove(
+        typeof pathWithFilename === "string"
+          ? [pathWithFilename]
+          : pathWithFilename
+      );
     if (error) {
-      console.error("Supabase upload error details:", error);
-      throw error;
+      throw new Error("Error deleting image");
     }
   } catch (error) {
-    throw error; // Rethrow the error so it can be caught in handleUpload
+    throw new Error("Error deleting image");
   }
-}
-
-export const uploadSpielplatzImage = (
-  userEmail: iSessionUser,
-  id: string,
-  // file: File,
-  imgUrlsSetter: React.Dispatch<
-    React.SetStateAction<
-      Array<{ url: string; fileName: string; metadata: FullMetadata }>
-    >
-  >,
-  statusSetter: React.Dispatch<
-    React.SetStateAction<"uploading" | "success" | "error" | "paused" | "await">
-  >
-) => {
-  // Create Metadata
-  const metadata = {
-    // contentType: file.type,
-    // size: file.size,
-    // name: file.name,
-    postID: id,
-    uploadedBy: JSON.stringify({
-      email: userEmail.email,
-      name: userEmail.name,
-    }),
-  };
-
-  // const storageRef = ref(storage, `flohmaerkteImages/${id}/${file.name}`);
-  // // Upload file and get status
-  // return new Promise(async (res, rej) => {
-  //   const uploadTask = uploadBytesResumable(storageRef, file, metadata);
-
-  //   uploadTask.on(
-  //     "state_changed",
-  //     (snapshot) => {
-  //       const progress =
-  //         (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-  //       if (progress === 100) console.log("Upload is done");
-  //       switch (snapshot.state) {
-  //         case "paused":
-  //           statusSetter("paused");
-  //           break;
-  //         case "running":
-  //           statusSetter("uploading");
-  //           break;
-  //       }
-  //     },
-  //     (error) => {
-  //       statusSetter("error");
-  //     },
-  //     // After uploaded get metadata and download URL
-  //     async () => {
-  //       const metadata = await getMetadata(uploadTask.snapshot.ref);
-  //       getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-  //         console.log("downloadURL", downloadURL);
-  //         imgUrlsSetter((prev) => [
-  //           { url: downloadURL, fileName: file.name, metadata },
-  //         ]);
-  //       });
-  //       statusSetter("await");
-  //       res("success");
-  //     }
-  //   );
-  // });
 };
