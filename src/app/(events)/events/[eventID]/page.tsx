@@ -10,7 +10,7 @@ import { PROXIMATE_STADTTEILE_FROM_OTHER_BEZIRK } from "@app/utils/constants";
 import AdminEditButtons from "@app/components/AdminEditButtons";
 import OldEventSign from "./OldEventSign";
 import { redirect } from "next/navigation";
-import Image from "./opengraph-image";
+// import Image from "./opengraph-image";
 
 interface EventPageProps {
   params: { eventID: string };
@@ -34,7 +34,8 @@ export async function generateMetadata({
       url: "https://www.kinder-in-hamburg.de/events/" + params.eventID,
       title: eventInfo.title,
       description: eventInfo.optionalComment.slice(0, 100),
-      images: (await Image({ params })) || eventInfo.image,
+      images: eventInfo.image,
+      // (await Image({ params })) || eventInfo.image,
       siteName: "Kinder in Hamburg",
     },
   };
