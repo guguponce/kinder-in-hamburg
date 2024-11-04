@@ -24,7 +24,7 @@ type iButtonProps<C extends React.ElementType = "button"> = {
 
 export default function Button({
   as,
-  href = "/",
+  href,
   children,
   fontWeight = "normal",
   variant = "hh",
@@ -92,7 +92,7 @@ export default function Button({
   } rounded-md text-center transition-all`;
   if (as === "link" || !!href)
     return (
-      <Link className={className} href={href}>
+      <Link className={className} href={href || "/"}>
         {children}
       </Link>
     );
