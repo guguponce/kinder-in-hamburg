@@ -29,37 +29,6 @@ import { PostgrestError } from "@supabase/supabase-js";
 
 const supabaseAdmin = createClient();
 
-//images
-export const getImageURL = async (bucket: string, path: string) =>
-  supabaseAdmin.storage.from(bucket).getPublicUrl(path).data.publicUrl;
-
-export const handleUploadToSupabase = async (
-  path: string,
-  file: File,
-  orientation: "landscape" | "portrait"
-) => {
-  const { data, error } = await supabaseAdmin.storage
-    .from(path)
-    .upload(`public/${file.name}`, file, {
-      cacheControl: "3600",
-      upsert: true,
-    });
-  if (error) {
-    console.log("Error uploading file:", error.message);
-  }
-  const imageURL = await getImageURL(path, `public/${file.name}`);
-  const metadata = {
-    id: file.size + Math.floor(Math.random() * 1000000),
-    name: file.name,
-    href: imageURL,
-    size: file.size,
-    orientation,
-  };
-  const insertData = await supabaseAdmin.from(path).insert(metadata);
-
-  return insertData;
-};
-
 //BLOGPOSTS
 
 // CONTRIBUTORS
