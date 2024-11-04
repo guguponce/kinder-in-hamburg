@@ -4,7 +4,7 @@ import React from "react";
 import dynamic from "next/dynamic";
 import AdminRoute from "@app/providers/AdminRoute";
 
-const DynamicForm = dynamic(() => import("../SpielplatzForm"), {
+const DynamicSpielplatzForm = dynamic(() => import("../SpielplatzForm"), {
   ssr: false,
 });
 
@@ -19,7 +19,7 @@ export default async function NewSpielplatzPage() {
           <h1 className="title-font mb-4 text-center text-2xl font-medium text-gray-900 sm:text-3xl">
             Add a new Spielplatz
           </h1>
-          <DynamicForm
+          <DynamicSpielplatzForm
             spielplatzFormType="new-spielplatz"
             spielplatzForm={{}}
             user={{ email, name, image }}

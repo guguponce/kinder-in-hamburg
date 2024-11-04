@@ -26,9 +26,9 @@ import {
 } from "@app/utils/constants";
 import { submitNewSpielplatz, submitUpdateSpielplatz } from "./functions";
 import { getLatLong, sleep } from "@app/utils/functions";
-import ScrollableContainer from "@app/components/ScrollableContainer";
 import dynamic from "next/dynamic";
 import { revalidateSpielplatz } from "@app/api/spActions";
+import { SpielplatzImageUploader } from "./SpielplatztImageUploader";
 
 interface iSpielplatzFormProps {
   spielplatzForm: Partial<iSpielplatz>;
@@ -38,7 +38,11 @@ interface iSpielplatzFormProps {
     | "new-spielplatz"
     | "update-spielplatz"
     | "update-suggestion";
-  spielplatzStoredImages?: string[];
+  spielplatzStoredImages?: {
+    url: string;
+    fileName: string;
+    metadata: Record<string, any>;
+  }[];
 }
 
 export default function SpielplatzForm({
@@ -72,7 +76,7 @@ export default function SpielplatzForm({
   const [imagesUrlsReady, setImagesUrlsReady] = useState<{
     ready: boolean;
     urls: string[];
-  }>({ ready: true, urls: [] });
+  }>({ ready: true, urls: image || [] });
   const [successfulSubmit, setSuccessfulSubmit] = useState<boolean>(false);
   const [userInput, setUserInput] = useState<iSessionUser>(addedBy || user);
   const [submitError, setSubmitError] = useState<{
@@ -196,23 +200,6 @@ export default function SpielplatzForm({
         (ID: {id || newID.current})
       </h2>
       <UserInputBox setUserInput={setUserInput} userInput={userInput} />
-      {!!spielplatzStoredImages?.length && (
-        <div id="images-box" className="w-full">
-          <h2 className="text-lg font-bold text-center text-hh-800">Images</h2>
-          <ScrollableContainer>
-            {spielplatzStoredImages?.map((img) => (
-              <div className="w-full h-[300px]" key={img}>
-                <img
-                  loading="lazy"
-                  src={img}
-                  alt="spielplatz image"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            ))}
-          </ScrollableContainer>
-        </div>
-      )}
       <form
         onSubmit={handleSubmit((data) =>
           spielplatzFormType === "new-spielplatz"
@@ -245,6 +232,11 @@ export default function SpielplatzForm({
               </>
             </PostFormInput>
           </article>
+          <SpielplatzImageUploader
+            id={id || newID.current}
+            setImagesUrlsReady={setImagesUrlsReady}
+            user={user}
+          />
 
           <article
             id="address-box"
