@@ -33,7 +33,7 @@ export default function DeleteImageButton({
               );
             }
           })
-          .catch((err) => console.log(err));
+          .catch((err) => console.error(err));
       }}
     >
       <DeleteSVG />

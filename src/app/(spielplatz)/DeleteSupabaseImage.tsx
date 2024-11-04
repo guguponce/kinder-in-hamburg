@@ -28,7 +28,6 @@ export default function DeleteSupabaseImageButton({
         e.preventDefault();
         deleteSupabaseFiles(bucket, [imageName])
           .then(() => {
-            console.log("Image deleted");
             if (setImagesArray) {
               setImagesArray((prev) =>
                 prev.filter((prevImage, i) => {
@@ -40,7 +39,7 @@ export default function DeleteSupabaseImageButton({
               );
             }
           })
-          .catch((err) => console.log(err));
+          .catch((err) => console.error(err));
       }}
     >
       <DeleteSVG />
