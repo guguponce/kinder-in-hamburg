@@ -84,7 +84,13 @@ export const SpielplatzImageUploader = ({
         )
       )
         .filter((url) => !!url.data)
-        .map(({ data }) => data);
+        .map(
+          ({ data }) =>
+            data as {
+              url: string;
+              fileName: string;
+            }
+        );
       setImageFiles([]);
       fileInputRef.current!.value = "";
       setImagesURL((prev) => [...prev, ...urls]);
