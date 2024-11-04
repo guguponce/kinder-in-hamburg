@@ -48,6 +48,7 @@ export const uploadPostImage = async (
       (snapshot) => {
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        if (progress === 100) console.log("Upload is done");
         switch (snapshot.state) {
           case "paused":
             statusSetter("paused");
@@ -142,7 +143,7 @@ export const deleteUnusedImages = async (id?: string) => {
         });
       });
     })
-  );
+  ).then(() => console.log("Unused images deleted"));
 };
 
 // FLOHMAERKTE
@@ -181,6 +182,7 @@ export const uploadFlohmarktImage = async (
       (snapshot) => {
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        if (progress === 100) console.log("Upload is done");
         switch (snapshot.state) {
           case "paused":
             statusSetter("paused");
@@ -197,7 +199,10 @@ export const uploadFlohmarktImage = async (
       async () => {
         const metadata = await getMetadata(uploadTask.snapshot.ref);
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          imgUrlsSetter([{ url: downloadURL, fileName: file.name, metadata }]);
+          console.log("downloadURL", downloadURL);
+          imgUrlsSetter((prev) => [
+            { url: downloadURL, fileName: file.name, metadata },
+          ]);
         });
         statusSetter("await");
         res("success");
@@ -278,7 +283,7 @@ export const deleteUnusedFlohmaerkteImages = async () => {
         }
       );
     })
-  );
+  ).then(() => console.log("Unused images deleted"));
 };
 
 //SUPABASE

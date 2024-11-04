@@ -11,21 +11,21 @@ export const signIn = async () => {
     provider: "google",
     options: { redirectTo: `${origin}/auth/callback` },
   });
-  if (error) console.error("signIn", error, "signIn");
+  if (error) console.log("signIn", error, "signIn");
   return redirect(`${data.url}`);
 };
 
 export const signOut = async () => {
   const supabase = createClient();
   const { error } = await supabase.auth.signOut();
-  if (error) console.error("signOut", error, "signOut");
+  if (error) console.log("signOut", error, "signOut");
   return redirect("/");
 };
 
 export const getServerSession = async () => {
   const supabase = createClient();
   const { data: user, error } = await supabase.auth.getSession();
-  if (error) console.error("getServerSession", error, "getServerSession");
+  if (error) console.log("getServerSession", error, "getServerSession");
   return user.session;
 };
 

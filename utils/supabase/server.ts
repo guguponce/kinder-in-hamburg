@@ -38,7 +38,7 @@ export const createClient = (dynamicCookies?: ReadonlyRequestCookies) => {
               cookieStore.set(name, value, options);
             });
           } catch (error) {
-            console.error("Error setting cookies", error);
+            console.log("Error setting cookies", error);
           }
         },
       },

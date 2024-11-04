@@ -12,7 +12,7 @@ export const getClientSession = async () => {
   const { data: session, error } = await supabase.auth.getSession();
   if (error) {
     if ("Auth session missing!" === error.message) return { user: null };
-    console.error("getClientSession", error, "getClientSession");
+    console.log("getClientSession", error, "getClientSession");
   }
   return session;
 };
@@ -22,7 +22,7 @@ export const getClientUser = async () => {
   const { data: session, error } = await supabase.auth.getUser();
   if (error) {
     if ("Auth session missing!" === error.message) return { user: null };
-    console.error("getClientUser", error, "getClientUser");
+    console.log("getClientUser", error, "getClientUser");
   }
 
   return session;
