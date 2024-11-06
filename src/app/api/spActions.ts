@@ -5,10 +5,9 @@ import type {
   iStringifiedSpielplatz,
   iSessionUser,
 } from "@app/utils/types";
-import { getServerUser } from "@app/api/auth/supabaseAuth";
+import { getServerUser, proofUser } from "@app/api/auth/supabaseAuth";
 import { checkBezirk, parseSpielplatz } from "@app/utils/functions";
 import { revalidatePath } from "next/cache";
-import { FullMetadata } from "firebase/storage";
 import { iSPType } from "@app/utils/types";
 import { createClient } from "@auth/server";
 
@@ -296,6 +295,8 @@ export const rejectSpielplatz = async (id: string | number) => {
 
 // UPDATE
 export const updateSpielplatz = async (spielplatz: iSpielplatz) => {
+  const authorized = await proofUser();
+  if (!authorized) return "Not authorized";
   try {
     const submittedSpielplatz = {
       ...spielplatz,
@@ -382,7 +383,7 @@ export const getAllSpielplaetzeIds = async () => {
     if (error) {
       throw new Error("Error getting posts IDs from a db");
     }
-    return data.map((d) => d.id);
+    return data.map((d) => d.id) as number[];
   } catch (error) {
     return false;
   }
@@ -413,15 +414,16 @@ export const getAllImagesURLFromSupabseFolder = async (
   id: string
 ) => {
   try {
-    const files = await listFilesInFolder("spielplaetze", id);
-    const urls = files
-      ? await Promise.all(
-          files.map(async (file) => {
-            const url = await getImageURL(bucket, `${id}/${file.name}`);
-            return { url, fileName: file.name, metadata: file.metadata };
-          })
-        )
-      : [];
+    const files = ((await listFilesInFolder("spielplaetze", id)) || []).filter(
+      ({ metadata }) => metadata.mimetype.includes("image")
+    );
+    const urls = await Promise.all(
+      files.map(async (file) => {
+        const url = await getImageURL(bucket, `${id}/${file.name}`);
+        return { url, fileName: file.name, metadata: file.metadata };
+      })
+    );
+
     return urls;
   } catch (error) {
     return [];
@@ -445,5 +447,46 @@ export const deleteSupabaseFiles = async (
     }
   } catch (error) {
     throw new Error("Error deleting image");
+  }
+};
+
+export const getSupabaseBucketFoldersList = async (bucket: string) => {
+  const { data, error } = await supabaseAdmin.storage.from(bucket).list();
+
+  if (error) {
+    console.error("Error listing files:", error);
+    return;
+  }
+
+  return data;
+};
+
+export const deleteUnusedSupabaseImagesFromBucket = async (bucket: string) => {
+  try {
+    const activeSpielplaetzeIds = (await getAllSpielplaetzeIds()) || [];
+
+    const allImgFolders =
+      (await getSupabaseBucketFoldersList("spielplaetze")) || [];
+    const deletableFolders = allImgFolders.filter((folder) => {
+      return !activeSpielplaetzeIds.includes(parseInt(folder.name));
+    });
+    Promise.all(
+      deletableFolders.map(async ({ name: folderID }) => {
+        const { data: files } = await supabaseAdmin.storage
+          .from("spielplaetze")
+          .list(folderID);
+        if (!files) return;
+        const filesPaths = files.map(({ name }) => `${folderID}/${name}`);
+        const { error: deleteError } = await supabaseAdmin.storage
+          .from("spielplaetze")
+          .remove(filesPaths);
+        if (deleteError) {
+          throw new Error("Error deleting images from " + folderID);
+        }
+      })
+    );
+    return { error: null };
+  } catch (error) {
+    return { error: (error as { message: string }).message };
   }
 };
