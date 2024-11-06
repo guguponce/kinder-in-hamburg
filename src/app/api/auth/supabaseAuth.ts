@@ -35,7 +35,8 @@ export const getServerUser = async () => {
   if (error) {
     if ("Auth session missing!" === error.message) return null;
     const session = await getServerSession();
-    return session?.user;
+    if (!session) return null;
+    return session?.user.user_metadata as iUserMetadata;
   }
   const { user } = userData;
   if (!user) return null;
