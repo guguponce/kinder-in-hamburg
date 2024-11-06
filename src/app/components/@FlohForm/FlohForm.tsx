@@ -231,7 +231,8 @@ export default function FlohForm({
           ? "events"
           : "flohmaerkte"
       )
-        .then(() => {
+        .then((res) => {
+          alert(res);
           setSubmitError({ isError: false, errorMessage: "" });
           revalidatePost();
           revalidateFlohmarkt();

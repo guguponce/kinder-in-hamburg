@@ -1155,6 +1155,7 @@ export const updateEvent = async (
   const authorized = await proofUser();
   if (!authorized) return "Not authorized";
   try {
+    console.log(event.title);
     const { data, error } = await supabaseAdmin
       .from(eventTable)
       .update(event)
@@ -1163,7 +1164,7 @@ export const updateEvent = async (
     if (error) {
       throw new Error("Error updating event");
     }
-    return data;
+    return "Updated";
   } catch (error) {
     throw new Error("Error updating event");
   }
