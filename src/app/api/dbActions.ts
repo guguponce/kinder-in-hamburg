@@ -8,7 +8,7 @@ import type {
   iSessionUser,
 } from "@app/utils/types";
 import { createClient } from "@auth/server";
-import { getServerUser } from "@app/api/auth/supabaseAuth";
+import { getServerUser, proofUser } from "@app/api/auth/supabaseAuth";
 import {
   checkBezirk,
   getTodayNexMonday,
@@ -80,6 +80,8 @@ export const updateContributor = async (
   user: iSessionUser,
   id: number
 ) => {
+  const authorized = await proofUser();
+  if (!authorized) return "Not authorized";
   try {
     const contributor = await getContributorData(user.email!);
     if (!contributor) {
@@ -184,6 +186,8 @@ export const addNewSuggestedPost = async (post: iPost) => {
 };
 
 export const updateSuggestedPost = async (post: iPost) => {
+  const authorized = await proofUser();
+  if (!authorized) return "Not authorized";
   try {
     const { error } = await supabaseAdmin
       .from("kih-suggestions")
@@ -376,6 +380,8 @@ export const getUsersSuggestions = async (email: string) => {
 };
 
 export const updateSuggestionStatus = async (id: number, status: string) => {
+  const authorized = await proofUser();
+  if (!authorized) return "Not authorized";
   try {
     const { error } = await supabaseAdmin
       .from("kih-suggestions")
@@ -402,6 +408,8 @@ export const updatePostStatus = async <
   newStatus: T,
   post?: iPost
 ) => {
+  const authorized = await proofUser();
+  if (!authorized) return "Not authorized";
   if (oldStatus === "approved") {
     if (newStatus === "rejected" || newStatus === "pending") {
       await deleteApprovedPost(id, newStatus);
@@ -812,6 +820,8 @@ export const clearLatLonFromPost = async (id: string | number) => {
 };
 
 export const updateApprovedPost = async (post: iPost) => {
+  const authorized = await proofUser();
+  if (!authorized) return "Not authorized";
   try {
     const { data, error } = await supabaseAdmin
       .from("kih-approved-blogposts")
@@ -1142,10 +1152,8 @@ export const updateEvent = async (
   event: iFlohmarkt,
   eventTable: string = "flohmaerkte"
 ) => {
-  const {
-    data: { user },
-  } = await supabaseAdmin.auth.getUser();
-
+  const authorized = await proofUser();
+  if (!authorized) return "Not authorized";
   try {
     const { data, error } = await supabaseAdmin
       .from(eventTable)
@@ -1184,6 +1192,8 @@ export const updateEventStatus = async (
   status: string,
   eventTable: string = "flohmaerkte"
 ) => {
+  const authorized = await proofUser();
+  if (!authorized) return "Not authorized";
   try {
     const { data, error } = await supabaseAdmin
       .from(eventTable)

@@ -35,8 +35,28 @@ export const getServerUser = async () => {
   if (error) {
     if ("Auth session missing!" === error.message) return null;
     const session = await getServerSession();
+    return session?.user;
   }
   const { user } = userData;
   if (!user) return null;
   return user.user_metadata as iUserMetadata;
+};
+
+export const getUser = async () => {
+  const supabase = createClient();
+  const { data: userData, error } = await supabase.auth.getUser();
+  if (error) {
+    if ("Auth session missing!" === error.message) return null;
+    const session = await getServerSession();
+    return session?.user;
+  }
+  const { user } = userData;
+  if (!user) return null;
+  return user;
+};
+
+export const proofUser = async () => {
+  const user = await getUser();
+  if (!user) return false;
+  return user.id === process.env.AUTH_UID;
 };
