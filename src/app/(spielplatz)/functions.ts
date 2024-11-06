@@ -9,11 +9,9 @@ export const submitNewSpielplatz = async (
   spielgaereteList: string[],
   ausruestungList: string[],
   typeList: string[],
-  newID: number
+  newID: number,
+  images: string[]
 ) => {
-  // if (!imagesUrlsReady.ready) return alert("Images are not ready yet");
-  // if (!userInput.email || !userInput.name)
-  //   return alert("Your name and email are required");
   const latlon = await getLatLong(
     [data.street, data.number, data.PLZ, data.city].join(" ")
   );
@@ -45,7 +43,7 @@ export const submitNewSpielplatz = async (
     minAge: minAge && maxAge ? (minAge > maxAge ? minAge : maxAge) : undefined,
     maxAge: maxAge,
     tags: data.tags.split("*").map((tag: string) => tag.trim()),
-    image: [],
+    image: images,
   };
   return await addSpielplatz(suggestedSpielplatz);
 };
@@ -54,7 +52,8 @@ export const submitUpdateSpielplatz = async (
   data: FieldValues,
   spielgaereteList: string[],
   ausruestungList: string[],
-  typeList: string[]
+  typeList: string[],
+  images: string[]
 ) => {
   const latlon = await getLatLong(
     [data.street, data.number, data.PLZ, data.city].join(" ")
@@ -88,7 +87,7 @@ export const submitUpdateSpielplatz = async (
     minAge: minAge && maxAge ? (minAge > maxAge ? minAge : maxAge) : undefined,
     maxAge: maxAge,
     tags: data.tags.split("*").map((tag: string) => tag.trim()),
-    image: data.image,
+    image: images,
   };
 
   return await updateSpielplatz(suggestedSpielplatz);

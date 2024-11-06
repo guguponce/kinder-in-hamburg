@@ -125,9 +125,8 @@ export default function SpielplatzForm({
       addedBy: addedBy || user,
     },
   });
-
   const onSubmitNewSpielplatz = (data: FieldValues) => {
-    // if (!imagesUrlsReady.ready) return alert("Images are not ready yet");
+    if (!imagesUrlsReady.ready) return alert("Images are not ready yet");
     if (!userInput.email || !userInput.name)
       return alert("Your name and email are required");
     if (!data.street || !data.city || !data.PLZ)
@@ -142,7 +141,8 @@ export default function SpielplatzForm({
       spielgaereteList,
       ausruestungList,
       typeList,
-      newID.current
+      newID.current,
+      imagesUrlsReady.urls
     )
       .then(() => {
         setSubmitError({ isError: false, errorMessage: "" });
@@ -161,9 +161,9 @@ export default function SpielplatzForm({
   };
 
   const onSubmitUpdateSpielplatz = async (data: FieldValues) => {
-    // if (!imagesUrlsReady.ready) return alert("Images are not ready yet");
-    // if (!userInput.email || !userInput.name)
-    //   return alert("Your name and email are required");
+    if (!imagesUrlsReady.ready) return alert("Images are not ready yet");
+    if (!userInput.email || !userInput.name)
+      return alert("Your name and email are required");
     if (!data.street || !data.city || !data.PLZ)
       return alert("Please provide the address of the Spielplatz");
 
@@ -171,7 +171,13 @@ export default function SpielplatzForm({
       return alert("Please select at least one Spielgerät");
     if (typeList.length === 0)
       return alert("Please select at least one Type of Spielplatz");
-    submitUpdateSpielplatz(data, spielgaereteList, ausruestungList, typeList)
+    submitUpdateSpielplatz(
+      data,
+      spielgaereteList,
+      ausruestungList,
+      typeList,
+      imagesUrlsReady.urls
+    )
       .then(() => {
         setSubmitError({ isError: false, errorMessage: "" });
         setSuccessfulSubmit(true);
