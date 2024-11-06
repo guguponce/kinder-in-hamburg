@@ -97,8 +97,8 @@ export const parseAddress = (address: string | iAddress) => {
   };
 };
 
-export const filterExtraImages = (images: File[]) => {
-  const maxSize = 5000000;
+export const filterExtraImages = (images: File[], maxBundleSize = 5000000) => {
+  const maxSize = maxBundleSize;
   let maxIndex = 0;
   let lastSize = 0;
   for (let i = 0; i < images.length; i++) {
