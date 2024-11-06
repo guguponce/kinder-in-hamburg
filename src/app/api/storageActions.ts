@@ -296,7 +296,6 @@ export async function handleUploadToSupabaseStorage(
     const { data, error } = await supabaseAdminClient.storage
       .from("spielplaetze")
       .upload(path, file);
-
     if (error) {
       console.error("Supabase upload error details:", error);
       return { data: null, error: "File uploading failed" };

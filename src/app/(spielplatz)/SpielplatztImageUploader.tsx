@@ -1,17 +1,10 @@
 "use client";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "firebase/storage";
-import { type FullMetadata } from "firebase/storage";
 import { filterExtraImages, sleep } from "@app/utils/functions";
 import { iSessionUser } from "@app/utils/types";
-import {
-  // getSupabaseImagesFromFolder,
-  handleUploadToSupabaseStorage,
-} from "@app/api/storageActions";
-import {
-  getAllImagesURLFromSupabseFolder,
-  listFilesInFolder,
-} from "@app/api/spActions";
+import { handleUploadToSupabaseStorage } from "@app/api/storageActions";
+import { getAllImagesURLFromSupabseFolder } from "@app/api/spActions";
 import UploadImagePreview from "@app/components/@PostForm/UploadImagePreview";
 import DeleteImageButton from "./DeleteSupabaseImage";
 import DownloadImageButton from "@app/components/@PostForm/DownloadImageButton";
@@ -46,11 +39,13 @@ export const SpielplatzImageUploader = ({
   const fileInputRef = React.useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    getAllImagesURLFromSupabseFolder("spielplaetze", id.toString()).then(
-      (data) => {
+    getAllImagesURLFromSupabseFolder("spielplaetze", id.toString())
+      .then((data) => {
         setPreviousImage(data);
-      }
-    );
+      })
+      .catch((e) => {
+        setError(e.message);
+      });
   }, [id]);
 
   useEffect(() => {
@@ -106,6 +101,15 @@ export const SpielplatzImageUploader = ({
       id="images-upload-container"
       className="bg-hh-800 p-4 text-gray-900 max-w-[800px] mx-auto text-sm"
     >
+      {error && (
+        <div className="p-2 mb-2 rounded border-2 bg-negative-100 border-negative-800 text-negative-900">
+          <h3 className="text-xl font-bold">
+            Wir sind auf einen Fehler gestoßen
+          </h3>
+          <p className="text-base text-negative-800">{error}</p>
+          <p>Bitte versuchen Sie es später erneut.</p>
+        </div>
+      )}
       <h2 className="text-xl font-bold text-white underline">
         Images<span className="ml-2 text-negative-200 no-underline">*</span>
         <span className="text-sm text-negative-200 no-underline">
@@ -222,7 +226,7 @@ export const SpielplatzImageUploader = ({
                         imageIndex={imageIndex}
                         imageName={`${id}/${imagesUrl.fileName}`}
                         bucket="spielplaetze"
-                        setImagesArray={setPreviousImage}
+                        setImagesArray={setImagesURL}
                       />
                     </UploadImagePreview>
                   </div>
