@@ -8,7 +8,7 @@ export default function ShortAbout() {
         Herzlich willkommen bei Kinder in Hamburg!
       </h3>
       <p>
-        Hier findet ihr Flohmärkten aus verschiedenen Teilen der Stadt
+        Hier findet ihr Flohmärkte aus verschiedenen Teilen der Stadt
         zusammengestellt.
       </p>
       <p>
@@ -31,7 +31,7 @@ export default function ShortAbout() {
       </p>
       {/* <p>
         Entdeckt mit uns familienfreundliche Aktivitäten in der Stadt. Von
-        Museen und Parks bis hin zu Restaurants und Flohmärkten - wir versuchen
+        Museen und Parks bis hin zu Restaurants und Flohmärkte - wir versuchen
         alles abzudecken.
       </p>
       <p>
