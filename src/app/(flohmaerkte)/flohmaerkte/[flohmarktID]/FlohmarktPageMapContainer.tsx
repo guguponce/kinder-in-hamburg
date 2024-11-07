@@ -36,7 +36,10 @@ export default async function FlohmarktPageMapContainer({
             <h3 className="font-bold text-2xl text-hh-800">
               Weitere Märkte dieser Woche:
             </h3>
-            <WeitereFlohmaerkte displayedMarkers={weitereFlohmaerkte} />
+            <WeitereFlohmaerkte
+              type="Flohmärkte"
+              displayedMarkers={weitereFlohmaerkte}
+            />
           </section>
         </>
       )}
