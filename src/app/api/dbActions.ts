@@ -1026,6 +1026,61 @@ export const getAllEventsFromType = async (type: string) => {
   }
 };
 
+export const getAllEventsThisWeek = async (
+  eventTypes?: iEventType[],
+  bezirk?: iBezirk,
+  stadtteile?: string[]
+) => {
+  const { today, nextMonday } = getTodayNexMonday();
+  const until =
+    new Date().getDay() === 0
+      ? nextMonday + 1000 * 60 * 60 * 24 * 7
+      : nextMonday - 1000 * 60 * 60 * 2;
+  let query = supabaseAdmin
+    .from("events")
+    .select("*")
+    .gte("date", today - 1000 * 60 * 60)
+    .lte("date", until)
+    .ilike("status", "approved");
+
+  try {
+    if (bezirk || stadtteile || eventTypes) {
+      if (bezirk && !checkBezirk(bezirk))
+        throw new Error("Invalid Bezirk: " + bezirk);
+
+      // Construct bezirk stadtteile condition
+      const stadtteileConditions = stadtteile
+        ? stadtteile?.map((nh) => `stadtteil.ilike.%${nh}%`).join(",")
+        : "";
+      const bezirkCondition = bezirk ? `bezirk.eq.${bezirk}` : "";
+      const eventsTypesConditions = eventTypes
+        ? eventTypes?.map((nh) => `type.ilike.%${nh}%`).join(",")
+        : "";
+
+      const combinedCondition = [
+        eventsTypesConditions,
+        stadtteileConditions,
+        bezirkCondition,
+      ]
+        .filter(Boolean)
+        .join(",");
+      const { data, error } = await query.or(combinedCondition);
+
+      if (error) {
+        return false;
+      }
+      return data.map((f) => parseFlohmarkt(f)) as iFlohmarkt[];
+    } else {
+      const { data, error } = await query;
+      if (error) {
+        return false;
+      }
+      return data.map((f) => parseFlohmarkt(f)) as iFlohmarkt[];
+    }
+  } catch (error) {
+    return false;
+  }
+};
 export const getApprovedEventsWithBezirk = async (
   bezirk: iBezirk,
   eventTable: string = "flohmaerkte"
@@ -1075,7 +1130,7 @@ export const getThisWeekEvents = async (eventTable: string = "flohmaerkte") => {
       .select("*")
       .match({ status: "approved" })
       .gte("date", today - 1000 * 60 * 60)
-      .lte("date", nextMonday);
+      .lte("date", nextMonday - 1000 * 60 * 60 * 2);
     if (error) {
       return false;
     }
@@ -1155,7 +1210,6 @@ export const updateEvent = async (
   const authorized = await proofUser();
   if (!authorized) return "Not authorized";
   try {
-    console.log(event.title);
     const { data, error } = await supabaseAdmin
       .from(eventTable)
       .update(event)
