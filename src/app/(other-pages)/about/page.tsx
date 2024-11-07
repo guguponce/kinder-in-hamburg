@@ -12,7 +12,7 @@ export default function AboutPage() {
           Herzlich willkommen bei Kinder in Hamburg!
         </h3>
         <p>
-          Hier findet ihr Flohmärkten aus verschiedenen Teilen der Stadt
+          Hier findet ihr Flohmärkte aus verschiedenen Teilen der Stadt
           zusammengestellt.
         </p>
         <p>
