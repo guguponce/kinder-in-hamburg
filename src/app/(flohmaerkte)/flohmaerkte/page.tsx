@@ -8,6 +8,9 @@ import BezirkableEventsList from "@app/components/BezirkableEventsList";
 import dynamic from "next/dynamic";
 import { Metadata } from "next";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
+import MainIntroductionText from "@app/components/@PostForm/MainIntroductionText";
+import StandortIcon from "@app/components/@Icons/StandortIcon";
+import OtherEventsHorizontalCards from "./OtherEventsHorizontalCards";
 
 const DynamicFlohmarktMap = dynamic(
   () => import("../../components/@Map/DynamicEventsMap"),
@@ -25,23 +28,57 @@ const DynamicFlohmarktMap = dynamic(
   }
 );
 export const revalidate = 120;
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: "Kinder in Hamburg",
+    icons: "/favicon.ico",
+    description:
+      "Hier findet ihr Aktivitäten und Flohmärkte für die ganze Familie aus verschiedenen Orten in Hamburg zusammengestellt.",
+    keywords: [
+      "hamburg mit kinder",
+      "hamburg familie flohmarkt",
+      "hamburg kinder flohmarkt",
+      "hamburg flohmaerkte",
+      "hamburg flohmarkt",
+      "hamburg kinder flohmaerkte",
+      "kinder in hamburg",
+      "kinder hamburg",
+      "flohmaerkte",
+      "flohmärkte",
+      "flohmarkt",
+      "kinder",
+      "familie",
+      "flohmaerkte hamburg",
+      "flohmaerkte kinder",
+      "flohmaerkte familie",
+      "flohmaerkte hamburg kinder",
+      "flohmaerkte hamburg familie",
+      "flohmarkt hamburg",
+      "flohmarkt kinder",
+      "flohmarkt familie",
+      "flohmarkt hamburg kinder",
+      "flohmarkt hamburg familie",
+      "flea market hamburg",
+    ],
+    openGraph: {
+      title: "Flohmärkte - Kinder in Hamburg",
+      description:
+        "Hier findet ihr Flohmärkte für die ganze Familie aus verschiedenen Orten in Hamburg zusammengestellt.",
+      url: "https://www.kinder-in-hamburg.de",
+      images: "/opengraph-image.png",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Flohmärkte - Kinder in Hamburg",
 
-export const metadata: Metadata = {
-  title: "Flohmärkte",
-  description: "Flohmärkte in Hamburg",
-  keywords: [
-    "Flohmärkte, Hamburg",
-    "Flohmarkt, Hamburg",
-    "Hamburg Flohmarkt",
-    "Hamburg Flohmärkte",
-    "Hamburg Markt",
-    "Hamburg Märkte",
-    "Kinderflohmarkt",
-    "Kinderflohmärkte",
-    "Kinderflohmarkt Hamburg",
-    "Kinderflohmärkte Hamburg",
-  ],
-};
+      description:
+        "Hier findet ihr Flohmärkte für die ganze Familie aus verschiedenen Orten in Hamburg zusammengestellt.",
+
+      images: ["/opengraph-image.png"], // Relative path to the image
+    },
+    metadataBase: new URL("https://www.kinder-in-hamburg.de"), // Base URL for resolving relative URLs
+  };
+}
 
 export default async function FlohmarktPage() {
   const flohmaerkte = await getApprovedEvents();
@@ -70,7 +107,7 @@ export default async function FlohmarktPage() {
     .sort((a, b) => a.date - b.date);
   const flohsWithoutLatLon = flohmaerkte.filter(({ lat, lon }) => !lat || !lon);
   return (
-    <main className="rounded bg-hh-100 bg-opacity-25 w-full max-w-[1000px] p-4 flex flex-col items-center min-h-[50vh] gap-2">
+    <main className="max-w-full rounded p-1 md:p-2 flex flex-col items-center min-h-[50vh] gap-2">
       <AdminServerComponent>
         {!!flohsWithoutLatLon.length &&
           flohsWithoutLatLon.map(({ id, title }) => (
@@ -79,26 +116,44 @@ export default async function FlohmarktPage() {
             </div>
           ))}
       </AdminServerComponent>
-      <h1 className="text-4xl font-bold my-2 p-2 rounded bg-opacity-50 bg-hh-50">
-        Flohmärkte
-      </h1>
-      <BezirkeScrollableEvents
-        title="Diese Woche"
-        events={thisWeekFlohmaerkte}
-        type="flohmaerkte"
-      ></BezirkeScrollableEvents>
-      <section className="flex flex-col h-fit max-w-[1200px] p-2 bg-gradient-to-b from-hh-100 to-50 shadow-md md:shadow-xl my-4 md:my-8 rounded">
-        <DynamicFlohmarktMap
-          future={futureFlohmaerkte}
-          thisWeek={thisWeekFlohmaerkte}
-          today={today}
-          square={false}
-        />
+      <MainIntroductionText
+        title="Flohmärkte"
+        text="Die Flohmärkte in Hamburg bieten eine schöne, familienfreundliche Erfahrung, bei der Eltern gebrauchte Schätze für ihre Kinder finden können. Von Spielzeug und Kleidung bis hin zu Büchern und Mobilitätsartikeln wie Fahrrädern oder Kinderwagen – diese Märkte ermöglichen es, günstige und umweltfreundliche Optionen für die ganze Familie zu entdecken. Wir glauben, dass sie den Kindern die Chance bieten, den Wert von Wiederverwendung und Recycling auf eine praktische Weise zu lernen."
+      />
+      <section className="rounded bg-hh-100 bg-opacity-25 w-full max-w-[1000px] p-2 md:p-4 flex flex-col items-center gap-2">
+        <BezirkeScrollableEvents
+          title="Diese Woche"
+          events={thisWeekFlohmaerkte}
+          type="flohmaerkte"
+        ></BezirkeScrollableEvents>
+        <section className="flex flex-col h-fit max-w-[1200px] p-2 bg-gradient-to-b from-hh-100 to-50 shadow-md md:shadow-xl my-4 md:my-8 rounded">
+          <div className="w-full pb-2 flex flex-wrap gap-2 justify-end items-center">
+            {!!futureFlohmaerkte.length && (
+              <div className="font-semibold flex gap-1 text-hh-800">
+                <StandortIcon color="#7B3E5E" />
+                Diese Woche
+              </div>
+            )}
+            {!!futureFlohmaerkte.length && (
+              <div className="font-semibold flex gap-1 text-hh-800">
+                <StandortIcon color="#343b3e" />
+                Zukünftige Flohmärkte
+              </div>
+            )}
+          </div>
+          <DynamicFlohmarktMap
+            future={futureFlohmaerkte}
+            thisWeek={thisWeekFlohmaerkte}
+            today={today}
+            square={false}
+          />
+        </section>
+        <BezirkableEventsList
+          title="Ab nächster Woche"
+          eventsList={futureFlohmaerkte}
+        ></BezirkableEventsList>
+        <OtherEventsHorizontalCards variant="dark" />
       </section>
-      <BezirkableEventsList
-        title="Ab nächster Woche"
-        eventsList={futureFlohmaerkte}
-      ></BezirkableEventsList>
     </main>
   );
 }
