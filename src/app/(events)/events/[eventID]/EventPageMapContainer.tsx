@@ -38,6 +38,7 @@ export default async function EventPageMapContainer({
               Weitere Veranstaltungen dieser Woche:
             </h3>
             <WeitereFlohmaerkte
+              type="Events"
               displayedMarkers={[
                 ...weitereVeranstaltungen,
                 ...thisWeekFlohmaerkte,

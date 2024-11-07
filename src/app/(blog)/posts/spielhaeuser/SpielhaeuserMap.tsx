@@ -27,6 +27,7 @@ const OptionalExpandableContainer = ({
   <div className="flex-grow">
     {expandable ? (
       <ExpandableContainer
+        type="Posts"
         contentHeight={length > 2 ? 250 : 200}
         initialHeight={length > 2 ? 240 : 190}
       >
