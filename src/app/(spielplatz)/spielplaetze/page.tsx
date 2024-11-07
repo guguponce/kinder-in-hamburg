@@ -45,7 +45,11 @@ export default async function SpielplaeztePage() {
               .sort(([_, alist], [__, blist]) => blist.length - alist.length)
               .map(([bezirk, list]) => (
                 <div key={bezirk} className="w-full lg:w-[calc(50%-1rem)]">
-                  <ExpandableContainer contentHeight={420} initialHeight={400}>
+                  <ExpandableContainer
+                    type="Spielplätze"
+                    contentHeight={420}
+                    initialHeight={400}
+                  >
                     <article
                       key={bezirk}
                       className="flex flex-col gap-2 bg-white bg-opacity-25 rounded p-2"
