@@ -287,6 +287,17 @@ export const separateByDate = (events: iFlohmarkt[]) => {
     {} as Record<string, iFlohmarkt[]>
   );
 };
+
+export function replaceEventTypes(types: string[]) {
+  const replacements: { [key: string]: string } = {
+    flohmarkt: "Flohmärkte",
+    laterne: "Laternenumzüge",
+    laternewerkstatt: "Laternebasteln",
+    weihnachtsmarkt: "Weihnachtsmärkte",
+  };
+
+  return types.map((type) => replacements[type] || type);
+}
 export const sortPostsByDate = (posts: iPost[]) =>
   [...posts].sort((a, b) => b.createdAt - a.createdAt);
 
