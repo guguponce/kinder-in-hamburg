@@ -40,5 +40,5 @@ next-env.d.ts
 # db
 /db_csv
 /spielplaetze
-
+/test
 /src/app/(spielplatz)/add-sp
