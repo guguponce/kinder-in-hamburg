@@ -17,8 +17,18 @@ function addressWithoutCity(address: string) {
 }
 
 export default function WeitereFlohmaerkte({
+  type,
   displayedMarkers,
 }: {
+  type:
+    | "Spielplätze"
+    | "Spielgeräte"
+    | "Veranstaltungen"
+    | "Aktivitäten"
+    | "Flohmärkte"
+    | "Posts"
+    | "Events"
+    | undefined;
   displayedMarkers: iFlohmarkt[];
 }) {
   const [contentHeight, setContentHeight] = useState<number>(128 + 16);
@@ -50,6 +60,7 @@ export default function WeitereFlohmaerkte({
         .map(([date, displayedFlohs]) => (
           <React.Fragment key={date}>
             <ExpandableContainer
+              type={type}
               contentHeight={contentHeight}
               initialHeight={displayedFlohs.length < 2 ? 180 : 128 * 2 + 32}
             >
