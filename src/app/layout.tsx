@@ -19,7 +19,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title: "Kinder in Hamburg",
     icons: "/favicon.ico",
     description:
-      "Hier findet ihr Aktivitäten und Flohmärkten für die ganze Familie aus verschiedenen Orten in Hamburg zusammengestellt.",
+      "Hier findet ihr Aktivitäten und Flohmärkte für die ganze Familie aus verschiedenen Orten in Hamburg zusammengestellt.",
     keywords: [
       "hamburg mit kinder",
       "hamburg familie",
@@ -44,7 +44,7 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       title: "Kinder in Hamburg",
       description:
-        "Hier findet ihr Aktivitäten und Flohmärkten für die ganze Familie aus verschiedenen Orten in Hamburg zusammengestellt.",
+        "Hier findet ihr Aktivitäten und Flohmärkte für die ganze Familie aus verschiedenen Orten in Hamburg zusammengestellt.",
       url: "https://www.kinder-in-hamburg.de",
       images: "/opengraph-image.png",
     },
@@ -52,9 +52,9 @@ export async function generateMetadata(): Promise<Metadata> {
       card: "summary_large_image",
       title: "Kinder in Hamburg",
       description:
-        "Hier findet ihr Aktivitäten und Flohmärkten für die ganze Familie aus verschiedenen Orten in Hamburg zusammengestellt.",
+        "Hier findet ihr Aktivitäten und Flohmärkte für die ganze Familie aus verschiedenen Orten in Hamburg zusammengestellt.",
 
-      images: ["/src/app/favicon/favicon-48x48.png"], // Relative path to the image
+      images: ["/opengraph-image.png"], // Relative path to the image
     },
     metadataBase: new URL("https://www.kinder-in-hamburg.de"), // Base URL for resolving relative URLs
   };
