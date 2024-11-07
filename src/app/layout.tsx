@@ -21,14 +21,15 @@ export async function generateMetadata(): Promise<Metadata> {
     description:
       "Hier findet ihr Aktivitäten und Flohmärkte für die ganze Familie aus verschiedenen Orten in Hamburg zusammengestellt.",
     keywords: [
+      "kinder in hamburg",
+      "KINDER IN HAMBURG",
+      "kinder hamburg",
       "hamburg mit kinder",
       "hamburg familie",
       "hamburg kinder",
       "hamburg ausflug",
       "hamburg flohmarkt",
       "hamburg kinder flohmarkt",
-      "kinder in hamburg",
-      "kinder hamburg",
       "hamburg",
       "flohmarkt",
       "kinder",
