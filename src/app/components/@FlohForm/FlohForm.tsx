@@ -231,8 +231,7 @@ export default function FlohForm({
           ? "events"
           : "flohmaerkte"
       )
-        .then((res) => {
-          alert(res);
+        .then(() => {
           setSubmitError({ isError: false, errorMessage: "" });
           revalidatePost();
           revalidateFlohmarkt();
@@ -566,18 +565,24 @@ export default function FlohForm({
               disabled={successfulSubmit || isSubmitting || isLoading}
               className={`${
                 successfulSubmit
-                  ? " bg-slate-300 hover:shadow-none"
+                  ? "bg-slate-300 hover:shadow-none"
                   : "bg-green-700 hover:bg-green-600 hover:shadow-md ml-auto"
               } active:scale-[0.99] border-0px-8  flex rounded p-2 text-lg text-white transition-colors  duration-200 ease-in-out  focus:outline-2 focus:ring-2 focus:ring-green-600 focus:ring-offset-2 disabled:bg-gray-500`}
             >
               {JSON.stringify(imagesUrlsReady.urls) !== JSON.stringify([image])
                 ? flohFormType === "new-flohmarkt"
                   ? "Submit Flohmarkt Suggestion"
-                  : status === "approved"
-                    ? flohFormType === "update-flohmarkt"
-                      ? "Update Flohmarkt"
-                      : "Approve Flohmarkt"
-                    : "Update Flohmarkt Suggestion"
+                  : flohFormType === "approve-suggestion"
+                    ? "Approve Flohmarkt Suggestion"
+                    : flohFormType === "update-flohmarkt"
+                      ? status === "approved"
+                        ? "Update Flohmarkt"
+                        : "Update Flohmarkt Suggestion"
+                      : flohFormType === "new-event"
+                        ? "Submit Event Suggestion"
+                        : flohFormType === "update-event"
+                          ? "Update Event"
+                          : flohFormType
                 : "Done"}
             </button>
             {submitError.isError && (
