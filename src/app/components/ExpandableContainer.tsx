@@ -1,12 +1,21 @@
 "use client";
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { useLayoutEffect, useRef, useState } from "react";
 
 export default function ExpandableContainer({
   children,
+  type,
   contentHeight,
   initialHeight,
   shadow = true,
 }: {
+  type?:
+    | "Spielplätze"
+    | "Spielgeräte"
+    | "Veranstaltungen"
+    | "Aktivitäten"
+    | "Flohmärkte"
+    | "Posts"
+    | "Events";
   shadow?: boolean;
   children: React.ReactNode;
   contentHeight: number;
@@ -48,7 +57,7 @@ export default function ExpandableContainer({
           showButton ? "flex" : "hidden"
         } absolute bottom-0 backdrop-blur-[1px] w-full h-12 from-hh-400 to-[#758CA370] bg-gradient-to-t items-center justify-center font-semibold text-hh-50 z-30 rounded`}
       >
-        Alle Spielgeräte anzeigen
+        Alle {type || ""} anzeigen
       </button>
     </section>
   );
