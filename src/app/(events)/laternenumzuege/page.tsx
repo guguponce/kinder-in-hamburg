@@ -13,6 +13,7 @@ import Link from "next/link";
 import AddLatLon from "@components/AddLatLon";
 import ClientLaterneGallery from "@components/@Index/laternenumzug/ClientLaterneGallery";
 import HorizontalCard from "@app/components/@Cards/HorizontalCard";
+import ScrollableContainer from "@app/components/ScrollableContainer";
 
 const DynamicEventsMap = dynamic(
   () => import("../../components/@Map/DynamicEventsMap"),
@@ -141,51 +142,49 @@ export default async function LaternenumzuegePage() {
               basteln könnt.
             </p>
           </div>
-
-          {Object.entries(bastelEventsByDate).map(([date, events]) => (
-            <article
-              key={date}
-              className="bg-gradient-to-br from-hh-900 to-hh-800 bg-opacity-25 transition-all flex flex-col rounded w-full p-2 pt-0"
-            >
-              <h3 className="font-semibold p-2">{date}</h3>
-              <div className="w-full flex gap-4 flex-wrap items-center">
-                {events.map(
-                  ({
-                    id,
-                    type,
-                    title,
-                    image,
-                    address,
-                    date,
-                    time,
-                    stadtteil,
-                  }) => (
-                    <div
-                      key={id}
-                      className="w-[360px] min-w-[300px] sm:w-[calc(50%-0.5rem)]"
-                    >
-                      <HorizontalCard
-                        key={id}
-                        type={type}
-                        title={title}
-                        id={id}
-                        link={`/events/${id}`}
-                        image={image}
-                      >
-                        <HorizontalCard.FlohmarktInfo
+          <ScrollableContainer>
+            {Object.entries(bastelEventsByDate).map(([date, events]) => (
+              <article
+                key={date}
+                className="bg-gradient-to-br from-hh-900 to-hh-800 bg-opacity-25 transition-all flex flex-col rounded p-2 pt-0 min-w-fit"
+              >
+                <h3 className="font-semibold p-2">{date}</h3>
+                <div className="min-w-fit flex gap-4 items-center">
+                  {events.map(
+                    ({
+                      id,
+                      type,
+                      title,
+                      image,
+                      address,
+                      date,
+                      time,
+                      stadtteil,
+                    }) => (
+                      <div key={id} className="w-[360px] min-w-[300px]">
+                        <HorizontalCard
+                          key={id}
+                          type={type}
                           title={title}
-                          address={addressWithoutCity(address)}
-                          stadtteil={stadtteil}
-                          date={date}
-                          time={time}
-                        />
-                      </HorizontalCard>
-                    </div>
-                  )
-                )}
-              </div>
-            </article>
-          ))}
+                          id={id}
+                          link={`/events/${id}`}
+                          image={image}
+                        >
+                          <HorizontalCard.FlohmarktInfo
+                            title={title}
+                            address={addressWithoutCity(address)}
+                            stadtteil={stadtteil}
+                            date={date}
+                            time={time}
+                          />
+                        </HorizontalCard>
+                      </div>
+                    )
+                  )}
+                </div>
+              </article>
+            ))}
+          </ScrollableContainer>
         </section>
       )}
     </main>
