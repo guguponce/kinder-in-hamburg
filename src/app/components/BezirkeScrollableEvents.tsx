@@ -17,16 +17,17 @@ export default async function BezirkeScrollableEvents({
   bezirk?: string;
   title?: string;
 }) {
+  if (events.length === 0) return null;
   const eventsByBezirke = separateInBezirke(
     [...events].sort((a, b) => a.date - b.date)
   );
 
-  const eventsBezirke = Array.from(new Set(events.map((floh) => floh.bezirk)));
+  const eventsBezirke = Array.from(new Set(events.map((ev) => ev.bezirk)));
   const displayBezirke = bezirke
     .filter((bez) => eventsBezirke.includes(bez))
     .sort((a, b) => eventsByBezirke[b].length - eventsByBezirke[a].length);
   const filteredList = bezirk
-    ? events.filter((floh) => floh.bezirk === bezirk)
+    ? events.filter((ev) => ev.bezirk === bezirk)
     : events;
   return (
     <div className="w-fit max-w-full rounded">
