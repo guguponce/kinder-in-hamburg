@@ -18,7 +18,8 @@ const createNormalSizeIcon = (color: string, size: number = 30) =>
     className: "bg-transparent",
   });
 const futureIcon = createNormalSizeIcon("#343b3e");
-const todayIcon = createNormalSizeIcon("#7B3E5E");
+const thisWeekIcon = createNormalSizeIcon("#7B3E5E");
+const todayIcon = createNormalSizeIcon("#b72f1e");
 
 export default function DynamicEventsMap({
   today,
@@ -65,7 +66,6 @@ export default function DynamicEventsMap({
     }
     return eventsByDate.current;
   }, [selectedDate]);
-
   return (
     <div className="w-full sm:w-full flex flex-col md:flex-row md:flex-wrap items-stretch gap-2 rounded">
       <section
@@ -74,7 +74,27 @@ export default function DynamicEventsMap({
         <GeneralMap zoom={11}>
           {!selectedDate && !futureSelected
             ? Object.entries(displayedMarkers).map(([day, events]) =>
-                day !== today.toString() ? (
+                new Date(parseInt(day)).setHours(0, 0, 0, 0) === today ? (
+                  events.map(
+                    ({ id, lat, lon, address, date, title, bezirk }) =>
+                      selectedBezirk && bezirk !== selectedBezirk ? null : (
+                        <React.Fragment key={id}>
+                          <Marker
+                            icon={todayIcon}
+                            key={id}
+                            position={[lat || 53.5511, lon || 9.9937]}
+                          >
+                            <FlohmarktPopUP
+                              id={id}
+                              address={address}
+                              date={date}
+                              title={title}
+                            />
+                          </Marker>
+                        </React.Fragment>
+                      )
+                  )
+                ) : day !== today.toString() ? (
                   <React.Fragment key={day}>
                     <MarkersLists
                       cluster={false}
