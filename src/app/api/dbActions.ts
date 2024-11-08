@@ -178,7 +178,7 @@ export const addNewSuggestedPost = async (post: iPost) => {
     if (error) {
       throw new Error(error.message);
     }
-
+    revalidatePost();
     return true;
   } catch (error) {
     throw new Error("There was a problem adding the post.");
@@ -196,6 +196,8 @@ export const updateSuggestedPost = async (post: iPost) => {
     if (error) {
       throw new Error(error.message);
     }
+    revalidatePost();
+
     return true;
   } catch (error) {
     throw new Error("There was a problem updating the post.");
@@ -392,6 +394,7 @@ export const updateSuggestionStatus = async (id: number, status: string) => {
         "There was a problem updating the status of the post: " + id + "."
       );
     }
+    revalidatePost();
     return true;
   } catch (error) {
     throw new Error(
@@ -750,6 +753,7 @@ export const approveSuggestedPost = async (post: iPost) => {
     if (error) {
       throw new Error("There was a problem approving the post.");
     }
+    revalidatePost();
     return true;
   } catch (error) {
     throw new Error("There was a problem approving the post.");
@@ -830,6 +834,8 @@ export const updateApprovedPost = async (post: iPost) => {
     if (error) {
       throw new Error("There was a problem updating the post.");
     }
+    revalidatePost();
+
     return data;
   } catch (error) {
     throw new Error("There was a problem updating the post.");
@@ -853,19 +859,21 @@ export const setEventAsOld = async (
   }
 };
 export const setAllPreviousEventsAsOld = async (
-  eventTable: string = "flohmaerkte"
+  eventTable: "flohmaerkte" | "events" = "flohmaerkte"
 ) => {
   try {
     const { today } = getTodayNexMonday();
-    const flohs = ((await getAllApprovedEvents()) || []).filter(
+    const flohs = ((await getAllEventsFromType("laterne")) || []).filter(
       (f) => f.date < today && f.status === "approved"
     );
-    if (!flohs || flohs.length === 0) return false;
+    if (!flohs || flohs.length === 0) return "No old events found.";
 
-    const oldFlohs = await Promise.all(flohs.map((f) => setEventAsOld(f.id)));
-    return oldFlohs;
+    const oldFlohs = await Promise.all(
+      flohs.map((f) => setEventAsOld(f.id, eventTable))
+    );
+    return "All previous events set as old." + oldFlohs.length;
   } catch (error) {
-    throw new Error("There was a problem setting the event as old.");
+    throw new Error("There was a problem setting events as old.");
   }
 };
 
@@ -1011,7 +1019,7 @@ export const getAllApprovedEvents = async (
   }
 };
 
-export const getAllEventsFromType = async (type: string) => {
+export async function getAllEventsFromType(type: string) {
   try {
     const { data, error } = await supabaseAdmin
       .from("events")
@@ -1024,7 +1032,7 @@ export const getAllEventsFromType = async (type: string) => {
   } catch (error) {
     return false;
   }
-};
+}
 
 export const getAllEventsThisWeek = async (
   eventTypes?: iEventType[],
@@ -1250,13 +1258,14 @@ export const updateEventStatus = async (
   const authorized = await proofUser();
   if (!authorized) return "Not authorized";
   try {
-    const { data, error } = await supabaseAdmin
+    const { error } = await supabaseAdmin
       .from(eventTable)
       .update({ status })
       .match({ id });
     if (error) {
       throw new Error("There was a problem updating the event.");
     }
+    console.log("Event updated", status);
     return true;
   } catch (error) {
     throw new Error("There was a problem updating the event.");
