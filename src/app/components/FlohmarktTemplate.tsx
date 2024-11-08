@@ -12,6 +12,7 @@ import {
 } from "@app/utils/functions";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
 import FlohmarktBackground from "./@Icons/@Flohmarkt/FlohmarktBackground";
+import Image from "next/image";
 
 export default function FlohmarktTemplate({
   flohmarkt: {
@@ -43,7 +44,7 @@ export default function FlohmarktTemplate({
       <section
         className={`w-full ${
           image ? "max-w-[1200px]" : "max-w-[800px]"
-        } bg-hh-100 sm:rounded-lg p-6 relative flex flex-col items-center gap-4`}
+        } ${type === "laterne" ? "bg-gradient-to-b from-hh-950 to-hh-800 w-full" : "bg-hh-100"} sm:rounded-lg p-6 relative flex flex-col items-center gap-4  overflow-hidden`}
       >
         <div className="flex justify-between items-center gap-4 w-full">
           <Link
@@ -92,29 +93,39 @@ export default function FlohmarktTemplate({
             </aside>
           )}
           <section className="w-full md:w-1/2 flex-grow flex flex-col justify-between pb-4">
-            <div className="w-full flex-grow flex flex-col">
+            <div className="relative w-full flex-grow flex flex-col">
+              <div className="absolute top-0 left-0 w-full h-full opacity-50 -z-1">
+                <Image
+                  style={{ left: "-6px" }}
+                  fill
+                  src={"/assets/icons/laterne/stars.svg"}
+                  alt="stars"
+                  className="min-w-[1200px] max-h-[150px] bg-opacity-25 rounded-lg opacity-50 -z-1"
+                />
+              </div>
               <div
                 id="flohmarkt-hero"
-                className="w-full p-4 mb-4 rounded-md bg-hh-50 w-h-[50%] flex-grow"
+                className={`w-full p-4 mb-4 rounded-md ${type === "laterne" ? "text-hh-100" : "bg-hh-50"} w-h-[50%] flex-grow overflow-hidden`}
               >
                 <h1 className="text-4xl text-center font-bold break-words">
                   {title}
                 </h1>
-
                 {optionalComment && (
                   <div className="mt-4 h-[calc(100%-4rem)] relative">
-                    <div className="absolute top-0 left-0 w-full h-full flex-grow overflow-hidden bg-hh-100 bg-opacity-50 rounded-md flex flex-wrap opacity-20">
-                      {Array(4)
-                        .fill(0)
-                        .map((_, i) => (
-                          <div
-                            className="w-1/2 h-1/2 min-h-[300px] flex justify-center items-center"
-                            key={i}
-                          >
-                            <FlohmarktBackground />
-                          </div>
-                        ))}
-                    </div>
+                    {!type && (
+                      <div className="absolute top-0 left-0 w-full h-full flex-grow overflow-hidden bg-hh-100 bg-opacity-50 rounded-md flex flex-wrap opacity-20">
+                        {Array(4)
+                          .fill(0)
+                          .map((_, i) => (
+                            <div
+                              className="w-1/2 h-1/2 min-h-[300px] flex justify-center items-center"
+                              key={i}
+                            >
+                              <FlohmarktBackground />
+                            </div>
+                          ))}
+                      </div>
+                    )}
                     <div id="optional-comment-box" className="max-w-full">
                       <DisplayTypeText
                         text={optionalComment}
@@ -131,7 +142,7 @@ export default function FlohmarktTemplate({
               >
                 <div
                   id="location"
-                  className="flex flex-col w-fit sm:w-full sm:max-w-[calc(50%-4px)] justify-stretch  h-fit rounded bg-hh-300 bg-opacity-25 py-2 px-4"
+                  className={`flex flex-col w-fit sm:w-full sm:max-w-[calc(50%-4px)] justify-stretch  h-fit rounded bg-hh-300 ${type === "laterne" ? "bg-opa75" : "bg-opacity-25"} py-2 px-4`}
                 >
                   <h2 className="text-lg font-semibold">Standort:</h2>
                   {bezirk && (
@@ -214,7 +225,7 @@ export default function FlohmarktTemplate({
                 </div>
                 <div
                   id="date"
-                  className="w-full sm:max-w-[calc(50%-4px)] self-stretch lg:h-fit py-2 px-4 rounded bg-hh-300 bg-opacity-25"
+                  className={`w-full sm:max-w-[calc(50%-4px)] self-stretch lg:h-fit py-2 px-4 rounded bg-hh-300 ${type === "laterne" ? "bg-opa75" : "bg-opacity-25"}`}
                 >
                   <h2 className="text-lg font-semibold">Datum:</h2>
                   <div className="flex flex-col gap-1">
