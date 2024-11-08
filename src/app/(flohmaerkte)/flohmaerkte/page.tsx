@@ -27,7 +27,6 @@ const DynamicFlohmarktMap = dynamic(
     ),
   }
 );
-export const revalidate = 120;
 export async function generateMetadata(): Promise<Metadata> {
   return {
     title: "Kinder in Hamburg",

@@ -37,7 +37,7 @@ export default async function LaternenumzuegePage() {
   if (!laternenEvents) return <NotFound multiples type="event" />;
   if (!laternenEvents.length) return;
   const { today, nextMonday } = getTodayNexMonday();
-  const lastMidnight = today - 1000 * 60 * 60 * 2;
+  const lastMidnight = new Date(today).setHours(0, 0, 0, 0);
   const todayLaternenumzuege = [
     ...laterneBastelnEvents,
     ...laternenEvents,
