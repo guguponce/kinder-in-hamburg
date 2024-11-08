@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export async function revalidatePost() {
   revalidatePath("/", "layout");
@@ -8,6 +8,7 @@ export async function revalidatePost() {
   revalidatePath("/posts", "layout");
   revalidatePath("/update-post/", "layout");
   revalidatePath("/update-suggestion/", "layout");
+  revalidateTag("posts");
 }
 export async function revalidateFlohmarkt() {
   revalidatePath("/", "layout");
@@ -16,4 +17,5 @@ export async function revalidateFlohmarkt() {
   revalidatePath("/update-flohmarkt/", "layout");
   revalidatePath("/flohmarkt-approval/", "layout");
   revalidatePath("/update-suggested-flohmarkt/", "layout");
+  revalidateTag("flohmaerkte");
 }

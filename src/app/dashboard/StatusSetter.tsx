@@ -11,15 +11,26 @@ export default function StatusSetter({
 }: {
   target: iPost | iFlohmarkt;
   status: "pending" | "approved" | "rejected" | "old";
-  type?: "post" | "flohmarkt";
+  type?: "post" | "flohmarkt" | "event";
 }) {
+  const typeCorrection = {
+    event: "events",
+    flohmarkt: "flohmaerkte",
+    post: "posts",
+  };
   const [currentStatus, setCurrentStatus] = useState(status);
   const handleSetStatus = async () => {
     if (status === currentStatus) return;
     if (type === "post")
       await updatePostStatus(target.id, status, currentStatus, target as iPost);
-    if (type === "flohmarkt")
-      await updateEventStatus(target.id.toString(), currentStatus);
+    if (["flohmarkt", "event"].includes(type))
+      await updateEventStatus(
+        target.id.toString(),
+        currentStatus,
+        typeCorrection[type]
+      ).then((res) => {
+        console.log(res);
+      });
   };
 
   return (
@@ -39,13 +50,14 @@ export default function StatusSetter({
             value={currentStatus}
             onChange={(e) =>
               setCurrentStatus(
-                e.target.value as "pending" | "approved" | "rejected"
+                e.target.value as "pending" | "approved" | "rejected" | "old"
               )
             }
           >
             <option value="approved">Approved</option>
             <option value="pending">Pending</option>
             <option value="rejected">Rejected</option>
+            <option value="old">Old</option>
           </select>
           <button
             className="p-2 rounded bg-hh-700 hover:bg-hh-800 text-white w-fit"
@@ -61,7 +73,7 @@ export default function StatusSetter({
           title={target.title}
           deleteFrom="all"
           type={type}
-          callbackURL="/dashboard/posts"
+          callbackURL={`/dashboard/${typeCorrection[type]}`}
         />
       </div>
     </>
