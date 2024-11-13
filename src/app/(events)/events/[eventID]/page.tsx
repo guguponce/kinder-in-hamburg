@@ -26,17 +26,23 @@ export async function generateMetadata({
       description: "Der Event wurde nicht gefunden.",
     };
   return {
-    title: eventInfo.title,
+    title: eventInfo.title + " - Kinder in Hamburg",
     description:
       "Event in " + eventInfo.bezirk + " " + eventInfo.optionalComment,
     openGraph: {
       type: "website",
       url: "https://www.kinder-in-hamburg.de/events/" + params.eventID,
       title: eventInfo.title,
-      description: eventInfo.optionalComment.slice(0, 100),
+      description: eventInfo.optionalComment?.slice(0, 100),
       images: eventInfo.image,
-      // (await Image({ params })) || eventInfo.image,
       siteName: "Kinder in Hamburg",
+    },
+    twitter: {
+      description: eventInfo.optionalComment?.slice(0, 100),
+      title: eventInfo.title,
+      images: eventInfo.image,
+      site: "https://www.kinder-in-hamburg.de/events/" + params.eventID,
+      card: "summary_large_image",
     },
   };
 }
