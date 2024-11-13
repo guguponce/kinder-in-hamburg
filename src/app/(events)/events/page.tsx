@@ -4,7 +4,7 @@ import BezirkeScrollableEvents from "@app/components/BezirkeScrollableEvents";
 import { getTodayNexMonday } from "@app/utils/functions";
 import Link from "next/link";
 import React from "react";
-import BezirkableFlohmaerkteList from "@components/BezirkeScrollableEvents";
+import BezirkableEventsList from "@components/BezirkableEventsList";
 import dynamic from "next/dynamic";
 import { Metadata } from "next";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
@@ -60,12 +60,13 @@ export default async function EventPage() {
     return <NotFound multiples={true} type="event" />;
 
   const { today, nextMonday } = getTodayNexMonday();
+  const lastMidnight = new Date(today).setHours(0, 0, 0, 0);
 
   const thisWeekFlohmaerkte = flohmaerkte.filter(
-    ({ date }) => date > today && date < nextMonday
+    ({ date }) => date > lastMidnight && date < nextMonday
   );
   const thisWeekEvents = events.filter(
-    ({ date }) => date > today && date < nextMonday
+    ({ date }) => date > lastMidnight && date < nextMonday
   );
   const futureEvents = events
     .filter(({ date }) => date > nextMonday)
@@ -87,23 +88,26 @@ export default async function EventPage() {
       <BezirkeScrollableEvents
         title="Diese Woche"
         events={thisWeekEvents}
+        type="events"
       ></BezirkeScrollableEvents>
       <DynamicEventsMap future={[]} thisWeek={events} today={today} />
-      <BezirkableFlohmaerkteList
+      <BezirkableEventsList
+        variant="transparent-light"
         title="Ab nächster Woche"
-        events={futureEvents}
+        eventsList={futureEvents}
         type="events"
-      ></BezirkableFlohmaerkteList>
-      <section className="w-full flex flex-col items-center gap-2">
-        <h3 className="text-xl font-semibold w-fit px-8">
+      ></BezirkableEventsList>
+      <section className="w-full flex flex-col gap-2 my-4">
+        <h3 className="text-xl font-semibold w-fit">
           Zusätzlich zu den Veranstaltungen finden in dieser Woche die folgenden
           Flohmärkte statt
         </h3>
-        <BezirkableFlohmaerkteList
+        <BezirkableEventsList
+          variant="dark"
           title=""
-          events={thisWeekFlohmaerkte}
+          eventsList={thisWeekFlohmaerkte}
           type="flohmaerkte"
-        ></BezirkableFlohmaerkteList>
+        ></BezirkableEventsList>
       </section>
     </main>
   );
