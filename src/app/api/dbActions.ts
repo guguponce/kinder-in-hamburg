@@ -964,15 +964,17 @@ export const getEventMetadata = async (
 
 export const getApprovedEventsAndFlohmaerkte = async () => {
   try {
-    const now = new Date().getTime();
+    const today = new Date().setHours(0, 0, 0, 0);
     const { data: flohmaerkte, error: flohError } = await supabaseAdmin
       .from("flohmaerkte")
       .select("*")
-      .gte("date", now);
+      .ilike("status", "approved")
+      .gte("date", today);
     const { data: events, error: eventError } = await supabaseAdmin
       .from("events")
       .select("*")
-      .gte("date", now);
+      .ilike("status", "approved")
+      .gte("date", today);
     if (flohError || eventError) {
       throw new Error("There was a problem getting the events.");
     }
