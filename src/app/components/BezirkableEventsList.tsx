@@ -31,10 +31,10 @@ export default function BezirkableEventsList({
         : eventsList.filter((ev) => ev.bezirk === bezirk),
     [bezirk, eventsList]
   );
-  const style = useMemo(() => {
+  const containerStyle = useMemo(() => {
     switch (variant) {
       case "light":
-        return "bg-white bg-opacity-75 text-hh-700";
+        return "bg-white bg-opacity-75 text-hh-700 ";
       case "dark":
         return "bg-hh-700 text-white";
       case "transparent-light":
@@ -45,10 +45,24 @@ export default function BezirkableEventsList({
         return "bg-white bg-opacity-75 text-hh-700";
     }
   }, [variant]);
+  const selectStyle = useMemo(() => {
+    switch (variant) {
+      case "light":
+        return "bg-hh-600 text-white";
+      case "dark":
+        return "bg-hh-300 text-hh-800";
+      case "transparent-light":
+        return "bg-hh-600 text-white";
+      case "transparent-dark":
+        return "bg-hh-300 text-hh-800";
+      default:
+        return "bg-hh-600 text-white";
+    }
+  }, [variant]);
 
   return (
     <section
-      className={`w-full rounded sm:px-2 md:px-4 my-2 flex flex-col ${style}`}
+      className={`bezirkableEventsList w-full rounded sm:px-2 md:px-4 py-2 my-2 flex flex-col ${containerStyle}`}
     >
       {title && title !== "" && (
         <h2 className="text-2xl font-semibold text-start self-start p-2">
@@ -58,7 +72,7 @@ export default function BezirkableEventsList({
       <select
         name="bezirk"
         id="bezirk-select"
-        className="px-2 py-1 ml-2 rounded-md bg-hh-600 font-semibold text-white w-fit"
+        className={`px-2 py-1 ml-2 rounded-md font-semibold w-fit ${selectStyle}`}
         onChange={(e) => setBezirk(e.target.value as iBezirk)}
       >
         <option value="all">In allen Bezirken</option>
@@ -69,7 +83,15 @@ export default function BezirkableEventsList({
         ))}
       </select>
       <div className="min-h-[280px]">
-        <ScrollableContainer>
+        <ScrollableContainer
+          color={
+            variant === "dark"
+              ? "300"
+              : variant === "transparent-light"
+                ? "300"
+                : "800"
+          }
+        >
           {filteredList.map(
             ({ id, title, date, image, bezirk: eventBezirk }, i) => (
               <article

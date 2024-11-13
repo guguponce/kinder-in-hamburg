@@ -1,6 +1,6 @@
 import BezirkeScrollableEvents from "@app/components/BezirkeScrollableEvents";
 import React from "react";
-import BezirkableFlohmaerkteList from "@app/components/BezirkableEventsList";
+import BezirkableEventsList from "@app/components/BezirkableEventsList";
 import { getTodayNexMonday } from "@app/utils/functions";
 import { getApprovedEvents } from "@app/api/dbActions";
 import dynamic from "next/dynamic";
@@ -104,10 +104,10 @@ export default async function FlohmaerkteContainer() {
             </div>
           </section>
         )}
-        <BezirkableFlohmaerkteList
+        <BezirkableEventsList
           title="Ab nächster Woche"
           eventsList={futureFlohmaerkte}
-        ></BezirkableFlohmaerkteList>
+        ></BezirkableEventsList>
       </div>
     </div>
   );
