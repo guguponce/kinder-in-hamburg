@@ -26,6 +26,9 @@ import {
   spType,
   spielgeraeteList,
 } from "./constants";
+import { ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+import clsx from "clsx";
 
 export const postDate = () => new Date().getTime();
 
@@ -566,4 +569,8 @@ export const filterByDistance = (
 export function removeCopyrightLine(text: string) {
   if (!text.includes("©")) return text;
   return text.split("\n").slice(1).join("\n").trim();
+}
+
+export function cn(...classes: ClassValue[]) {
+  return twMerge(clsx(classes));
 }
