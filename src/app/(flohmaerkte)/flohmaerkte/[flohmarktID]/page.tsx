@@ -16,18 +16,38 @@ interface FlohmarktPageProps {
 }
 
 export async function generateMetadata({
-  params,
+  params: { flohmarktID },
 }: FlohmarktPageProps): Promise<Metadata> {
-  const flohInfo = await getEventMetadata(params.flohmarktID);
-  if (!flohInfo)
+  const flohmarktInfo = await getEventMetadata(flohmarktID, "flohmaerkte");
+  if (!flohmarktInfo)
     return {
       title: "Flohmarkt nicht gefunden",
       description: "Der Flohmarkt wurde nicht gefunden.",
     };
+  const {
+    title,
+    optionalComment: description,
+    image,
+    stadtteil,
+  } = flohmarktInfo;
   return {
-    title: flohInfo.title,
-    description:
-      "Flohmarkt in " + flohInfo.bezirk + " " + flohInfo.optionalComment,
+    title: title + " - Kinder in Hamburg",
+    description: "Flohmarkt in " + stadtteil || "" + " " + description || "",
+    openGraph: {
+      type: "website",
+      url: "https://www.kinder-in-hamburg.de/flohmaerkte/" + flohmarktID,
+      title: title,
+      description: description?.slice(0, 100),
+      images: image,
+      siteName: "Kinder in Hamburg",
+    },
+    twitter: {
+      description: description?.slice(0, 100),
+      title: title,
+      images: image,
+      site: "https://www.kinder-in-hamburg.de/events/" + flohmarktID,
+      card: "summary_large_image",
+    },
   };
 }
 
