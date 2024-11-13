@@ -2,6 +2,7 @@ import { getDate } from "@app/utils/functions";
 import Link from "next/link";
 import React from "react";
 import FlohmarktBackground from "./@Icons/@Flohmarkt/FlohmarktBackground";
+import { iEventType } from "@app/utils/types";
 
 export default function FlohmarktPoster({
   title,
@@ -11,6 +12,7 @@ export default function FlohmarktPoster({
   prefixLink,
   id,
   index,
+  eventType = "flohmarkt",
   contain = false,
   size = "medium",
 }: {
@@ -22,6 +24,7 @@ export default function FlohmarktPoster({
   date: number;
   bezirk: string;
   prefixLink?: string;
+  eventType?: iEventType;
   id: number;
 }) {
   return (
@@ -42,15 +45,29 @@ export default function FlohmarktPoster({
         size === "small" ? "min-w-[144px]" : "min-w-[180px]"
       } h-full shadow-md rounded-sm flex flex-col items-center  justify-between text-center hover:scale-[1.01] hover:shadow-xl`}
     >
-      {!image && (
-        <FlohmarktBackground
-          randomNumber={
-            typeof index === "number"
-              ? Number("0." + (index + 1) * 72584270527)
-              : undefined
-          }
-        />
-      )}
+      {!image &&
+        (eventType === "flohmarkt" ? (
+          <FlohmarktBackground
+            randomNumber={
+              typeof index === "number"
+                ? Number("0." + (index + 1) * 72584270527)
+                : undefined
+            }
+          />
+        ) : (
+          eventType === "laterne" ||
+          (eventType === "laternewerkstatt" && (
+            <div
+              className="absolute w-full h-full flex justify-between  flex-col items-center text-orange-200 border-2 border-hh-600 rounded overflow-hidden"
+              style={{
+                backgroundImage: `url("/assets/icons/laterne/laterne.svg")`,
+                backgroundSize: "50%",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
+              }}
+            />
+          ))
+        ))}
       {!!image ? (
         <img
           loading="lazy"
