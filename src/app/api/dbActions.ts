@@ -633,14 +633,14 @@ export const getPinnedPostsWithFilter = async (
 };
 
 export const getAllFlohmaerteSeparatedByStatus = async (
-  futureFlohmarkte: boolean = true,
+  futureFlohmaerkte: boolean = true,
   eventTable: string = "flohmaerkte"
 ) => {
   try {
     const { data, error } = await supabaseAdmin
       .from(eventTable)
       .select("*")
-      .gte("date", futureFlohmarkte ? new Date().getTime() : 0);
+      .gte("date", futureFlohmaerkte ? new Date().getTime() : 0);
     if (error) {
       throw new Error("There was a problem getting the event posts.");
     }
@@ -944,19 +944,15 @@ export const getEventMetadata = async (
   try {
     const { data, error } = await supabase
       .from(eventTable)
-      .select("title,bezirk,optionalComment,image")
+      .select("title,bezirk,optionalComment,image,stadtteil")
       .match({ id })
       .single();
     if (error) {
       return false;
     }
-    const { title, bezirk, optionalComment, image } = data as {
-      title: string;
-      bezirk: iBezirk;
-      optionalComment: string;
-      image?: string;
-    };
-    return { title, bezirk, optionalComment, image };
+    const { title, bezirk, optionalComment, image, stadtteil } =
+      data as Partial<iFlohmarkt>;
+    return { title, bezirk, optionalComment, image, stadtteil };
   } catch (error) {
     return false;
   }
