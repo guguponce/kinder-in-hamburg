@@ -29,6 +29,7 @@ export default async function BezirkeScrollableEvents({
   const filteredList = bezirk
     ? events.filter((ev) => ev.bezirk === bezirk)
     : events;
+
   return (
     <div className="w-fit max-w-full rounded">
       {title &&
@@ -61,7 +62,15 @@ export default async function BezirkeScrollableEvents({
         {bezirk
           ? filteredList.map(
               (
-                { id, title, date, image, bezirk: flohBezirk, stadtteil },
+                {
+                  id,
+                  title,
+                  date,
+                  image,
+                  bezirk: flohBezirk,
+                  stadtteil,
+                  type: eventType,
+                },
                 i
               ) => (
                 <article
@@ -78,6 +87,7 @@ export default async function BezirkeScrollableEvents({
                     date={date}
                     image={image}
                     prefixLink={`/${type}/`}
+                    eventType={eventType || "flohmarkt"}
                   />
                   <h3 className="h-[20px] w-full font-semibold text-xs truncate-1">
                     <span>
@@ -106,10 +116,18 @@ export default async function BezirkeScrollableEvents({
                 >
                   {bezirk}
                 </h3>
-                <ScrollableContainer>
+                <ScrollableContainer color="800">
                   {eventsByBezirke[bezirk].map(
                     (
-                      { id, title, date, image, bezirk: flohBezirk, stadtteil },
+                      {
+                        id,
+                        title,
+                        date,
+                        image,
+                        bezirk: flohBezirk,
+                        stadtteil,
+                        type: eventType,
+                      },
                       i
                     ) => (
                       <article
@@ -124,7 +142,8 @@ export default async function BezirkeScrollableEvents({
                             title={title}
                             date={date}
                             image={image}
-                            prefixLink={`/flohmaerkte/`}
+                            prefixLink={`/${type}/`}
+                            eventType={eventType || "flohmarkt"}
                           />
                         </div>
                         <h3 className="text-white text-center h-[20px] w-full font-semibold text-sm truncate-1">
