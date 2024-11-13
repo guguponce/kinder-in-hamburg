@@ -48,7 +48,9 @@ export default async function OtherEventsHorizontalCards({
     }, [] as iEventType[]);
   const typesString = replaceEventTypes(types).join(", ");
   return (
-    <section className={`w-full rounded sm:p-2 my-2 flex flex-col ${style}`}>
+    <section
+      className={`otherEventsHorizontalCards w-full rounded sm:p-2 my-2 flex flex-col ${style}`}
+    >
       <div className="p-2">
         <h2 className="text-xl font-semibold text-hh-50">
           Andere Veranstaltungen dieser Woche
