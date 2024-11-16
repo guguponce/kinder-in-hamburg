@@ -180,6 +180,9 @@ export const parseFlohmarkt = (flohmarkt: iStringifiedFlohmarkt) => {
   return {
     ...flohmarkt,
     addedBy: JSON.parse(flohmarkt.addedBy) as iSessionUser,
+    closedDates: flohmarkt.closedDates
+      ? (JSON.parse(flohmarkt.closedDates) as number[])
+      : undefined,
   } as iFlohmarkt;
 };
 
