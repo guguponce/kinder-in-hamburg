@@ -29,6 +29,7 @@ import {
 import UserInputBox from "./UserInputBox";
 import { deleteUnusedFlohmaerkteImages } from "@app/api/storageActions";
 import dynamic from "next/dynamic";
+import Button from "../Button";
 
 const LatLonSetterMap = dynamic(() => import("../@Map/LatLonSetterMap"), {
   ssr: false,
@@ -64,6 +65,8 @@ export default function FlohForm({
     stadtteil,
     lat,
     lon,
+    endDate,
+    closedDates,
   },
   user,
   flohFormType,
@@ -94,6 +97,9 @@ export default function FlohForm({
     bezirk || "Altona"
   );
   const [latlon, setLatLon] = React.useState({ lat, lon });
+  const [closedDatesArray, setClosedDates] = React.useState<number[]>(
+    closedDates || []
+  );
 
   const newID = useRef(new Date().getTime());
   const {
@@ -124,6 +130,8 @@ export default function FlohForm({
       image: image,
       optionalComment: optionalComment || "",
       type: type || "",
+      endDate,
+      closedDates: closedDatesArray.filter((d) => !Number.isNaN(d)),
     },
   });
   const onSubmitNewFlohmarkt = useCallback(
@@ -164,6 +172,9 @@ export default function FlohForm({
         image: imagesUrlsReady.urls[0] || "",
         optionalComment: data.optionalComment,
         type: !!data.type ? data.type : undefined,
+
+        endDate: data.endDate,
+        closedDates: closedDatesArray.filter((d) => !Number.isNaN(d)),
       };
       addEvent(
         eventSuggestion,
@@ -191,7 +202,14 @@ export default function FlohForm({
           setSubmitError({ isError: true, errorMessage: error.message })
         );
     },
-    [imagesUrlsReady, userInput, router, flohFormType, createdAt]
+    [
+      imagesUrlsReady,
+      userInput,
+      router,
+      flohFormType,
+      createdAt,
+      closedDatesArray,
+    ]
   );
 
   const onupdateEvent = useCallback(
@@ -224,6 +242,9 @@ export default function FlohForm({
         image: imagesUrlsReady.urls[0] || "",
         optionalComment: data.optionalComment,
         type: !!data.type ? data.type : undefined,
+
+        endDate: data.endDate,
+        closedDates: closedDatesArray,
       };
       updateEvent(
         updatedEvent,
@@ -254,7 +275,16 @@ export default function FlohForm({
           setSubmitError({ isError: true, errorMessage: error.message })
         );
     },
-    [imagesUrlsReady, userInput, id, createdAt, router, addedBy, flohFormType]
+    [
+      imagesUrlsReady,
+      userInput,
+      id,
+      createdAt,
+      router,
+      addedBy,
+      flohFormType,
+      closedDatesArray,
+    ]
   );
 
   if (!user) {
@@ -531,6 +561,88 @@ export default function FlohForm({
                 </div>
               </div>
             </div>{" "}
+            {["update-event", "new-event"].includes(flohFormType) && (
+              <div className="dateBox min-w-fit flex-grow flex flex-wrap gap-2">
+                <PostFormInput
+                  inputLabel="EndDatum"
+                  inputID="endDate"
+                  required={true}
+                >
+                  <div className="flex flex-col flex-wrap gap-4">
+                    <div className="flex gap-2 flex-wrap">
+                      <input
+                        defaultValue={
+                          endDate
+                            ? new Date(endDate).toISOString().split("T")[0]
+                            : undefined
+                        }
+                        id={endDate + "Input"}
+                        name={"endDate"}
+                        type="date"
+                        onChange={(e) =>
+                          setValue(
+                            "endDate",
+                            new Date(e.target.value).getTime()
+                          )
+                        }
+                        className="w-full block rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
+                      />
+                    </div>
+                  </div>
+                </PostFormInput>
+                <div className="flex flex-col gap-1">
+                  <PostFormInput
+                    inputLabel="Closed Dates"
+                    inputID="closedDates"
+                    required={true}
+                  >
+                    <div className="flex flex-col flex-wrap gap-4">
+                      <input
+                        id={closedDates + "Input"}
+                        name={"closedDates"}
+                        type="date"
+                        onChange={(e) => {
+                          setClosedDates((prev) => {
+                            console.log(new Date(e.target.value).getTime());
+                            return Array.from(
+                              new Set([
+                                ...prev,
+                                new Date(e.target.value).getTime(),
+                              ])
+                            );
+                          });
+                        }}
+                        className="w-full block rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
+                      />
+                    </div>
+                    <div className="flex flex-wrap gap-1">
+                      {closedDatesArray.map((date, index) => (
+                        <Button
+                          variant="negative-dark"
+                          size="fit"
+                          fontSize="xs"
+                          key={index}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setClosedDates((prev) =>
+                              prev.filter((_, i) => i !== index)
+                            );
+                          }}
+                        >
+                          <span>
+                            {new Date(date).toLocaleDateString("de-DE", {
+                              day: "2-digit",
+                              month: "short",
+                              year: "2-digit",
+                            })}
+                          </span>
+                        </Button>
+                      ))}
+                    </div>
+                  </PostFormInput>
+                </div>
+              </div>
+            )}
           </div>
           <div
             id="optionalerComment-box"
