@@ -2,6 +2,106 @@ import React from "react";
 import { TextType } from "../../utils/types";
 import Link from "next/link";
 
+const formatText = (text: string) => {
+  // Regular expressions to match the formatting tags and their content
+  const regex =
+    /<b>(.*?)<\/b>|<sb>(.*?)<\/sb>|<i>(.*?)<\/i>|<u>(.*?)<\/u>|<upper>(.*?)<\/upper>|<link>(.*?)<\/link>|<h3>(.*?)<\/h3>|<h2>(.*?)<\/h2>/g;
+
+  let formattedText = [];
+  let lastIndex = 0;
+
+  // Iterate through the matches and replace them with React components
+  text.replace(
+    regex,
+    (
+      match,
+      semiboldText,
+      boldText,
+      italicText,
+      underlinedText,
+      upperText,
+      linkText,
+      h3,
+      h2,
+      index
+    ) => {
+      // Push the text before the match
+      if (index > lastIndex) {
+        formattedText.push(text.slice(lastIndex, index));
+      }
+
+      // Push the formatted part based on the match
+      if (boldText) {
+        formattedText.push(<strong key={index}>{boldText}</strong>);
+      } else if (semiboldText) {
+        formattedText.push(
+          <span className="font-semibold" key={index}>
+            {semiboldText}
+          </span>
+        );
+      } else if (italicText) {
+        formattedText.push(<em key={index}>{italicText}</em>);
+      } else if (underlinedText) {
+        formattedText.push(<u key={index}>{underlinedText}</u>);
+      } else if (upperText) {
+        formattedText.push(
+          <span className="uppercase" key={index}>
+            {underlinedText}
+          </span>
+        );
+      } else if (h3) {
+        formattedText.push(
+          <span className="text-lg font-semibold" key={index}>
+            {h3}
+          </span>
+        );
+      } else if (h2) {
+        formattedText.push(
+          <span className="text-xl font-bold" key={index}>
+            {h2}
+          </span>
+        );
+      } else if (linkText) {
+        formattedText.push(
+          <Link
+            className="italic underline text-hh-500"
+            key={index}
+            href={linkText}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {linkText}
+          </Link>
+        );
+      }
+
+      lastIndex = index + match.length; // Update the last index
+
+      return match; // Continue processing other matches
+    }
+  );
+
+  // Push any remaining text after the last match
+  if (lastIndex < text.length) {
+    formattedText.push(text.slice(lastIndex));
+  }
+
+  return formattedText;
+};
+const CustomPre = ({ text }: { text: string }) => {
+  return (
+    <pre
+      style={{
+        overflowWrap: "break-word",
+        whiteSpace: "pre-wrap",
+        wordWrap: "break-word",
+      }}
+      className="text-wrap py-1 max-w-full w-full"
+    >
+      {formatText(text)}
+    </pre>
+  );
+};
 export default function DisplayTypeText({
   type = "paragraph",
   text,
@@ -12,16 +112,7 @@ export default function DisplayTypeText({
   return (
     <>
       {type === "paragraph" ? (
-        <pre
-          style={{
-            overflowWrap: "break-word",
-            whiteSpace: "pre-wrap",
-            wordWrap: "break-word",
-          }}
-          className=" text-wrap py-1 max-w-full w-full"
-        >
-          {text}
-        </pre>
+        <CustomPre text={text} />
       ) : type === "subtitle1" ? (
         <h2
           style={{
