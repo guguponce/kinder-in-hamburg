@@ -23,6 +23,8 @@ type inputLabelType =
   | "type"
   | "optionalComment"
   | "location"
+  | "endDate"
+  | "closedDates"
   | "stadtteil";
 interface PostFormInputProps {
   inputID: inputLabelType;
