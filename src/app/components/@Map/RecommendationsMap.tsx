@@ -91,7 +91,7 @@ async function getList(
                 ? await getEventWithID(id.toString(), "events")
                 : false);
 
-      acc.currentItem = current;
+      acc.currentItem = current || false;
     });
 
   await Promise.all(promises);
