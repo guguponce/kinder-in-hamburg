@@ -399,6 +399,8 @@ export interface iFlohmarkt {
   lat?: number;
   lon?: number;
   type?: iEventType;
+  endDate?: number;
+  closedDates?: number[];
 }
 
 export type iEventType =
@@ -407,8 +409,10 @@ export type iEventType =
   | "weinachtsmarkt"
   | "laternewerkstatt";
 
-export interface iStringifiedFlohmarkt extends Omit<iFlohmarkt, "addedBy"> {
+export interface iStringifiedFlohmarkt
+  extends Omit<iFlohmarkt, "addedBy" | "closedDates"> {
   addedBy: string;
+  closedDates: string;
 }
 
 export interface FilterObject {
