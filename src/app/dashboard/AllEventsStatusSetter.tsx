@@ -36,6 +36,21 @@ export default async function AllEventsStatusSetter({
     "rejected",
     "old",
   ];
+
+  const prefixLink = {
+    flohmaerkte: {
+      pending: "flohmarkt-suggestion",
+      approved: "flohmarkt",
+      rejected: "flohmarkt-suggestion",
+      old: "flohmarkt-suggestion",
+    },
+    events: {
+      pending: "event-suggestion",
+      approved: "events",
+      rejected: "event-suggestion",
+      old: "event-suggestion",
+    },
+  };
   return (
     <AdminRoute>
       <main className="flex flex-col gap-4">
@@ -70,7 +85,7 @@ export default async function AllEventsStatusSetter({
                             type={floh.type || "flohmarkt"}
                             id={floh.id}
                             title={floh.title}
-                            link={`/${eventsType}/${floh.id}`}
+                            link={`/${prefixLink[eventsType][floh.status]}/${floh.id}`}
                             image={floh.image || ""}
                           >
                             <HorizontalCard.FlohmarktInfo
@@ -79,6 +94,7 @@ export default async function AllEventsStatusSetter({
                               stadtteil={floh.stadtteil}
                               date={floh.date}
                               time={floh.time}
+                              endDate={floh.endDate}
                             />
                           </HorizontalCard>
                         </div>
