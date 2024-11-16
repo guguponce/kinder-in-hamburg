@@ -3,6 +3,7 @@ import React, { lazy, Suspense } from "react";
 const LazyShuffleIcon = lazy(() => import("../ShuffleIcon"));
 const LazyTriangleIcon = lazy(() => import("../TriangleIcon"));
 const LazyDateIcon = lazy(() => import("./DateIcon"));
+const LazyClockIcon = lazy(() => import("./ClockIcon"));
 const LazyLogo = lazy(() => import("./Logo"));
 const LazyHamburgIcon = lazy(() => import("./HamburgIcon"));
 const LazyMapIcon = lazy(() => import("./MapIcon"));
@@ -39,6 +40,7 @@ export default function PostLogo({
         {logo === "logo" && (
           <LazyLogo size={size} color={color} color2={color2} />
         )}
+        {logo === "clock" && <LazyClockIcon size={size} color={color} />}
         {logo === "hamburg" && <LazyHamburgIcon size={size} color={color} />}
         {logo === "map" && <LazyMapIcon size={size} color={color} />}
         {logo === "link" && <LazyLinkIcon size={size} color={color} />}
@@ -53,6 +55,7 @@ export default function PostLogo({
       {logo === "shuffle" && <LazyShuffleIcon size={size} color={color} />}
       {logo === "triangle" && <LazyTriangleIcon size={size} color={color} />}
       {logo === "date" && <LazyDateIcon size={size} color={color} />}
+      {logo === "clock" && <LazyClockIcon size={size} color={color} />}
       {logo === "logo" && (
         <LazyLogo size={size} color={color} color2={color2} />
       )}
