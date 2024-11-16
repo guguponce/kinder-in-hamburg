@@ -9,7 +9,7 @@ export default function ScrollableContainer({
   vertical?: boolean;
   children: React.ReactNode;
 }) {
-  const scrollbarThumbColor = `scrollbarThumb-${color}`;
+  const scrollbarThumbColor = `scrollbarThumb${color}`;
   return (
     <div
       className={`flex items-center ${

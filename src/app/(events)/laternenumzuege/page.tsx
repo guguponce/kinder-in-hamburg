@@ -106,7 +106,7 @@ export default async function LaternenumzuegePage() {
           <div className="flex-grow md:max-w-[calc(100%-332px)]">
             <BezirkableEventsList
               type="events"
-              variant="transparent-dark"
+              variant="transparent-light"
               eventsList={orderedEvents.filter(
                 ({ date }) => date >= lastMidnight
               )}
