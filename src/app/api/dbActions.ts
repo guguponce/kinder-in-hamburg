@@ -6,6 +6,7 @@ import type {
   iFlohmarkt,
   iPost,
   iSessionUser,
+  iStringifiedFlohmarkt,
 } from "@app/utils/types";
 import { createClient } from "@auth/server";
 import { getServerUser, proofUser } from "@app/api/auth/supabaseAuth";
@@ -924,14 +925,15 @@ export const getEventWithID = async (
     const { data, error } = await supabaseAdmin
       .from(eventTable)
       .select("*")
-      .match({ id });
-
+      .match({ id })
+      .single();
     if (error) {
+      console.log(error.message);
       return false;
     }
-
-    return parseFlohmarkt(data[0]);
+    return parseFlohmarkt(data as iStringifiedFlohmarkt);
   } catch (error) {
+    console.log("Error getting event with id: ", id);
     return false;
   }
 };
@@ -1156,7 +1158,10 @@ export const addEvent = async (
       return "Not logged in";
     }
     const submittedEvent = {
-      ...event,
+      ...{
+        ...event,
+        closedDates: event.closedDates && JSON.stringify(event.closedDates),
+      },
       addedBy: JSON.stringify(user),
     };
     const { error } = await supabaseAdmin
@@ -1215,10 +1220,14 @@ export const updateEvent = async (
 ) => {
   const authorized = await proofUser();
   if (!authorized) return "Not authorized";
+  const updatedEvent = {
+    ...event,
+    closedDates: event.closedDates && JSON.stringify(event.closedDates),
+  };
   try {
     const { data, error } = await supabaseAdmin
       .from(eventTable)
-      .update(event)
+      .update(updatedEvent)
       .match({ id: event.id });
 
     if (error) {
