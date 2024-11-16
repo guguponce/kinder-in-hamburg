@@ -79,12 +79,14 @@ HorizontalCard.FlohmarktInfo = function FlohmarktInfo({
   time,
   address,
   stadtteil,
+  endDate,
 }: {
   title: string;
   date: number;
   time?: string;
   address: string;
   stadtteil: string;
+  endDate?: number;
 }) {
   return (
     <div className="flex flex-col w-2/3 h-full hover:text-hh-950 justify-between gap-2  p-2 pl-0 sm:pr-4 sm:p-2">
@@ -93,7 +95,7 @@ HorizontalCard.FlohmarktInfo = function FlohmarktInfo({
       </span>
       <div className="flex flex-col">
         <small className="font-semibold italic">
-          {getDate(date)} ({time})
+          {getDate(date)} {endDate ? `- ${getDate(endDate)}` : `(${{ time }})`}
         </small>
         <p className="text-xs">
           {addressWithoutCity(address)} {stadtteil}
