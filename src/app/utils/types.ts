@@ -407,6 +407,7 @@ export type iEventType =
   | "flohmarkt"
   | "laterne"
   | "weinachtsmarkt"
+  | "adventsevent"
   | "laternewerkstatt";
 
 export interface iStringifiedFlohmarkt
