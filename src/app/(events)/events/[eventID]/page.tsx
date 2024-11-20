@@ -10,6 +10,7 @@ import { PROXIMATE_STADTTEILE_FROM_OTHER_BEZIRK } from "@app/utils/constants";
 import AdminEditButtons from "@app/components/AdminEditButtons";
 import OldEventSign from "./OldEventSign";
 import { redirect } from "next/navigation";
+import { parseDescriptionWithTags } from "@app/utils/functions";
 // import Image from "./opengraph-image";
 
 interface EventPageProps {
@@ -33,12 +34,16 @@ export async function generateMetadata({
       type: "website",
       url: "https://www.kinder-in-hamburg.de/events/" + params.eventID,
       title: eventInfo.title,
-      description: eventInfo.optionalComment?.slice(0, 100),
+      description: parseDescriptionWithTags(
+        eventInfo.optionalComment?.slice(0, 100)
+      ),
       images: eventInfo.image,
       siteName: "Kinder in Hamburg",
     },
     twitter: {
-      description: eventInfo.optionalComment?.slice(0, 100),
+      description: parseDescriptionWithTags(
+        eventInfo.optionalComment?.slice(0, 100)
+      ),
       title: eventInfo.title,
       images: eventInfo.image,
       site: "https://www.kinder-in-hamburg.de/events/" + params.eventID,
@@ -51,7 +56,8 @@ export default async function EventPage({
   params: { eventID },
 }: EventPageProps) {
   const event = await getEventWithID(eventID, "events");
-  if (!event || event.status === null) return <NotFound type="event" />;
+  if (!event || event.status === null || event.status === "rejected")
+    return <NotFound type="event" />;
   if (!["approved", "old"].includes(event.status))
     redirect("/event-suggestion/" + eventID);
 
@@ -62,7 +68,7 @@ export default async function EventPage({
     )) || [];
 
   return (
-    <>
+    <main className="flex flex-col items-center w-full p-1">
       <FlohmarktTemplate flohmarkt={event}>
         {event.status === "old" && <OldEventSign />}
 
@@ -92,6 +98,6 @@ export default async function EventPage({
           currentTarget={event}
         />
       </section>
-    </>
+    </main>
   );
 }

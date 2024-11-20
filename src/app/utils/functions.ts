@@ -186,6 +186,12 @@ export const parseFlohmarkt = (flohmarkt: iStringifiedFlohmarkt) => {
   } as iFlohmarkt;
 };
 
+export const parseDescriptionWithTags = (text: string | undefined) =>
+  (text || "").replace(
+    /<b>(.*?)<\/?b>|<sb>(.*?)<\/?sb>|<i>(.*?)<\/?i>|<u>(.*?)<\/?u>|<upper>(.*?)<\/?upper>|<link>(.*?)<\/?link>|<h3>(.*?)<\/?h3>|<h2>(.*?)<\/?h2>/g,
+    ""
+  );
+
 export const parseAllFlohmaerkte = (flohmaerkte: iStringifiedFlohmarkt[]) =>
   flohmaerkte.map((f) => parseFlohmarkt(f));
 

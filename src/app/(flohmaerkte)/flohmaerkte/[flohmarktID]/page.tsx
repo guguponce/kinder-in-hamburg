@@ -10,6 +10,7 @@ import { PROXIMATE_STADTTEILE_FROM_OTHER_BEZIRK } from "@app/utils/constants";
 import SpielplaetzeNearby from "./SpielplaetzeNearby";
 import AdminEditButtons from "@app/components/AdminEditButtons";
 import OldFlohmarktSign from "./OldFlohmarktSign";
+import { parseDescriptionWithTags } from "@app/utils/functions";
 
 interface FlohmarktPageProps {
   params: { flohmarktID: string };
@@ -37,12 +38,12 @@ export async function generateMetadata({
       type: "website",
       url: "https://www.kinder-in-hamburg.de/flohmaerkte/" + flohmarktID,
       title: title,
-      description: description?.slice(0, 100),
+      description: parseDescriptionWithTags(description?.slice(0, 100)),
       images: image,
       siteName: "Kinder in Hamburg",
     },
     twitter: {
-      description: description?.slice(0, 100),
+      description: parseDescriptionWithTags(description?.slice(0, 100)),
       title: title,
       images: image,
       site: "https://www.kinder-in-hamburg.de/events/" + flohmarktID,
