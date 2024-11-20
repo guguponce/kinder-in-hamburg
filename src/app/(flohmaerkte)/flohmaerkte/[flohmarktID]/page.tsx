@@ -1,4 +1,8 @@
-import { getEventMetadata, getEventWithID } from "@app/api/dbActions";
+import {
+  checkIfEventOrFlohmarktExists,
+  getEventMetadata,
+  getEventWithID,
+} from "@app/api/dbActions";
 import NotFound from "@components/@NotFound/NotFound";
 import FlohmarktTemplate from "@app/components/FlohmarktTemplate";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
@@ -11,6 +15,7 @@ import SpielplaetzeNearby from "./SpielplaetzeNearby";
 import AdminEditButtons from "@app/components/AdminEditButtons";
 import OldFlohmarktSign from "./OldFlohmarktSign";
 import { parseDescriptionWithTags } from "@app/utils/functions";
+import { redirect } from "next/navigation";
 
 interface FlohmarktPageProps {
   params: { flohmarktID: string };
@@ -56,6 +61,12 @@ export default async function FlohmarktPage({
   params: { flohmarktID },
 }: FlohmarktPageProps) {
   const flohmarkt = await getEventWithID(flohmarktID);
+  if (flohmarkt === false) {
+    const eventID = await checkIfEventOrFlohmarktExists(flohmarktID, "events");
+    if (!!eventID) {
+      redirect("/events/" + eventID);
+    }
+  }
   if (
     !flohmarkt ||
     flohmarkt.status === null ||

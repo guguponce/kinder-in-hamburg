@@ -1,5 +1,9 @@
 import React from "react";
-import { getEventMetadata, getEventWithID } from "@app/api/dbActions";
+import {
+  checkIfEventOrFlohmarktExists,
+  getEventMetadata,
+  getEventWithID,
+} from "@app/api/dbActions";
 import NotFound from "@components/@NotFound/NotFound";
 import FlohmarktTemplate from "@app/components/FlohmarktTemplate";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
@@ -56,6 +60,16 @@ export default async function EventPage({
   params: { eventID },
 }: EventPageProps) {
   const event = await getEventWithID(eventID, "events");
+  if (event === false) {
+    const flohmarktID = await checkIfEventOrFlohmarktExists(
+      eventID,
+      "flohmaerkte"
+    );
+    if (!!flohmarktID) {
+      redirect("/flohmaerkte/" + flohmarktID);
+    }
+  }
+  console.log(event);
   if (!event || event.status === null || event.status === "rejected")
     return <NotFound type="event" />;
   if (!["approved", "old"].includes(event.status))
