@@ -188,7 +188,7 @@ export const parseFlohmarkt = (flohmarkt: iStringifiedFlohmarkt) => {
 
 export const parseDescriptionWithTags = (text: string | undefined) =>
   (text || "").replace(
-    /<b>(.*?)<\/?b>|<sb>(.*?)<\/?sb>|<i>(.*?)<\/?i>|<u>(.*?)<\/?u>|<upper>(.*?)<\/?upper>|<link>(.*?)<\/?link>|<h3>(.*?)<\/?h3>|<h2>(.*?)<\/?h2>/g,
+    /<\/?b>|<\/?sb>|<\/?i>|<\/?u>|<\/?upper>|<\/?link>|<\/?h3>|<\/?h2>/g,
     ""
   );
 
