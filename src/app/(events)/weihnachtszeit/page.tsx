@@ -157,16 +157,14 @@ export default async function LaternenumzuegePage() {
             </h2>
 
             <p className="italic">
-              Die Adventszeit ist die perfekte Gelegenheit, um gemeinsam kreativ
-              zu werden. Kinder und Familien haben viel Freude daran,
-              Weihnachtsdekorationen selbst zu gestalten – von Adventskränzen
-              über Weihnachtsschmuck bis hin zu kleinen Geschenken für Freunde
-              und Familie. Ob aus Papier, Tannenzweigen oder Holz, der Fantasie
-              sind keine Grenzen gesetzt.
+              Auf den Weihnachtsmärkten in Hamburg gibt es für Kinder und
+              Familien zahlreiche kreative Aktivitäten: Von Weihnachtssterne und
+              Baumschmuck basteln, über Kinderschminken und Erzähltheater, bis
+              hin zur festlichen Weihnachtsparade.
             </p>
             <p className="italic">
-              Hier sind einige Orte in Hamburg, an denen ihr während der
-              Adventszeit an Bastelaktionen teilnehmen könnt. 🎨✨
+              Hier sind einige Veranstaltungen, an denen ihr während der
+              Adventszeit teilnehmen könnt.
             </p>
           </div>
           <ScrollableContainer>
@@ -195,7 +193,13 @@ export default async function LaternenumzuegePage() {
                           title={title}
                           id={id}
                           link={`/events/${id}`}
-                          image={image}
+                          image={
+                            image
+                              ? image
+                              : title.includes("Apostelkirche")
+                                ? "https://firebasestorage.googleapis.com/v0/b/kinder-in-hamburg-ce83a.appspot.com/o/flohmaerkteImages%2F1732402742490%2Fapost.webp?alt=media&token=5684721f-39f0-468d-99a1-ee371d70733a"
+                                : undefined
+                          }
                         >
                           <HorizontalCard.FlohmarktInfo
                             title={title}
