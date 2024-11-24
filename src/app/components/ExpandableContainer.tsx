@@ -37,17 +37,10 @@ export default function ExpandableContainer({
       }
     }
   }, [contentHeight, initialHeight]);
+
   return (
     <section
-      id="spielplatz-spielgeraete-box"
-      style={{
-        height: open
-          ? "fit-content"
-          : contentHeight < initialHeight
-            ? "fit-content"
-            : `${initialHeight}px`,
-      }}
-      className={`${shadow && "shadow-lg"} relative mb-4 lg:mb-0 rounded-md p-2 bg-hh-200 bg-opacity-25 lg:max-w-full overflow-hidden`}
+      className={`${open || contentHeight < initialHeight ? "h-fit" : `h-[${initialHeight}px] md:h-[${initialHeight / 2}px]`} expandable-container-box ${shadow && "shadow-lg"} relative mb-4 lg:mb-0 rounded-md p-2 bg-hh-200 bg-opacity-25 lg:max-w-full overflow-hidden`}
       ref={containerRef}
     >
       {children}
@@ -55,7 +48,7 @@ export default function ExpandableContainer({
         onClick={handleOpen}
         className={`${
           showButton ? "flex" : "hidden"
-        } absolute bottom-0 backdrop-blur-[1px] w-full h-12 from-hh-400 to-[#758CA370] bg-gradient-to-t items-center justify-center font-semibold text-hh-50 z-30 rounded`}
+        } absolute bottom-0 backdrop-blur-[1px] w-full h-12 left-0 from-hh-400 to-[#758CA370] bg-gradient-to-t items-center justify-center font-semibold text-hh-50 z-30 rounded`}
       >
         Alle {type || ""} anzeigen
       </button>
