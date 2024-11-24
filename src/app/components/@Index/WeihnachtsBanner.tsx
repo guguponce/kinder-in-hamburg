@@ -10,6 +10,12 @@ export default function WeihnachtsBanner() {
       linkText="alle erkunden"
       className="from-positive-700 to-[#628d5a50] bg-opacity-20 lg:w-[calc(100%-360px)]"
     >
+      <div className="sm:hidden p-2">
+        <Banner.Text>
+          Wir haben die kinderfreundlichsten Weihnachtsmärkte in Hamburg für
+          euch zusammengestellt.
+        </Banner.Text>
+      </div>
       <div className="min-h-full min-w-[320px] self-center md:self-stretch mt-4 flex items-center md:max-w-none max-w-52 sm:items-stretch justify-around flex-col sm:flex-row gap-4 rounded">
         <EventsGallery eventType="weihnachtsmarkt" />
       </div>
@@ -20,9 +26,14 @@ export default function WeihnachtsBanner() {
           Weihnachtsmarkt. Hier könnt ihr mit Familie und Freunden bummeln und
           die festliche Atmosphäre genießen. Auf vielen Märkten gibt es
           spezielle Attraktionen oder Kinderprogramme, die die Kleinen in
-          Weihnachtsstimmung versetzen. Hier findet ihr eine Übersicht der
-          kinderfreundlichen Weihnachtsmärkte in Hamburg.
+          Weihnachtsstimmung versetzen.
         </Banner.Text>
+        <div className="hidden sm:block">
+          <Banner.Text>
+            Wir haben die kinderfreundlichsten Weihnachtsmärkte in Hamburg für
+            euch zusammengestellt.
+          </Banner.Text>
+        </div>
         {/* <div
           className="flex-grow min-h-32 h-32 xs:h-fit aspect-square min-w-32 mt-2 relative"
           style={{ transform: "rotateY(180deg)" }}
