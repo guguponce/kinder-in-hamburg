@@ -2,13 +2,14 @@
 import GeneralMap from "@components/@Map/GeneralMap";
 import FlohmarktPopUP from "@components/@Map/PopUpsMarkers/FlohmarktPopUP";
 import MarkersLists from "@components/@Map/PopUpsMarkers/MarkersLists";
-import { iBezirk, iFlohmarkt } from "@app/utils/types";
+import { iBezirk, iEventType, iFlohmarkt } from "@app/utils/types";
 import { Marker } from "react-leaflet";
 import React, { useMemo, useRef } from "react";
 import { divIcon, point } from "leaflet";
 import { createStandortMapIcon, getDate } from "@app/utils/functions";
 import ScrollableContainer from "@components/ScrollableContainer";
 import MarkerClusterGroup from "react-leaflet-cluster";
+import { createWeihnachtsmarktMapIcon } from "./functions";
 
 const createNormalSizeIcon = (color: string, size: number = 30) =>
   divIcon({
@@ -20,6 +21,12 @@ const createNormalSizeIcon = (color: string, size: number = 30) =>
 const futureIcon = createNormalSizeIcon("#343b3e");
 const thisWeekIcon = createNormalSizeIcon("#7B3E5E");
 const todayIcon = createNormalSizeIcon("#b72f1e");
+const weihnachtsmarktIcon = divIcon({
+  html: createWeihnachtsmarktMapIcon(),
+  iconSize: [20, 20],
+  iconAnchor: [10, 20],
+  className: "bg-transparent",
+});
 
 export default function DynamicEventsMap({
   today,
@@ -27,7 +34,9 @@ export default function DynamicEventsMap({
   future = [],
   square = true,
   darkBackground = false,
+  eventType,
 }: {
+  eventType?: iEventType | "flohmaerkte";
   today: number;
   darkBackground?: boolean;
   thisWeek: iFlohmarkt[];
@@ -76,11 +85,15 @@ export default function DynamicEventsMap({
             ? Object.entries(displayedMarkers).map(([day, events]) =>
                 new Date(parseInt(day)).setHours(0, 0, 0, 0) === today ? (
                   events.map(
-                    ({ id, lat, lon, address, date, title, bezirk }) =>
+                    ({ id, lat, lon, address, date, title, bezirk, type }) =>
                       selectedBezirk && bezirk !== selectedBezirk ? null : (
                         <React.Fragment key={id}>
                           <Marker
-                            icon={todayIcon}
+                            icon={
+                              type === "weihnachtsmarkt"
+                                ? weihnachtsmarktIcon
+                                : todayIcon
+                            }
                             key={id}
                             position={[lat || 53.5511, lon || 9.9937]}
                           >
@@ -89,6 +102,7 @@ export default function DynamicEventsMap({
                               address={address}
                               date={date}
                               title={title}
+                              type={!type ? "flohmaerkte" : "events"}
                             />
                           </Marker>
                         </React.Fragment>
@@ -136,7 +150,11 @@ export default function DynamicEventsMap({
                     selectedBezirk && bezirk !== selectedBezirk ? null : (
                       <React.Fragment key={id}>
                         <Marker
-                          icon={todayIcon}
+                          icon={
+                            type === "weihnachtsmarkt"
+                              ? weihnachtsmarktIcon
+                              : todayIcon
+                          }
                           key={id}
                           position={[lat || 53.5511, lon || 9.9937]}
                         >
