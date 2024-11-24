@@ -1,6 +1,7 @@
 import React from "react";
 import {
   checkIfEventOrFlohmarktExists,
+  getAllEventsThisWeek,
   getEventMetadata,
   getEventWithID,
 } from "@app/api/dbActions";
@@ -8,7 +9,7 @@ import NotFound from "@components/@NotFound/NotFound";
 import FlohmarktTemplate from "@app/components/FlohmarktTemplate";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
 import { Metadata } from "next";
-import FlohmarktPageMapContainer from "./EventPageMapContainer";
+import EventPageMapContainer from "./EventPageMapContainer";
 import { getSpielplatzFromBezirkStadtteil } from "@app/api/spActions";
 import { PROXIMATE_STADTTEILE_FROM_OTHER_BEZIRK } from "@app/utils/constants";
 import AdminEditButtons from "@app/components/AdminEditButtons";
@@ -79,6 +80,13 @@ export default async function EventPage({
       event.bezirk!,
       PROXIMATE_STADTTEILE_FROM_OTHER_BEZIRK[event.bezirk!] || [event.stadtteil]
     )) || [];
+  const proximateStadtteile = PROXIMATE_STADTTEILE_FROM_OTHER_BEZIRK[
+    event.bezirk!
+  ] || [event.stadtteil];
+  const eventsNearby =
+    (await getAllEventsThisWeek(undefined, event.bezirk, [
+      ...proximateStadtteile,
+    ])) || [];
 
   return (
     <main className="flex flex-col items-center w-full p-1">
@@ -106,9 +114,10 @@ export default async function EventPage({
         </AdminServerComponent>
       </FlohmarktTemplate>
       <section className="w-full flex flex-wrap-reverse xl:flex-wrap justify-center gap-2">
-        <FlohmarktPageMapContainer
+        <EventPageMapContainer
           spielplaetzeAround={spielplaetzeNearby}
           currentTarget={event}
+          events={eventsNearby}
         />
       </section>
     </main>
