@@ -13,9 +13,10 @@ export default async function EventsGallery({
 }) {
   // ---------------------
   const eventsList =
-    (eventType === "weihnachtsmarkt"
-      ? await getAllFutureEventsFromType("weihnachtsmarkt")
-      : await getFutureApprovedEventsFromType(eventType)) || [];
+    // (eventType === "weihnachtsmarkt"
+    //   ? await getAllFutureEventsFromType("weihnachtsmarkt")
+    //   :
+    (await getFutureApprovedEventsFromType(eventType)) || [];
   if (eventsList.length === 0) return null;
 
   return <ClientEventsGallery eventsList={eventsList} />;
