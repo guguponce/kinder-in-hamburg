@@ -15,6 +15,8 @@ export default function FlohmarktPoster({
   eventType = "flohmarkt",
   contain = false,
   size = "medium",
+  endDate,
+  stadtteil,
 }: {
   contain?: boolean;
   size?: "small" | "medium" | "large";
@@ -22,11 +24,14 @@ export default function FlohmarktPoster({
   title: string;
   image?: string;
   date: number;
+  stadtteil?: string;
   bezirk: string;
   prefixLink?: string;
   eventType?: iEventType;
   id: number;
+  endDate?: number;
 }) {
+  const today = new Date().setHours(0, 0, 0, 0);
   return (
     <Link
       href={!!prefixLink ? `${prefixLink}${id}` : `/flohmaerkte/${id}`}
@@ -58,7 +63,7 @@ export default function FlohmarktPoster({
           eventType === "laterne" ||
           (eventType === "laternewerkstatt" && (
             <div
-              className="absolute w-full h-full flex justify-between  flex-col items-center text-orange-200 border-2 border-hh-600 rounded overflow-hidden"
+              className="absolute w-full h-full flex justify-between flex-col items-center text-orange-200 border-2 border-hh-600 rounded overflow-hidden"
               style={{
                 backgroundImage: `url("/assets/icons/laterne/laterne.svg")`,
                 backgroundSize: "50%",
@@ -68,7 +73,7 @@ export default function FlohmarktPoster({
             />
           ))
         ))}
-      {!!image ? (
+      {!!image && !["adventsevent", "weihnachtsmarkt"].includes(eventType) ? (
         <img
           loading="lazy"
           src={image}
@@ -77,12 +82,36 @@ export default function FlohmarktPoster({
         />
       ) : (
         <>
-          <h2 className="text-base font-extrabold p-2 text-negative-700 my-4 max-w-[180px] break-words rounded bg-hh-300 bg-opacity-50 backdrop-blur-sm">
+          {image && (
+            <img
+              loading="lazy"
+              src={image}
+              alt={title}
+              className={`absolute w-full h-full rounded ${contain ? "object-contain" : "object-cover"}`}
+            />
+          )}
+          <h2
+            className={`text-base font-extrabold p-2 text-positive-900 my-4 max-w-[180px] break-words rounded bg-hh-300 backdrop-blur-sm ${image ? "bg-opacity-80" : "bg-opacity-50"}`}
+          >
             {title}
           </h2>
-          <div className="flex flex-col items-center p-1 mb-4 bg-hh-300 bg-opacity-50 backdrop-blur-sm rounded">
-            <h2 className="text-lg font-semibold text-hh-800">{bezirk}</h2>
-            <h3 className="text- font-semibold">{getDate(date)}</h3>
+          <div
+            className={`flex flex-col items-center p-1 mb-4 bg-hh-300 bg-opacity-50 backdrop-blur-sm rounded mx-1 ${image ? "bg-opacity-75" : "bg-opacity-50"}`}
+          >
+            <h2 className="text-lg font-semibold text-hh-800">
+              {stadtteil || bezirk}
+            </h2>
+            {endDate ? (
+              <h3 className="text-xs font-semibold text-hh-800">
+                {date > today
+                  ? `Ab dem ${getDate(date)} geöffnet`
+                  : `Geöffnet bis ${getDate(endDate)}`}
+              </h3>
+            ) : (
+              <h3 className="text-sm font-semibold text-hh-800">
+                {getDate(date)}
+              </h3>
+            )}
           </div>
         </>
       )}
