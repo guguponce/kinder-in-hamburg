@@ -95,7 +95,8 @@ HorizontalCard.FlohmarktInfo = function FlohmarktInfo({
       </span>
       <div className="flex flex-col">
         <small className="font-semibold italic">
-          {getDate(date)} {endDate ? `- ${getDate(endDate)}` : `(${{ time }})`}
+          {getDate(date)}{" "}
+          {endDate ? `- ${getDate(endDate)}` : time && `(${time})`}
         </small>
         <p className="text-xs">
           {addressWithoutCity(address)} {stadtteil}
