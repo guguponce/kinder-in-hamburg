@@ -1,4 +1,5 @@
 "use client";
+import StandortIcon from "@app/components/@Icons/StandortIcon";
 import { getDate } from "@app/utils/functions";
 import Link from "next/link";
 import React from "react";
@@ -10,6 +11,7 @@ export default function FlohmarktPopUP({
   address,
   date,
   image,
+  endDate,
   type = "flohmaerkte",
 }: {
   image?: string;
@@ -17,6 +19,7 @@ export default function FlohmarktPopUP({
   title: string;
   address: string;
   date: number;
+  endDate?: number;
   type?: "flohmaerkte" | "events";
 }) {
   return (
@@ -38,9 +41,19 @@ export default function FlohmarktPopUP({
           >
             {title}
           </Link>
-          <small className="font-semibold italic">{getDate(date)}</small>
-
-          <p className="text-xs">{address}</p>
+          <div className="flex gap-1 items-center font-sans">
+            {/* <PostLogo logo="date" color="#1F262E" /> */}
+            <small className="font-semibold italic">
+              <span className="not-italic">📅 </span>
+              {endDate ? "Vom " : "Am "}
+              {getDate(date)}
+              {endDate ? ` bis ${getDate(endDate)}` : ""}
+            </small>
+          </div>
+          <div className="flex gap-1 items-center font-sans">
+            <StandortIcon size="1rem" color="#343b3e" />
+            <p className="text-xs">{address}</p>
+          </div>
         </div>
       </div>
     </Popup>
