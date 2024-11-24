@@ -603,7 +603,6 @@ export default function FlohForm({
                         type="date"
                         onChange={(e) => {
                           setClosedDates((prev) => {
-                            console.log(new Date(e.target.value).getTime());
                             return Array.from(
                               new Set([
                                 ...prev,

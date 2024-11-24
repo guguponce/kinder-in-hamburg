@@ -36,7 +36,7 @@ export default function WeitereFlohmaerkte({
   const flohmaerkteByDate = useRef(
     displayedMarkers.reduce(
       (acc, flohmarkt) => {
-        const date = getDate(flohmarkt.date);
+        const date = flohmarkt.date;
         if (!acc[date]) {
           acc[date] = [];
         }
@@ -52,56 +52,60 @@ export default function WeitereFlohmaerkte({
       setContentHeight(listRef.current.scrollHeight);
     }
   }, []);
-
+  const orderedDates = Object.keys(flohmaerkteByDate.current).sort(
+    (a, b) => parseInt(a) - parseInt(b)
+  );
   return (
     <div ref={listRef} className="w-full flex flex-col gap-4 items-stretch">
-      {Object.entries(flohmaerkteByDate.current)
-        .sort((a, b) => parseInt(a[0]) - parseInt(b[0]))
-        .map(([date, displayedFlohs]) => (
-          <React.Fragment key={date}>
-            <ExpandableContainer
-              type={type}
-              contentHeight={contentHeight}
-              initialHeight={displayedFlohs.length < 2 ? 180 : 128 * 2 + 32}
-            >
-              <article className="flex flex-col gap-2 items-stretch w-full">
-                <h3 className="text-lg font-semibold text-hh-900">{date}</h3>
-                <div className="flex flex-wrap justify-center gap-2 items-stretch">
-                  {displayedFlohs.map(
-                    ({
-                      title,
-                      address,
-                      date,
-                      id,
-                      time,
-                      image,
-                      stadtteil,
-                      type,
-                    }) => (
-                      <div key={id} className="w-[360px] md:w-[calc(50%-1rem)]">
-                        <HorizontalCard
-                          type={type || "flohmarkt"}
-                          id={id}
+      {orderedDates.map((date) => (
+        <React.Fragment key={date}>
+          <ExpandableContainer
+            type={type}
+            contentHeight={contentHeight}
+            initialHeight={
+              flohmaerkteByDate.current[date].length < 2 ? 180 : 128 * 2 + 32
+            }
+          >
+            <article className="flex flex-col gap-2 items-stretch w-full">
+              <h3 className="text-lg font-semibold text-hh-900">
+                {getDate(parseInt(date))}
+              </h3>
+              <div className="flex flex-wrap justify-center gap-2 items-stretch">
+                {flohmaerkteByDate.current[date].map(
+                  ({
+                    title,
+                    address,
+                    date,
+                    id,
+                    time,
+                    image,
+                    stadtteil,
+                    type,
+                  }) => (
+                    <div key={id} className="w-[360px] md:w-[calc(50%-1rem)]">
+                      <HorizontalCard
+                        type={type || "flohmarkt"}
+                        id={id}
+                        title={title}
+                        link={`/${type ? "events" : "flohmaerkte"}/${id}`}
+                        image={image || ""}
+                      >
+                        <HorizontalCard.FlohmarktInfo
                           title={title}
-                          link={`/${type ? "events" : "flohmaerkte"}/${id}`}
-                          image={image || ""}
-                        >
-                          <HorizontalCard.FlohmarktInfo
-                            title={title}
-                            address={addressWithoutCity(address)}
-                            stadtteil={stadtteil}
-                            date={date}
-                            time={time}
-                          />
-                        </HorizontalCard>
-                      </div>
-                    )
-                  )}{" "}
-                </div>
-              </article>
-            </ExpandableContainer>
-          </React.Fragment>
-        ))}
+                          address={addressWithoutCity(address)}
+                          stadtteil={stadtteil}
+                          date={date}
+                          time={time}
+                        />
+                      </HorizontalCard>
+                    </div>
+                  )
+                )}{" "}
+              </div>
+            </article>
+          </ExpandableContainer>
+        </React.Fragment>
+      ))}
     </div>
   );
 }
