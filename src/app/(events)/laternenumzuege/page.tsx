@@ -11,7 +11,7 @@ import dynamic from "next/dynamic";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
 import Link from "next/link";
 import AddLatLon from "@components/AddLatLon";
-import ClientLaterneGallery from "@components/@Index/laternenumzug/ClientLaterneGallery";
+import ClientLaterneGallery from "@app/components/@Index/laternenumzug/ClientEventsGallery";
 import HorizontalCard from "@app/components/@Cards/HorizontalCard";
 import ScrollableContainer from "@app/components/ScrollableContainer";
 
@@ -101,7 +101,7 @@ export default async function LaternenumzuegePage() {
         <section className="self-start max-w-full flex justify-center items-center flex-wrap gap-4">
           <div className="flex flex-col items-center gap-1 w-[300px]">
             <h2 className="text-2xl font-semibold">Heute</h2>
-            <ClientLaterneGallery laternenList={todayLaternenumzuege} />
+            <ClientLaterneGallery eventsList={todayLaternenumzuege} />
           </div>
           <div className="flex-grow md:max-w-[calc(100%-332px)]">
             <BezirkableEventsList
