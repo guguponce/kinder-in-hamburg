@@ -1,3 +1,4 @@
+import { cn } from "@app/utils/functions";
 import Link from "next/link";
 import React from "react";
 
@@ -5,14 +6,25 @@ export default function Banner({
   children,
   href,
   linkText = "Mehr entdecken",
+  className,
+  textSide = "left",
 }: {
   children: React.ReactNode;
   href: string;
   linkText?: string;
+  className?: string;
+  textSide?: "left" | "right";
 }) {
   return (
-    <section className="p-4 relative rounded-lg bg-gradient-to-b from-hh-950 to-hh-800 w-full flex gap-2 md:gap-4 flex-col items-center max-w-[420px] sm:max-w-[800px] text-white shadow-xl bg-opacity-10 transition-all overflow-hidden">
-      <div className="sm:gap-2 flex flex-col sm:flex-row w-full items-stretch">
+    <section
+      className={cn(
+        "p-4 relative rounded-lg bg-gradient-to-b from-hh-950 to-hh-800 w-full flex gap-2 md:gap-4 flex-col items-center max-w-[420px] sm:max-w-[800px] text-white shadow-xl bg-opacity-10 transition-all overflow-hidden",
+        className
+      )}
+    >
+      <div
+        className={`sm:gap-2 flex  sm:flex-row w-full items-stretch ${textSide === "left" ? "flex-col" : "flex-col-reverse"}`}
+      >
         {children}
       </div>
 
