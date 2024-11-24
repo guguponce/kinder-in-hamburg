@@ -446,6 +446,7 @@ export interface iListsFPS {
   flohmaerkte?: iFlohmarkt[];
   posts?: iPost[];
   spielplaetze?: iSpielplatz[];
+  events?: iFlohmarkt[];
 }
 
 export interface iHourlyAccu {
