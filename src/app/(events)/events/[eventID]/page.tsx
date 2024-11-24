@@ -69,7 +69,6 @@ export default async function EventPage({
       redirect("/flohmaerkte/" + flohmarktID);
     }
   }
-  console.log(event);
   if (!event || event.status === null || event.status === "rejected")
     return <NotFound type="event" />;
   if (!["approved", "old"].includes(event.status))

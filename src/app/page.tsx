@@ -10,8 +10,10 @@ export default function Home() {
       id="homepage-main"
       className="w-full flex flex-col items-center gap-4 xs:px-2"
     >
-      <WeihnachtsBanner />
-      <LaternenBanner />
+      <div className="w-fit flex flex-col justify-center lg:flex-row lg:justify-between items-center gap-4">
+        <WeihnachtsBanner />
+        <LaternenBanner />
+      </div>
       <FlohmaerkteContainer />
       <ShortAbout></ShortAbout>
     </main>
