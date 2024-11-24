@@ -138,11 +138,13 @@ export default function ClientEventsGallery({
         )}
         <div className="flex justify-between bg-gradient-to-r from-hh-800 to-hh-700 rounded-[0_0_4px_4px] w-[95%] py-1">
           <h5 className="text-xs font-semibold text-orange-50 w-fit px-2">
-            {date > today
-              ? "Ab dem " + date
-              : today === date
-                ? "Heute"
-                : date <= today && "Bis " + endDate}
+            {today === date
+              ? "Heute"
+              : !endDate
+                ? date
+                : date > today
+                  ? "Ab dem " + date
+                  : date <= today && "Bis " + endDate}
           </h5>
           <h5 className="text-xs font-semibold text-orange-200 px-1 h-fit text-end">
             {currentEvent.stadtteil === "Andere Orte"
