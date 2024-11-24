@@ -17,7 +17,11 @@ export default async function EventsGallery({
     //   ? await getAllFutureEventsFromType("weihnachtsmarkt")
     //   :
     (await getFutureApprovedEventsFromType(eventType)) || [];
+  const extra =
+    eventType === "weihnachtsmarkt"
+      ? (await getFutureApprovedEventsFromType("adventsevent")) || []
+      : [];
   if (eventsList.length === 0) return null;
 
-  return <ClientEventsGallery eventsList={eventsList} />;
+  return <ClientEventsGallery eventsList={[...extra, ...eventsList]} />;
 }
