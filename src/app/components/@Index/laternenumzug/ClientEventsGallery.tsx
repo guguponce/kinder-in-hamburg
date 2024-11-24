@@ -81,7 +81,7 @@ export default function ClientEventsGallery({
     month: "2-digit",
   });
   const endDate =
-    currentEvent.endDate &&
+    currentEvent?.endDate &&
     new Date(currentEvent?.endDate).toLocaleDateString("de-DE", {
       day: "2-digit",
       month: "2-digit",
