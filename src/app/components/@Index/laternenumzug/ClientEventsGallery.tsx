@@ -101,9 +101,13 @@ export default function ClientEventsGallery({
                   : ["weihnachtsmarkt", "adventsevent"].includes(
                         currentEvent.type
                       )
-                    ? `url("/assets/icons/weihnachtsmarkt.svg")`
-                    : ``,
-              backgroundSize: "50%",
+                    ? currentEvent.title.includes("Apostelkirche")
+                      ? 'url("https://firebasestorage.googleapis.com/v0/b/kinder-in-hamburg-ce83a.appspot.com/o/flohmaerkteImages%2F1732402742490%2Fapost.webp?alt=media&token=5684721f-39f0-468d-99a1-ee371d70733a")'
+                      : 'url("/assets/icons/weihnachtsmarkt.svg")'
+                    : "",
+              backgroundSize: currentEvent.title.includes("Apostelkirche")
+                ? "contain"
+                : "50%",
               backgroundPosition: "center",
               backgroundRepeat: "no-repeat",
             }}
