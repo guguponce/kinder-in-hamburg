@@ -8,7 +8,7 @@ export default function WeihnachtsBanner() {
       textSide="right"
       href="/weihnachtszeit"
       linkText="alle erkunden"
-      className="from-positive-700 to-[#628d5a50] bg-opacity-20"
+      className="from-positive-700 to-[#628d5a50] bg-opacity-20 lg:w-[calc(100%-360px)]"
     >
       <div className="min-h-full min-w-[320px] self-center md:self-stretch mt-4 flex items-center md:max-w-none max-w-52 sm:items-stretch justify-around flex-col sm:flex-row gap-4 rounded">
         <EventsGallery eventType="weihnachtsmarkt" />
