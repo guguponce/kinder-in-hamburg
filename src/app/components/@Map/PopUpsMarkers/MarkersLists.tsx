@@ -8,6 +8,10 @@ import { divIcon, point } from "leaflet";
 import React from "react";
 import { Marker } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
+import {
+  desaturatedWeihnachtsmarktIcon,
+  weihnachtsmarktIcon,
+} from "../functions";
 
 export const createNormalSizeIcon = (color: string, size: number = 30) =>
   divIcon({
@@ -18,14 +22,16 @@ export const createNormalSizeIcon = (color: string, size: number = 30) =>
   });
 
 const createClusterGroupIcon =
-  (type: "spielplatz" | "flohmarkt" | "post") => (cluster: any) =>
+  (type: "spielplatz" | "flohmarkt" | "post" | "event") => (cluster: any) =>
     divIcon({
       html: `<div class="clusterIcon ${
         type === "flohmarkt"
           ? "clusterIconFlohmarkt"
           : type === "spielplatz"
             ? "clusterIconSpielplatz"
-            : "clusterIconPost"
+            : type === "event"
+              ? "clusterIconEvent"
+              : "clusterIconPost"
       }">${cluster.getChildCount()}</div>`,
       className: "custom-marker-cluster",
       iconSize: point(32, 32, true),
@@ -33,13 +39,14 @@ const createClusterGroupIcon =
 const flohmarktIcon = createNormalSizeIcon("#7B3E5E");
 const postIcon = createNormalSizeIcon("#33404D");
 const spielplatzIcon = createNormalSizeIcon("#405b3a");
+const eventIcon = createNormalSizeIcon("#de6c13");
 
 const ConditionalCluster = ({
   cluster,
   children,
   type,
 }: {
-  type: "flohmarkt" | "spielplatz" | "post";
+  type: "flohmarkt" | "spielplatz" | "post" | "event";
   cluster: boolean;
   children: React.ReactNode;
 }) =>
@@ -92,7 +99,8 @@ export default function MarkersLists({
   const flohmaerkte = lists.flohmaerkte || [];
   const posts = lists.posts || [];
   const spielplaetze = lists.spielplaetze || [];
-
+  const events = lists.events || [];
+  const today = new Date().getTime();
   return (
     <>
       {showFlohmaerkte && (
@@ -115,6 +123,47 @@ export default function MarkersLists({
                 />
               </Marker>
             ))}
+        </ConditionalCluster>
+      )}
+      {!!events.length && (
+        <ConditionalCluster cluster={cluster} type="event">
+          {events
+            .filter(({ lat, lon }) => !!lat && !!lon)
+            .map(
+              ({
+                lon,
+                lat,
+                image,
+                address,
+                id,
+                title,
+                date,
+                type,
+                endDate,
+              }) => (
+                <Marker
+                  icon={
+                    type === "weihnachtsmarkt"
+                      ? date < today
+                        ? weihnachtsmarktIcon
+                        : desaturatedWeihnachtsmarktIcon
+                      : eventIcon
+                  }
+                  key={"marker" + id}
+                  position={[lat!, lon!]}
+                >
+                  <FlohmarktPopUP
+                    id={id}
+                    title={title}
+                    address={address}
+                    date={date}
+                    image={image}
+                    endDate={endDate}
+                    type={!type ? "flohmaerkte" : "events"}
+                  />
+                </Marker>
+              )
+            )}
         </ConditionalCluster>
       )}
       {showPosts && (
