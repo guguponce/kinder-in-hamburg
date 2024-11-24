@@ -1,6 +1,7 @@
 "use client";
 import TriangleIcon from "@app/components/@Icons/TriangleIcon";
 import FlohmarktPoster from "@app/components/FlohmarktPoster";
+import { getDate } from "@app/utils/functions";
 import { iFlohmarkt } from "@app/utils/types";
 import Link from "next/link";
 import React from "react";
@@ -79,6 +80,12 @@ export default function ClientEventsGallery({
     day: "2-digit",
     month: "2-digit",
   });
+  const endDate =
+    currentEvent.endDate &&
+    new Date(currentEvent?.endDate).toLocaleDateString("de-DE", {
+      day: "2-digit",
+      month: "2-digit",
+    });
   return (
     <ArrowGallery length={eventsList.length} handleIndex={handleIndex}>
       <div className="relative w-[180px] aspect-[2/3] flex flex-col items-center">
@@ -128,9 +135,10 @@ export default function ClientEventsGallery({
             />
           </div>
         )}
-        <div className="flex justify-between bg-gradient-to-r from-hh-800 to-hh-700 rounded-[0_0_4px_4px] w-[90%] py-1">
+        <div className="flex justify-between bg-gradient-to-r from-hh-800 to-hh-700 rounded-[0_0_4px_4px] w-[95%] py-1">
           <h5 className="text-xs font-semibold text-orange-50 w-fit px-2">
-            {today === date ? "Heute" : date}
+            {date > today && "Ab dem " + date}
+            {date <= today && "Bis " + endDate}
           </h5>
           <h5 className="text-xs font-semibold text-orange-200 px-1 h-fit text-end">
             {currentEvent.stadtteil === "Andere Orte"
