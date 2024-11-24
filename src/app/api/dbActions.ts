@@ -918,8 +918,10 @@ export const getAllFutureEventsFromType = async (eventType: iEventType) => {
 };
 
 export const getFutureApprovedEventsFromType = async (
-  eventType: iEventType
+  eventType: iEventType,
+  date?: number
 ) => {
+  // Retrieves active Events (in the future or already started)
   const { today } = getTodayNexMonday();
   try {
     const { data, error } = await supabaseAdmin
@@ -929,7 +931,7 @@ export const getFutureApprovedEventsFromType = async (
       .ilike("type", eventType)
       .ilike("status", "approved")
       .or(
-        `date.gte.${today - 1000 * 60 * 60},and(date.lte.${today},endDate.gte.${today + 1000 * 60 * 60 * 12})`
+        `date.gte.${today - 1000 * 60 * 60},and(date.lte.${date || today},endDate.gte.${(date || today) + 1000 * 60 * 60 * 12})`
       );
     if (error) {
       throw new Error("There was a problem getting the events.");
@@ -1088,7 +1090,9 @@ export const getAllEventsThisWeek = async (
   let query = supabaseAdmin
     .from("events")
     .select("*")
-    .gte("date", today - 1000 * 60 * 60)
+    .or(
+      `date.gte.${today - 1000 * 60 * 60},and(date.lte.${today},endDate.gte.${today + 1000 * 60 * 60 * 12})`
+    )
     .lte("date", until)
     .ilike("status", "approved");
 
