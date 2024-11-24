@@ -17,6 +17,7 @@ import type {
   iStringifiedRetrievedPost,
   iStringifiedSpielplatz,
   iForecastHourly,
+  iListsFPS,
 } from "./types";
 import {
   ausruestungList,
@@ -544,18 +545,13 @@ export const separateInBezirke = <T extends iSpielplatz | iFlohmarkt | iPost>(
     {} as { [key: string]: T[] }
   );
 
-interface iLists {
-  flohmaerkte?: iFlohmarkt[];
-  posts?: iPost[];
-  spielplaetze?: iSpielplatz[];
-}
 export const filterByDistance = (
   lat: number,
   lon: number,
-  lists: iLists,
+  lists: iListsFPS,
   maxDistance: number
 ) => {
-  const resultList = {} as iLists;
+  const resultList = {} as iListsFPS;
   Object.entries(lists).map(([key, list]) => {
     if (!list) return;
 
@@ -571,6 +567,7 @@ export const filterByDistance = (
     if (key === "flohmaerkte") resultList[key] = filteredList as iFlohmarkt[];
     if (key === "posts") resultList[key] = filteredList as iPost[];
     if (key === "spielplaetze") resultList[key] = filteredList as iSpielplatz[];
+    if (key === "events") resultList[key] = filteredList as iFlohmarkt[];
   });
   return resultList;
 };
