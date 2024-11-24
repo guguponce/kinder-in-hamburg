@@ -406,7 +406,7 @@ export interface iFlohmarkt {
 export type iEventType =
   | "flohmarkt"
   | "laterne"
-  | "weinachtsmarkt"
+  | "weihnachtsmarkt"
   | "adventsevent"
   | "laternewerkstatt";
 
