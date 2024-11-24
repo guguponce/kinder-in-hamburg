@@ -82,14 +82,22 @@ export default function FlohmarktPoster({
         />
       ) : (
         <>
-          {image && (
+          {image ? (
             <img
               loading="lazy"
               src={image}
               alt={title}
               className={`absolute w-full h-full rounded ${contain ? "object-contain" : "object-cover"}`}
             />
-          )}
+          ) : eventType === "adventsevent" ||
+            eventType === "weihnachtsmarkt" ? (
+            <img
+              loading="lazy"
+              src={"/assets/icons/weihnachtsmarkt.svg"}
+              alt={title}
+              className={`absolute rounded object-contain w-1/2 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2`}
+            />
+          ) : null}
           <h2
             className={`text-base font-extrabold p-2 text-positive-900 my-4 max-w-[180px] break-words rounded bg-hh-300 backdrop-blur-sm ${image ? "bg-opacity-80" : "bg-opacity-50"}`}
           >
