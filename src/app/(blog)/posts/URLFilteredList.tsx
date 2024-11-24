@@ -29,7 +29,6 @@ export default function URLFilteredList({
   const [type, p] = params.split("/").filter(Boolean) || ["", ""];
   const param = !!p ? parseParams(p) : p;
 
-  console.log(params);
   // STATE
   const [maxDisplay, setMaxDisplay] = useState(12);
   const [maxDisplayable, setMaxDisplayable] = useState(postsList.length);

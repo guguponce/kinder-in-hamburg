@@ -1,4 +1,4 @@
-import { getThisWeekEvents } from "@app/api/dbActions";
+import { getAllEventsThisWeek, getThisWeekEvents } from "@app/api/dbActions";
 import { iFlohmarkt, iPost, iSpielplatz } from "@app/utils/types";
 import WeitereFlohmaerkte from "@components/WeitereFlohmaerkte";
 import RecommendationsMap from "@app/components/@Map/RecommendationsMap";
@@ -6,15 +6,18 @@ import RecommendationsMap from "@app/components/@Map/RecommendationsMap";
 export default async function EventPageMapContainer({
   currentTarget,
   spielplaetzeAround,
+  events,
 }: {
+  events: iFlohmarkt[];
   currentTarget: iFlohmarkt | iSpielplatz | iPost;
   spielplaetzeAround?: iSpielplatz[];
 }) {
-  const thisWeekEvents = (await getThisWeekEvents("events")) || [];
+  const thisWeekEvents = (await getAllEventsThisWeek()) || [];
   const thisWeekFlohmaerkte = (await getThisWeekEvents()) || [];
   const weitereVeranstaltungen = thisWeekEvents.filter(
-    ({ id }) => id !== currentTarget.id
+    ({ id, endDate }) => id !== currentTarget.id && !endDate
   );
+
   return (
     <div className="flex flex-col items-center gap-2 w-full max-w-[600px] md:max-w-[800px] rounded p-2">
       <RecommendationsMap
@@ -24,10 +27,11 @@ export default async function EventPageMapContainer({
         id={currentTarget.id}
         maxDistance={2000}
         onlyCurrentRef
-        showFlohmaerkte={false}
+        // showFlohmaerkte={false}
         recommendationsList={{
           flohmaerkte: thisWeekFlohmaerkte,
           spielplaetze: spielplaetzeAround,
+          events,
         }}
       />
       {weitereVeranstaltungen.length > 0 && (
