@@ -75,7 +75,7 @@ export default async function LaternenumzuegePage() {
     >
       <AdminServerComponent>
         <div className="flex flex-col gap-1 outline outline-2 outline-negative-200">
-          {weihnachtsmaerkte.map((event) =>
+          {[...weihnachtsmaerkte, ...adventsEvents].map((event) =>
             event.status !== "approved" || !event.lat || !event.lon ? (
               <Link
                 key={event.id}
@@ -153,7 +153,7 @@ export default async function LaternenumzuegePage() {
         >
           <div className="w-full flex flex-col gap-2 text-negative-800">
             <h2 className="text-3xl flex-grow font-bold ">
-              Adventsveranstaltungen
+              Adventsaktivitäten
             </h2>
 
             <p className="italic">
