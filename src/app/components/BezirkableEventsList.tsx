@@ -93,7 +93,19 @@ export default function BezirkableEventsList({
           }
         >
           {filteredList.map(
-            ({ id, title, date, image, bezirk: eventBezirk }, i) => (
+            (
+              {
+                id,
+                title,
+                date,
+                image,
+                bezirk: eventBezirk,
+                type: eventType,
+                endDate,
+                stadtteil,
+              },
+              i
+            ) => (
               <article
                 key={id}
                 className={`overflow-hidden h-[250px] min-w-[180px] shadow-lg ${
@@ -101,6 +113,8 @@ export default function BezirkableEventsList({
                 }`}
               >
                 <FlohmarktPoster
+                  stadtteil={stadtteil}
+                  eventType={eventType || "flohmarkt"}
                   bezirk={eventBezirk}
                   id={id}
                   title={title}
@@ -108,6 +122,7 @@ export default function BezirkableEventsList({
                   image={image}
                   index={i}
                   prefixLink={`/${type}/`}
+                  endDate={endDate}
                 />
               </article>
             )
