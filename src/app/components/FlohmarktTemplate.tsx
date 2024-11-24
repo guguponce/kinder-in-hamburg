@@ -57,7 +57,7 @@ export default function FlohmarktTemplate({
       <section
         className={`w-full ${
           image ? "max-w-[1200px]" : "max-w-[800px]"
-        } ${type === "laterne" ? "bg-gradient-to-b from-hh-950 to-hh-800 w-full" : "bg-hh-100"} sm:rounded-lg p-6 relative overflow-hidden`}
+        } ${type === "laterne" ? "bg-gradient-to-b from-hh-950 to-hh-800 w-full" : "bg-hh-100"} rounded sm:rounded-lg p-4 sm:px-6 relative overflow-hidden flex flex-col gap-4`}
       >
         <div className="flex justify-between items-center gap-4 w-full">
           <Link
@@ -95,7 +95,7 @@ export default function FlohmarktTemplate({
           {!!image && (
             <aside
               key={image}
-              className="min-w-[300px] max-w-[400px] md:w-1/2 w-full h-fit  p-4 bg-hh-800 rounded-md"
+              className="min-w-[300px] max-w-[400px] md:w-1/3 lg:w-1/2 w-full h-fit  p-4 bg-hh-800 rounded-md"
             >
               <img
                 loading="lazy"
@@ -120,7 +120,7 @@ export default function FlohmarktTemplate({
               )}
               <div
                 id="flohmarkt-hero"
-                className={`w-full p-4 md:px-6 mb-4 rounded-md ${type === "laterne" ? "text-hh-100" : "bg-hh-50"} min-h-[50%] max-w-[600px] mx-auto flex-grow overflow-hidden flex flex-col gap-4`}
+                className={`w-full p-4 ${!image && "sm:px-10 pt-4 md:px-16 md:pb-10 "} mb-4 rounded-md ${type === "laterne" ? "text-hh-100" : "bg-hh-50"} min-h-[50%] ${!image && "max-w-[640px]"} mx-auto flex-grow overflow-hidden flex flex-col gap-4`}
               >
                 <h1 className="text-3xl md:text-4xl text-center font-bold break-words mt-2">
                   {title}
@@ -150,7 +150,7 @@ export default function FlohmarktTemplate({
                   </div>
                 )}
                 {openHours && (
-                  <div className="relative border-2 border-hh-800 rounded p-2 md:px-4 mx-auto max-w-full">
+                  <div className="relative border-2 border-hh-800 rounded p-2 md:px-4 mx-auto min-w-[280px] max-w-full">
                     <div className="absolute right-2 top-2">
                       <PostLogo logo="clock" color="#1F262E" size="1.25rem" />
                     </div>
@@ -162,7 +162,7 @@ export default function FlohmarktTemplate({
               {externalLink && (
                 <div
                   id="external-link"
-                  className="max-w-[600px] w-fit mx-auto h-fit mb-4 p-4 rounded bg-hh-800 text-hh-100"
+                  className={` ${image ? "w-full" : "max-w-full md:max-w-[600px] md:w-fit break-words"} mx-auto h-fit mb-4 p-4 rounded bg-hh-800 text-hh-100`}
                 >
                   <h3 className="font-semibold">
                     {linkText || "Externer Link:"}
