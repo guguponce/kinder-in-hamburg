@@ -897,6 +897,26 @@ export const getSuggestedEvents = async (
   }
 };
 
+export const getAllFutureEventsFromType = async (eventType: iEventType) => {
+  const { today } = getTodayNexMonday();
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("events")
+      .select("*")
+      .order("date", { ascending: true })
+      .ilike("type", eventType)
+      .or(
+        `date.gte.${today - 1000 * 60 * 60},and(date.lte.${today},endDate.gte.${today + 1000 * 60 * 60 * 12})`
+      );
+    if (error) {
+      throw new Error("There was a problem getting the events.");
+    }
+    return data.map((f) => parseFlohmarkt(f)) as iFlohmarkt[];
+  } catch (error) {
+    return false;
+  }
+};
+
 export const getFutureApprovedEventsFromType = async (
   eventType: iEventType
 ) => {
@@ -913,6 +933,25 @@ export const getFutureApprovedEventsFromType = async (
       throw new Error("There was a problem getting the events.");
     }
     return data.map((f) => parseFlohmarkt(f)) as iFlohmarkt[];
+  } catch (error) {
+    return false;
+  }
+};
+
+export const checkIfEventOrFlohmarktExists = async (
+  id: string,
+  eventTable: string
+) => {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from(eventTable)
+      .select("id")
+      .match({ id })
+      .single();
+    if (error) {
+      throw new Error("There was a problem checking if the event exists.");
+    }
+    return data.id;
   } catch (error) {
     return false;
   }
@@ -1157,13 +1196,16 @@ export const addEvent = async (
     if (!user?.email) {
       return "Not logged in";
     }
-    const submittedEvent = {
-      ...{
-        ...event,
-        closedDates: event.closedDates && JSON.stringify(event.closedDates),
-      },
+    let submittedEvent = {
+      ...event,
+      closedDates: event.closedDates?.length
+        ? JSON.stringify(event.closedDates)
+        : undefined,
       addedBy: JSON.stringify(user),
     };
+    if (eventTable === "flohmaerkte") {
+      delete submittedEvent.closedDates;
+    }
     const { error } = await supabaseAdmin
       .from(eventTable)
       .insert(submittedEvent);
@@ -1222,15 +1264,21 @@ export const updateEvent = async (
   if (!authorized) return "Not authorized";
   const updatedEvent = {
     ...event,
-    closedDates: event.closedDates && JSON.stringify(event.closedDates),
+    closedDates: event.closedDates?.length
+      ? JSON.stringify(event.closedDates)
+      : undefined,
   };
+  if (eventTable === "flohmaerkte") {
+    delete updatedEvent.closedDates;
+  }
   try {
-    const { data, error } = await supabaseAdmin
+    const { error } = await supabaseAdmin
       .from(eventTable)
       .update(updatedEvent)
       .match({ id: event.id });
 
     if (error) {
+      console.log(error.message);
       throw new Error("Error updating event");
     }
     return "Updated";
