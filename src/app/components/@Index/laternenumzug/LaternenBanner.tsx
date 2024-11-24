@@ -35,7 +35,7 @@ export default function LaternenBanner() {
           className="absolute left-2 bottom-0 h-12 w-12"
           style={{ transform: "scaleX(-1)" }}
         >
-          <LaterneImage />
+          <LaterneImage normalSize={false} />
         </div>
         <Link
           href={"/laternenumzuege"}
