@@ -42,7 +42,7 @@ type iGetList = {
   currentItem: iPost | iFlohmarkt | iSpielplatz | false;
 };
 async function getItemsNearby(
-  type: "flohmaerkte" | "posts" | "spielplaetze",
+  type: "flohmaerkte" | "posts" | "spielplaetze" | "events",
   bezirk: iBezirk,
   stadtteile: string[]
 ) {
@@ -53,6 +53,10 @@ async function getItemsNearby(
       return (await getPostsFromBezirkStadtteile(bezirk, stadtteile)) || [];
     case "spielplaetze":
       return (await getSpielplatzFromBezirkStadtteil(bezirk, stadtteile)) || [];
+    case "events":
+      return (
+        (await getEventsFromBezirkStadtteil(bezirk, stadtteile, "events")) || []
+      );
     default:
       return [] as Array<iFlohmarkt | iPost | iSpielplatz>;
   }
@@ -63,17 +67,21 @@ async function getList(
   bezirk: iBezirk,
   stadtteile: string[],
   recommendationsList?: iListsFPS,
-  avoid?: Array<"flohmaerkte" | "posts" | "spielplaetze">
+  avoid?: Array<"flohmaerkte" | "posts" | "spielplaetze" | "events">
 ) {
   let recList: iListsFPS = recommendationsList || {};
   let acc: iGetList = {
     list: recList,
     currentItem: false,
   };
-  const promises = ["flohmaerkte", "posts", "spielplaetze"]
+  const promises = ["flohmaerkte", "posts", "spielplaetze", "events"]
     .filter((key) => !avoid?.includes(key as (typeof avoid)[number]))
     .map(async (key) => {
-      const itemType = key as "flohmaerkte" | "posts" | "spielplaetze";
+      const itemType = key as
+        | "flohmaerkte"
+        | "posts"
+        | "spielplaetze"
+        | "events";
       const items = recList[itemType] as iFlohmarkt[] & iPost[] & iSpielplatz[];
       const itemsNearby =
         items || (await getItemsNearby(itemType, bezirk, stadtteile)) || [];
@@ -130,6 +138,7 @@ export default async function RecommendationsMap({
       flohmaerkte: flohmaerkteNearby,
       posts: postsNearby,
       spielplaetze: spielplaetzeNearby,
+      events: eventsNearby,
     },
   } = await getList(
     currentType,
@@ -140,13 +149,15 @@ export default async function RecommendationsMap({
       flohmaerkte: recommendationsList?.flohmaerkte,
       posts: recommendationsList?.posts,
       spielplaetze: recommendationsList?.spielplaetze,
+      events: recommendationsList?.events,
     },
     [
       showFlohmaerkte ? null : "flohmaerkte",
       showPosts ? null : "posts",
       showSpielplaetze ? null : "spielplaetze",
     ].filter(
-      (item): item is "flohmaerkte" | "posts" | "spielplaetze" => item !== null
+      (item): item is "flohmaerkte" | "posts" | "spielplaetze" | "events" =>
+        item !== null
     )
   );
 
@@ -167,6 +178,7 @@ export default async function RecommendationsMap({
         : [],
       posts: postsNearby || [],
       spielplaetze: spielplaetzeNearby || [],
+      events: eventsNearby || [],
     },
     maxDistance
   );
@@ -196,6 +208,9 @@ export default async function RecommendationsMap({
     defList.spielplaetze = defList.spielplaetze?.filter(
       (spielplatz) => spielplatz.id !== id
     );
+  if (currentType === "event") {
+    defList.events = defList.events?.filter((event) => event.id !== id);
+  }
   defList.flohmaerkte =
     currentType === "flohmarkt"
       ? recommendationsList?.flohmaerkte?.filter(
@@ -222,8 +237,13 @@ export default async function RecommendationsMap({
       plural: "Spielplätze",
       show: showSpielplaetze,
     },
+    events: {
+      color: "#de6c13",
+      singular: "Veranstaltung",
+      plural: "Veranstaltungen",
+      show: true,
+    },
   };
-
   const listsLength = Object.values(defList).filter((l) => !!l?.length).length;
   return (
     <article
@@ -236,6 +256,7 @@ export default async function RecommendationsMap({
         )}
         <GeneralMap zoom={14} currentTarget={currentItem || undefined}>
           <MarkersLists
+            cluster={false}
             lists={defList}
             showFlohmaerkte={showFlohmaerkte}
             showPosts={showPosts}
@@ -272,7 +293,11 @@ export default async function RecommendationsMap({
             >
               {Object.entries(tags).map(
                 ([key, { color, singular, plural, show }]) => {
-                  const type = key as "flohmaerkte" | "posts" | "spielplaetze";
+                  const type = key as
+                    | "flohmaerkte"
+                    | "posts"
+                    | "spielplaetze"
+                    | "events";
                   const list = defList[type] as iFlohmarkt[] &
                     iPost[] &
                     iSpielplatz[];
