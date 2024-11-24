@@ -1,3 +1,5 @@
+import { divIcon } from "leaflet";
+
 export function createWeihnachtsmarktMapIcon(size: number = 30) {
   return `<svg height="${size}" width="${size}" stroke-linecap="round" stroke-linejoin="round" stroke="#121212" stroke-width="19.456" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve">
 <g>
@@ -40,3 +42,16 @@ export function createWeihnachtsmarktMapIcon(size: number = 30) {
 </svg>
 `;
 }
+
+export const weihnachtsmarktIcon = divIcon({
+  html: createWeihnachtsmarktMapIcon(30),
+  iconSize: [30, 30],
+  iconAnchor: [15, 30],
+  className: "bg-transparent",
+});
+export const desaturatedWeihnachtsmarktIcon = divIcon({
+  html: createWeihnachtsmarktMapIcon(24),
+  iconSize: [24, 24],
+  iconAnchor: [12, 24],
+  className: "bg-transparent grayscale",
+});
