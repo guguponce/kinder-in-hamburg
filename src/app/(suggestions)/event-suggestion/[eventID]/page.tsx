@@ -23,7 +23,7 @@ export default async function EventSuggestionPage({
   if (!suggestion) return <NotFound type="event" />;
   return (
     <AdminRoute>
-      <>
+      <main className="flex flex-col items-center w-full p-1">
         <FlohmarktTemplate flohmarkt={suggestion}>
           <StatusDisplay status={suggestion.status}>
             <StatusDisplay.Title>
@@ -86,7 +86,7 @@ export default async function EventSuggestionPage({
             <SuggestedEventMap currentTarget={suggestion} zoom={13} />
           )}
         </FlohmarktTemplate>
-      </>
+      </main>
     </AdminRoute>
   );
 }
