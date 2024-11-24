@@ -99,7 +99,7 @@ export default function FlohmarktPoster({
             />
           ) : null}
           <h2
-            className={`text-base font-extrabold p-2 text-positive-900 my-4 max-w-[180px] break-words rounded bg-hh-300 backdrop-blur-sm ${image ? "bg-opacity-80" : "bg-opacity-50"}`}
+            className={`text-sm font-extrabold p-2 text-positive-900 my-4 max-w-[180px] break-words rounded bg-hh-300 backdrop-blur-sm ${image ? "bg-opacity-80" : "bg-opacity-50"}`}
           >
             {title}
           </h2>
