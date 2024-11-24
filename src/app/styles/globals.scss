@@ -253,6 +253,12 @@ picture {
     background: radial-gradient(circle, #405b3a, #405b3a 50%, #405b3ab9 50%);
   }
 }
+.clusterIconEvent {
+  background: radial-gradient(circle, #de6c13, #de6c13 50%, #de6c1380 50%);
+  &:hover {
+    background: radial-gradient(circle, #de6c13, #de6c13 50%, #de6c13b9 50%);
+  }
+}
 
 .clusterIcon {
   height: 2rem;
