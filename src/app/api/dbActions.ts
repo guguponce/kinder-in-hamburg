@@ -928,7 +928,9 @@ export const getFutureApprovedEventsFromType = async (
       .order("date", { ascending: true })
       .ilike("type", eventType)
       .ilike("status", "approved")
-      .gte("date", today - 1000 * 60 * 60);
+      .or(
+        `date.gte.${today - 1000 * 60 * 60},and(date.lte.${today},endDate.gte.${today + 1000 * 60 * 60 * 12})`
+      );
     if (error) {
       throw new Error("There was a problem getting the events.");
     }
