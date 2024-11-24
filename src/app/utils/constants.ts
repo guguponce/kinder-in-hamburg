@@ -21,7 +21,7 @@ export const eventTypes: iEventType[] = [
   "laterne",
   "laternewerkstatt",
   "adventsevent",
-  "weinachtsmarkt",
+  "weihnachtsmarkt",
   "flohmarkt",
 ];
 
