@@ -129,6 +129,7 @@ export default function ClientEventsGallery({
               image={currentEvent.image}
               title={currentEvent.title}
               index={index}
+              eventType={currentEvent.type}
               prefixLink="/events/"
               size="small"
               contain
