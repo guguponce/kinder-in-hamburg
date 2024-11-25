@@ -51,7 +51,7 @@ export const metadata = {
     description:
       "Hier findet ihr eine Zusammenstellung der kinderfreundlichen Laternenumzüge in Hamburg sowie der dazugehörigen Aktivitäten für die Kleinen oder die ganze Familie.",
     url: "https://www.kinder-in-hamburg.de",
-    images: process.env.BASE_URL + "opengraph-image.png",
+    images: `${process.env.BASE_URL}opengraph-image.png`,
   },
   twitter: {
     card: "summary_large_image",
@@ -60,7 +60,7 @@ export const metadata = {
     description:
       "Hier findet ihr eine Zusammenstellung der kinderfreundlichen Laternenumzüge in Hamburg sowie der dazugehörigen Aktivitäten für die Kleinen oder die ganze Familie.",
 
-    images: [process.env.BASE_URL + "/opengraph-image.png"], // Relative path to the image
+    images: `${process.env.BASE_URL}opengraph-image.png`,
   },
   metadataBase: new URL("https://www.kinder-in-hamburg.de"), // Base URL for resolving relative URLs
 };

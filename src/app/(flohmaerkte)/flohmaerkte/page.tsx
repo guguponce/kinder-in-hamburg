@@ -64,7 +64,7 @@ export async function generateMetadata(): Promise<Metadata> {
       description:
         "Hier findet ihr Flohmärkte für die ganze Familie aus verschiedenen Orten in Hamburg zusammengestellt.",
       url: "https://www.kinder-in-hamburg.de",
-      images: process.env.BASE_URL + "opengraph-image.png",
+      images: `${process.env.BASE_URL}opengraph-image.png`,
     },
     twitter: {
       card: "summary_large_image",
@@ -72,8 +72,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
       description:
         "Hier findet ihr Flohmärkte für die ganze Familie aus verschiedenen Orten in Hamburg zusammengestellt.",
-
-      images: [process.env.BASE_URL + "/opengraph-image.png"], // Relative path to the image
+      images: `${process.env.BASE_URL}opengraph-image.png`,
     },
     metadataBase: new URL("https://www.kinder-in-hamburg.de"), // Base URL for resolving relative URLs
   };
