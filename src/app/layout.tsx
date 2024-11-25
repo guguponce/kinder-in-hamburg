@@ -7,7 +7,6 @@ import "@styles/globals.scss";
 import Header from "@components/@Header/Header";
 import Footer from "./components/@Footer/Footer";
 import GetAnalytics from "./GetAnalytics";
-import { SessionProvider } from "./providers/SessionContext";
 const fixelFont = localFont({
   src: "./styles/fonts/FixelVariable.ttf",
   display: "swap",
@@ -59,7 +58,7 @@ export const metadata: Metadata = {
 
     images: `${process.env.BASE_URL}opengraph-image.png`,
   },
-  metadataBase: new URL("https://www.kinder-in-hamburg.de"), // Base URL for resolving relative URLs
+  // metadataBase: new URL("https://www.kinder-in-hamburg.de"), // Base URL for resolving relative URLs
 };
 
 export const revalidate = 60 * 60 * 6; // 6 hours

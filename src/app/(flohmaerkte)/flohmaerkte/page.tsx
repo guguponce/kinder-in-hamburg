@@ -73,7 +73,6 @@ export async function generateMetadata(): Promise<Metadata> {
       title: "Flohmärkte",
       description:
         "Hier findet ihr Flohmärkte für die ganze Familie aus verschiedenen Orten in Hamburg zusammengestellt.",
-
       images: process.env.BASE_URL + "opengraph-image.png",
       site: "https://www.kinder-in-hamburg.de/flohmaerkte/",
       card: "summary_large_image",
