@@ -14,55 +14,54 @@ const fixelFont = localFont({
   variable: "--font-fixel",
 });
 
-export async function generateMetadata(): Promise<Metadata> {
-  return {
-    title: {
-      default: "Kinder in Hamburg",
-      template: "%s | Kinder in Hamburg",
-    },
-    icons: "/favicon.ico",
+export const metadata: Metadata = {
+  title: {
+    default: "Kinder in Hamburg",
+    template: "%s | Kinder in Hamburg",
+  },
+  icons: "/favicon.ico",
+  description:
+    "Hier findet ihr Aktivitäten und Flohmärkte für die ganze Familie aus verschiedenen Orten in Hamburg zusammengestellt.",
+  keywords: [
+    "kinder in hamburg",
+    "KINDER IN HAMBURG",
+    "kinder hamburg",
+    "hamburg mit kinder",
+    "hamburg familie",
+    "hamburg kinder",
+    "hamburg ausflug",
+    "hamburg flohmarkt",
+    "hamburg kinder flohmarkt",
+    "hamburg",
+    "flohmarkt",
+    "kinder",
+    "familie",
+    "ausflug",
+    "flohmarkt hamburg",
+    "flohmarkt kinder",
+    "flohmarkt familie",
+    "flohmarkt hamburg kinder",
+    "flohmarkt hamburg familie",
+    "flea market",
+  ],
+  openGraph: {
+    title: "Kinder in Hamburg",
     description:
       "Hier findet ihr Aktivitäten und Flohmärkte für die ganze Familie aus verschiedenen Orten in Hamburg zusammengestellt.",
-    keywords: [
-      "kinder in hamburg",
-      "KINDER IN HAMBURG",
-      "kinder hamburg",
-      "hamburg mit kinder",
-      "hamburg familie",
-      "hamburg kinder",
-      "hamburg ausflug",
-      "hamburg flohmarkt",
-      "hamburg kinder flohmarkt",
-      "hamburg",
-      "flohmarkt",
-      "kinder",
-      "familie",
-      "ausflug",
-      "flohmarkt hamburg",
-      "flohmarkt kinder",
-      "flohmarkt familie",
-      "flohmarkt hamburg kinder",
-      "flohmarkt hamburg familie",
-      "flea market",
-    ],
-    openGraph: {
-      title: "Kinder in Hamburg",
-      description:
-        "Hier findet ihr Aktivitäten und Flohmärkte für die ganze Familie aus verschiedenen Orten in Hamburg zusammengestellt.",
-      url: "https://www.kinder-in-hamburg.de",
-      images: process.env.BASE_URL + "opengraph-image.png",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: "Kinder in Hamburg",
-      description:
-        "Hier findet ihr Aktivitäten und Flohmärkte für die ganze Familie aus verschiedenen Orten in Hamburg zusammengestellt.",
+    url: "https://www.kinder-in-hamburg.de",
+    images: "https:www.kinder-in-hamburg.de/opengraph-image.png",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Kinder in Hamburg",
+    description:
+      "Hier findet ihr Aktivitäten und Flohmärkte für die ganze Familie aus verschiedenen Orten in Hamburg zusammengestellt.",
 
-      images: [new URL("https://www.kinder-in-hamburg.de")], // Relative path to the image
-    },
-    metadataBase: new URL("https://www.kinder-in-hamburg.de"), // Base URL for resolving relative URLs
-  };
-}
+    images: `${process.env.BASE_URL}opengraph-image.png`,
+  },
+  metadataBase: new URL("https://www.kinder-in-hamburg.de"), // Base URL for resolving relative URLs
+};
+
 export const revalidate = 60 * 60 * 6; // 6 hours
 export default async function RootLayout({
   children,
@@ -81,11 +80,11 @@ export default async function RootLayout({
         className={`${fixelFont.className}
          flex flex-col items-center bg-hh-600 max-w-[1400px] mx-auto gap-2`}
       >
-        <SessionProvider>
-          <Header />
-          {children}
-          <Footer />
-        </SessionProvider>
+        {/* <SessionProvider> */}
+        <Header />
+        {children}
+        <Footer />
+        {/* </SessionProvider> */}
         <GetAnalytics />
       </body>
       <Script src="https://scripts.simpleanalyticscdn.com/latest.js" />

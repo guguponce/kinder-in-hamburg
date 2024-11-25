@@ -244,13 +244,7 @@ export default async function WeihnachtszeitPage() {
                           title={title}
                           id={id}
                           link={`/events/${id}`}
-                          image={
-                            image
-                              ? image
-                              : title.includes("Apostelkirche")
-                                ? "https://firebasestorage.googleapis.com/v0/b/kinder-in-hamburg-ce83a.appspot.com/o/flohmaerkteImages%2F1732402742490%2Fapost.webp?alt=media&token=5684721f-39f0-468d-99a1-ee371d70733a"
-                                : undefined
-                          }
+                          image={image}
                         >
                           <HorizontalCard.FlohmarktInfo
                             title={title}
