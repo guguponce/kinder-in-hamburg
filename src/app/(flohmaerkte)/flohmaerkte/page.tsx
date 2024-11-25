@@ -115,10 +115,17 @@ export default async function FlohmarktPage() {
               <Link href={`/update-flohmarkt/${id}`}>{title}</Link>
             </div>
           ))}
+        <h3>{process.env.BASE_URL + "opengraph-image.png"}</h3>
+        <img
+          src={process.env.BASE_URL + "opengraph-image.png"}
+          alt="opengraph-image"
+          className="w-1/2 h-auto"
+        />
       </AdminServerComponent>
       <MainIntroductionText
         title="Flohmärkte"
         text="Die Flohmärkte in Hamburg bieten eine schöne, familienfreundliche Erfahrung, bei der Eltern gebrauchte Schätze für ihre Kinder finden können. Von Spielzeug und Kleidung bis hin zu Büchern und Mobilitätsartikeln wie Fahrrädern oder Kinderwagen – diese Märkte ermöglichen es, günstige und umweltfreundliche Optionen für die ganze Familie zu entdecken. Wir glauben, dass sie den Kindern die Chance bieten, den Wert von Wiederverwendung und Recycling auf eine praktische Weise zu lernen."
+        extraInfo="Leider ist die Flohmarktsaison vorbei. Sie wird im Frühling 2025 wieder beginnen."
       />
       <section className="rounded bg-hh-100 bg-opacity-25 w-full max-w-[1000px] p-2 md:p-4 flex flex-col items-center gap-2">
         <BezirkeScrollableEvents
