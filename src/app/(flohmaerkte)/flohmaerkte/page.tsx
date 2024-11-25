@@ -27,6 +27,7 @@ const DynamicFlohmarktMap = dynamic(
     ),
   }
 );
+
 export async function generateMetadata(): Promise<Metadata> {
   return {
     title: "Flohmärkte",
@@ -60,24 +61,25 @@ export async function generateMetadata(): Promise<Metadata> {
       "flea market hamburg",
     ],
     openGraph: {
-      title: "Flohmärkte - Kinder in Hamburg",
+      type: "website",
+      url: "https://www.kinder-in-hamburg.de/flohmaerkte/",
+      title: "Flohmärkte",
       description:
         "Hier findet ihr Flohmärkte für die ganze Familie aus verschiedenen Orten in Hamburg zusammengestellt.",
-      url: "https://www.kinder-in-hamburg.de",
-      images: `${process.env.BASE_URL}opengraph-image.png`,
+      images: process.env.BASE_URL + "opengraph-image.png",
+      siteName: "Kinder in Hamburg",
     },
     twitter: {
-      card: "summary_large_image",
-      title: "Flohmärkte - Kinder in Hamburg",
-
+      title: "Flohmärkte",
       description:
         "Hier findet ihr Flohmärkte für die ganze Familie aus verschiedenen Orten in Hamburg zusammengestellt.",
-      images: `${process.env.BASE_URL}opengraph-image.png`,
+
+      images: process.env.BASE_URL + "opengraph-image.png",
+      site: "https://www.kinder-in-hamburg.de/flohmaerkte/",
+      card: "summary_large_image",
     },
-    metadataBase: new URL("https://www.kinder-in-hamburg.de"), // Base URL for resolving relative URLs
   };
 }
-
 export default async function FlohmarktPage() {
   const flohmaerkte = await getApprovedEvents();
   if (!flohmaerkte) return <NotFound multiples={true} type="flohmarkt" />;
