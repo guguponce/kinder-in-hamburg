@@ -58,7 +58,7 @@ export async function generateMetadata(): Promise<Metadata> {
       description:
         "Hier findet ihr Aktivitäten und Flohmärkte für die ganze Familie aus verschiedenen Orten in Hamburg zusammengestellt.",
 
-      images: [process.env.BASE_URL + "/opengraph-image.png"], // Relative path to the image
+      images: [new URL("https://www.kinder-in-hamburg.de")], // Relative path to the image
     },
     metadataBase: new URL("https://www.kinder-in-hamburg.de"), // Base URL for resolving relative URLs
   };
