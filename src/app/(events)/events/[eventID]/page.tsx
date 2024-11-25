@@ -32,7 +32,7 @@ export async function generateMetadata({
       description: "Der Event wurde nicht gefunden.",
     };
   return {
-    title: eventInfo.title + " - Kinder in Hamburg",
+    title: eventInfo.title,
     description:
       "Event in " + eventInfo.bezirk + " " + eventInfo.optionalComment,
     openGraph: {

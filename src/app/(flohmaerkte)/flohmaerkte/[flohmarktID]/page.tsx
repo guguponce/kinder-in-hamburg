@@ -37,7 +37,7 @@ export async function generateMetadata({
     stadtteil,
   } = flohmarktInfo;
   return {
-    title: title + " - Kinder in Hamburg",
+    title: title,
     description: "Flohmarkt in " + stadtteil || "" + " " + description || "",
     openGraph: {
       type: "website",

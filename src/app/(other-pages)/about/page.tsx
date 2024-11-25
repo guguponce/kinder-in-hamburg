@@ -1,5 +1,11 @@
 import React from "react";
 
+export const metadata = {
+  title: "Über uns",
+  description:
+    "Erfahre mehr über die Macher von Kinder in Hamburg und die Zukunft der Website.",
+};
+
 export default function AboutPage() {
   return (
     <main className="flex flex-col items-center gap-4 p-1">

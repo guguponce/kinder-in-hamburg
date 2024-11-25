@@ -15,6 +15,56 @@ import ClientLaterneGallery from "@app/components/@Index/laternenumzug/ClientEve
 import HorizontalCard from "@app/components/@Cards/HorizontalCard";
 import ScrollableContainer from "@app/components/ScrollableContainer";
 
+export const metadata = {
+  title: "Laternenumzüge",
+  icons: "/favicon.ico",
+  description:
+    "Hier findet ihr eine Zusammenstellung der Laternenumzüge in Hamburg sowie der dazugehörigen Aktivitäten für die Kleinen oder die ganze Familie.",
+  keywords: [
+    "hamburg mit kinder",
+    "hamburg familie laternenumzug",
+    "hamburg kinder laternenumzug",
+    "hamburg laternenumzuege",
+    "hamburg laternenumzug",
+    "hamburg kinder laternenumzuege",
+    "kinder in hamburg",
+    "kinder hamburg",
+    "laternenumzuege",
+    "laternenumzüge",
+    "laternenumzug",
+    "kinder",
+    "familie",
+    "laternenumzuege hamburg",
+    "laternenumzuege kinder",
+    "laternenumzuege familie",
+    "laternenumzuege hamburg kinder",
+    "laternenumzuege hamburg familie",
+    "laternenumzug hamburg",
+    "laternenumzug kinder",
+    "laternenumzug familie",
+    "laternenumzug hamburg kinder",
+    "laternenumzug hamburg familie",
+    "flea market hamburg",
+  ],
+  openGraph: {
+    title: "Laternenumzüge - Kinder in Hamburg",
+    description:
+      "Hier findet ihr eine Zusammenstellung der kinderfreundlichen Laternenumzüge in Hamburg sowie der dazugehörigen Aktivitäten für die Kleinen oder die ganze Familie.",
+    url: "https://www.kinder-in-hamburg.de",
+    images: process.env.BASE_URL + "opengraph-image.png",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Laternenumzüge - Kinder in Hamburg",
+
+    description:
+      "Hier findet ihr eine Zusammenstellung der kinderfreundlichen Laternenumzüge in Hamburg sowie der dazugehörigen Aktivitäten für die Kleinen oder die ganze Familie.",
+
+    images: [process.env.BASE_URL + "/opengraph-image.png"], // Relative path to the image
+  },
+  metadataBase: new URL("https://www.kinder-in-hamburg.de"), // Base URL for resolving relative URLs
+};
+
 const DynamicEventsMap = dynamic(
   () => import("../../components/@Map/DynamicEventsMap"),
   {

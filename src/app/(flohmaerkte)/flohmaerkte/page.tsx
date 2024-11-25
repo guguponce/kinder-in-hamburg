@@ -29,7 +29,7 @@ const DynamicFlohmarktMap = dynamic(
 );
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: "Kinder in Hamburg",
+    title: "Flohmärkte",
     icons: "/favicon.ico",
     description:
       "Hier findet ihr Aktivitäten und Flohmärkte für die ganze Familie aus verschiedenen Orten in Hamburg zusammengestellt.",
@@ -64,7 +64,7 @@ export async function generateMetadata(): Promise<Metadata> {
       description:
         "Hier findet ihr Flohmärkte für die ganze Familie aus verschiedenen Orten in Hamburg zusammengestellt.",
       url: "https://www.kinder-in-hamburg.de",
-      images: "/opengraph-image.png",
+      images: process.env.BASE_URL + "opengraph-image.png",
     },
     twitter: {
       card: "summary_large_image",
@@ -73,7 +73,7 @@ export async function generateMetadata(): Promise<Metadata> {
       description:
         "Hier findet ihr Flohmärkte für die ganze Familie aus verschiedenen Orten in Hamburg zusammengestellt.",
 
-      images: ["/opengraph-image.png"], // Relative path to the image
+      images: [process.env.BASE_URL + "/opengraph-image.png"], // Relative path to the image
     },
     metadataBase: new URL("https://www.kinder-in-hamburg.de"), // Base URL for resolving relative URLs
   };

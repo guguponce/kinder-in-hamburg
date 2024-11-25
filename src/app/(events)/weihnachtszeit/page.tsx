@@ -16,6 +16,59 @@ import HorizontalCard from "@app/components/@Cards/HorizontalCard";
 import ScrollableContainer from "@app/components/ScrollableContainer";
 import { iFlohmarkt } from "@app/utils/types";
 import FlohmarktPoster from "@app/components/FlohmarktPoster";
+import { Metadata } from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: "Weihnachtsmärkte",
+    icons: "/favicon.ico",
+    description:
+      "Hier findet ihr eine Zusammenstellung der kinderfreundlichen Weihnachtsmärkte in Hamburg sowie der dazugehörigen Aktivitäten für die Kleinen oder die ganze Familie.",
+    keywords: [
+      "hamburg mit kinder",
+      "hamburg familie weihnachtsmarkt",
+      "hamburg kinder weihnachtsmarkt",
+      "hamburg weihnachtsmaerkte",
+      "hamburg weihnachtsmarkt",
+      "hamburg kinder weihnachtsmaerkte",
+      "kinder in hamburg",
+      "kinder hamburg",
+      "weihnachtsmaerkte",
+      "weihnachtsmärkte",
+      "weihnachtsmarkt",
+      "kinder",
+      "familie",
+      "weihnachtsmaerkte hamburg",
+      "weihnachtsmaerkte kinder",
+      "weihnachtsmaerkte familie",
+      "weihnachtsmaerkte hamburg kinder",
+      "weihnachtsmaerkte hamburg familie",
+      "weihnachtsmarkt hamburg",
+      "weihnachtsmarkt kinder",
+      "weihnachtsmarkt familie",
+      "weihnachtsmarkt hamburg kinder",
+      "weihnachtsmarkt hamburg familie",
+      "flea market hamburg",
+    ],
+    openGraph: {
+      title: "Weihnachtsmärkte - Kinder in Hamburg",
+      description:
+        "Hier findet ihr eine Zusammenstellung der kinderfreundlichen Weihnachtsmärkte in Hamburg sowie der dazugehörigen Aktivitäten für die Kleinen oder die ganze Familie.",
+      url: "https://www.kinder-in-hamburg.de",
+      images: process.env.BASE_URL + "opengraph-image.png",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Weihnachtsmärkte - Kinder in Hamburg",
+
+      description:
+        "Hier findet ihr eine Zusammenstellung der kinderfreundlichen Weihnachtsmärkte in Hamburg sowie der dazugehörigen Aktivitäten für die Kleinen oder die ganze Familie.",
+
+      images: [process.env.BASE_URL + "/opengraph-image.png"], // Relative path to the image
+    },
+    metadataBase: new URL("https://www.kinder-in-hamburg.de"), // Base URL for resolving relative URLs
+  };
+}
 
 const WeihnachtsmaerkteMap = dynamic(() => import("./WeihnachtsmaerkteMap"), {
   ssr: false,
@@ -29,8 +82,7 @@ const WeihnachtsmaerkteMap = dynamic(() => import("./WeihnachtsmaerkteMap"), {
     </article>
   ),
 });
-export default async function LaternenumzuegePage() {
-  // --------------------------------------------------------
+export default async function WeihnachtszeitPage() {
   const weihnachtsmaerkte =
     await getFutureApprovedEventsFromType("weihnachtsmarkt");
   const adventsEvents: iFlohmarkt[] =

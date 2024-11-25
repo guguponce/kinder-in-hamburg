@@ -30,6 +30,12 @@ export const metadata: Metadata = {
   title: "Veranstaltungen für Kinder",
   description: "Veranstaltungen für Kinder in Hamburg",
   keywords: [
+    "kinder events hamburg",
+    "kinder events",
+    "kinder veranstaltungen hamburg",
+    "kinder veranstaltungen",
+    "kinder veranstaltung",
+    "kinder veranstaltung hamburg",
     "Veranstaltungen für Kinder, Hamburg",
     "Kinderveranstaltung, Hamburg",
     "Hamburg Kinderveranstaltung",
