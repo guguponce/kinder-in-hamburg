@@ -44,13 +44,15 @@ export async function generateMetadata({
       url: "https://www.kinder-in-hamburg.de/flohmaerkte/" + flohmarktID,
       title: title,
       description: parseDescriptionWithTags(description?.slice(0, 100)),
-      images: image,
+      images:
+        flohmarktInfo.image || process.env.BASE_URL + "opengraph-image.png",
       siteName: "Kinder in Hamburg",
     },
     twitter: {
       description: parseDescriptionWithTags(description?.slice(0, 100)),
       title: title,
-      images: image,
+      images:
+        flohmarktInfo.image || process.env.BASE_URL + "opengraph-image.png",
       site: "https://www.kinder-in-hamburg.de/events/" + flohmarktID,
       card: "summary_large_image",
     },

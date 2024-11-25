@@ -35,7 +35,7 @@ export default async function FlohmaerkteContainer() {
     .filter(({ date }) => date > nextMonday)
     .sort((a, b) => a.date - b.date);
   const timezoneOffset = -120 * 60 * 1000;
-  const utcMidnight = new Date(new Date().getTime());
+  const utcMidnight = new Date();
   utcMidnight.setHours(24, 0, 0, 0);
   const nextMidnight = utcMidnight.getTime() + timezoneOffset;
   const todayFlohmaerkte = thisWeekFlohmaerkte.filter(

@@ -42,7 +42,7 @@ export async function generateMetadata({
       description: parseDescriptionWithTags(
         eventInfo.optionalComment?.slice(0, 100)
       ),
-      images: eventInfo.image,
+      images: eventInfo.image || process.env.BASE_URL + "opengraph-image.png",
       siteName: "Kinder in Hamburg",
     },
     twitter: {
@@ -50,7 +50,7 @@ export async function generateMetadata({
         eventInfo.optionalComment?.slice(0, 100)
       ),
       title: eventInfo.title,
-      images: eventInfo.image,
+      images: eventInfo.image || process.env.BASE_URL + "opengraph-image.png",
       site: "https://www.kinder-in-hamburg.de/events/" + params.eventID,
       card: "summary_large_image",
     },
