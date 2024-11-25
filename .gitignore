@@ -42,3 +42,4 @@ next-env.d.ts
 /spielplaetze
 /test
 /src/app/(spielplatz)/add-sp
+/src/app/admin
