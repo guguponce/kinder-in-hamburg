@@ -1,9 +1,11 @@
-import { getApprovedPostWithID } from "@app/api/dbActions";
+import { checkIfPostExists, getApprovedPostWithID } from "@app/api/dbActions";
 import NotFound from "@components/@NotFound/NotFound";
 import PostTemplate from "@components/PostTemplate";
 import React from "react";
 import AdminRoute from "@app/providers/AdminRoute";
 import AdminEditButtons from "@app/components/AdminEditButtons";
+import { redirect } from "next/navigation";
+import { getServerUser } from "@app/api/auth/supabaseAuth";
 export default async function CurrentPostPage({
   params,
 }: {
@@ -11,6 +13,15 @@ export default async function CurrentPostPage({
 }) {
   const { postID } = params;
   const post = await getApprovedPostWithID(postID);
+  if (post === false) {
+    const user = await getServerUser();
+    if (!!user) {
+      const postExists = await checkIfPostExists(postID, "kih-suggestions");
+      if (postExists) {
+        redirect(`/post-suggestion/${postID}`);
+      }
+    }
+  }
   if (!post) return <NotFound />;
   return (
     <>

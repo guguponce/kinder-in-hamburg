@@ -35,7 +35,6 @@ export default function URLFilteredList({
   const postsListRef = useRef([...postsList]);
 
   const searchParams = useSearchParams();
-
   const [searchQuery, setSearchQuery] = useState(
     searchParams.get("searchQuery") || ""
   );
