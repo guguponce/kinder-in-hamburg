@@ -11,7 +11,7 @@ import PostLogo from "@app/components/@Icons/@PostLogo/PostLogo";
 import Link from "next/link";
 import { Metadata } from "next";
 import BezirkIcon from "@components/@Icons/@BezirkIcon/BezirkIcon";
-import AdminEditButtons from "@app/components/AdminEditButtons";
+import AdminEditButtons from "@app/components/@Buttons/AdminEditButtons";
 
 interface SpielplatzPageProps {
   params: { spID: string };

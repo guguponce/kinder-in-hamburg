@@ -12,7 +12,7 @@ import { Metadata } from "next";
 import EventPageMapContainer from "./EventPageMapContainer";
 import { getSpielplatzFromBezirkStadtteil } from "@app/api/spActions";
 import { PROXIMATE_STADTTEILE_FROM_OTHER_BEZIRK } from "@app/utils/constants";
-import AdminEditButtons from "@app/components/AdminEditButtons";
+import AdminEditButtons from "@app/components/@Buttons/AdminEditButtons";
 import OldEventSign from "./OldEventSign";
 import { redirect } from "next/navigation";
 import { parseDescriptionWithTags } from "@app/utils/functions";

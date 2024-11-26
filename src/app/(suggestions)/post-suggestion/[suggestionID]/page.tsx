@@ -3,7 +3,7 @@ import NotFound from "@components/@NotFound/NotFound";
 import PostTemplate from "@components/PostTemplate";
 import React from "react";
 import AdminRoute from "@app/providers/AdminRoute";
-import AdminEditButtons from "@app/components/AdminEditButtons";
+import AdminEditButtons from "@app/components/@Buttons/AdminEditButtons";
 import StatusDisplay from "@app/components/StatusDisplay";
 
 export default async function CurrentPostPage({
@@ -23,8 +23,8 @@ export default async function CurrentPostPage({
             {post.status === "approved"
               ? "Dieser Post wurde schon angenommen"
               : post.status === "rejected"
-              ? "Dieser Post wurde abgelehnt"
-              : "Dieser Post wurde noch nicht angenommen"}
+                ? "Dieser Post wurde abgelehnt"
+                : "Dieser Post wurde noch nicht angenommen"}
           </StatusDisplay.Title>
           <StatusDisplay.Link
             href={

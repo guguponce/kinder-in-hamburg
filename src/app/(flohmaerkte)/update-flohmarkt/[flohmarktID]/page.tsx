@@ -9,7 +9,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import React from "react";
 import { iUserMetadata } from "@app/api/auth/types";
-import AdminEditButtons from "@app/components/AdminEditButtons";
+import AdminEditButtons from "@app/components/@Buttons/AdminEditButtons";
 
 export default async function UpdateApprovedFlohmarktPage({
   params: { flohmarktID },

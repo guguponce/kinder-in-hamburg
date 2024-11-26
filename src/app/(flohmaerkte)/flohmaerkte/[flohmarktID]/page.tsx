@@ -12,7 +12,7 @@ import FlohmarktPageMapContainer from "./FlohmarktPageMapContainer";
 import { getSpielplatzFromBezirkStadtteil } from "@app/api/spActions";
 import { PROXIMATE_STADTTEILE_FROM_OTHER_BEZIRK } from "@app/utils/constants";
 import SpielplaetzeNearby from "./SpielplaetzeNearby";
-import AdminEditButtons from "@app/components/AdminEditButtons";
+import AdminEditButtons from "@app/components/@Buttons/AdminEditButtons";
 import OldFlohmarktSign from "./OldFlohmarktSign";
 import { parseDescriptionWithTags } from "@app/utils/functions";
 import { redirect } from "next/navigation";

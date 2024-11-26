@@ -8,7 +8,7 @@ import { getServerUser } from "@app/api/auth/supabaseAuth";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import React from "react";
-import AdminEditButtons from "@app/components/AdminEditButtons";
+import AdminEditButtons from "@app/components/@Buttons/AdminEditButtons";
 
 export default async function UpdateEventPage({
   params: { eventID },

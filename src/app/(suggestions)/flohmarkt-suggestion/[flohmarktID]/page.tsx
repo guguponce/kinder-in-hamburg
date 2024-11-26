@@ -5,7 +5,7 @@ import { getServerUser } from "@app/api/auth/supabaseAuth";
 import { redirect } from "next/navigation";
 import dynamic from "next/dynamic";
 import NotFound from "@app/components/@NotFound/NotFound";
-import AdminEditButtons from "@app/components/AdminEditButtons";
+import AdminEditButtons from "@app/components/@Buttons/AdminEditButtons";
 import AdminRoute from "@app/providers/AdminRoute";
 import StatusDisplay from "@app/components/StatusDisplay";
 
