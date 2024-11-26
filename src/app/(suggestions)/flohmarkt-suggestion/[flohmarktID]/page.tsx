@@ -1,5 +1,5 @@
 import { getEventWithID } from "@app/api/dbActions";
-import FlohmarktTemplate from "@components/FlohmarktTemplate";
+import FlohmarktTemplate from "@app/components/FlohmarktTemplate";
 import React from "react";
 import { getServerUser } from "@app/api/auth/supabaseAuth";
 import { redirect } from "next/navigation";

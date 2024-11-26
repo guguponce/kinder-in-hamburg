@@ -4,7 +4,7 @@ import BezirkableEventsList from "@app/components/BezirkableEventsList";
 import { getTodayNexMonday } from "@app/utils/functions";
 import { getApprovedEvents } from "@app/api/dbActions";
 import dynamic from "next/dynamic";
-import TodaysFlohmaerkte from "../TodaysFlohmaerkte";
+import TodaysFlohmaerkte from "../@Weather/TodaysFlohmaerkte";
 import ErrorFetchingData from "../@NotFound/ErrorFetchingData";
 import PaperPlane from "../@Icons/PaperPlane";
 

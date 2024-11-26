@@ -1,5 +1,5 @@
 import { getEventWithID } from "@app/api/dbActions";
-import FlohmarktTemplate from "@components/FlohmarktTemplate";
+import FlohmarktTemplate from "@app/components/FlohmarktTemplate";
 import React from "react";
 import dynamic from "next/dynamic";
 import NotFound from "@app/components/@NotFound/NotFound";

@@ -8,7 +8,7 @@ import HorizontalCard from "@app/components/@Cards/HorizontalCard";
 import { addressWithoutCity, isTypeFlohmarkt } from "@app/utils/functions";
 import { getAllFlohmaerteSeparatedByStatus } from "@app/api/dbActions";
 import { unstable_cache } from "next/cache";
-import RevalidateButton from "../components/RevalidateButton";
+import RevalidateButton from "../components/@Buttons/RevalidateButton";
 
 export default async function AllEventsStatusSetter({
   eventsType,

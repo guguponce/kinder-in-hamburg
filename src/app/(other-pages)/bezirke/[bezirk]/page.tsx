@@ -11,7 +11,7 @@ import { iBezirk } from "@app/utils/types";
 import React from "react";
 import FilterablePostList from "@app/components/FilterablePostList";
 import NotFound from "@components/@NotFound/NotFound";
-import WeatherBox from "@app/components/WeatherBox";
+import WeatherBox from "@app/components/@Weather/WeatherBox";
 import BezirkeScrollableEvents from "@app/components/BezirkeScrollableEvents";
 import PointsGallery from "@app/components/@PostForm/PointsGallery";
 import AdminRoute from "@app/providers/AdminRoute";

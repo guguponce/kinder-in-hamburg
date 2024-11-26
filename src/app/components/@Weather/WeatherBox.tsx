@@ -7,11 +7,11 @@ import { getWeatherData } from "@app/api/weatherAPI";
 import { WEATHER_CODES } from "@app/utils/constants";
 import React from "react";
 import { getTimeRainAndActivity, getPlainText } from "@app/utils/functions";
-import WeatherIcon from "./@Icons/@WeatherIcon/WeatherIcon";
+import WeatherIcon from "../@Icons/@WeatherIcon/WeatherIcon";
 import Link from "next/link";
-import ImageCard from "./@Cards/ImageCard";
-import TodayTomorrow from "./TodayTomorrow";
-import FullImageWeatherBox from "./FullImageWeatherBox";
+import ImageCard from "../@Cards/ImageCard";
+import TodayTomorrow from "../TodayTomorrow";
+import FullImageWeatherBox from "../FullImageWeatherBox";
 import { categoryName, iBezirk } from "@app/utils/types";
 
 export default async function WeatherBox({

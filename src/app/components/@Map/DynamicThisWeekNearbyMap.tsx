@@ -22,7 +22,7 @@ export default function DynamicThisWeekNearbyMap({
   todayDisplay,
   nextMondayDisplay,
   spielplaetzeOneKM,
-  weitereFlohmaerkte,
+  WeitereEvents,
   greenBG = true,
 }: {
   greenBG?: boolean;
@@ -30,11 +30,11 @@ export default function DynamicThisWeekNearbyMap({
   todayDisplay: string;
   nextMondayDisplay: string;
   spielplaetzeOneKM: iSpielplatz[];
-  weitereFlohmaerkte: iFlohmarkt[];
+  WeitereEvents: iFlohmarkt[];
 }) {
   const current = useRef(currentTarget);
   const spielplaetzeNearby = useRef(spielplaetzeOneKM);
-  const flohmaerkte = useRef(weitereFlohmaerkte);
+  const flohmaerkte = useRef(WeitereEvents);
   const [showSpielplaetze, setShowSpielplaetze] = useState(true);
   const [showFlohmaerkte, setShowFlohmaerkte] = useState(true);
 

@@ -1,6 +1,6 @@
 import { getAllEventsThisWeek, getThisWeekEvents } from "@app/api/dbActions";
 import { iFlohmarkt, iPost, iSpielplatz } from "@app/utils/types";
-import WeitereFlohmaerkte from "@components/WeitereFlohmaerkte";
+import WeitereEvents from "@app/components/WeitereEvents";
 import RecommendationsMap from "@app/components/@Map/RecommendationsMap";
 
 export default async function EventPageMapContainer({
@@ -41,7 +41,7 @@ export default async function EventPageMapContainer({
             <h3 className="font-bold text-2xl text-hh-800">
               Weitere Veranstaltungen dieser Woche:
             </h3>
-            <WeitereFlohmaerkte
+            <WeitereEvents
               type="Events"
               displayedMarkers={[
                 ...weitereVeranstaltungen,

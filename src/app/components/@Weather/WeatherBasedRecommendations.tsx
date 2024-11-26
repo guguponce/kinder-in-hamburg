@@ -1,7 +1,7 @@
 import type { Forecast, overallCondition } from "@app/utils/types";
 import React from "react";
-import WeatherIcon from "./@Icons/@WeatherIcon/WeatherIcon";
-import TodayTomorrow from "./TodayTomorrow";
+import WeatherIcon from "../@Icons/@WeatherIcon/WeatherIcon";
+import TodayTomorrow from "../TodayTomorrow";
 
 export default async function WeatherBasedRecommendations({
   currentTemp,
