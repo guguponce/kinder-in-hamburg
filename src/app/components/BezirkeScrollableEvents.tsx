@@ -1,7 +1,7 @@
 import React from "react";
 import ScrollableContainer from "./ScrollableContainer";
 import { iFlohmarkt } from "@app/utils/types";
-import FlohmarktPoster from "./FlohmarktPoster";
+import FlohmarktPoster from "./@Cards/FlohmarktPoster";
 import PaperPlane from "./@Icons/PaperPlane";
 import { bezirke } from "@app/utils/constants";
 import { separateInBezirke } from "@app/utils/functions";

@@ -1,5 +1,5 @@
 "use client";
-import FlohmarktPoster from "@app/components/FlohmarktPoster";
+import FlohmarktPoster from "@app/components/@Cards/FlohmarktPoster";
 import ScrollableContainer from "@app/components/ScrollableContainer";
 import { bezirke } from "@app/utils/constants";
 import { iBezirk, iFlohmarkt } from "@app/utils/types";

@@ -5,7 +5,7 @@ import { getEventWithID } from "@app/api/dbActions";
 import { getServerUser } from "@app/api/auth/supabaseAuth";
 import { redirect } from "next/navigation";
 import NotFound from "@components/@NotFound/NotFound";
-import FlohmarktPoster from "@app/components/FlohmarktPoster";
+import FlohmarktPoster from "@app/components/@Cards/FlohmarktPoster";
 export default async function SuccessfulFormFlohmarkt({
   flohmarktID,
   submitType,

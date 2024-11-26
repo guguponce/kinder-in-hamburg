@@ -1,6 +1,6 @@
 import React from "react";
 import ScrollableContainer from "./ScrollableContainer";
-import FlohmarktPoster from "./FlohmarktPoster";
+import FlohmarktPoster from "./@Cards/FlohmarktPoster";
 import { iFlohmarkt } from "@app/utils/types";
 
 export default function TodaysFlohmaerkte({

@@ -1,6 +1,6 @@
 import { iFlohmarkt } from "@app/utils/types";
 import React from "react";
-import FlohmarktPoster from "./FlohmarktPoster";
+import FlohmarktPoster from "./@Cards/FlohmarktPoster";
 
 export default function FlohPostersList({
   flohList,

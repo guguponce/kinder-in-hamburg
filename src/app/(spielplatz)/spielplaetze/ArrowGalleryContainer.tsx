@@ -1,6 +1,6 @@
 "use client";
 import ArrowGallery from "@app/components/ArrowGallery";
-import FlohmarktPoster from "@app/components/FlohmarktPoster";
+import FlohmarktPoster from "@app/components/@Cards/FlohmarktPoster";
 import SpielplatzPoster from "@app/components/@Cards/SpielplatzPoster";
 import { isTypeSpielplatz } from "@app/utils/functions";
 import { iFlohmarkt, iSpielplatz } from "@app/utils/types";

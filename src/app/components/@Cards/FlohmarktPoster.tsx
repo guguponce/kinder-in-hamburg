@@ -1,8 +1,23 @@
 import { getDate } from "@app/utils/functions";
 import Link from "next/link";
 import React from "react";
-import FlohmarktBackground from "./@Icons/@Flohmarkt/FlohmarktBackground";
+import FlohmarktBackground from "../@Icons/@Flohmarkt/FlohmarktBackground";
 import { iEventType } from "@app/utils/types";
+
+interface iFlohmarktPosterProps {
+  contain?: boolean;
+  size?: "small" | "medium" | "large";
+  index?: number;
+  title: string;
+  image?: string;
+  date: number;
+  stadtteil?: string;
+  bezirk: string;
+  prefixLink?: string;
+  eventType?: iEventType;
+  id: number;
+  endDate?: number;
+}
 
 export default function FlohmarktPoster({
   title,
@@ -17,20 +32,7 @@ export default function FlohmarktPoster({
   size = "medium",
   endDate,
   stadtteil,
-}: {
-  contain?: boolean;
-  size?: "small" | "medium" | "large";
-  index?: number;
-  title: string;
-  image?: string;
-  date: number;
-  stadtteil?: string;
-  bezirk: string;
-  prefixLink?: string;
-  eventType?: iEventType;
-  id: number;
-  endDate?: number;
-}) {
+}: iFlohmarktPosterProps) {
   const today = new Date().setHours(0, 0, 0, 0);
   return (
     <Link

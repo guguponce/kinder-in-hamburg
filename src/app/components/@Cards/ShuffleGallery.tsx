@@ -11,7 +11,7 @@ import {
   isTypeSpielplatz,
 } from "@app/utils/functions";
 import PostPoster from "../PostPoster";
-import FlohmarktPoster from "../FlohmarktPoster";
+import FlohmarktPoster from "./FlohmarktPoster";
 
 export default function ShuffleGallery({
   children,

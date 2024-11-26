@@ -15,7 +15,7 @@ import ClientLaterneGallery from "@app/components/@Index/laternenumzug/ClientEve
 import HorizontalCard from "@app/components/@Cards/HorizontalCard";
 import ScrollableContainer from "@app/components/ScrollableContainer";
 import { iFlohmarkt } from "@app/utils/types";
-import FlohmarktPoster from "@app/components/FlohmarktPoster";
+import FlohmarktPoster from "@app/components/@Cards/FlohmarktPoster";
 import { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
