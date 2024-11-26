@@ -2,7 +2,7 @@ import { iPost } from "@app/utils/types";
 import React from "react";
 import ImageCard from "./ImageCard";
 import ImgPriorityCard from "./ImgPriorityCard";
-import TextPriorityCard from "./Card";
+import TextPriorityCard from "./TextPriorityCard";
 import { getPlainText } from "@app/utils/functions";
 import ScrollableContainer from "../ScrollableContainer";
 
@@ -24,8 +24,8 @@ export default function ScrollableCardList({
     cardType === "image"
       ? ImageCard
       : cardType === "img-priority"
-      ? ImgPriorityCard
-      : TextPriorityCard;
+        ? ImgPriorityCard
+        : TextPriorityCard;
   return (
     <ScrollableContainer>
       {posts.map(({ id, image, title, text }) => (
