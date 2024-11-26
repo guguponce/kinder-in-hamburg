@@ -16,7 +16,7 @@ function addressWithoutCity(address: string) {
   }
 }
 
-export default function WeitereEvents({
+export default function WeitereFlohmaerkte({
   type,
   displayedMarkers,
 }: {
