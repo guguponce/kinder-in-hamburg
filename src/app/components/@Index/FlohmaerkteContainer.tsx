@@ -39,6 +39,7 @@ export default async function FlohmaerkteContainer() {
     ({ date }) => date < nextMidnight
   );
   const isSunday = new Date().getDay() === 0;
+  const onlyToday = todayFlohmaerkte.length === thisWeekFlohmaerkte.length;
   return (
     <div className="rounded bg-hh-100 bg-opacity-25 w-[calc(100%-2rem)] p-1 sm:p-4 flex flex-col items-center min-h-[50vh]">
       <h1 className="lg:hidden text-4xl font-bold p-2 lg:pb-4 rounded text-orange-200">
@@ -55,28 +56,33 @@ export default async function FlohmaerkteContainer() {
           >
             <div
               id="heute-map-container"
-              className="w-full lg:max-w-[400px] flex flex-col gap-4 items-center rounded bg-hh-200 bg-opacity-50 p-2 shadow-md"
+              className={`flex ${onlyToday ? "flex-row lg:w-full justify-center lg:items-stretch flex-wrap md:flex-nowrap" : "lg:max-w-[400px] w-full flex-col"} gap-4 items-center rounded bg-hh-200 bg-opacity-50 p-2 shadow-md`}
             >
               {!!todayFlohmaerkte.length && !isSunday && (
                 <TodaysFlohmaerkte todayFlohmaerkte={todayFlohmaerkte} />
               )}
               <DynamicEventsMap
+                showTermine={!onlyToday}
                 thisWeek={thisWeekFlohmaerkte.filter(
                   (floh) => floh.lat && floh.lon
                 )}
                 today={getTodayNexMonday().today}
               />
             </div>
-            <div className="flex flex-grow w-full sm:min-w-[400px] justify-center sm:w-1/4">
-              <BezirkeScrollableEvents
-                title={`${isSunday ? "Heute" : "Diese Woche"} gibt es ${
-                  thisWeekFlohmaerkte.length
-                } ${
-                  thisWeekFlohmaerkte.length === 1 ? "Flohmarkt" : "Flohmärkte"
-                }`}
-                events={thisWeekFlohmaerkte}
-              />
-            </div>
+            {!onlyToday && (
+              <div className="flex flex-grow w-full sm:min-w-[400px] justify-center sm:w-1/4">
+                <BezirkeScrollableEvents
+                  title={`${isSunday ? "Heute" : "Diese Woche"} gibt es ${
+                    thisWeekFlohmaerkte.length
+                  } ${
+                    thisWeekFlohmaerkte.length === 1
+                      ? "Flohmarkt"
+                      : "Flohmärkte"
+                  }`}
+                  events={thisWeekFlohmaerkte}
+                />
+              </div>
+            )}
           </section>
         ) : (
           <section
@@ -102,7 +108,11 @@ export default async function FlohmaerkteContainer() {
           </section>
         )}
         <BezirkableEventsList
-          title="Ab nächster Woche"
+          title={
+            !!thisWeekFlohmaerkte.length
+              ? "Ab nächster Woche"
+              : "Zukünftige Flohmärkte"
+          }
           eventsList={futureFlohmaerkte}
         ></BezirkableEventsList>
       </div>

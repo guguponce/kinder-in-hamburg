@@ -35,7 +35,11 @@ export default function DynamicEventsMap({
   square = true,
   darkBackground = false,
   eventType,
+  showTermine = true,
+  showBezirke = true,
 }: {
+  showTermine?: boolean;
+  showBezirke?: boolean;
   eventType?: iEventType | "flohmaerkte";
   today: number;
   darkBackground?: boolean;
@@ -217,96 +221,104 @@ export default function DynamicEventsMap({
           )}
         </GeneralMap>
       </section>
-      <aside
-        id="flohmaerkte-map-filters-aside"
-        className="px-2 pb-2 w-full xs:min-w-[300px] max-w-[80vw] flex flex-col"
-      >
-        <ScrollableContainer vertical>
-          <div
-            className={`w-full h-full flex flex-wrap px-2 md:px-0 ${darkBackground ? "text-hh-100" : "text-hh-800"}`}
-          >
-            <div className="flex w-full flex-col">
-              <h3 className="font-bold text-lg p-2">Termine</h3>
-              <div className="flex flex-wrap gap-2 items-center  pb-2 px-2">
-                {Object.keys(eventsByDate.current)
-                  .sort((a, b) => parseInt(a) - parseInt(b))
-                  .map((date) => (
-                    <button
-                      key={date}
-                      onClick={() => {
-                        setFutureSelected(false);
-                        setSelectedDate((prev) =>
-                          prev === parseInt(date) ? undefined : parseInt(date)
-                        );
-                      }}
-                      className={`text-sm p-1 border-2  border-hh-600 rounded-md ${
-                        darkBackground
-                          ? selectedDate === parseInt(date)
-                            ? "bg-hh-50 text-hh-800  hover:bg-hh-600 hover:text-hh-50 outline outline-1 outline-hh-200 outline-offset-1 "
-                            : "bg-hh-800 text-hh-50  hover:bg-hh-600 hover:text-hh-50"
-                          : selectedDate === parseInt(date)
-                            ? "bg-hh-800 text-hh-50  hover:bg-hh-600 hover:text-hh-50"
-                            : "bg-hh-50 text-hh-800  hover:bg-hh-600 hover:text-hh-50"
-                      } transition-all`}
-                    >
-                      {getDate(parseInt(date)) === getDate(today)
-                        ? "Heute"
-                        : getDate(parseInt(date))}
-                    </button>
-                  ))}
-                {!!future.length && (
-                  <button
-                    onClick={() => {
-                      setSelectedDate(undefined);
-                      setFutureSelected((prev) => !prev);
-                    }}
-                    className={`text-sm p-1 w-fit border-2 border-hh-600 rounded-md ${
-                      darkBackground
-                        ? futureSelected
-                          ? "bg-hh-50 text-hh-800  hover:bg-hh-600 hover:text-hh-50  outline outline-1 outline-hh-200 outline-offset-1"
-                          : "bg-hh-800 text-hh-50  hover:bg-hh-600 hover:text-hh-50"
-                        : futureSelected
-                          ? "bg-hh-800 text-hh-50  hover:bg-hh-600 hover:text-hh-50"
-                          : "bg-hh-50 text-hh-800  hover:bg-hh-600 hover:text-hh-50"
-                    } transition-all`}
-                  >
-                    Zukünftige Veranstaltungen
-                  </button>
-                )}
-              </div>
-            </div>
+      {(!!showBezirke || !!showTermine) && (
+        <aside
+          id="flohmaerkte-map-filters-aside"
+          className="px-2 pb-2 w-full xs:min-w-[300px] max-w-[80vw] flex flex-col"
+        >
+          <ScrollableContainer vertical>
+            <div
+              className={`w-full h-full flex flex-wrap px-2 md:px-0 ${darkBackground ? "text-hh-100" : "text-hh-800"}`}
+            >
+              {showTermine && (
+                <div className="flex w-full flex-col">
+                  <h3 className="font-bold text-lg p-2">Termine</h3>
+                  <div className="flex flex-wrap gap-2 items-center  pb-2 px-2">
+                    {Object.keys(eventsByDate.current)
+                      .sort((a, b) => parseInt(a) - parseInt(b))
+                      .map((date) => (
+                        <button
+                          key={date}
+                          onClick={() => {
+                            setFutureSelected(false);
+                            setSelectedDate((prev) =>
+                              prev === parseInt(date)
+                                ? undefined
+                                : parseInt(date)
+                            );
+                          }}
+                          className={`text-sm p-1 border-2  border-hh-600 rounded-md ${
+                            darkBackground
+                              ? selectedDate === parseInt(date)
+                                ? "bg-hh-50 text-hh-800  hover:bg-hh-600 hover:text-hh-50 outline outline-1 outline-hh-200 outline-offset-1 "
+                                : "bg-hh-800 text-hh-50  hover:bg-hh-600 hover:text-hh-50"
+                              : selectedDate === parseInt(date)
+                                ? "bg-hh-800 text-hh-50  hover:bg-hh-600 hover:text-hh-50"
+                                : "bg-hh-50 text-hh-800  hover:bg-hh-600 hover:text-hh-50"
+                          } transition-all`}
+                        >
+                          {getDate(parseInt(date)) === getDate(today)
+                            ? "Heute"
+                            : getDate(parseInt(date))}
+                        </button>
+                      ))}
+                    {!!future.length && (
+                      <button
+                        onClick={() => {
+                          setSelectedDate(undefined);
+                          setFutureSelected((prev) => !prev);
+                        }}
+                        className={`text-sm p-1 w-fit border-2 border-hh-600 rounded-md ${
+                          darkBackground
+                            ? futureSelected
+                              ? "bg-hh-50 text-hh-800  hover:bg-hh-600 hover:text-hh-50  outline outline-1 outline-hh-200 outline-offset-1"
+                              : "bg-hh-800 text-hh-50  hover:bg-hh-600 hover:text-hh-50"
+                            : futureSelected
+                              ? "bg-hh-800 text-hh-50  hover:bg-hh-600 hover:text-hh-50"
+                              : "bg-hh-50 text-hh-800  hover:bg-hh-600 hover:text-hh-50"
+                        } transition-all`}
+                      >
+                        Zukünftige Veranstaltungen
+                      </button>
+                    )}
+                  </div>
+                </div>
+              )}
 
-            <div className="flex w-full flex-col">
-              <h3 className="font-bold text-lg p-2">Bezirke</h3>
-              <div className="flex flex-wrap gap-2 items-center pb-2 px-2">
-                {bezirke.current.map((item) => (
-                  <button
-                    key={item}
-                    onClick={() => {
-                      setSelectedBezirk((prev) =>
-                        prev === (item as iBezirk)
-                          ? undefined
-                          : (item as iBezirk)
-                      );
-                    }}
-                    className={`text-sm p-1 border-2 border-hh-600 rounded-md ${
-                      darkBackground
-                        ? selectedBezirk === item
-                          ? "bg-hh-50 text-hh-800  hover:bg-hh-600 hover:text-hh-50 outline outline-1 outline-hh-200 outline-offset-1"
-                          : "bg-hh-800 text-hh-50  hover:bg-hh-600 hover:text-hh-50"
-                        : selectedBezirk === item
-                          ? "bg-hh-800 text-hh-50  hover:bg-hh-600 hover:text-hh-50"
-                          : "bg-hh-50 text-hh-800  hover:bg-hh-600 hover:text-hh-50"
-                    } transition-all`}
-                  >
-                    {item}
-                  </button>
-                ))}
-              </div>
+              {showBezirke && (
+                <div className="flex w-full flex-col">
+                  <h3 className="font-bold text-lg p-2">Bezirke</h3>
+                  <div className="flex flex-wrap gap-2 items-center pb-2 px-2">
+                    {bezirke.current.map((item) => (
+                      <button
+                        key={item}
+                        onClick={() => {
+                          setSelectedBezirk((prev) =>
+                            prev === (item as iBezirk)
+                              ? undefined
+                              : (item as iBezirk)
+                          );
+                        }}
+                        className={`text-sm p-1 border-2 border-hh-600 rounded-md ${
+                          darkBackground
+                            ? selectedBezirk === item
+                              ? "bg-hh-50 text-hh-800  hover:bg-hh-600 hover:text-hh-50 outline outline-1 outline-hh-200 outline-offset-1"
+                              : "bg-hh-800 text-hh-50  hover:bg-hh-600 hover:text-hh-50"
+                            : selectedBezirk === item
+                              ? "bg-hh-800 text-hh-50  hover:bg-hh-600 hover:text-hh-50"
+                              : "bg-hh-50 text-hh-800  hover:bg-hh-600 hover:text-hh-50"
+                        } transition-all`}
+                      >
+                        {item}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
-          </div>
-        </ScrollableContainer>
-      </aside>{" "}
+          </ScrollableContainer>
+        </aside>
+      )}
     </div>
   );
 }
