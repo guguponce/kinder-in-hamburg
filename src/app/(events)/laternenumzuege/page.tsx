@@ -10,7 +10,7 @@ import {
 import dynamic from "next/dynamic";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
 import Link from "next/link";
-import AddLatLon from "@components/AddLatLon";
+import AddLatLon from "@app/components/@Buttons/AddLatLon";
 import ClientLaterneGallery from "@app/components/@Index/laternenumzug/ClientEventsGallery";
 import HorizontalCard from "@app/components/@Cards/HorizontalCard";
 import ScrollableContainer from "@app/components/ScrollableContainer";
