@@ -41,10 +41,12 @@ export default async function FlohmaerkteContainer() {
   const isSunday = new Date().getDay() === 0;
   const onlyToday = todayFlohmaerkte.length === thisWeekFlohmaerkte.length;
   return (
-    <div className="rounded bg-hh-100 bg-opacity-25 w-[calc(100%-2rem)] p-1 sm:p-4 flex flex-col items-center min-h-[50vh]">
-      <h1 className="lg:hidden text-4xl font-bold p-2 lg:pb-4 rounded text-orange-200">
-        Flohmärkte
-      </h1>
+    <div className="rounded-lg bg-gradient-to-b from-[#f7887af0] via-[#fbb0a6d9]  to-[#fdd1cb90] w-[calc(100%-2rem)] p-1 sm:p-4 flex flex-col items-center min-h-[50vh] max-w-[1000px] text-hh-50">
+      <h1 className=" text-4xl font-bold p-2 lg:pb-4 rounded">Flohmärkte</h1>
+      <h2 className="w-fit text-base italic mb-2 p-2 md:p-4 rounded-lg border-2 font-semibold text-hh-50 border-hh-700 max-w-[480px] text-center">
+        Die Hochsaison der Flohmärkte ist vorbei, aber im Frühjahr 2025 geht es
+        wieder los.
+      </h2>
 
       <div className="flex flex-col items-center gap-4 lg:gap-8 max-w-full">
         {!!thisWeekFlohmaerkte.length ? (
