@@ -1,7 +1,9 @@
 "use client";
 import { updateEventStatus, updatePostStatus } from "@app/api/dbActions";
+import { updateSpielplatzStatus } from "@app/api/spActions";
 import DeleteButton from "@app/components/DeleteButton";
-import { iFlohmarkt, iPost } from "@app/utils/types";
+import { isTypeSpielplatz } from "@app/utils/functions";
+import { iFlohmarkt, iPost, iSpielplatz } from "@app/utils/types";
 import React, { useState } from "react";
 
 export default function StatusSetter({
@@ -9,7 +11,7 @@ export default function StatusSetter({
   status,
   type = "post",
 }: {
-  target: iPost | iFlohmarkt;
+  target: iPost | iFlohmarkt | iSpielplatz;
   status: "pending" | "approved" | "rejected" | "old";
   type?: "post" | "flohmarkt" | "event";
 }) {
@@ -31,6 +33,11 @@ export default function StatusSetter({
       ).then((res) => {
         console.log(res);
       });
+    if (isTypeSpielplatz(target)) {
+      await updateSpielplatzStatus(target.id, currentStatus).then((res) => {
+        console.log(res);
+      });
+    }
   };
 
   return (
