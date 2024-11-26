@@ -17,6 +17,7 @@ interface iHorizontalCard {
   title: string;
   image?: string;
   link?: string;
+  imgSize?: string;
   spielgeraete?: string[];
   children: React.ReactNode;
 }
@@ -28,6 +29,7 @@ export default function HorizontalCard({
   image,
   link,
   spielgeraete,
+  imgSize,
   children,
 }: iHorizontalCard) {
   return (
@@ -47,7 +49,7 @@ export default function HorizontalCard({
               loading="lazy"
               src={image || "/assets/icons/market.svg"}
               alt={title}
-              className={`w-full h-full object-contain`}
+              className={`w-full h-full ${imgSize || "object-contain"}`}
             />
           ) : ["laternewerkstatt", "laterne"].includes(type) ? (
             <div className="h-full aspect-square relative">
