@@ -2,7 +2,7 @@ import AdminServerComponent from "@app/providers/AdminServerComponents";
 import React from "react";
 import UpdateButton from "./UpdateButton";
 import DeleteButton from "./DeleteButton";
-import AddLatLon from "./AddLatLon";
+import AddLatLon from "./@Buttons/AddLatLon";
 import { iFlohmarkt, iPost, iSessionUser, iSpielplatz } from "@app/utils/types";
 import RestoreButton from "./RestoreButton";
 import ApproveButton from "./ApproveButton";
