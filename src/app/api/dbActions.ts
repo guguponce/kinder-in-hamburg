@@ -599,6 +599,25 @@ export const getAllApprovedPosts = async () => {
   }
 };
 
+export const checkIfPostExists = async (
+  id: string,
+  eventTable: "kih-approved-blogposts" | "kih-suggestions"
+) => {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from(eventTable)
+      .select("id")
+      .match({ id })
+      .single();
+    if (error) {
+      throw new Error("There was a problem checking if the event exists.");
+    }
+    return data.id;
+  } catch (error) {
+    return false;
+  }
+};
+
 export const getPinnedPosts = async () => {
   try {
     const { data, error } = await supabaseAdmin
@@ -960,6 +979,7 @@ export const checkIfEventOrFlohmarktExists = async (
     return false;
   }
 };
+
 export const getEventWithID = async (
   id: string,
   eventTable: string = "flohmaerkte"
@@ -1207,7 +1227,11 @@ export const addEvent = async (
       closedDates: event.closedDates?.length
         ? JSON.stringify(event.closedDates)
         : undefined,
-      addedBy: JSON.stringify(user),
+      addedBy: JSON.stringify({
+        name: user.name,
+        email: user.email,
+        image: user.avatar_url,
+      }),
     };
     if (eventTable === "flohmaerkte") {
       delete submittedEvent.closedDates;
