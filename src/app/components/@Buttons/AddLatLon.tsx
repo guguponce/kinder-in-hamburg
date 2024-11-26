@@ -14,7 +14,7 @@ import {
 } from "@app/utils/functions";
 import { iFlohmarkt, iPost, iSpielplatz } from "@app/utils/types";
 import React from "react";
-import ClearLatLonButton from "./@Icons/@Flohmarkt/ClearLatLonButton";
+import ClearLatLonButton from "../@Icons/@Flohmarkt/ClearLatLonButton";
 import { updateSpielplatz } from "@app/api/spActions";
 
 const addLatLon = async (item: iFlohmarkt | iSpielplatz | iPost) => {
