@@ -14,7 +14,7 @@ export default function Recommendation({
 }) {
   const { id, title, text, image } = post;
   return (
-    <div className="relative flex justify-center rounded-md h-full w-full gap-2">
+    <div className="relative flex justify-center rounded-md h-full min-w-[180px] gap-2">
       {children && (
         <div className="absolute top-1 left-0 text-white z-[100] w-full">
           {children}
