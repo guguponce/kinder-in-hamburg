@@ -10,7 +10,7 @@ export default function TodaysFlohmaerkte({
 }) {
   return (
     <div className="relative flex justify-center flex-col rounded-md bg-hh-200 min-w-[220px] w-fit max-w-full p-2 pt-0 shadow-sm">
-      <h2 className="text-2xl font-semibold text-hh-800 text-center p-4  self-start">
+      <h2 className="text-2xl font-semibold text-hh-800 text-center p-2 pb-0  self-start">
         Heute
       </h2>
 

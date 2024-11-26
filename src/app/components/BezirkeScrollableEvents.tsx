@@ -31,7 +31,7 @@ export default async function BezirkeScrollableEvents({
     : events;
 
   return (
-    <div className="w-fit max-w-full rounded">
+    <div id="bezirke-scrollable-events" className="w-fit max-w-full rounded">
       {title &&
         (!!filteredList.length ? (
           <div className="max-w-full">
@@ -58,7 +58,7 @@ export default async function BezirkeScrollableEvents({
             </a>
           </div>
         ))}
-      <div className="overflow-x-auto w-fit max-w-full flex justify-center flex-wrap gap-2 lg:gap-4 items-stretch">
+      <div className="overflow-x-auto w-fit max-w-full flex justify-center flex-wrap gap-2 items-stretch">
         {bezirk
           ? filteredList.map(
               (
