@@ -6,7 +6,11 @@ import type {
   iSessionUser,
 } from "@app/utils/types";
 import { getServerUser, proofUser } from "@app/api/auth/supabaseAuth";
-import { checkBezirk, parseSpielplatz } from "@app/utils/functions";
+import {
+  checkBezirk,
+  parseSpielplatz,
+  separateByStatus,
+} from "@app/utils/functions";
 import { revalidatePath } from "next/cache";
 import { iSPType } from "@app/utils/types";
 import { createClient } from "@auth/server";
@@ -220,6 +224,23 @@ export const getApprovedSpielplaetzeWithBezirk = async (bezirk: iBezirk) => {
 //       return false;
 //     }
 //   };
+
+export const getAllSpielplaetzeSeparatedByStatus = async () => {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("spielplaetze")
+      .select("*");
+    if (error) {
+      throw new Error("There was a problem getting the approved posts.");
+    }
+
+    const parsedPosts = data.map((sp) => parseSpielplatz(sp));
+    const separatedByStatus = separateByStatus(parsedPosts);
+    return separatedByStatus;
+  } catch (error) {
+    return false;
+  }
+};
 
 // POST
 export const addSpielplatz = async (spielplatz: iSpielplatz) => {
