@@ -1,7 +1,7 @@
 import { iCard } from "@app/utils/types";
 import Link from "next/link";
 import React from "react";
-import SpielplatzgeraeteBackground from "../SpielplatzgeraeteBackground";
+import SpielplatzgeraeteBackground from "./SpielplatzgeraeteBackground";
 
 export default function ImgPriorityCard({
   size,

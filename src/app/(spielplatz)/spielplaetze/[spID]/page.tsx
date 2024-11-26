@@ -18,7 +18,7 @@ interface SpielplatzPageProps {
 }
 
 const SpielplatzgeraeteBackground = dynamic(
-  () => import("@app/components/SpielplatzgeraeteBackground"),
+  () => import("@app/components/@Cards/SpielplatzgeraeteBackground"),
   {
     ssr: false,
   }

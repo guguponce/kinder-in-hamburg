@@ -10,7 +10,7 @@ import {
   isTypePost,
   isTypeSpielplatz,
 } from "@app/utils/functions";
-import PostPoster from "../PostPoster";
+import PostPoster from "./PostPoster";
 import FlohmarktPoster from "./FlohmarktPoster";
 
 export default function ShuffleGallery({
@@ -74,6 +74,9 @@ export default function ShuffleGallery({
               contain
               bezirk={currentArticle.bezirk}
               date={currentArticle.date}
+              endDate={currentArticle.endDate}
+              stadtteil={currentArticle.stadtteil}
+              eventType={currentArticle.type || "flohmarkt"}
               title={currentArticle.title}
               image={currentArticle.image ? currentArticle.image : backupImg}
               prefixLink={!!currentArticle.type ? "/events/" : "/flohmaerkte/"}

@@ -1,6 +1,6 @@
 "use client";
 import React, { useMemo, useRef } from "react";
-import SpielgeraeteIcon from "./@Icons/@Spielplatz/SpielgeraeteIcon";
+import SpielgeraeteIcon from "../@Icons/@Spielplatz/SpielgeraeteIcon";
 
 export default function SpielplatzgeraeteBackground({
   spList,

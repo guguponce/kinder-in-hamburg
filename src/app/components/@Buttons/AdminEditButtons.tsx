@@ -4,7 +4,7 @@ import UpdateButton from "./UpdateButton";
 import DeleteButton from "./DeleteButton";
 import AddLatLon from "./AddLatLon";
 import { iFlohmarkt, iPost, iSessionUser, iSpielplatz } from "@app/utils/types";
-import RestoreButton from "../RestoreButton";
+import RestoreButton from "./RestoreButton";
 import ApproveButton from "./ApproveButton";
 import Button from "./Button";
 

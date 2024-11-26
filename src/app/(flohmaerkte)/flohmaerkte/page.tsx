@@ -114,12 +114,6 @@ export default async function FlohmarktPage() {
               <Link href={`/update-flohmarkt/${id}`}>{title}</Link>
             </div>
           ))}
-        <h3>{process.env.BASE_URL + "opengraph-image.png"}</h3>
-        <img
-          src={process.env.BASE_URL + "opengraph-image.png"}
-          alt="opengraph-image"
-          className="w-1/2 h-auto"
-        />
       </AdminServerComponent>
       <MainIntroductionText
         title="Flohmärkte"

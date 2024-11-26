@@ -7,7 +7,7 @@ import { iEventType } from "@app/utils/types";
 import LaterneImage from "../@Index/laternenumzug/LaterneImage";
 
 const SpielplatzgeraeteBackground = dynamic(
-  () => import("../SpielplatzgeraeteBackground"),
+  () => import("./SpielplatzgeraeteBackground"),
   { ssr: false }
 );
 
