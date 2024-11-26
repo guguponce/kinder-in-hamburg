@@ -5,9 +5,9 @@ export default function MainIntroductionText({
   width = "full",
   title,
   text,
-  extraInfo,
+  children,
 }: {
-  extraInfo?: string;
+  children?: React.ReactNode;
   title: string;
   text: string;
   variant?: "light" | "dark";
@@ -19,9 +19,7 @@ export default function MainIntroductionText({
     >
       <h1 className="text-4xl font-bold">{title}</h1>
       <p className="text-base italic">{text}</p>
-      <h2 className="text-xl font-bold my-4 p-2 md:p-4 rounded-xl border-4 border-hh-800 max-w-[600px] text-center">
-        {extraInfo}
-      </h2>
+      {children}
     </div>
   );
 }

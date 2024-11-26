@@ -118,8 +118,12 @@ export default async function FlohmarktPage() {
       <MainIntroductionText
         title="Flohmärkte"
         text="Die Flohmärkte in Hamburg bieten eine schöne, familienfreundliche Erfahrung, bei der Eltern gebrauchte Schätze für ihre Kinder finden können. Von Spielzeug und Kleidung bis hin zu Büchern und Mobilitätsartikeln wie Fahrrädern oder Kinderwagen – diese Märkte ermöglichen es, günstige und umweltfreundliche Optionen für die ganze Familie zu entdecken. Wir glauben, dass sie den Kindern die Chance bieten, den Wert von Wiederverwendung und Recycling auf eine praktische Weise zu lernen."
-        extraInfo="Leider ist die Flohmarktsaison vorbei. Sie wird im Frühling 2025 wieder beginnen."
-      />
+      >
+        <h2 className="text-xl font-bold my-4 p-2 md:p-4 rounded-xl border-4 border-hh-800 max-w-[600px] text-center">
+          Die Hochsaison der Flohmärkte ist vorbei, aber im Frühjahr 2025 geht
+          es wieder los.
+        </h2>
+      </MainIntroductionText>
       <section className="rounded bg-hh-100 bg-opacity-25 w-full max-w-[1000px] p-2 md:p-4 flex flex-col items-center gap-2">
         <BezirkeScrollableEvents
           title="Diese Woche"
