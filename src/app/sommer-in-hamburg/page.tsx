@@ -7,7 +7,7 @@ import Wasserspiele from "./Wasserspiele";
 import Planschbecken from "./Planschbecken";
 import dynamic from "next/dynamic";
 import { getWeatherData } from "@app/api/weatherAPI";
-import WeatherDisplay from "@app/components/@Index/sommerinhamburg/WeatherDisplay";
+import WeatherDisplay from "@app/components/@Weather/WeatherDisplay";
 
 const WaterMapContainer = dynamic(() => import("./WaterMapContainer"), {
   ssr: false,

@@ -4,7 +4,7 @@ import React from "react";
 import BadenGallery from "./BadenGallery";
 import Link from "next/link";
 import { getWeatherData } from "@app/api/weatherAPI";
-import WeatherDisplay from "./WeatherDisplay";
+import WeatherDisplay from "../../@Weather/WeatherDisplay";
 import Banner from "@app/components/Banner";
 
 export default async function SommerInHamburgBanner() {
