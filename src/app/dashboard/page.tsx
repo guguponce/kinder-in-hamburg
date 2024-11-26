@@ -5,7 +5,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import React from "react";
 import ScrollableCardList from "@components/@Cards/ScrollableCardList";
-import DeleteUnusedImages from "@app/components/DeleteUnusedImages";
+import DeleteUnusedImages from "@app/components/@Buttons/DeleteUnusedImages";
 import AdminRoute from "@app/providers/AdminRoute";
 import FlohmaerkteSearchList from "./FlohmaerkteSearchList";
 

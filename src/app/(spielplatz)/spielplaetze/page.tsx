@@ -6,7 +6,7 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import { separateInBezirke } from "@app/utils/functions";
 import ExpandableContainer from "@app/components/ExpandableContainer";
-import ApproveButton from "@app/components/ApproveButton";
+import ApproveButton from "@app/components/@Buttons/ApproveButton";
 
 const DynamicSielplaetzeMap = dynamic(() => import("./DynamicSielplaetzeMap"), {
   ssr: false,

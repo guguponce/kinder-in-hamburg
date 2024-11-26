@@ -1,6 +1,6 @@
 import React from "react";
 import ShortAbout from "@components/@Index/ShortAbout";
-import FlohmaerkteContainer from "./components/FlohmaerkteContainer";
+import FlohmaerkteContainer from "./components/@Index/FlohmaerkteContainer";
 import LaternenBanner from "./components/@Index/laternenumzug/LaternenBanner";
 import WeihnachtsBanner from "./components/@Index/WeihnachtsBanner";
 

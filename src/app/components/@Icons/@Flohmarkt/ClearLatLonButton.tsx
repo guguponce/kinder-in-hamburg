@@ -1,7 +1,7 @@
 "use client";
 import { clearLatLonFromEvent, clearLatLonFromPost } from "@app/api/dbActions";
 import { clearLatLonFromSpielplatz } from "@app/api/spActions";
-import Button from "@app/components/Button";
+import Button from "@app/components/@Buttons/Button";
 import React from "react";
 
 export default function ClearLatLonButton({

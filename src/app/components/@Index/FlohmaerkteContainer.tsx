@@ -4,25 +4,22 @@ import BezirkableEventsList from "@app/components/BezirkableEventsList";
 import { getTodayNexMonday } from "@app/utils/functions";
 import { getApprovedEvents } from "@app/api/dbActions";
 import dynamic from "next/dynamic";
-import TodaysFlohmaerkte from "./TodaysFlohmaerkte";
-import ErrorFetchingData from "./@NotFound/ErrorFetchingData";
-import PaperPlane from "./@Icons/PaperPlane";
+import TodaysFlohmaerkte from "../TodaysFlohmaerkte";
+import ErrorFetchingData from "../@NotFound/ErrorFetchingData";
+import PaperPlane from "../@Icons/PaperPlane";
 
-const DynamicEventsMap = dynamic(
-  () => import("../components/@Map/DynamicEventsMap"),
-  {
-    ssr: false,
-    loading: () => (
-      <article className="w-full max-w-[800px] aspect-square sm:aspect-video max-h-[60vh]">
-        <img
-          src="/assets/bezirke/hamburg.webp"
-          alt="Hamburg"
-          className="w-full h-full object-cover"
-        />
-      </article>
-    ),
-  }
-);
+const DynamicEventsMap = dynamic(() => import("../@Map/DynamicEventsMap"), {
+  ssr: false,
+  loading: () => (
+    <article className="w-full max-w-[800px] aspect-square sm:aspect-video max-h-[60vh]">
+      <img
+        src="/assets/bezirke/hamburg.webp"
+        alt="Hamburg"
+        className="w-full h-full object-cover"
+      />
+    </article>
+  ),
+});
 export default async function FlohmaerkteContainer() {
   const flohmaerkte = await getApprovedEvents();
   if (!flohmaerkte) return <ErrorFetchingData type="Flohmärkte" />;

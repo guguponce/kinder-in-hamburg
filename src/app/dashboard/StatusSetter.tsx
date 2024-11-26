@@ -1,7 +1,7 @@
 "use client";
 import { updateEventStatus, updatePostStatus } from "@app/api/dbActions";
 import { updateSpielplatzStatus } from "@app/api/spActions";
-import DeleteButton from "@app/components/DeleteButton";
+import DeleteButton from "@app/components/@Buttons/DeleteButton";
 import { isTypeSpielplatz } from "@app/utils/functions";
 import { iFlohmarkt, iPost, iSpielplatz } from "@app/utils/types";
 import React, { useState } from "react";

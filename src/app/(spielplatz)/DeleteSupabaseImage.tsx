@@ -1,6 +1,6 @@
 import React from "react";
 import DeleteSVG from "@app/assets/svg/DeleteSVG";
-import Button from "@app/components/Button";
+import Button from "@app/components/@Buttons/Button";
 import { deleteSupabaseFiles } from "@app/api/spActions";
 export default function DeleteSupabaseImageButton({
   bucket,

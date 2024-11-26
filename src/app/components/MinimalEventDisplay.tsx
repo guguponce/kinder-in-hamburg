@@ -2,7 +2,7 @@ import type { iFlohmarkt } from "@app/utils/types";
 import React from "react";
 import Link from "next/link";
 import DataDisplay from "./SuggestedDataDisplay";
-import DeleteButton from "./DeleteButton";
+import DeleteButton from "./@Buttons/DeleteButton";
 
 export default function MinimalEventDisplay({
   type = "flohmarkt",

@@ -2,7 +2,7 @@ import { iPost } from "@app/utils/types";
 import React from "react";
 import DisplayTypeText from "./@PostForm/DisplayTypeText";
 import Link from "next/link";
-import DeletePostButton from "./DeleteButton";
+import DeletePostButton from "./@Buttons/DeleteButton";
 import DataDisplay from "./SuggestedDataDisplay";
 
 export default function MinimalPostDisplay({

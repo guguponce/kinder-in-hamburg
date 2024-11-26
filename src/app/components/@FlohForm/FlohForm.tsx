@@ -29,7 +29,7 @@ import {
 import UserInputBox from "./UserInputBox";
 import { deleteUnusedFlohmaerkteImages } from "@app/api/storageActions";
 import dynamic from "next/dynamic";
-import Button from "../Button";
+import Button from "../@Buttons/Button";
 
 const LatLonSetterMap = dynamic(() => import("../@Map/LatLonSetterMap"), {
   ssr: false,
