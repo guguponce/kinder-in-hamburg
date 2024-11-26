@@ -8,7 +8,7 @@ export default function WeihnachtsBanner() {
       textSide="right"
       href="/weihnachtszeit"
       linkText="alle erkunden"
-      className="from-positive-700 to-[#628d5a50] bg-opacity-20 lg:w-[calc(100%-360px)]"
+      className="from-positive-700 to-[#628d5a50] bg-opacity-20"
     >
       <div className="sm:hidden p-2">
         <Banner.Text>
