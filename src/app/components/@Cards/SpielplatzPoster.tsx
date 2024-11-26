@@ -1,9 +1,9 @@
 import React from "react";
-import SpielplatzgeraeteBackground from "./SpielplatzgeraeteBackground";
+import SpielplatzgeraeteBackground from "../SpielplatzgeraeteBackground";
 import dynamic from "next/dynamic";
 
 const DynamicIcon = dynamic(
-  () => import("./@Icons/@Spielplatz/SpielgeraeteIcon"),
+  () => import("../@Icons/@Spielplatz/SpielgeraeteIcon"),
   {
     ssr: false,
   }

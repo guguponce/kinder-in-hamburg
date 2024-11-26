@@ -10,7 +10,7 @@ import { getTimeRainAndActivity, getPlainText } from "@app/utils/functions";
 import WeatherIcon from "../@Icons/@WeatherIcon/WeatherIcon";
 import Link from "next/link";
 import ImageCard from "../@Cards/ImageCard";
-import TodayTomorrow from "../TodayTomorrow";
+import TodayTomorrow from "./TodayTomorrow";
 import FullImageWeatherBox from "../FullImageWeatherBox";
 import { categoryName, iBezirk } from "@app/utils/types";
 

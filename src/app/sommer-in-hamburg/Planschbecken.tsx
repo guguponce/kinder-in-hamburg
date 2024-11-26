@@ -1,6 +1,6 @@
 import { iSpielplatz } from "@app/utils/types";
 import React from "react";
-import ShuffleGallery from "@app/components/ShuffleGallery";
+import ShuffleGallery from "@app/components/@Cards/ShuffleGallery";
 import WasserSectionTemplate from "./WasserSectionTemplate";
 
 export default function Planschbecken({

@@ -1,8 +1,8 @@
 "use client";
 import { iFlohmarkt, iPost, iSpielplatz } from "@app/utils/types";
 import React, { useMemo, useRef } from "react";
-import TriangleIcon from "./@Icons/TriangleIcon";
-import ShuffleIcon from "./@Icons/ShuffleIcon";
+import TriangleIcon from "../@Icons/TriangleIcon";
+import ShuffleIcon from "../@Icons/ShuffleIcon";
 import SpielplatzPoster from "./SpielplatzPoster";
 import Link from "next/link";
 import {
@@ -10,8 +10,8 @@ import {
   isTypePost,
   isTypeSpielplatz,
 } from "@app/utils/functions";
-import PostPoster from "./PostPoster";
-import FlohmarktPoster from "./FlohmarktPoster";
+import PostPoster from "../PostPoster";
+import FlohmarktPoster from "../FlohmarktPoster";
 
 export default function ShuffleGallery({
   children,
