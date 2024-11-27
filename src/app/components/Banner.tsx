@@ -23,7 +23,7 @@ export default function Banner({
       )}
     >
       <div
-        className={`sm:gap-2 flex  sm:flex-row w-full items-stretch ${textSide === "left" ? "flex-col" : "flex-col-reverse"}`}
+        className={`sm:gap-2 flex flex-grow sm:flex-row w-full items-center ${textSide === "left" ? "flex-col" : "flex-col-reverse"}`}
       >
         {children}
       </div>
@@ -44,7 +44,7 @@ Banner.TextSide = function BannerTextSide({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col items-center gap-1 flex-grow px-2">
+    <div className="flex flex-col items-center self-stretch gap-1 flex-grow px-2">
       {children}
     </div>
   );
@@ -72,15 +72,21 @@ Banner.Title = function BannerTitle({
   return (
     <Link
       href={href}
-      className="text-3xl sm:pt-4 text-center font-bold p-1 sm:mb-none hover:text-hh-50 hover:scale-[1.01] transition-all"
+      className="text-3xl sm:pt-4 lg:mb-4 text-center font-bold p-1 sm:mb-none hover:text-hh-50 hover:scale-[1.01] transition-all"
     >
       {children}
     </Link>
   );
 };
 
-Banner.Text = function BannerText({ children }: { children: React.ReactNode }) {
-  return <p className="italic text-sm">{children}</p>;
+Banner.Text = function BannerText({
+  children,
+  className,
+}: {
+  className?: string;
+  children: React.ReactNode;
+}) {
+  return <p className={cn("italic text-sm", className)}>{children}</p>;
 };
 
 Banner.Image = function BannerImage({
