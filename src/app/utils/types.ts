@@ -159,6 +159,7 @@ export interface iCard {
   link?: string;
   aspectRatio?: number;
   spielgeraete?: string[];
+  date?: number;
 }
 
 // WEATHERAPI
