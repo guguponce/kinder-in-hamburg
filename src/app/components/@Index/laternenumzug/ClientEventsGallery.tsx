@@ -88,8 +88,8 @@ export default function ClientEventsGallery({
     });
   return (
     <ArrowGallery length={eventsList.length} handleIndex={handleIndex}>
-      <div className="relative w-[180px] aspect-[2/3] flex flex-col items-center">
-        {!currentEvent.image ? (
+      <div className="relative w-[180px] aspect-[2/3] md:aspect-[3/5] pb-10 flex flex-col items-center">
+        {!currentEvent?.image ? (
           <Link
             href={`/events/${currentEvent.id}`}
             className="w-full h-full flex justify-between bg-positive-700 bg-opacity-50 flex-col items-center text-orange-200 border-2 border-hh-600 rounded overflow-hidden"
@@ -138,8 +138,8 @@ export default function ClientEventsGallery({
             />
           </div>
         )}
-        <div className="flex justify-between bg-gradient-to-r from-hh-800 to-hh-700 rounded-[0_0_4px_4px] w-[95%] py-1">
-          <h5 className="text-xs font-semibold text-orange-50 w-fit px-2">
+        <div className="flex absolute translate-y-full bottom-10 justify-between items-center bg-gradient-to-r from-hh-800 h-10 to-hh-700 rounded-[0_0_4px_4px] w-[95%]">
+          <h5 className="text-xs font-semibold text-orange-50 w-fit px-2 py-1">
             {today === date
               ? "Heute"
               : !endDate
@@ -148,7 +148,7 @@ export default function ClientEventsGallery({
                   ? "Ab dem " + date
                   : date <= today && "Bis " + endDate}
           </h5>
-          <h5 className="text-xs font-semibold text-orange-200 px-1 h-fit text-end">
+          <h5 className="text-xs font-semibold text-orange-200 px-2 text-end py-1">
             {currentEvent.stadtteil === "Andere Orte"
               ? (currentEvent.address.match(
                   /\d{5}\s([A-Za-zäöüÄÖÜß\s]+)/
