@@ -991,7 +991,7 @@ export const getEventWithID = async (
       .match({ id })
       .single();
     if (error) {
-      console.log(error.message);
+      console.log("Event not retrieved:", error.message);
       return false;
     }
     return parseFlohmarkt(data as iStringifiedFlohmarkt);
@@ -1009,15 +1009,15 @@ export const getEventMetadata = async (
   try {
     const { data, error } = await supabase
       .from(eventTable)
-      .select("title,bezirk,optionalComment,image,stadtteil")
+      .select("title,bezirk,optionalComment,image,stadtteil,status")
       .match({ id })
       .single();
     if (error) {
       return false;
     }
-    const { title, bezirk, optionalComment, image, stadtteil } =
+    const { title, bezirk, optionalComment, image, stadtteil, status } =
       data as Partial<iFlohmarkt>;
-    return { title, bezirk, optionalComment, image, stadtteil };
+    return { title, bezirk, optionalComment, image, stadtteil, status };
   } catch (error) {
     return false;
   }
@@ -1082,6 +1082,27 @@ export const getAllApprovedEvents = async (
   }
 };
 
+export const getEventsFromSameLocation = async (location: string) => {
+  const { today } = getTodayNexMonday();
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("events")
+      .select("*")
+      .or(
+        `date.gte.${today - 1000 * 60 * 60},and(date.lte.${today},endDate.gte.${today + 1000 * 60 * 60 * 12})`
+      )
+      .ilike("location", location)
+      .order("date", { ascending: true });
+
+    if (error) {
+      throw new Error("There was a problem getting the events.");
+    }
+    return data.map((f) => parseFlohmarkt(f)) as iFlohmarkt[];
+  } catch (error) {
+    return false;
+  }
+};
+
 export async function getAllEventsFromType(type: string) {
   try {
     const { data, error } = await supabaseAdmin
@@ -1114,6 +1135,7 @@ export const getAllEventsThisWeek = async (
       `date.gte.${today - 1000 * 60 * 60},and(date.lte.${today},endDate.gte.${today + 1000 * 60 * 60 * 12})`
     )
     .lte("date", until)
+    .order("date", { ascending: true })
     .ilike("status", "approved");
 
   try {
