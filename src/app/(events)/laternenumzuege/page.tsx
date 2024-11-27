@@ -62,7 +62,6 @@ export const metadata = {
 
     images: `${process.env.BASE_URL}opengraph-image.png`,
   },
-  metadataBase: new URL("https://www.kinder-in-hamburg.de"), // Base URL for resolving relative URLs
 };
 
 const DynamicEventsMap = dynamic(
