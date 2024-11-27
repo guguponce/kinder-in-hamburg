@@ -16,6 +16,7 @@ import AdminEditButtons from "@app/components/@Buttons/AdminEditButtons";
 import OldEventSign from "./OldEventSign";
 import { redirect } from "next/navigation";
 import { parseDescriptionWithTags } from "@app/utils/functions";
+import EventsSameLocation from "./EventsSameLocation";
 // import Image from "./opengraph-image";
 
 interface EventPageProps {
@@ -26,7 +27,7 @@ export async function generateMetadata({
   params,
 }: EventPageProps): Promise<Metadata> {
   const eventInfo = await getEventMetadata(params.eventID, "events");
-  if (!eventInfo)
+  if (!eventInfo || eventInfo.status !== "approved")
     return {
       title: "Event nicht gefunden",
       description: "Der Event wurde nicht gefunden.",
@@ -118,7 +119,14 @@ export default async function EventPage({
           spielplaetzeAround={spielplaetzeNearby}
           currentTarget={event}
           events={eventsNearby}
-        />
+        >
+          <EventsSameLocation
+            eventID={eventID}
+            location={event.location}
+            title="Am gleichen Ort"
+            className="rounded-lg p-2 bg-positive-700 bg-opacity-80 text-positive-50"
+          />
+        </EventPageMapContainer>
       </section>
     </main>
   );

@@ -7,7 +7,9 @@ export default async function EventPageMapContainer({
   currentTarget,
   spielplaetzeAround,
   events,
+  children,
 }: {
+  children?: React.ReactNode;
   events: iFlohmarkt[];
   currentTarget: iFlohmarkt | iSpielplatz | iPost;
   spielplaetzeAround?: iSpielplatz[];
@@ -34,6 +36,7 @@ export default async function EventPageMapContainer({
           events,
         }}
       />
+      {children}
       {weitereVeranstaltungen.length > 0 && (
         <>
           <hr className="w-full border-t border-hh-800 mt-4" />
