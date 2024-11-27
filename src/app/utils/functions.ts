@@ -26,6 +26,7 @@ import {
   mappingSpielgeraete,
   spType,
   spielgeraeteList,
+  weekDays,
 } from "./constants";
 import { ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -212,12 +213,14 @@ export const checkCategory = (category: string) => {
   return !!parsedCategory;
 };
 
-export const getDate = (date: number) =>
-  new Date(date).toLocaleDateString("de-DE", {
+export const getDate = (date: number, withDay: boolean = false) => {
+  const d = new Date(date);
+  const localeDate = d.toLocaleDateString("de-DE", {
     day: "numeric",
     month: "long",
   });
-
+  return withDay ? `${weekDays[d.getDay()]} - ${localeDate}` : localeDate;
+};
 export function addressWithoutCity(address: string) {
   const match = address.match(/\b\d{5}\b/);
   if (match && match.index) {
@@ -287,10 +290,13 @@ export const getTimeRainAndActivity = (
   return { currentTime, currentHour, nextRain, activityType, sunsetIndex };
 };
 
-export const separateByDate = (events: iFlohmarkt[]) => {
+export const separateByDate = (
+  events: iFlohmarkt[],
+  withDate: boolean = false
+) => {
   return events.reduce(
     (acc, flohmarkt) => {
-      const date = getDate(flohmarkt.date);
+      const date = getDate(flohmarkt.date, withDate);
       if (!acc[date]) {
         acc[date] = [];
       }
