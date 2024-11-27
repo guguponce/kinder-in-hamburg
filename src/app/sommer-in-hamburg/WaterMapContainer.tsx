@@ -150,30 +150,38 @@ export default function WaterMapContainer({
             {children}
           </div>
         )}
-        <MemoToggleButton
-          title="Badeseen"
-          show={showBadeseen}
-          color={badeseenColor}
-          onClick={() => setShowBadeseen(!showBadeseen)}
-        />
-        <MemoToggleButton
-          title="Freibäder"
-          show={showFreibaeder}
-          color={freibaederColor}
-          onClick={() => setShowFreibaeder(!showFreibaeder)}
-        />
-        <MemoToggleButton
-          title="Planschbecken"
-          show={showPlanschbecken}
-          color={planschbeckenColor}
-          onClick={() => setShowPlanschbecken(!showPlanschbecken)}
-        />
-        <MemoToggleButton
-          title="Spielpätze mit Wasserspielen"
-          show={showWasserspiele}
-          color={wasserspieleColor}
-          onClick={() => setShowWasserspiele(!showWasserspiele)}
-        />
+        {!!badeseen.length && (
+          <MemoToggleButton
+            title="Badeseen"
+            show={showBadeseen}
+            color={badeseenColor}
+            onClick={() => setShowBadeseen(!showBadeseen)}
+          />
+        )}
+        {!!freibaeder.length && (
+          <MemoToggleButton
+            title="Freibäder"
+            show={showFreibaeder}
+            color={freibaederColor}
+            onClick={() => setShowFreibaeder(!showFreibaeder)}
+          />
+        )}
+        {!!planschbecken.length && (
+          <MemoToggleButton
+            title="Planschbecken"
+            show={showPlanschbecken}
+            color={planschbeckenColor}
+            onClick={() => setShowPlanschbecken(!showPlanschbecken)}
+          />
+        )}
+        {!!wasserspiele.length && (
+          <MemoToggleButton
+            title="Spielpätze mit Wasserspielen"
+            show={showWasserspiele}
+            color={wasserspieleColor}
+            onClick={() => setShowWasserspiele(!showWasserspiele)}
+          />
+        )}
       </aside>
     </section>
   );

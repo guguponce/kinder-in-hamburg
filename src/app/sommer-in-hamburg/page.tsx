@@ -15,7 +15,6 @@ const WaterMapContainer = dynamic(() => import("./WaterMapContainer"), {
 
 export default async function SommerInHamburgPage() {
   const badeplaetze = (await getApprovedPostWithCat("Badeplatz")) || [];
-  if (!badeplaetze.length) return null;
   const freibaeder = badeplaetze.filter(
     (post) => !post.title.toLocaleLowerCase().includes("see")
   );
@@ -28,6 +27,9 @@ export default async function SommerInHamburgPage() {
     (sp) => sp.spielgeraete && sp.spielgeraete.includes("wasserspiel")
   );
   const planschbecken = (await getTypeSpielplaetze("planschbecken")) || [];
+  if ([...badeplaetze, ...wasserspielplaetze, ...planschbecken].length === 0)
+    return null;
+  console.log("badeplaetze", badeplaetze);
   const weather = await getWeatherData();
   return (
     <main className="max-w-[1000px] w-full mx-auto flex flex-col gap-4 items-center bg-hh-900 bg-opacity-20 p-4 rounded">
@@ -57,14 +59,18 @@ export default async function SommerInHamburgPage() {
       >
         {weather && <WeatherDisplay weather={weather} forecast={false} />}
       </WaterMapContainer>
-      <Badeseen badeseen={badeseen} />
-      <Freibaeder freibaeder={freibaeder} />
+      {!!badeseen.length && <Badeseen badeseen={badeseen} />}
+      {!!freibaeder.length && <Freibaeder freibaeder={freibaeder} />}
       <section className="flex flex-col md:flex-row mx-auto gap-4 justify-between items-center md:items-stretch w-full">
         <article className="w-full md:w-[45%] min-w-[300px] max-w-[400px]">
-          <Planschbecken planschbecken={planschbecken} />
+          {!!planschbecken.length && (
+            <Planschbecken planschbecken={planschbecken} />
+          )}
         </article>
         <article className="w-full md:w-[45%] min-w-[300px] max-w-[400px]">
-          <Wasserspiele wasserspiele={wasserspiele} />
+          {!!wasserspiele.length && (
+            <Wasserspiele wasserspiele={wasserspiele} />
+          )}
         </article>
       </section>
     </main>
