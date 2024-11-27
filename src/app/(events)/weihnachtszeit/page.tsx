@@ -65,7 +65,6 @@ export async function generateMetadata(): Promise<Metadata> {
         "Hier findet ihr eine Zusammenstellung der kinderfreundlichen Weihnachtsmärkte in Hamburg sowie der dazugehörigen Aktivitäten für die Kleinen oder die ganze Familie.",
       images: `${process.env.BASE_URL}opengraph-image.png`,
     },
-    metadataBase: new URL("https://www.kinder-in-hamburg.de"), // Base URL for resolving relative URLs
   };
 }
 
@@ -94,7 +93,7 @@ export default async function WeihnachtszeitPage() {
   const orderedEvents = [...weihnachtsmaerkte].sort((a, b) => a.date - b.date);
   const [futureEvents, thisWeekEvents] = orderedEvents.reduce(
     (acc, event) => {
-      if (event.date < nextMonday - 1000 * 60 * 60 * 2) {
+      if (event.date < today) {
         acc[1].push(event);
       } else {
         acc[0].push(event);
@@ -115,11 +114,20 @@ export default async function WeihnachtszeitPage() {
     },
     [[], []] as [typeof adventsEvents, typeof adventsEvents]
   );
-  const adventsEventsByDate = separateByDate(andereEvents);
+  const adventsEventsByDate = separateByDate(andereEvents, true);
+
   const todayLaternenumzuege = [...adventsEvents].filter(
     (event) => event.date < today
   );
 
+  const maerkteMitKinderprogramm = weihnachtsmaerkte.filter(
+    ({ optionalComment }) =>
+      optionalComment && /kinderprogramm/gi.test(optionalComment)
+  );
+  const maerkteMitCarousell = weihnachtsmaerkte.filter(
+    ({ optionalComment }) =>
+      optionalComment && /karussell/gi.test(optionalComment)
+  );
   return (
     <main
       className={`flex flex-col gap-4 items-center w-full  ${!!todayLaternenumzuege.length ? "sm:max-w-[1000px]" : "sm:max-w-[800px]"} p-1 mb-4`}
@@ -142,6 +150,30 @@ export default async function WeihnachtszeitPage() {
               </Link>
             ) : null
           )}
+        </div>
+        <div className="flex flex-col gap-1 outline outline-2 outline-negative-200">
+          <h2 className="text-2xl font-semibold">Märkte mit Kinderprogramm</h2>
+          {maerkteMitKinderprogramm.map((event) => (
+            <Link
+              key={event.id}
+              href={"/events/" + event.id}
+              className="flex gap-2 items-center flex-wrap bg-negative-600 text-negative-50"
+            >
+              {event.title}
+            </Link>
+          ))}
+        </div>
+        <div className="flex flex-col gap-1 outline outline-2 my-4 outline-negative-200">
+          <h2 className="text-2xl font-semibold">Märkte mit Kinderprogramm</h2>
+          {maerkteMitKinderprogramm.map((event) => (
+            <Link
+              key={event.id}
+              href={"/events/" + event.id}
+              className="flex gap-2 items-center flex-wrap bg-hh-600 text-negative-50"
+            >
+              {event.title}
+            </Link>
+          ))}
         </div>
       </AdminServerComponent>
       <section

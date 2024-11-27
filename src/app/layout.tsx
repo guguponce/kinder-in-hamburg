@@ -44,6 +44,9 @@ export const metadata: Metadata = {
     "flohmarkt hamburg familie",
     "flea market",
   ],
+  metadataBase: new URL(
+    process.env.BASE_URL || "https://www.kinder-in-hamburg.de"
+  ),
   openGraph: {
     title: "Kinder in Hamburg",
     description:
@@ -59,7 +62,6 @@ export const metadata: Metadata = {
 
     images: `${process.env.BASE_URL}opengraph-image.png`,
   },
-  // metadataBase: new URL("https://www.kinder-in-hamburg.de"), // Base URL for resolving relative URLs
 };
 
 export const revalidate = 60 * 60 * 6; // 6 hours
