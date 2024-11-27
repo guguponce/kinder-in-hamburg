@@ -15,6 +15,7 @@ const WaterMapContainer = dynamic(() => import("./WaterMapContainer"), {
 
 export default async function SommerInHamburgPage() {
   const badeplaetze = (await getApprovedPostWithCat("Badeplatz")) || [];
+  if (!badeplaetze.length) return null;
   const freibaeder = badeplaetze.filter(
     (post) => !post.title.toLocaleLowerCase().includes("see")
   );
