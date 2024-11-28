@@ -1,3 +1,4 @@
+import { cn } from "@app/utils/functions";
 import Link from "next/link";
 import React from "react";
 
@@ -31,6 +32,7 @@ export default function Button({
   size = "medium",
   fontSize = "base",
   fontGrow = false,
+  className,
   ...rest
 }: iButtonProps) {
   const style = {
@@ -85,19 +87,19 @@ export default function Button({
     },
   };
 
-  const className = `${style.size[size]} ${style.variant[variant]} ${
+  const selectedStyle = `${style.size[size]} ${style.variant[variant]} ${
     style.fontWeight[fontWeight]
   } ${
     style.fontSize[fontGrow ? "grow" : "still"][fontSize]
   } rounded-md text-center transition-all`;
   if (as === "link" || !!href)
     return (
-      <Link className={className} href={href || "/"}>
+      <Link className={cn(selectedStyle, className)} href={href || "/"}>
         {children}
       </Link>
     );
   return (
-    <button {...rest} className={className}>
+    <button {...rest} className={cn(selectedStyle, className)}>
       {children}
     </button>
   );
