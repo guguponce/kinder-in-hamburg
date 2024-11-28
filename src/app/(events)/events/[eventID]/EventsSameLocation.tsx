@@ -54,7 +54,7 @@ export default async function EventsSameLocation({
               title={ev.title}
               description={parseDescriptionWithTags(ev.optionalComment)}
               image={ev.image || "/assets/icons/weihnachtsmarkt.svg"}
-              link={"/events/"}
+              link={"/events/" + ev.id}
               size="small"
               imgClassname={!ev.image ? "object-contain" : "object-cover"}
             />
