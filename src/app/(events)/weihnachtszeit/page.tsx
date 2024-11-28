@@ -4,6 +4,7 @@ import BezirkableEventsList from "@components/BezirkableEventsList";
 import React from "react";
 import {
   addressWithoutCity,
+  getDate,
   getTodayNexMonday,
   separateByDate,
 } from "@app/utils/functions";
@@ -17,6 +18,7 @@ import ScrollableContainer from "@app/components/ScrollableContainer";
 import { iFlohmarkt } from "@app/utils/types";
 import FlohmarktPoster from "@app/components/@Cards/FlohmarktPoster";
 import { Metadata } from "next";
+import Attraktionen from "./Attraktionen";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -87,7 +89,7 @@ export default async function WeihnachtszeitPage() {
     (await getFutureApprovedEventsFromType("adventsevent")) || [];
   if (!weihnachtsmaerkte) return <NotFound multiples type="event" />;
   if (!weihnachtsmaerkte.length) return;
-  const { today, nextMonday } = getTodayNexMonday();
+  const { today } = getTodayNexMonday();
   const lastMidnight = new Date(today).setHours(0, 0, 0, 0);
 
   const orderedEvents = [...weihnachtsmaerkte].sort((a, b) => a.date - b.date);
@@ -128,6 +130,14 @@ export default async function WeihnachtszeitPage() {
     ({ optionalComment }) =>
       optionalComment && /karussell/gi.test(optionalComment)
   );
+  const maerkteMitNikolaus = weihnachtsmaerkte.filter(
+    ({ optionalComment }) =>
+      optionalComment && /nikolaus/gi.test(optionalComment)
+  );
+  const maerkteMitWeihnachtsmann = weihnachtsmaerkte.filter(
+    ({ optionalComment }) =>
+      optionalComment && /weihnachtsmann/gi.test(optionalComment)
+  );
   return (
     <main
       className={`flex flex-col gap-4 items-center w-full  ${!!todayLaternenumzuege.length ? "sm:max-w-[1000px]" : "sm:max-w-[800px]"} p-1 mb-4`}
@@ -152,8 +162,8 @@ export default async function WeihnachtszeitPage() {
           )}
         </div>
         <div className="flex flex-col gap-1 outline outline-2 outline-negative-200">
-          <h2 className="text-2xl font-semibold">Märkte mit Kinderprogramm</h2>
-          {maerkteMitKinderprogramm.map((event) => (
+          <h2 className="text-2xl font-semibold">Märkte mit Weihnachtsmann</h2>
+          {maerkteMitWeihnachtsmann.map((event) => (
             <Link
               key={event.id}
               href={"/events/" + event.id}
@@ -164,8 +174,8 @@ export default async function WeihnachtszeitPage() {
           ))}
         </div>
         <div className="flex flex-col gap-1 outline outline-2 my-4 outline-negative-200">
-          <h2 className="text-2xl font-semibold">Märkte mit Kinderprogramm</h2>
-          {maerkteMitKinderprogramm.map((event) => (
+          <h2 className="text-2xl font-semibold">Märkte mit Karussell</h2>
+          {maerkteMitCarousell.map((event) => (
             <Link
               key={event.id}
               href={"/events/" + event.id}
@@ -176,12 +186,7 @@ export default async function WeihnachtszeitPage() {
           ))}
         </div>
       </AdminServerComponent>
-      <section
-        style={{
-          background: "linear-gradient(45deg, #982a1c 0%, #EE564B 100%)",
-        }}
-        className="p-4 md:py-8 rounded-lg  w-full flex gap-4 flex-col items-center max-w-full text-white shadow-xl bg-opacity-10 transition-all"
-      >
+      <section className="bg-gradient-to-br from-[hsla(7,69%,35%,0.95)] to-[hsl(4,83%,61%,0.95)] backdrop-blur-sm p-4 md:py-8 rounded-lg w-full flex gap-4 flex-col items-center max-w-full text-white shadow-xl bg-opacity-10 transition-all">
         <div className="w-full max-w-[720px] flex flex-col gap-2 justify-between items-stretch">
           <h1 className="text-3xl flex-grow font-bold ">
             Weihnachtsmärkte in Hamburg <span className="text-2xl">🎄👧🧑‍🎄</span>
@@ -229,6 +234,13 @@ export default async function WeihnachtszeitPage() {
           today={lastMidnight}
         />
       </article>
+      <Attraktionen
+        attraktionen={{
+          karussell: maerkteMitCarousell,
+          kinderprogramm: maerkteMitKinderprogramm,
+          nikolaus: maerkteMitNikolaus,
+        }}
+      />
       {!!adventsEvents.length && (
         <section
           id="adventsEvents"
@@ -256,7 +268,9 @@ export default async function WeihnachtszeitPage() {
                 key={date}
                 className="bg-gradient-to-br from-negative-900 to-negative-800 text-negative-50 bg-opacity-25 transition-all flex flex-col rounded p-2 pt-0 min-w-fit"
               >
-                <h3 className="font-semibold p-2">{date}</h3>
+                <h3 className="font-semibold p-2">
+                  {date === getDate(parseInt(date), true) ? "Heute" : date}
+                </h3>
                 <div className="min-w-fit flex gap-4 items-center">
                   {events.map(
                     ({
