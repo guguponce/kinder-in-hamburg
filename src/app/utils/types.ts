@@ -160,6 +160,8 @@ export interface iCard {
   aspectRatio?: number;
   spielgeraete?: string[];
   date?: number;
+  cardContainerClassname?: string;
+  imgClassname?: string;
 }
 
 // WEATHERAPI
