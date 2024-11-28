@@ -8,6 +8,7 @@ import {
   getPlainText,
   isTypeFlohmarkt,
   isTypePost,
+  parseDescriptionWithTags,
 } from "@app/utils/functions";
 import ScrollableContainer from "../ScrollableContainer";
 import FlohmarktPoster from "./FlohmarktPoster";
@@ -46,7 +47,7 @@ export default function ScrollableCardList({
                 aspectRatio: 0.66,
                 link: linkPrefix ? `${linkPrefix}${id}` : `/posts/${id}`,
                 size: size,
-                description: getPlainText(text),
+                description: parseDescriptionWithTags(getPlainText(text)),
               })}
             </React.Fragment>
           ))
@@ -75,7 +76,7 @@ export default function ScrollableCardList({
                       aspectRatio: 0.66,
                       link: linkPrefix ? `${linkPrefix}${id}` : `/posts/${id}`,
                       size: size,
-                      description: optionalComment,
+                      description: parseDescriptionWithTags(optionalComment),
                     })
                   ) : (
                     <FlohmarktPoster
