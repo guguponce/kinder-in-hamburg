@@ -40,7 +40,7 @@ export default async function AllEventsStatusSetter({
   const prefixLink = {
     flohmaerkte: {
       pending: "flohmarkt-suggestion",
-      approved: "flohmarkt",
+      approved: "flohmaerkte",
       rejected: "flohmarkt-suggestion",
       old: "flohmarkt-suggestion",
     },
