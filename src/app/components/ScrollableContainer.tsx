@@ -6,18 +6,23 @@ export default function ScrollableContainer({
   vertical = false,
   color = "500",
   boxStyle,
+  containerStyle,
 }: {
   color?: "300" | "500" | "800";
   vertical?: boolean;
   children: React.ReactNode;
   boxStyle?: string;
+  containerStyle?: string;
 }) {
   const scrollbarThumbColor = `scrollbarThumb${color}`;
   return (
     <div
-      className={`flex items-center ${
-        vertical ? "w-full" : "w-fit max-w-full"
-      } overflow-hidden h-full`}
+      className={cn(
+        `flex items-center ${
+          vertical ? "w-full" : "w-fit max-w-full"
+        } overflow-hidden h-full`,
+        containerStyle
+      )}
     >
       <div
         className={cn(
