@@ -213,11 +213,15 @@ export const checkCategory = (category: string) => {
   return !!parsedCategory;
 };
 
-export const getDate = (date: number, withDay: boolean = false) => {
+export const getDate = (
+  date: number,
+  withDay: boolean = false,
+  onlyNumbers = false
+) => {
   const d = new Date(date);
   const localeDate = d.toLocaleDateString("de-DE", {
-    day: "numeric",
-    month: "long",
+    day: onlyNumbers ? "2-digit" : "numeric",
+    month: onlyNumbers ? "2-digit" : "long",
   });
   return withDay ? `${weekDays[d.getDay()]} - ${localeDate}` : localeDate;
 };
