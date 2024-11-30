@@ -883,13 +883,29 @@ export const setAllPreviousEventsAsOld = async (
 ) => {
   try {
     const { today } = getTodayNexMonday();
-    const flohs = ((await getAllEventsFromType("laterne")) || []).filter(
-      (f) => f.date < today && f.status === "approved"
-    );
-    if (!flohs || flohs.length === 0) return "No old events found.";
+    const { data, error } =
+      (await supabaseAdmin
+        .from(eventTable)
+        .select(
+          eventTable === "events"
+            ? "id, date, endDate,status, title"
+            : "id, date, status"
+        )
+        .lte("date", today)) || [];
 
-    const oldFlohs = await Promise.all(
-      flohs.map((f) => setEventAsOld(f.id, eventTable))
+    const flohsToFilter = (data as Partial<iFlohmarkt>[]).filter(
+      (f) =>
+        !!f.date &&
+        !!f.status &&
+        f.date < today &&
+        ["approved", "pending"].includes(f.status) &&
+        (!f.endDate || f.endDate < today)
+    );
+    if (!flohsToFilter || flohsToFilter.length === 0)
+      return "No old events found.";
+    const oldFlohs = [];
+    await Promise.all(
+      flohsToFilter.map((f) => setEventAsOld(f.id!, eventTable))
     );
     return "All previous events set as old." + oldFlohs.length;
   } catch (error) {
@@ -1035,7 +1051,9 @@ export const getApprovedEventsAndFlohmaerkte = async () => {
       .from("events")
       .select("*")
       .ilike("status", "approved")
-      .gte("date", today);
+      .or(
+        `date.gte.${today - 1000 * 60 * 60},and(date.lte.${today},endDate.gte.${today + 1000 * 60 * 60 * 12})`
+      );
     if (flohError || eventError) {
       throw new Error("There was a problem getting the events.");
     }
