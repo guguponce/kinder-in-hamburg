@@ -19,6 +19,7 @@ import { iFlohmarkt } from "@app/utils/types";
 import FlohmarktPoster from "@app/components/@Cards/FlohmarktPoster";
 import { Metadata } from "next";
 import Attraktionen from "./Attraktionen";
+import AdventsEvents from "./AdventsEvents";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -186,7 +187,7 @@ export default async function WeihnachtszeitPage() {
           ))}
         </div>
       </AdminServerComponent>
-      <section className="bg-gradient-to-br from-[hsla(7,69%,35%,0.95)] to-[hsl(4,83%,61%,0.95)] backdrop-blur-sm p-4 md:py-8 rounded-lg w-full flex gap-4 flex-col items-center max-w-full text-white shadow-xl bg-opacity-10 transition-all">
+      <section className="rounded-lg bg-gradient-to-b shadow-2xl from-positive-100 to-positive-200 p-4 md:py-8 w-full flex gap-4 flex-col items-center max-w-full text-negative-800  bg-opacity-10 transition-all">
         <div className="w-full max-w-[720px] flex flex-col gap-2 justify-between items-stretch">
           <h1 className="text-3xl flex-grow font-bold ">
             Weihnachtsmärkte in Hamburg <span className="text-2xl">🎄👧🧑‍🎄</span>
@@ -242,107 +243,10 @@ export default async function WeihnachtszeitPage() {
         }}
       />
       {!!adventsEvents.length && (
-        <section
-          id="adventsEvents"
-          className="p-4 rounded-lg bg-gradient-to-b shadow-2xl from-negative-100 to-negative-200 w-full max-w-[800px] flex gap-4 flex-wrap items-center text-negative-800 transition-all"
-        >
-          <div className="w-full flex flex-col gap-2 text-negative-800">
-            <h2 className="text-3xl flex-grow font-bold ">
-              Adventsaktivitäten
-            </h2>
-
-            <p className="italic">
-              Auf den Weihnachtsmärkten in Hamburg gibt es für Kinder und
-              Familien zahlreiche kreative Aktivitäten: Von Weihnachtssterne und
-              Baumschmuck basteln, über Kinderschminken und Erzähltheater, bis
-              hin zur festlichen Weihnachtsparade.
-            </p>
-            <p className="italic">
-              Hier sind einige Veranstaltungen, an denen ihr während der
-              Adventszeit teilnehmen könnt.
-            </p>
-          </div>
-          <ScrollableContainer>
-            {Object.entries(adventsEventsByDate).map(([date, events]) => (
-              <article
-                key={date}
-                className="bg-gradient-to-br from-negative-900 to-negative-800 text-negative-50 bg-opacity-25 transition-all flex flex-col rounded p-2 pt-0 min-w-fit"
-              >
-                <h3 className="font-semibold p-2">
-                  {date === getDate(parseInt(date), true) ? "Heute" : date}
-                </h3>
-                <div className="min-w-fit flex gap-4 items-center">
-                  {events.map(
-                    ({
-                      id,
-                      type,
-                      title,
-                      image,
-                      address,
-                      date,
-                      time,
-                      stadtteil,
-                    }) => (
-                      <div key={id} className="w-[360px] min-w-[300px]">
-                        <HorizontalCard
-                          key={id}
-                          type={type}
-                          title={title}
-                          id={id}
-                          link={`/events/${id}`}
-                          image={image}
-                        >
-                          <HorizontalCard.FlohmarktInfo
-                            title={title}
-                            address={addressWithoutCity(address)}
-                            stadtteil={stadtteil}
-                            date={date}
-                            time={time}
-                          />
-                        </HorizontalCard>
-                      </div>
-                    )
-                  )}
-                </div>
-              </article>
-            ))}
-          </ScrollableContainer>
-          <div className="w-full flex flex-col justify-center mt-4">
-            <h3 className="text-2xl pb-0 font-semibold">
-              Programm auf den Märchenschiffen
-            </h3>
-            <p className="italic text-sm">
-              Vom 28. November bis 23. Dezember am Anleger Jungfernstieg können
-              die Kleinen täglich in den Theaterschiff, Traumschiff und
-              Backschiffe an verschiedenen Aktionen teilnehmen.
-            </p>
-            <ScrollableContainer>
-              {schiffEvents.map((e) => (
-                <article
-                  key={e.id}
-                  className={`overflow-hidden h-[250px] min-w-[180px] shadow-lg`}
-                >
-                  <FlohmarktPoster
-                    title={e.title}
-                    image={e.image}
-                    date={e.date}
-                    bezirk={e.bezirk}
-                    prefixLink={
-                      e.status === "approved"
-                        ? "/events/"
-                        : "/event-suggestion/"
-                    }
-                    id={e.id}
-                    eventType={e.type}
-                    size={"small"}
-                    endDate={e.endDate}
-                    stadtteil={e.stadtteil}
-                  />
-                </article>
-              ))}
-            </ScrollableContainer>
-          </div>
-        </section>
+        <AdventsEvents
+          adventsEventsByDate={adventsEventsByDate}
+          schiffEvents={schiffEvents}
+        />
       )}
     </main>
   );
