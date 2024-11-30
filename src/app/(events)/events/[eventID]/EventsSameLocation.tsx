@@ -1,12 +1,8 @@
-import {
-  getEventsFromSameLocation,
-  getFutureApprovedEventsFromType,
-} from "@app/api/dbActions";
-import ScrollableCardList from "@app/components/@Cards/ScrollableCardList";
+import { getEventsFromSameLocation } from "@app/api/dbActions";
 import TextPriorityCard from "@app/components/@Cards/TextPriorityCard";
 import ScrollableContainer from "@app/components/ScrollableContainer";
-import { cn, parseDescriptionWithTags } from "@app/utils/functions";
-import { iEventType, iFlohmarkt } from "@app/utils/types";
+import { cn, getDate, parseDescriptionWithTags } from "@app/utils/functions";
+import { iFlohmarkt } from "@app/utils/types";
 import React from "react";
 
 export default async function EventsSameLocation({
@@ -44,11 +40,13 @@ export default async function EventsSameLocation({
             key={ev.type || ev.id}
             className={`${ev.type === "weihnachtsmarkt" ? "bg-positive-950 p-1 min-w-[180px]" : "min-w-[150px] mb-1"} flex flex-col items-center bg-opacity-10 w-fit rounded-md shadow-md hover:shadow-lg`}
           >
-            {ev.type === "weihnachtsmarkt" && (
-              <h3 className="text-lg font-semibold capitalize">
-                Weihnachtsmarkt
-              </h3>
-            )}
+            <h3
+              className={`${ev.type === "weihnachtsmarkt" ? "text-lg" : "self-start ml-1 text-sm"} font-semibold capitalize`}
+            >
+              {ev.type === "weihnachtsmarkt"
+                ? "Weihnachtsmarkt"
+                : getDate(ev.date, true, true)}
+            </h3>
             <TextPriorityCard
               id={ev.id}
               title={ev.title}
