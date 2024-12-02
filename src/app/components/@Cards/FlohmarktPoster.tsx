@@ -114,8 +114,8 @@ export default function FlohmarktPoster({
             {endDate ? (
               <h3 className="text-xs font-semibold text-hh-800">
                 {date > today
-                  ? `Ab dem ${getDate(date)} geöffnet`
-                  : `Geöffnet bis ${getDate(endDate)}`}
+                  ? `Ab dem ${getDate(date)}`
+                  : `Bis zum ${getDate(endDate)}`}
               </h3>
             ) : (
               <h3 className="text-sm font-semibold text-hh-800">

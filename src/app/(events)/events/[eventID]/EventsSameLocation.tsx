@@ -37,7 +37,7 @@ export default async function EventsSameLocation({
       <ScrollableContainer boxStyle="items-end lg:gap-2">
         {separatedEvents.map((ev) => (
           <article
-            key={ev.type || ev.id}
+            key={ev.id}
             className={`${ev.type === "weihnachtsmarkt" ? "bg-positive-950 p-1 min-w-[180px]" : "min-w-[150px] mb-1"} flex flex-col items-center bg-opacity-10 w-fit rounded-md shadow-md hover:shadow-lg`}
           >
             <h3
