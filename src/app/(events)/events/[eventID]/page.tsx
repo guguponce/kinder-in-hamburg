@@ -15,7 +15,7 @@ import { PROXIMATE_STADTTEILE_FROM_OTHER_BEZIRK } from "@app/utils/constants";
 import AdminEditButtons from "@app/components/@Buttons/AdminEditButtons";
 import OldEventSign from "./OldEventSign";
 import { redirect } from "next/navigation";
-import { parseDescriptionWithTags } from "@app/utils/functions";
+import { getDate, parseDescriptionWithTags } from "@app/utils/functions";
 import EventsSameLocation from "./EventsSameLocation";
 // import Image from "./opengraph-image";
 
@@ -93,7 +93,14 @@ export default async function EventPage({
     <main className="flex flex-col items-center w-full p-1">
       <FlohmarktTemplate flohmarkt={event}>
         {event.status === "old" && <OldEventSign />}
-
+        {event.closedDates?.find(
+          (d) => getDate(d) === getDate(new Date().getTime())
+        ) && (
+          <OldEventSign
+            title="Heute findet diese Veranstaltung nicht statt"
+            text="Schaue dich mal die heutigen Ereignisse an"
+          />
+        )}
         <AdminServerComponent>
           <AdminEditButtons
             updateButton={{
