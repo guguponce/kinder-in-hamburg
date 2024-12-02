@@ -1152,7 +1152,6 @@ export const getAllEventsThisWeek = async (
     .or(
       `date.gte.${today - 1000 * 60 * 60},and(date.lte.${today},endDate.gte.${today + 1000 * 60 * 60 * 12})`
     )
-    .lte("date", until)
     .order("date", { ascending: true })
     .ilike("status", "approved");
 

@@ -39,7 +39,6 @@ export default async function OtherEventsHorizontalCards({
     },
     {} as Record<string, typeof events>
   );
-
   const types =
     eventTypes ||
     events.reduce((acc, event) => {
@@ -62,6 +61,7 @@ export default async function OtherEventsHorizontalCards({
       {children}
       <ScrollableContainer>
         {Object.entries(eventsByDate)
+          .filter(([date]) => parseInt(date) > Date.now())
           .sort(([a], [b]) => parseInt(a) - parseInt(b))
           .map(([date, events]) => (
             <article
@@ -70,37 +70,45 @@ export default async function OtherEventsHorizontalCards({
             >
               <h3 className="font-semibold p-2">{getDate(parseInt(date))}</h3>
               <div className="min-w-fit flex gap-4 items-center">
-                {events.map(
-                  ({
-                    id,
-                    type,
-                    title,
-                    image,
-                    address,
-                    date,
-                    time,
-                    stadtteil,
-                  }) => (
-                    <div key={id} className="w-[360px] min-w-[300px]">
-                      <HorizontalCard
-                        key={id}
-                        type={type}
-                        title={title}
-                        id={id}
-                        link={`/events/${id}`}
-                        image={image}
-                      >
-                        <HorizontalCard.FlohmarktInfo
-                          title={title}
-                          address={addressWithoutCity(address)}
-                          stadtteil={stadtteil}
-                          date={date}
-                          time={time}
-                        />
-                      </HorizontalCard>
-                    </div>
+                {[...events]
+                  .sort((a, b) =>
+                    a.type === "weihnachtsmarkt"
+                      ? -1
+                      : b.type === "weihnachtsmarkt"
+                        ? 1
+                        : 0
                   )
-                )}
+                  .map(
+                    ({
+                      id,
+                      type,
+                      title,
+                      image,
+                      address,
+                      date,
+                      time,
+                      stadtteil,
+                    }) => (
+                      <div key={id} className="w-[360px] min-w-[300px]">
+                        <HorizontalCard
+                          key={id}
+                          type={type}
+                          title={title}
+                          id={id}
+                          link={`/events/${id}`}
+                          image={image}
+                        >
+                          <HorizontalCard.FlohmarktInfo
+                            title={title}
+                            address={addressWithoutCity(address)}
+                            stadtteil={stadtteil}
+                            date={date}
+                            time={time}
+                          />
+                        </HorizontalCard>
+                      </div>
+                    )
+                  )}
               </div>
             </article>
           ))}
