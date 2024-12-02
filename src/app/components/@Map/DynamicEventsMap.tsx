@@ -1,33 +1,108 @@
 "use client";
 import GeneralMap from "@components/@Map/GeneralMap";
 import FlohmarktPopUP from "@components/@Map/PopUpsMarkers/FlohmarktPopUP";
-import MarkersLists from "@components/@Map/PopUpsMarkers/MarkersLists";
 import { iBezirk, iEventType, iFlohmarkt } from "@app/utils/types";
 import { Marker } from "react-leaflet";
 import React, { useMemo, useRef } from "react";
 import { divIcon, point } from "leaflet";
-import { createStandortMapIcon, getDate } from "@app/utils/functions";
+import {
+  createStandortMapIcon,
+  getDate,
+  getTodayNexMonday,
+} from "@app/utils/functions";
 import ScrollableContainer from "@components/ScrollableContainer";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import { createWeihnachtsmarktMapIcon } from "./functions";
+import { eventTypesNames } from "@app/utils/constants";
 
-const createNormalSizeIcon = (color: string, size: number = 30) =>
+const createNormalSizeIcon = (
+  color: string,
+  size: number = 30,
+  stroke?: string
+) =>
   divIcon({
-    html: createStandortMapIcon(color, size),
+    html: createStandortMapIcon(color, size, stroke),
     iconSize: [size, size],
     iconAnchor: [size / 2, size],
     className: "bg-transparent",
   });
-const futureIcon = createNormalSizeIcon("#343b3e");
-const thisWeekIcon = createNormalSizeIcon("#7B3E5E");
-const todayIcon = createNormalSizeIcon("#b72f1e");
+const flohmarktIcon = createNormalSizeIcon("#7B3E5E", 25, "#361b29");
+const eventIcon = createNormalSizeIcon("#de6c13", 25, "#602d07");
+const futureIcon = createNormalSizeIcon("#343b3e", 25, "#1b1d1e");
+const thisWeekIcon = createNormalSizeIcon("#de6c13", 25, "#602d07");
+const todayIcon = divIcon({
+  html: createStandortMapIcon("#b72f1e", 30, "#460B07"),
+  iconSize: [30, 30],
+  iconAnchor: [30 / 2, 50],
+  className: "bg-transparent",
+});
+// createNormalSizeIcon("#b72f1e", 30, "#460B07");
 const weihnachtsmarktIcon = divIcon({
   html: createWeihnachtsmarktMapIcon(),
-  iconSize: [20, 20],
+  iconSize: [20, 25],
   iconAnchor: [10, 20],
   className: "bg-transparent",
 });
+const smallWeihnachtsmarktIcon = divIcon({
+  html: createWeihnachtsmarktMapIcon(15),
+  iconSize: [15, 15],
+  iconAnchor: [8, 15],
+  className: "bg-transparent",
+});
 
+const DisplayedMarkers = ({
+  eventsList,
+  selectedBezirk,
+  selectedEvent,
+  todayString,
+  nextMonday,
+}: {
+  todayString: string;
+  nextMonday: number;
+  eventsList: iFlohmarkt[];
+  selectedBezirk: iBezirk | undefined;
+  selectedEvent: iEventType | undefined;
+}) => {
+  return eventsList.map(
+    ({ id, lat, lon, address, date, endDate, title, bezirk, type }) => {
+      return (selectedBezirk && bezirk !== selectedBezirk) ||
+        (selectedEvent && selectedEvent !== type) ? null : (
+        <React.Fragment key={id}>
+          <Marker
+            icon={
+              type === "weihnachtsmarkt"
+                ? selectedEvent === "weihnachtsmarkt"
+                  ? weihnachtsmarktIcon
+                  : smallWeihnachtsmarktIcon
+                : endDate
+                  ? todayIcon
+                  : getDate(date) === todayString
+                    ? todayIcon
+                    : type === "flohmarkt"
+                      ? flohmarktIcon
+                      : date < nextMonday
+                        ? type
+                          ? thisWeekIcon
+                          : flohmarktIcon
+                        : futureIcon
+            }
+            key={id}
+            position={[lat || 53.5511, lon || 9.9937]}
+          >
+            {getDate(date) === todayString && "afdasfas"}
+            <FlohmarktPopUP
+              id={id}
+              address={address}
+              date={date}
+              title={title}
+              type={!type ? "flohmaerkte" : "events"}
+            />
+          </Marker>
+        </React.Fragment>
+      );
+    }
+  );
+};
 export default function DynamicEventsMap({
   today,
   thisWeek,
@@ -35,11 +110,15 @@ export default function DynamicEventsMap({
   square = true,
   darkBackground = false,
   eventType,
+  showEventType = true,
   showTermine = true,
   showBezirke = true,
+  children,
 }: {
+  children?: React.ReactNode;
   showTermine?: boolean;
   showBezirke?: boolean;
+  showEventType?: boolean;
   eventType?: iEventType | "flohmaerkte";
   today: number;
   darkBackground?: boolean;
@@ -47,21 +126,31 @@ export default function DynamicEventsMap({
   future?: iFlohmarkt[];
   square?: boolean;
 }) {
-  const [selectedDate, setSelectedDate] = React.useState<number | undefined>(
-    undefined
-  );
+  const [selectedDate, setSelectedDate] = React.useState<
+    number | string | undefined
+  >(undefined);
   const [selectedBezirk, setSelectedBezirk] = React.useState<
     iBezirk | undefined
   >();
   const [futureSelected, setFutureSelected] = React.useState(false);
 
-  const bezirke = useRef(
+  const [selectedEvent, setSelectedEvent] = React.useState<
+    iEventType | undefined
+  >();
+  const { current: bezirke } = useRef(
     Array.from(new Set([...thisWeek, ...future].map((p) => p.bezirk).flat()))
   );
 
-  const eventsByDate = useRef(
+  const { current: eventsByDate } = useRef(
     thisWeek.reduce(
       (acc, curr) => {
+        if (curr.endDate && curr.endDate > today) {
+          acc["currentEvents"] = [...(acc["currentEvents"] || []), curr];
+          if (curr.date < today && curr.endDate > today) {
+            acc[today - 1] = [...(acc[today - 1] || []), curr];
+          }
+          return acc;
+        }
         if (acc[curr.date]) {
           acc[curr.date].push(curr);
         } else {
@@ -73,120 +162,76 @@ export default function DynamicEventsMap({
     )
   );
 
-  const displayedMarkers = useMemo(() => {
+  const { current: orderedDates } = useRef(
+    Object.keys(eventsByDate).sort((a, b) =>
+      b === "currentEvents"
+        ? -1
+        : a === "currentEvents"
+          ? 1
+          : parseInt(a) - parseInt(b)
+    )
+  );
+
+  const { current: eventTypes } = useRef(
+    [...thisWeek, ...future].reduce((acc, curr) => {
+      if (!curr.type || acc.includes(curr.type)) return acc;
+      return [...acc, curr.type];
+    }, [] as iEventType[])
+  );
+
+  const { nextMonday } = getTodayNexMonday();
+  const { current: todayString } = useRef(getDate(today));
+
+  const filteredBySelectedDate = useMemo(() => {
     if (selectedDate) {
-      return { [selectedDate]: eventsByDate.current[selectedDate] };
+      return { [selectedDate]: eventsByDate[selectedDate] };
     }
-    return eventsByDate.current;
-  }, [selectedDate]);
+    return eventsByDate;
+  }, [selectedDate, eventsByDate]);
+
+  const isToday = useMemo(() => {
+    const todayString = getDate(today);
+    const selectedDateString =
+      !selectedDate ||
+      getDate(
+        selectedDate === "currentEvents" ? today : (selectedDate as number)
+      );
+    return todayString === selectedDateString;
+  }, [today, selectedDate]);
   return (
     <div className="w-full sm:w-full flex flex-col md:flex-row md:flex-wrap items-stretch gap-2 rounded">
       <section
         className={`max-h-[60vh] min-h-[250px] flex-grow xs:min-w-[300px] sm:max-w-[800px] aspect-square sm:aspect-[3/2] md:aspect-auto md:mx-auto ${square ? "w-full lg:aspect-square  lg:max-w-full" : "md:aspect-video lg:aspect-auto lg:h-[50vh] lg:max-w-full"} flex justify-center rounded overflow-hidden`}
       >
-        <GeneralMap zoom={11}>
-          {!selectedDate && !futureSelected
-            ? Object.entries(displayedMarkers).map(([day, events]) =>
-                new Date(parseInt(day)).setHours(0, 0, 0, 0) === today ? (
-                  events.map(
-                    ({ id, lat, lon, address, date, title, bezirk, type }) =>
-                      selectedBezirk && bezirk !== selectedBezirk ? null : (
-                        <React.Fragment key={id}>
-                          <Marker
-                            icon={
-                              type === "weihnachtsmarkt"
-                                ? weihnachtsmarktIcon
-                                : todayIcon
-                            }
-                            key={id}
-                            position={[lat || 53.5511, lon || 9.9937]}
-                          >
-                            <FlohmarktPopUP
-                              id={id}
-                              address={address}
-                              date={date}
-                              title={title}
-                              type={!type ? "flohmaerkte" : "events"}
-                            />
-                          </Marker>
-                        </React.Fragment>
-                      )
-                  )
-                ) : day !== today.toString() ? (
-                  <React.Fragment key={day}>
-                    <MarkersLists
-                      cluster={false}
-                      showFlohmaerkte
-                      lists={{
-                        flohmaerkte: selectedBezirk
-                          ? events.filter(
-                              ({ bezirk }) => bezirk === selectedBezirk
-                            )
-                          : events,
-                      }}
-                    />
-                  </React.Fragment>
-                ) : (
-                  events.map(
-                    ({ id, lat, lon, address, date, title, bezirk }) =>
-                      selectedBezirk && bezirk !== selectedBezirk ? null : (
-                        <React.Fragment key={id}>
-                          <Marker
-                            icon={futureIcon}
-                            key={id}
-                            position={[lat || 53.5511, lon || 9.9937]}
-                          >
-                            <FlohmarktPopUP
-                              id={id}
-                              address={address}
-                              date={date}
-                              title={title}
-                            />
-                          </Marker>
-                        </React.Fragment>
-                      )
-                  )
-                )
-              )
-            : selectedDate === today
-              ? displayedMarkers[selectedDate].map(
-                  ({ id, lat, lon, address, date, title, bezirk, type }) =>
-                    selectedBezirk && bezirk !== selectedBezirk ? null : (
-                      <React.Fragment key={id}>
-                        <Marker
-                          icon={
-                            type === "weihnachtsmarkt"
-                              ? weihnachtsmarktIcon
-                              : todayIcon
-                          }
-                          key={id}
-                          position={[lat || 53.5511, lon || 9.9937]}
-                        >
-                          <FlohmarktPopUP
-                            id={id}
-                            address={address}
-                            date={date}
-                            title={title}
-                            type={!type ? "flohmaerkte" : "events"}
-                          />
-                        </Marker>
-                      </React.Fragment>
-                    )
-                )
-              : selectedDate && (
-                  <MarkersLists
-                    cluster={false}
-                    showFlohmaerkte
-                    lists={{
-                      flohmaerkte: selectedBezirk
-                        ? displayedMarkers[selectedDate].filter(
-                            ({ bezirk }) => bezirk === selectedBezirk
-                          )
-                        : displayedMarkers[selectedDate],
-                    }}
-                  />
-                )}
-          {!selectedDate && future.length > 0 && (
+        <GeneralMap zoom={10}>
+          {children}
+          {!futureSelected &&
+            Object.entries(filteredBySelectedDate).map(([day, events]) => (
+              <React.Fragment key={day}>
+                <DisplayedMarkers
+                  eventsList={events}
+                  selectedBezirk={selectedBezirk}
+                  selectedEvent={selectedEvent}
+                  todayString={todayString}
+                  nextMonday={nextMonday}
+                />
+              </React.Fragment>
+            ))}
+          {(!selectedDate || !selectedEvent) && (
+            <DisplayedMarkers
+              eventsList={
+                eventsByDate["currentEvents"]?.filter(
+                  ({ closedDates }) =>
+                    !closedDates?.find((c) => getDate(c) === todayString)
+                ) || []
+              }
+              selectedBezirk={selectedBezirk}
+              selectedEvent={selectedEvent}
+              todayString={todayString}
+              nextMonday={nextMonday}
+            />
+          )}
+          {!selectedDate ? (
             <MarkerClusterGroup
               chunkedLoading
               iconCreateFunction={(cluster: any) =>
@@ -197,31 +242,28 @@ export default function DynamicEventsMap({
                 })
               }
             >
-              {future.map(
-                ({ id, lat, lon, address, date, title, bezirk, type }) =>
-                  selectedBezirk && bezirk !== selectedBezirk ? null : (
-                    <React.Fragment key={id}>
-                      <Marker
-                        icon={futureIcon}
-                        key={id}
-                        position={[lat || 53.5511, lon || 9.9937]}
-                      >
-                        <FlohmarktPopUP
-                          id={id}
-                          address={address}
-                          date={date}
-                          title={title}
-                          type={!type ? "flohmaerkte" : "events"}
-                        />
-                      </Marker>
-                    </React.Fragment>
-                  )
-              )}
+              <DisplayedMarkers
+                eventsList={future}
+                selectedBezirk={selectedBezirk}
+                selectedEvent={selectedEvent}
+                todayString={todayString}
+                nextMonday={nextMonday}
+              />
             </MarkerClusterGroup>
+          ) : (
+            futureSelected && (
+              <DisplayedMarkers
+                eventsList={future}
+                selectedBezirk={selectedBezirk}
+                selectedEvent={selectedEvent}
+                todayString={todayString}
+                nextMonday={nextMonday}
+              />
+            )
           )}
         </GeneralMap>
       </section>
-      {(!!showBezirke || !!showTermine) && (
+      {(!!showBezirke || !!showTermine || !showEventType) && (
         <aside
           id="flohmaerkte-map-filters-aside"
           className="px-2 pb-2 w-full xs:min-w-[300px] max-w-[80vw] flex flex-col"
@@ -234,34 +276,40 @@ export default function DynamicEventsMap({
                 <div className="flex w-full flex-col">
                   <h3 className="font-bold text-lg p-2">Termine</h3>
                   <div className="flex flex-wrap gap-2 items-center  pb-2 px-2">
-                    {Object.keys(eventsByDate.current)
-                      .sort((a, b) => parseInt(a) - parseInt(b))
-                      .map((date) => (
-                        <button
-                          key={date}
-                          onClick={() => {
-                            setFutureSelected(false);
-                            setSelectedDate((prev) =>
-                              prev === parseInt(date)
-                                ? undefined
+                    {orderedDates.map((date) => (
+                      <button
+                        key={date}
+                        onClick={() => {
+                          setFutureSelected(false);
+                          setSelectedDate((prev) =>
+                            prev + "" === date
+                              ? undefined
+                              : date === "currentEvents"
+                                ? "currentEvents"
                                 : parseInt(date)
-                            );
-                          }}
-                          className={`text-sm p-1 border-2  border-hh-600 rounded-md ${
-                            darkBackground
-                              ? selectedDate === parseInt(date)
-                                ? "bg-hh-50 text-hh-800  hover:bg-hh-600 hover:text-hh-50 outline outline-1 outline-hh-200 outline-offset-1 "
-                                : "bg-hh-800 text-hh-50  hover:bg-hh-600 hover:text-hh-50"
-                              : selectedDate === parseInt(date)
-                                ? "bg-hh-800 text-hh-50  hover:bg-hh-600 hover:text-hh-50"
-                                : "bg-hh-50 text-hh-800  hover:bg-hh-600 hover:text-hh-50"
-                          } transition-all`}
-                        >
-                          {getDate(parseInt(date)) === getDate(today)
+                          );
+                        }}
+                        className={`text-sm p-1 border-2  border-hh-600 rounded-md ${
+                          darkBackground
+                            ? selectedDate === parseInt(date) ||
+                              (selectedDate === "currentEvents" &&
+                                date === "currentEvents")
+                              ? "bg-hh-50 text-hh-800  hover:bg-hh-600 hover:text-hh-50 outline outline-1 outline-hh-200 outline-offset-1 "
+                              : "bg-hh-800 text-hh-50  hover:bg-hh-600 hover:text-hh-50"
+                            : selectedDate === parseInt(date) ||
+                                (selectedDate === "currentEvents" &&
+                                  date === "currentEvents")
+                              ? "bg-hh-800 text-hh-50  hover:bg-hh-600 hover:text-hh-50"
+                              : "bg-hh-50 text-hh-800  hover:bg-hh-600 hover:text-hh-50"
+                        } transition-all`}
+                      >
+                        {date === "currentEvents"
+                          ? "Aktuelle Events"
+                          : getDate(parseInt(date)) === getDate(today)
                             ? "Heute"
                             : getDate(parseInt(date))}
-                        </button>
-                      ))}
+                      </button>
+                    ))}
                     {!!future.length && (
                       <button
                         onClick={() => {
@@ -285,11 +333,11 @@ export default function DynamicEventsMap({
                 </div>
               )}
 
-              {showBezirke && (
+              {showBezirke && bezirke.length > 1 && (
                 <div className="flex w-full flex-col">
                   <h3 className="font-bold text-lg p-2">Bezirke</h3>
                   <div className="flex flex-wrap gap-2 items-center pb-2 px-2">
-                    {bezirke.current.map((item) => (
+                    {bezirke.map((item) => (
                       <button
                         key={item}
                         onClick={() => {
@@ -310,6 +358,35 @@ export default function DynamicEventsMap({
                         } transition-all`}
                       >
                         {item}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {showEventType && !!eventTypes?.length && (
+                <div className="flex w-full flex-col">
+                  <h3 className="font-bold text-lg p-2">Event type</h3>
+                  <div className="flex flex-wrap gap-2 items-center pb-2 px-2">
+                    {eventTypes.map((item) => (
+                      <button
+                        key={item}
+                        onClick={() => {
+                          setSelectedEvent((prev) =>
+                            prev === item ? undefined : item
+                          );
+                        }}
+                        className={`text-sm p-1 border-2 border-hh-600 rounded-md ${
+                          darkBackground
+                            ? selectedEvent === item
+                              ? "bg-hh-50 text-hh-800  hover:bg-hh-600 hover:text-hh-50 outline outline-1 outline-hh-200 outline-offset-1"
+                              : "bg-hh-800 text-hh-50  hover:bg-hh-600 hover:text-hh-50"
+                            : selectedEvent === item
+                              ? "bg-hh-800 text-hh-50  hover:bg-hh-600 hover:text-hh-50"
+                              : "bg-hh-50 text-hh-800  hover:bg-hh-600 hover:text-hh-50"
+                        } transition-all`}
+                      >
+                        {eventTypesNames[item]}
                       </button>
                     ))}
                   </div>
