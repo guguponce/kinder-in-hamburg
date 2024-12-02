@@ -14,7 +14,7 @@ export default async function AddCopiedFlohmarkt({
   if (!user) redirect("/");
   const flohmarkt = await getEventWithID(params.flohmarktID);
   if (!flohmarkt) redirect("/new-flohmarkt");
-  const id = new Date().getTime();
+  const id = Date.now();
   const { email, full_name: name, picture: image } = user;
   return (
     <AdminRoute>

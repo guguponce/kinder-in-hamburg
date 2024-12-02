@@ -34,7 +34,7 @@ import { ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import clsx from "clsx";
 
-export const postDate = () => new Date().getTime();
+export const postDate = () => Date.now();
 
 export const getImagesArray = (images: string) => {
   return images.replace("[", "").replace("]", "").split(",");

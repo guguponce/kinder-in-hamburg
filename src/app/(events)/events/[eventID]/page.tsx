@@ -93,9 +93,7 @@ export default async function EventPage({
     <main className="flex flex-col items-center w-full p-1">
       <FlohmarktTemplate flohmarkt={event}>
         {event.status === "old" && <OldEventSign />}
-        {event.closedDates?.find(
-          (d) => getDate(d) === getDate(new Date().getTime())
-        ) && (
+        {event.closedDates?.find((d) => getDate(d) === getDate(Date.now())) && (
           <OldEventSign
             title="Heute findet diese Veranstaltung nicht statt"
             text="Schaue dich mal die heutigen Ereignisse an"

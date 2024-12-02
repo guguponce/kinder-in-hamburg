@@ -524,7 +524,7 @@ export const getEventsFromBezirkStadtteil = async (
       .from(eventTable)
       .select("*")
       .or(combinedCondition)
-      .gte("date", new Date().getTime());
+      .gte("date", Date.now());
     if (error) {
       throw new Error("There was a problem getting events from nearby.");
     }
@@ -660,7 +660,7 @@ export const getAllFlohmaerteSeparatedByStatus = async (
     const { data, error } = await supabaseAdmin
       .from(eventTable)
       .select("*")
-      .gte("date", futureFlohmaerkte ? new Date().getTime() : 0);
+      .gte("date", futureFlohmaerkte ? Date.now() : 0);
     if (error) {
       throw new Error("There was a problem getting the event posts.");
     }

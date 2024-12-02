@@ -59,7 +59,7 @@ export default async function BezirkPage({
           <section className="w-full flex justify-center items-center bg-gradient-to-b from-hh-600 to-hh-500 bg-opacity-25 rounded">
             <BezirkeScrollableEvents
               events={flohmaerkte.sort((a, b) => a.date - b.date)}
-              bezirk={bezirk}
+              bezirk={bezirk as iBezirk}
               title="Flea Markets"
             />
           </section>

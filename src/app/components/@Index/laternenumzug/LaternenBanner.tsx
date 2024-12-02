@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function LaternenBanner() {
-  const today = new Date().getTime();
+  const today = Date.now();
   if (today > new Date("2024-12-29").getTime()) return null;
   return (
     <section className="p-4 relative rounded-lg bg-gradient-to-b  min-w-fit flex gap-2 flex-col items-center w-full  max-w-[800px] lg:from-hh-950 lg:to-hh-800  lg:w-fit lg:max-w-[420px] text-white bg-opacity-10 transition-all overflow-hidden">

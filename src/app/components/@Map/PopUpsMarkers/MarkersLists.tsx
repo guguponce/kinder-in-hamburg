@@ -100,7 +100,7 @@ export default function MarkersLists({
   const posts = lists.posts || [];
   const spielplaetze = lists.spielplaetze || [];
   const events = lists.events || [];
-  const today = new Date().getTime();
+  const today = Date.now();
   return (
     <>
       {showFlohmaerkte && (

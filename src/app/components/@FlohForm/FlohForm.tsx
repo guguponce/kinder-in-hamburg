@@ -101,7 +101,7 @@ export default function FlohForm({
     closedDates || []
   );
 
-  const newID = useRef(new Date().getTime());
+  const newID = useRef(Date.now());
   const {
     register,
     handleSubmit,

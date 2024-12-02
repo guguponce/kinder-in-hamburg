@@ -71,7 +71,7 @@ export default function SpielplatzForm({
   user,
   spielplatzFormType,
 }: iSpielplatzFormProps) {
-  const newID = useRef(new Date().getTime());
+  const newID = useRef(Date.now());
   const router = useRouter();
   const [imagesUrlsReady, setImagesUrlsReady] = useState<{
     ready: boolean;

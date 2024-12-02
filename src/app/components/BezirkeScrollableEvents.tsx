@@ -31,7 +31,7 @@ export default async function BezirkeScrollableEvents({
   const filteredList = bezirk
     ? events.filter((ev) => ev.bezirk === bezirk)
     : events;
-  const heuteMilisec = new Date().getTime();
+  const heuteMilisec = Date.now();
   const heute = getDate(heuteMilisec, false, true);
   return (
     <div id="bezirke-scrollable-events" className="w-fit max-w-full rounded">

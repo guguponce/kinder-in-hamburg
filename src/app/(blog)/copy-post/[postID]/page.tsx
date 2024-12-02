@@ -20,7 +20,7 @@ export default async function AddCopiedFlohmarkt({
     (await getApprovedPostWithID(params.postID)) ||
     (await getSuggestedPostWithID(params.postID));
   if (!flohmarkt) redirect("/new-flohmarkt");
-  const id = new Date().getTime();
+  const id = Date.now();
   const { email, full_name: name, picture: image } = user;
 
   return (

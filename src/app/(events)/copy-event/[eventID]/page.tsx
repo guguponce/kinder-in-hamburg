@@ -14,7 +14,7 @@ export default async function AddCopiedEvent({
   if (!user) redirect("/");
   const event = await getEventWithID(params.eventID, "events");
   if (!event) redirect("/new-event");
-  const id = new Date().getTime();
+  const id = Date.now();
   const { email, full_name: name, picture: image } = user;
   return (
     <AdminRoute>

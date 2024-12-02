@@ -107,7 +107,7 @@ export default function PostForm({
     errorMessage: string;
   }>({ isError: false, errorMessage: "" });
 
-  const newID = useRef(new Date().getTime());
+  const newID = useRef(Date.now());
   const postTextAreaRef = React.useRef<HTMLTextAreaElement>(null);
 
   const {
