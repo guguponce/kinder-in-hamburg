@@ -8,7 +8,7 @@ import BezirkableEventsList from "@components/BezirkableEventsList";
 import dynamic from "next/dynamic";
 import { Metadata } from "next";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
-import MarkersLists from "@app/components/@Map/PopUpsMarkers/MarkersLists";
+import { iFlohmarkt } from "@app/utils/types";
 
 const DynamicEventsMap = dynamic(
   () => import("../../components/@Map/DynamicEventsMap"),
@@ -70,7 +70,7 @@ export default async function EventPage() {
   const lastMidnight = new Date(today).setHours(0, 0, 0, 0);
 
   const thisWeekFlohmaerkte = flohmaerkte.filter(
-    ({ date }) => date > lastMidnight && date < nextMonday
+    ({ date }) => date > lastMidnight && date < nextMonday - 1000 * 60 * 60
   );
   const thisWeekEvents = events.filter(
     ({ date, endDate }) =>
@@ -98,21 +98,21 @@ export default async function EventPage() {
       </h1>
       <BezirkeScrollableEvents
         title="Diese Woche"
-        events={thisWeekEvents}
+        events={thisWeekEvents.filter(({ type }) => type !== "weihnachtsmarkt")}
         type="events"
       ></BezirkeScrollableEvents>
       <DynamicEventsMap
         future={futureEvents}
-        thisWeek={thisWeekEvents}
+        thisWeek={[
+          ...thisWeekEvents,
+          ...(thisWeekFlohmaerkte.map((floh) => ({
+            ...floh,
+            type: "flohmarkt",
+          })) as iFlohmarkt[]),
+        ]}
         showBezirke={false}
         today={today}
-      >
-        <MarkersLists
-          lists={{ flohmaerkte: thisWeekFlohmaerkte }}
-          showFlohmaerkte
-          cluster
-        />
-      </DynamicEventsMap>
+      ></DynamicEventsMap>
       <BezirkableEventsList
         variant="transparent-light"
         title="Ab nächster Woche"
