@@ -1,6 +1,5 @@
 "use client";
 import Button from "@app/components/@Buttons/Button";
-import ScrollableCardList from "@app/components/@Cards/ScrollableCardList";
 import TextPriorityCard from "@app/components/@Cards/TextPriorityCard";
 import BoyGirlIcon from "@app/components/@Icons/@Events/BoyGirlIcon";
 import KarussellBigIcon from "@app/components/@Icons/@Events/KarusselBigIcon";
@@ -16,6 +15,7 @@ interface AttraktionenProps {
     nikolaus: iFlohmarkt[];
     kinderprogramm: iFlohmarkt[];
   };
+  children?: React.ReactNode;
 }
 
 type AttraktionenType = keyof AttraktionenProps["attraktionen"];

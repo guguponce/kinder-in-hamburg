@@ -1,10 +1,10 @@
 import React from "react";
 import ScrollableContainer from "./ScrollableContainer";
-import { iFlohmarkt } from "@app/utils/types";
+import { iBezirk, iFlohmarkt } from "@app/utils/types";
 import FlohmarktPoster from "./@Cards/FlohmarktPoster";
 import PaperPlane from "./@Icons/PaperPlane";
 import { bezirke } from "@app/utils/constants";
-import { separateInBezirke } from "@app/utils/functions";
+import { getDate, separateInBezirke } from "@app/utils/functions";
 
 export default async function BezirkeScrollableEvents({
   events,
@@ -14,7 +14,7 @@ export default async function BezirkeScrollableEvents({
 }: {
   type?: "flohmaerkte" | "events";
   events: iFlohmarkt[];
-  bezirk?: string;
+  bezirk?: iBezirk;
   title?: string;
 }) {
   if (events.length === 0) return null;
@@ -23,13 +23,16 @@ export default async function BezirkeScrollableEvents({
   );
 
   const eventsBezirke = Array.from(new Set(events.map((ev) => ev.bezirk)));
-  const displayBezirke = bezirke
-    .filter((bez) => eventsBezirke.includes(bez))
-    .sort((a, b) => eventsByBezirke[b].length - eventsByBezirke[a].length);
+  const displayBezirke = bezirk
+    ? [bezirk]
+    : bezirke
+        .filter((bez) => eventsBezirke.includes(bez))
+        .sort((a, b) => eventsByBezirke[b].length - eventsByBezirke[a].length);
   const filteredList = bezirk
     ? events.filter((ev) => ev.bezirk === bezirk)
     : events;
-
+  const heuteMilisec = new Date().getTime();
+  const heute = getDate(heuteMilisec, false, true);
   return (
     <div id="bezirke-scrollable-events" className="w-fit max-w-full rounded">
       {title &&
@@ -59,107 +62,73 @@ export default async function BezirkeScrollableEvents({
           </div>
         ))}
       <div className="overflow-x-auto w-fit max-w-full flex justify-center flex-wrap gap-2 items-stretch">
-        {bezirk
-          ? filteredList.map(
-              (
-                {
-                  id,
-                  title,
-                  date,
-                  image,
-                  bezirk: flohBezirk,
-                  stadtteil,
-                  type: eventType,
-                },
-                i
-              ) => (
-                <article
-                  key={id}
-                  className={`overflow-hidden h-[270px] min-w-[180px] shadow-md ${
-                    i === events.length - 1 ? "" : "mr-4"
-                  }`}
-                >
-                  <FlohmarktPoster
-                    bezirk={flohBezirk}
-                    id={id}
-                    index={i}
-                    title={title}
-                    date={date}
-                    image={image}
-                    prefixLink={`/${type}/`}
-                    eventType={eventType || "flohmarkt"}
-                  />
-                  <h3 className="h-[20px] w-full font-semibold text-xs truncate-1">
-                    <span>
-                      {new Date(date)
-                        .toLocaleDateString("de-DE")
-                        .replace(".2024", " - ")}
-                    </span>
-                    <span> {stadtteil}</span>{" "}
-                  </h3>
-                </article>
-              )
-            )
-          : displayBezirke.map((bezirk) => (
-              <div
-                key={bezirk}
-                className={`min-w-[248px] flex items-center flex-col rounded bg-hh-600 bg-opacity-50 p-2 ${
-                  eventsByBezirke[bezirk].length > 4
-                    ? "w-fit"
-                    : "xl:w-[calc(33%-0.5rem)] lg:w-[calc(50%-1rem)]"
-                } max-w-full shadow-md`}
+        {displayBezirke.map((currentBezirk) => (
+          <div
+            key={currentBezirk}
+            className={`min-w-[248px] flex items-center flex-col rounded bg-hh-600 bg-opacity-50 p-2 ${
+              eventsByBezirke[currentBezirk].length > 4
+                ? "w-fit"
+                : "xl:w-[calc(33%-0.5rem)] lg:w-[calc(50%-1rem)]"
+            } max-w-full shadow-md`}
+          >
+            {!bezirk && (
+              <h3
+                className={`${
+                  eventsByBezirke[currentBezirk].length > 1 ? "ml-4" : "mx-auto"
+                } text-2xl font-semibold p-2 pb-0 text-white self-start text-center`}
               >
-                <h3
-                  className={`${
-                    eventsByBezirke[bezirk].length > 1 ? "ml-4" : "mx-auto"
-                  } text-2xl font-semibold p-2 pb-0 text-white self-start text-center`}
-                >
-                  {bezirk}
-                </h3>
-                <ScrollableContainer color="800">
-                  {eventsByBezirke[bezirk].map(
-                    (
-                      {
-                        id,
-                        title,
-                        date,
-                        image,
-                        bezirk: flohBezirk,
-                        stadtteil,
-                        type: eventType,
-                      },
-                      i
-                    ) => (
-                      <article
-                        key={id}
-                        className="relative flex flex-col items-center overflow-hidden h-[275px] min-w-[180px] gap-1"
-                      >
-                        <div className="overflow-hidden h-[250px] min-w-[180px]">
-                          <FlohmarktPoster
-                            bezirk={flohBezirk}
-                            id={id}
-                            index={i}
-                            title={title}
-                            date={date}
-                            image={image}
-                            prefixLink={`/${type}/`}
-                            eventType={eventType || "flohmarkt"}
-                          />
-                        </div>
-                        <h3 className="text-white text-center h-[20px] w-full font-semibold text-sm truncate-1">
-                          <span>
-                            {new Date(date)
-                              .toLocaleDateString("de-DE")
-                              .replace(".2024", " - ")}
-                          </span>
-                          <span> {stadtteil}</span>{" "}
-                        </h3>
-                      </article>
-                    )
-                  )}
-                </ScrollableContainer>
-              </div>
-            ))}
+                {currentBezirk}
+              </h3>
+            )}
+            <ScrollableContainer color="800">
+              {eventsByBezirke[currentBezirk].map(
+                (
+                  {
+                    id,
+                    title,
+                    date,
+                    image,
+                    bezirk: flohBezirk,
+                    stadtteil,
+                    type: eventType,
+                    endDate,
+                  },
+                  i
+                ) => {
+                  const evDate = getDate(date, false, true);
+                  const offenHeute =
+                    evDate === heute || (endDate && endDate > heuteMilisec);
+                  return (
+                    <article
+                      key={id}
+                      className={`relative flex flex-col items-center overflow-hidden h-[275px] min-w-[180px] gap-1 ${offenHeute && "outline-2  outline outline-offset-2 rounded outline-positive-700 bg-positive-700 bg-opacity-20"}`}
+                    >
+                      <div className="overflow-hidden h-[250px] min-w-[180px]">
+                        <FlohmarktPoster
+                          bezirk={flohBezirk}
+                          id={id}
+                          index={i}
+                          title={title}
+                          date={date}
+                          endDate={endDate}
+                          image={image}
+                          prefixLink={`/${type}/`}
+                          eventType={eventType || "flohmarkt"}
+                        />
+                      </div>
+                      <h3 className="text-white text-center flex justify-between items-center h-[20px] w-full font-semibold text-sm truncate-1">
+                        <span className="font-bold mr-4">
+                          {offenHeute ? "Heute" : evDate}
+                        </span>
+                        <span className="text-xs"> {stadtteil}</span>{" "}
+                      </h3>
+                    </article>
+                  );
+                }
+              )}
+            </ScrollableContainer>
+          </div>
+        ))}
       </div>
     </div>
   );
