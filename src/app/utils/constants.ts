@@ -25,6 +25,14 @@ export const eventTypes: iEventType[] = [
   "flohmarkt",
 ];
 
+export const eventTypesNames = {
+  weihnachtsmarkt: "Weihnachtsmarkt",
+  flohmarkt: "Flohmarkt",
+  adventsevent: "Adventsveranstaltung",
+  laterne: "Laternenumzug",
+  laternewerkstatt: "Laternenwerkstatt",
+};
+
 export const weekDays: { [x: number]: string } = {
   0: "Sonntag",
   1: "Montag",
