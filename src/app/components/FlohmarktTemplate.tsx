@@ -55,7 +55,6 @@ export default function FlohmarktTemplate({
     /<attribution>([\s\S]*?)<attribution>/
   )?.[1];
 
-  console.log(attribution);
   return (
     <>
       {children}
@@ -67,20 +66,24 @@ export default function FlohmarktTemplate({
         <div className="flex justify-between items-center gap-4 w-full">
           <Link
             href={
-              type && ["laterne", "laternewerkstatt"].includes(type)
-                ? "/laternenumzuege"
-                : !!type
-                  ? "/events"
-                  : "/flohmaerkte"
+              type
+                ? ["laterne", "laternewerkstatt"].includes(type)
+                  ? "/laternenumzuege"
+                  : ["weihnachtsmarkt", "adventsevent"].includes(type)
+                    ? "/weihnachtszeit"
+                    : "/events"
+                : "/flohmaerkte"
             }
             className="text-sm text-hh-700 px-2 py-1 hover:no-underline hover:underline-offset-0 min-w-fit"
           >
             ← Alle
-            {type && ["laterne", "laternewerkstatt"].includes(type)
-              ? " Laternenumzüge"
-              : !!type
-                ? " Events"
-                : " Flohmärkte"}
+            {type
+              ? ["laterne", "laternewerkstatt"].includes(type)
+                ? " Laternenumzüge"
+                : ["weihnachtsmarkt", "adventsevent"].includes(type)
+                  ? " Adventsveranstaltungen"
+                  : " Events"
+              : " Flohmärkte"}
           </Link>
           <div
             id="categories"
