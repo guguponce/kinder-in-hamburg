@@ -2,6 +2,7 @@ import { getAllEventsThisWeek, getThisWeekEvents } from "@app/api/dbActions";
 import { iFlohmarkt, iPost, iSpielplatz } from "@app/utils/types";
 import WeitereFlohmaerkte from "@app/components/WeitereEvents";
 import RecommendationsMap from "@app/components/@Map/RecommendationsMap";
+import { getTodayNexMonday } from "@app/utils/functions";
 
 export default async function EventPageMapContainer({
   currentTarget,
@@ -19,7 +20,7 @@ export default async function EventPageMapContainer({
   const weitereVeranstaltungen = thisWeekEvents.filter(
     ({ id, endDate }) => id !== currentTarget.id && !endDate
   );
-
+  const { nextMonday } = getTodayNexMonday();
   return (
     <div className="flex flex-col items-center gap-2 w-full max-w-[600px] md:max-w-[800px] rounded p-2">
       <RecommendationsMap
@@ -49,7 +50,7 @@ export default async function EventPageMapContainer({
               displayedMarkers={[
                 ...weitereVeranstaltungen,
                 ...thisWeekFlohmaerkte,
-              ]}
+              ].filter(({ date }) => date < nextMonday - 1000 * 60 * 60)}
             />
           </section>
         </>
