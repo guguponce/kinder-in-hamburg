@@ -139,13 +139,16 @@ export default async function WeihnachtszeitPage() {
     ({ optionalComment }) =>
       optionalComment && /weihnachtsmann/gi.test(optionalComment)
   );
+  const nikolausEvents = weihnachtsmaerkte.filter(({ title }) =>
+    /nikolaus/gi.test(title)
+  );
   return (
     <main
       className={`flex flex-col gap-4 items-center w-full  ${!!todayLaternenumzuege.length ? "sm:max-w-[1000px]" : "sm:max-w-[800px]"} p-1 mb-4`}
     >
       <AdminServerComponent>
         <div className="flex flex-col gap-1 outline outline-2 outline-negative-200">
-          {[...weihnachtsmaerkte, ...adventsEvents].map((event) =>
+          {[...weihnachtsmaerkte, ...adventsEvents].map((event, i) =>
             event.status !== "approved" || !event.lat || !event.lon ? (
               <Link
                 key={event.id}
@@ -163,31 +166,32 @@ export default async function WeihnachtszeitPage() {
           )}
         </div>
         <div className="flex flex-col gap-1 outline outline-2 outline-negative-200">
-          <h2 className="text-2xl font-semibold">Märkte mit Weihnachtsmann</h2>
-          {maerkteMitWeihnachtsmann.map((event) => (
+          <h2 className="text-2xl font-semibold">Nikolaus events</h2>
+          {nikolausEvents.map((event, i) => (
             <Link
               key={event.id}
               href={"/events/" + event.id}
               className="flex gap-2 items-center flex-wrap bg-negative-600 text-negative-50"
             >
+              {i + 1}
               {event.title}
             </Link>
           ))}
         </div>
         <div className="flex flex-col gap-1 outline outline-2 my-4 outline-negative-200">
-          <h2 className="text-2xl font-semibold">Märkte mit Karussell</h2>
-          {maerkteMitCarousell.map((event) => (
+          <h2 className="text-2xl font-semibold">Märkte mit Nikolaus</h2>
+          {maerkteMitNikolaus.map((event, i) => (
             <Link
               key={event.id}
               href={"/events/" + event.id}
               className="flex gap-2 items-center flex-wrap bg-hh-600 text-negative-50"
             >
-              {event.title}
+              {i + 1} {event.title}
             </Link>
           ))}
         </div>
       </AdminServerComponent>
-      <section className="rounded-lg bg-gradient-to-b shadow-2xl from-positive-100 to-positive-200 p-4 md:py-8 w-full flex gap-4 flex-col items-center max-w-full text-negative-800  bg-opacity-10 transition-all">
+      <section className="rounded-lg bg-gradient-to-b shadow-2xl from-negative-600 to-negative-700 text-negative-100 p-4 md:py-8 w-full flex gap-4 flex-col items-center max-w-full bg-opacity-10 transition-all">
         <div className="w-full max-w-[720px] flex flex-col gap-2 justify-between items-stretch">
           <h1 className="text-3xl flex-grow font-bold ">
             Weihnachtsmärkte in Hamburg <span className="text-2xl">🎄👧🧑‍🎄</span>
