@@ -51,6 +51,11 @@ export default function FlohmarktTemplate({
     ?.replace(/ÖFFNUNGSZEITEN/i, "")
     .trim();
   const description = textWithoutLink?.replace(openHoursRegex, "").trim();
+  const attribution = optionalComment?.match(
+    /<attribution>([\s\S]*?)<attribution>/
+  )?.[1];
+
+  console.log(attribution);
   return (
     <>
       {children}
@@ -68,7 +73,7 @@ export default function FlohmarktTemplate({
                   ? "/events"
                   : "/flohmaerkte"
             }
-            className="text-sm text-hh-700 px-2 py-1 hover:underline hover:underline-offset-4 min-w-fit"
+            className="text-sm text-hh-700 px-2 py-1 hover:no-underline hover:underline-offset-0 min-w-fit"
           >
             ← Alle
             {type && ["laterne", "laternewerkstatt"].includes(type)
@@ -95,7 +100,7 @@ export default function FlohmarktTemplate({
           {!!image && (
             <aside
               key={image}
-              className="min-w-[300px] max-w-[400px] md:w-1/3 lg:w-1/2 w-full h-fit  p-4 bg-hh-800 rounded-md"
+              className="min-w-[300px] max-w-[400px] md:w-1/3 lg:w-1/2 w-full h-fit  p-4 bg-hh-800 rounded-md flex flex-col items-center"
             >
               <img
                 loading="lazy"
@@ -103,6 +108,14 @@ export default function FlohmarktTemplate({
                 alt={title}
                 className="w-full h-auto object-cover rounded-md"
               />
+              {attribution && (
+                <Link
+                  href={attribution}
+                  className="text-hh-400 hover:underline hover:underline-offset-2 italic text-xs"
+                >
+                  Entworfen von: {attribution}
+                </Link>
+              )}
             </aside>
           )}
           <section className="w-full md:w-1/2 flex-grow flex flex-col justify-between pb-4 gap-4">

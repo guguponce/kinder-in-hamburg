@@ -5,7 +5,7 @@ import Link from "next/link";
 const formatText = (text: string) => {
   // Regular expressions to match the formatting tags and their content
   const regex =
-    /<b>(.*?)<\/?b>|<sb>(.*?)<\/?sb>|<i>(.*?)<\/?i>|<u>(.*?)<\/?u>|<upper>(.*?)<\/?upper>|<link>(.*?)<\/?link>|<h3>(.*?)<\/?h3>|<h2>(.*?)<\/?h2>/g;
+    /<b>(.*?)<\/?b>|<sb>(.*?)<\/?sb>|<i>(.*?)<\/?i>|<u>(.*?)<\/?u>|<upper>(.*?)<\/?upper>|<link>(.*?)<\/?link>|<h3>(.*?)<\/?h3>|<h2>(.*?)<\/?h2>|<attribution>(.*?)<\/?attribution>/g;
 
   let formattedText = [];
   let lastIndex = 0;
@@ -23,6 +23,7 @@ const formatText = (text: string) => {
       linkText,
       h3,
       h2,
+      attributionText,
       index
     ) => {
       // Push the text before the match
@@ -61,6 +62,8 @@ const formatText = (text: string) => {
             {h2}
           </span>
         );
+      } else if (attributionText) {
+        formattedText.push(<></>);
       } else if (linkText) {
         formattedText.push(
           <Link
