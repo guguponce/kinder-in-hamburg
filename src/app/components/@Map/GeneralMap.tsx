@@ -5,7 +5,6 @@ import "leaflet/dist/leaflet.css";
 import { divIcon } from "leaflet";
 import { iAddress, iFlohmarkt, iPost, iSpielplatz } from "@app/utils/types";
 import {
-  createStandortMapIcon,
   isTypeFlohmarkt,
   isTypePost,
   isTypeSpielplatz,
@@ -14,6 +13,7 @@ import {
 import SpielplatzPopUP from "@app/components/@Map/PopUpsMarkers/SpielplatzPopUP";
 import FlohmarktPopUP from "./PopUpsMarkers/FlohmarktPopUP";
 import PostPopUP from "./PopUpsMarkers/PostPopUP";
+import { createStandortMapIcon } from "./functions";
 
 const MainLocationIcon = divIcon({
   html: createStandortMapIcon("#b72f1e", 35),

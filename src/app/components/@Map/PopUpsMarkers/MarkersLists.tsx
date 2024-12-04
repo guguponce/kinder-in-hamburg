@@ -2,24 +2,13 @@
 import FlohmarktPopUP from "@components/@Map/PopUpsMarkers/FlohmarktPopUP";
 import PostPopUP from "@components/@Map/PopUpsMarkers/PostPopUP";
 import SpielplatzPopUP from "@components/@Map/PopUpsMarkers/SpielplatzPopUP";
-import { createStandortMapIcon, joinAddress } from "@app/utils/functions";
+import { joinAddress } from "@app/utils/functions";
 import { iAddress, iListsFPS } from "@app/utils/types";
 import { divIcon, point } from "leaflet";
 import React from "react";
 import { Marker } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
-import {
-  desaturatedWeihnachtsmarktIcon,
-  weihnachtsmarktIcon,
-} from "../functions";
-
-export const createNormalSizeIcon = (color: string, size: number = 30) =>
-  divIcon({
-    html: createStandortMapIcon(color, size),
-    iconSize: [size, size],
-    iconAnchor: [size / 2, size],
-    className: "bg-transparent",
-  });
+import { createNormalSizeIcon, createWeihnachtsmarktIcon } from "../functions";
 
 const createClusterGroupIcon =
   (type: "spielplatz" | "flohmarkt" | "post" | "event") => (cluster: any) =>
@@ -40,6 +29,8 @@ const flohmarktIcon = createNormalSizeIcon("#7B3E5E");
 const postIcon = createNormalSizeIcon("#33404D");
 const spielplatzIcon = createNormalSizeIcon("#405b3a");
 const eventIcon = createNormalSizeIcon("#de6c13");
+const weihnachtsmarktIcon = createWeihnachtsmarktIcon(24);
+const desaturatedWeihnachtsmarktIcon = createWeihnachtsmarktIcon(24, true);
 
 const ConditionalCluster = ({
   cluster,

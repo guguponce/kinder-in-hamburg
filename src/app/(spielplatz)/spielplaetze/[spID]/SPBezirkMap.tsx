@@ -6,11 +6,12 @@ import "leaflet/dist/leaflet.css";
 import { Marker, Popup } from "react-leaflet";
 import { divIcon } from "leaflet";
 import Link from "next/link";
-import { createStandortMapIcon, distanceFilter } from "@app/utils/functions";
 import TriangleIcon from "@components/@Icons/TriangleIcon";
 import ShuffleGallery from "@app/components/@Cards/ShuffleGallery";
 import GeneralMap from "@app/components/@Map/GeneralMap";
 import MarkersLists from "@app/components/@Map/PopUpsMarkers/MarkersLists";
+import { createStandortMapIcon } from "@app/components/@Map/functions";
+import { distanceFilter } from "@app/utils/functions";
 
 const CurrentSelectedSpielplatzIcon = divIcon({
   html: createStandortMapIcon("#F6AA1C", 30),

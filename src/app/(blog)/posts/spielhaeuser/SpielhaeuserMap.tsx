@@ -1,19 +1,15 @@
 "use client";
 import MarkersLists from "@app/components/@Map/PopUpsMarkers/MarkersLists";
 import { iAddress, iPost } from "@app/utils/types";
-import dynamic from "next/dynamic";
 import React, { useMemo, useRef, useState } from "react";
 import GeneralMap from "@components/@Map/GeneralMap";
 import { Marker, Popup } from "react-leaflet";
-import {
-  createStandortMapIcon,
-  getPlainText,
-  joinAddress,
-} from "@app/utils/functions";
+import { getPlainText, joinAddress } from "@app/utils/functions";
 import { divIcon } from "leaflet";
 import Link from "next/link";
 import HorizontalCard from "@app/components/@Cards/HorizontalCard";
 import ExpandableContainer from "@app/components/ExpandableContainer";
+import { createStandortMapIcon } from "@app/components/@Map/functions";
 
 const OptionalExpandableContainer = ({
   children,

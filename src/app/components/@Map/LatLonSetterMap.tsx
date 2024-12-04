@@ -3,7 +3,7 @@ import React from "react";
 import { MapContainer, Marker, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { divIcon } from "leaflet";
-import { createStandortMapIcon } from "@app/utils/functions";
+import { createStandortMapIcon } from "./functions";
 
 const MainLocationIcon = divIcon({
   html: createStandortMapIcon("#b72f1e", 35),
