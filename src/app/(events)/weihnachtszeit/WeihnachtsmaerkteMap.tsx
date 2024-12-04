@@ -5,7 +5,7 @@ import { iEventType, iFlohmarkt } from "@app/utils/types";
 import { Marker } from "react-leaflet";
 import React from "react";
 import { divIcon, point } from "leaflet";
-import { addressWithoutCity } from "@app/utils/functions";
+import { addressWithoutCity, cn } from "@app/utils/functions";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import {
   createWeihnachtsmarktIcon,
@@ -19,12 +19,10 @@ const weihnachtsmarktIcon = createWeihnachtsmarktIcon(24);
 const smallWeihnachtsmarktIcon = createWeihnachtsmarktIcon(20);
 const eventIcon = createNormalSizeIcon("#405b3a", 30, "#2d3d2a");
 export default function DynamicEventsMap({
-  today,
   currentEvents,
   future = [],
   square = true,
-  darkBackground = false,
-  eventType,
+  mapContainerClassName,
 }: {
   eventType?: iEventType | "flohmaerkte";
   today: number;
@@ -32,6 +30,7 @@ export default function DynamicEventsMap({
   currentEvents: iFlohmarkt[];
   future?: iFlohmarkt[];
   square?: boolean;
+  mapContainerClassName?: string;
 }) {
   //   const [selectedDate, setSelectedDate] = React.useState<number | undefined>(
   //     undefined
@@ -48,15 +47,19 @@ export default function DynamicEventsMap({
     (iEventType | "flohmaerkte")[]
   >(["weihnachtsmarkt"]);
   return (
-    <div className="w-full sm:w-full flex flex-col md:flex-row md:flex-wrap items-stretch gap-2 rounded">
+    <div className="w-full sm:w-full flex flex-col gap-2 rounded">
       <section
-        className={`max-h-[60vh] min-h-[250px] flex-grow xs:min-w-[300px] sm:max-w-[800px] aspect-square sm:aspect-[3/2] md:aspect-auto md:mx-auto ${square ? "w-full lg:aspect-square  lg:max-w-full" : "md:aspect-video lg:aspect-auto lg:h-[50vh] lg:max-w-full"} flex justify-center rounded overflow-hidden`}
+        className={cn(
+          `min-h-full min-w-full flex justify-center rounded overflow-hidden`,
+          mapContainerClassName
+        )}
       >
         <GeneralMap zoom={11}>
           <>
             {" "}
             <MarkerClusterGroup
               chunkedLoading
+              maxClusterRadius={10}
               iconCreateFunction={(cluster: any) =>
                 divIcon({
                   html: `<div class="clusterIcon clusterIconSpielplatz">${cluster.getChildCount()}</div>`,
@@ -82,6 +85,7 @@ export default function DynamicEventsMap({
                       <Marker
                         icon={eventIcon}
                         key={id}
+                        zIndexOffset={200}
                         position={[lat || 53.5511, lon || 9.9937]}
                       >
                         <FlohmarktPopUP
@@ -120,6 +124,7 @@ export default function DynamicEventsMap({
                           : weihnachtsmarktIcon
                       }
                       key={id}
+                      zIndexOffset={1}
                       position={[lat || 53.5511, lon || 9.9937]}
                     >
                       <FlohmarktPopUP

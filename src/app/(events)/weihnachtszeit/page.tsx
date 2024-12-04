@@ -11,6 +11,7 @@ import { Metadata } from "next";
 import Attraktionen from "./Attraktionen";
 import AdventsEvents from "./AdventsEvents";
 import WeihnachtsmaerkteHero from "./WeihnachtsmaerkteHero";
+import Nikolaus from "./Nikolaus";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -133,7 +134,7 @@ export default async function WeihnachtszeitPage() {
       optionalComment && /weihnachtsmann/gi.test(optionalComment)
   );
   const nikolausEvents = andereEvents.filter(({ title, optionalComment }) =>
-    /nikolaus/gi.test(title)
+    /nikolaus /gi.test(title)
   );
   return (
     <main
@@ -160,17 +161,21 @@ export default async function WeihnachtszeitPage() {
         </div>
         <div className="flex flex-col gap-1 outline outline-2 outline-negative-200">
           <h2 className="text-2xl font-semibold">Nikolaus events</h2>
-          {nikolausEvents.map((event, i) => (
-            <Link
-              key={event.id}
-              href={"/events/" + event.id}
-              className="flex gap-2 items-center flex-wrap bg-negative-600 text-negative-50"
-            >
-              {event.date}
-            </Link>
-          ))}
+          {nikolausEvents
+            .filter(
+              ({ optionalComment }) => !optionalComment?.includes("attribution")
+            )
+            .map((event, i) => (
+              <Link
+                key={event.id}
+                href={"/events/" + event.id}
+                className="flex gap-2 items-center flex-wrap bg-negative-600 text-negative-50"
+              >
+                {i + 1} {event.title}
+              </Link>
+            ))}
         </div>
-        <div className="flex flex-col gap-1 outline outline-2 my-4 outline-negative-200">
+        {/* <div className="flex flex-col gap-1 outline outline-2 my-4 outline-negative-200">
           <h2 className="text-2xl font-semibold">Märkte mit Nikolaus</h2>
           {maerkteMitNikolaus.map((event, i) => (
             <Link
@@ -181,26 +186,30 @@ export default async function WeihnachtszeitPage() {
               {i + 1} {event.title}
             </Link>
           ))}
-        </div>
+        </div> */}
       </AdminServerComponent>
       <WeihnachtsmaerkteHero
         orderedEvents={orderedEvents}
         todayLaternenumzuege={todayLaternenumzuege}
       />
-      <article
-        className="p-2 md:p-4 max-w-[800px] w-full mx-auto rounded-lg"
-        style={{
-          background: "linear-gradient(45deg, #4e7247 0%, #628d5a   100%)",
-        }}
-      >
-        <WeihnachtsmaerkteMap
-          darkBackground
-          square={false}
-          currentEvents={weihnachtsmaerkte}
-          future={[...schiffEvents, ...andereEvents]}
-          today={lastMidnight}
-        />
-      </article>
+      <section className="w-full max-w-[1200px] flex flex-wrap gap-2 md:gap-4 items-center justify-center">
+        <Nikolaus events={nikolausEvents} />
+        <article
+          className="p-2 md:p-4 max-w-full xs:min-w-[400px] max-h-[60vh] min-h-[250px] flex-grow sm:max-w-[800px] rounded-lg self-stretch"
+          style={{
+            background: "linear-gradient(45deg, #4e7247 0%, #628d5a   100%)",
+          }}
+        >
+          <WeihnachtsmaerkteMap
+            mapContainerClassName="p-2 h-[50vh] max-h-[calc(50%-3rem)] bg-negative-800"
+            darkBackground
+            square={false}
+            currentEvents={weihnachtsmaerkte}
+            future={[...schiffEvents, ...andereEvents]}
+            today={lastMidnight}
+          />
+        </article>
+      </section>
       <Attraktionen
         attraktionen={{
           karussell: maerkteMitCarousell,
