@@ -166,8 +166,7 @@ export default async function WeihnachtszeitPage() {
               href={"/events/" + event.id}
               className="flex gap-2 items-center flex-wrap bg-negative-600 text-negative-50"
             >
-              {i + 1}
-              {event.title}
+              {event.date}
             </Link>
           ))}
         </div>
@@ -197,8 +196,8 @@ export default async function WeihnachtszeitPage() {
         <WeihnachtsmaerkteMap
           darkBackground
           square={false}
-          currentEvents={thisWeekEvents}
-          future={futureEvents}
+          currentEvents={weihnachtsmaerkte}
+          future={[...schiffEvents, ...andereEvents]}
           today={lastMidnight}
         />
       </article>
