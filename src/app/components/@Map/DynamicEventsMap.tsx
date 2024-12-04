@@ -5,38 +5,25 @@ import { iBezirk, iEventType, iFlohmarkt } from "@app/utils/types";
 import { Marker } from "react-leaflet";
 import React, { useMemo, useRef } from "react";
 import { divIcon, point } from "leaflet";
-import {
-  createStandortMapIcon,
-  getDate,
-  getTodayNexMonday,
-} from "@app/utils/functions";
+import { getDate, getTodayNexMonday } from "@app/utils/functions";
 import ScrollableContainer from "@components/ScrollableContainer";
 import MarkerClusterGroup from "react-leaflet-cluster";
-import { createWeihnachtsmarktMapIcon } from "./functions";
+import {
+  createNormalSizeIcon,
+  createStandortMapIcon,
+  createWeihnachtsmarktMapIcon,
+} from "./functions";
 import { eventTypesNames } from "@app/utils/constants";
 
-const createNormalSizeIcon = (
-  color: string,
-  size: number = 30,
-  stroke?: string
-) =>
-  divIcon({
-    html: createStandortMapIcon(color, size, stroke),
-    iconSize: [size, size],
-    iconAnchor: [size / 2, size],
-    className: "bg-transparent",
-  });
 const flohmarktIcon = createNormalSizeIcon("#7B3E5E", 25, "#361b29");
-const eventIcon = createNormalSizeIcon("#de6c13", 25, "#602d07");
 const futureIcon = createNormalSizeIcon("#343b3e", 25, "#1b1d1e");
-const thisWeekIcon = createNormalSizeIcon("#de6c13", 25, "#602d07");
+const eventIcon = createNormalSizeIcon("#de6c13", 25, "#602d07");
 const todayIcon = divIcon({
   html: createStandortMapIcon("#b72f1e", 30, "#460B07"),
   iconSize: [30, 30],
   iconAnchor: [30 / 2, 50],
   className: "bg-transparent",
 });
-// createNormalSizeIcon("#b72f1e", 30, "#460B07");
 const weihnachtsmarktIcon = divIcon({
   html: createWeihnachtsmarktMapIcon(),
   iconSize: [20, 25],
@@ -82,7 +69,7 @@ const DisplayedMarkers = ({
                       ? flohmarktIcon
                       : date < nextMonday
                         ? type
-                          ? thisWeekIcon
+                          ? eventIcon
                           : flohmarktIcon
                         : futureIcon
             }
@@ -109,7 +96,6 @@ export default function DynamicEventsMap({
   future = [],
   square = true,
   darkBackground = false,
-  eventType,
   showEventType = true,
   showTermine = true,
   showBezirke = true,
@@ -119,7 +105,6 @@ export default function DynamicEventsMap({
   showTermine?: boolean;
   showBezirke?: boolean;
   showEventType?: boolean;
-  eventType?: iEventType | "flohmaerkte";
   today: number;
   darkBackground?: boolean;
   thisWeek: iFlohmarkt[];
