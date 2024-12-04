@@ -114,9 +114,10 @@ export default function FlohmarktTemplate({
               {attribution && (
                 <Link
                   href={attribution}
-                  className="text-hh-400 hover:underline hover:underline-offset-2 italic text-xs"
+                  className="text-hh-400 hover:underline hover:underline-offset-2 italic text-[0.5rem] flex flex-wrap gap-1 items-center"
                 >
-                  Entworfen von: {attribution}
+                  <span>Entworfen von:</span>
+                  <span>{attribution}</span>
                 </Link>
               )}
             </aside>

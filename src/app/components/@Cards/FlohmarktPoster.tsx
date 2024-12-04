@@ -47,10 +47,10 @@ export default function FlohmarktPoster({
           : {}
       }
       className={`relative ${
-        image ? "" : "bg-gradient-to-b from-white to-hh-100 p-2"
+        image ? "" : "bg-gradient-to-b from-[#e1e4e59f] to-[#d0d7da9f] p-2"
       } w-full ${
         size === "small" ? "min-w-[144px]" : "min-w-[180px]"
-      } h-full shadow-md rounded-sm flex flex-col items-center  justify-between text-center hover:scale-[1.01] hover:shadow-xl`}
+      } h-full shadow-md rounded flex flex-col items-center  justify-between text-center hover:scale-[1.01] hover:shadow-xl`}
     >
       {!image &&
         (eventType === "flohmarkt" ? (
@@ -108,7 +108,7 @@ export default function FlohmarktPoster({
           <div
             className={`flex flex-col items-center p-1 mb-4 bg-hh-300 bg-opacity-50 backdrop-blur-sm rounded mx-1 ${image ? "bg-opacity-75" : "bg-opacity-50"}`}
           >
-            <h2 className="text-lg font-semibold text-hh-800">
+            <h2 className="text-base font-semibold text-hh-800">
               {stadtteil || bezirk}
             </h2>
             {endDate ? (

@@ -69,7 +69,7 @@ export default function ShuffleGallery({
     >
       <article className="h-full w-full md:aspect-square border border-hh-200 shadow-sm rounded overflow-hidden bg-hh-400 bg-opacity-25 flex flex-col items-center gap-2 relative">
         {isTypeFlohmarkt(currentArticle) ? (
-          <div className="mx-auto h-full object-contain aspect-square sm:w-full  flex justify-center items-center">
+          <div className="mx-auto h-full object-contain sm:w-full  flex justify-center items-center">
             <FlohmarktPoster
               contain
               bezirk={currentArticle.bezirk}

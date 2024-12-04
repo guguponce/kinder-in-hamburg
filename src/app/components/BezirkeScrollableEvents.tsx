@@ -38,13 +38,13 @@ export default async function BezirkeScrollableEvents({
       {title &&
         (!!filteredList.length ? (
           <div className="max-w-full">
-            <h2 className="text-3xl font-semibold text-white text-start self-start p-2 lg:p-4">
+            <h2 className="text-xl sm:text-2xl font-semibold text-white text-start self-start p-2 lg:p-4">
               {title}
             </h2>
           </div>
         ) : (
           <div className="max-w-full flex flex-col items-center">
-            <h2 className="text-2xl font-semibold text-white text-center p-1 lg:p-2">
+            <h2 className="text-xl sm:text-2xl font-semibold text-white text-center p-1 lg:p-2">
               Keine {type === "flohmaerkte" ? "Flohmärkte" : "Veranstaltungen"}{" "}
               gefunden
             </h2>
@@ -75,7 +75,7 @@ export default async function BezirkeScrollableEvents({
               <h3
                 className={`${
                   eventsByBezirke[currentBezirk].length > 1 ? "ml-4" : "mx-auto"
-                } text-2xl font-semibold p-2 pb-0 text-white self-start text-center`}
+                } text-xl font-semibold p-2 pb-0 text-white self-start text-center`}
               >
                 {currentBezirk}
               </h3>
