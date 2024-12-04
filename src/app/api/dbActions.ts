@@ -932,6 +932,26 @@ export const getSuggestedEvents = async (
   }
 };
 
+export const getFutureEventsWithTitle = async (wordInTitle: string) => {
+  const { today } = getTodayNexMonday();
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("events")
+      .select("*")
+      .ilike("title", `%${wordInTitle}%`)
+      .or(
+        `date.gte.${today - 1000 * 60 * 60},and(date.lte.${today},endDate.gte.${today + 1000 * 60 * 60 * 12})`
+      )
+      .ilike("status", "approved");
+
+    if (error) {
+      throw new Error("There was a problem getting the events.");
+    }
+    return data.map((f) => parseFlohmarkt(f)) as iFlohmarkt[];
+  } catch (error) {
+    return false;
+  }
+};
 export const getAllFutureEventsFromType = async (eventType: iEventType) => {
   const { today } = getTodayNexMonday();
   try {
@@ -942,7 +962,8 @@ export const getAllFutureEventsFromType = async (eventType: iEventType) => {
       .ilike("type", eventType)
       .or(
         `date.gte.${today - 1000 * 60 * 60},and(date.lte.${today},endDate.gte.${today + 1000 * 60 * 60 * 12})`
-      );
+      )
+      .ilike("status", "approved");
     if (error) {
       throw new Error("There was a problem getting the events.");
     }
