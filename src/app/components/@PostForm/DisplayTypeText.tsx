@@ -67,7 +67,7 @@ const formatText = (text: string) => {
       } else if (linkText) {
         formattedText.push(
           <Link
-            className="italic underline text-hh-500"
+            className="italic underline text-hh-500 break-words"
             key={index}
             href={linkText}
             target="_blank"
@@ -99,6 +99,7 @@ const CustomPre = ({ text }: { text: string }) => {
         whiteSpace: "pre-wrap",
         wordWrap: "break-word",
       }}
+      key={text}
       className="text-wrap py-1 max-w-full w-full"
     >
       {formatText(text)}
@@ -161,6 +162,7 @@ export default function DisplayTypeText({
             whiteSpace: "pre-wrap",
             wordWrap: "break-word",
           }}
+          key={text}
           className="text-sm  text-wrap py-1 max-w-full w-full"
         >
           {text}
@@ -172,6 +174,7 @@ export default function DisplayTypeText({
             whiteSpace: "pre-wrap",
             wordWrap: "break-word",
           }}
+          key={text}
           className="text-xl font-semibold my-1 text-wrap py-1 max-w-full w-full"
         >
           {text}

@@ -304,3 +304,39 @@ picture {
     grid-area: details;
   }
 }
+
+#FT-grid {
+  outline: 2px solid red;
+  outline-offset: 2px;
+  gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  @media screen and (min-width: 768px) {
+    display: grid;
+    justify-content: center;
+    align-items: start;
+    grid-template-columns: 300px 1fr;
+    grid-template-rows: min-content 1fr auto;
+    grid-template-areas:
+      "image hero"
+      "locationdate hero"
+      "externallink externalLink";
+  }
+  @media screen and (min-width: 1024px) {
+    grid-template-columns: 400px 1fr;
+  }
+  #FT-image {
+    grid-area: image;
+  }
+  #flohmarkt-hero {
+    grid-area: hero;
+  }
+  #external-link {
+    grid-area: externalLink;
+  }
+  #location-date {
+    grid-area: locationdate;
+  }
+}
