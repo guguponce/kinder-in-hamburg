@@ -59,6 +59,7 @@ export default function FlohmarktTemplate({
     <>
       {children}
       <section
+        id="flohmarkt-template"
         className={`w-full ${
           image ? "max-w-[1000px]" : "max-w-[800px]"
         } ${type === "laterne" ? "bg-gradient-to-b from-hh-950 to-hh-800 w-full" : "bg-hh-100"} rounded sm:rounded-lg p-2 sm:px-4 relative overflow-hidden flex flex-col gap-2`}
@@ -99,7 +100,10 @@ export default function FlohmarktTemplate({
             </AdminServerComponent>
           </div>
         </aside>
-        <div id="FT-grid" className="w-full min-h-[40vh]">
+        <div
+          id={!!image ? "FT-Grid" : "FT-Flex"}
+          className="w-full min-h-[40vh]"
+        >
           {!!image && (
             <aside
               key={image}
@@ -180,31 +184,33 @@ export default function FlohmarktTemplate({
 
           <div
             id="location-date"
-            className="flex flex-col sm:flex-row flex-wrap flex-grow justify-stretch items-stretch gap-2 w-fit sm:w-full max-w-[800px] mx-auto rounded  text-hh-950"
+            className="flex flex-col sm:flex-row flex-wrap flex-grow  items-stretch gap-2 w-fit sm:w-full max-w-[800px] mx-auto rounded  text-hh-950"
           >
             <div
               id="location"
-              className={`flex flex-col w-fit sm:w-full sm:max-w-[calc(50%-4px)] md:max-w-full justify-stretch rounded bg-hh-300 ${type === "laterne" ? "bg-opa75" : "bg-opacity-25"} py-2 px-4`}
+              className={`flex flex-col w-fit sm:w-full sm:max-w-[calc(50%-4px)] ${!!image && "md:max-w-full"} justify-stretch rounded bg-hh-300 ${type === "laterne" ? "bg-opacity-75" : "bg-opacity-25"} py-2 px-4`}
             >
               <h2 className="text-lg font-semibold">Standort:</h2>
               {bezirk && (
-                <div className="flex gap-1 items-center">
+                <div className="flex gap-1">
                   <PostLogo logo="hamburg" color="#1F262E" />
-                  {!!stadtteil && (
-                    <p
-                      id="stadtteil"
-                      className="ml-1 block font-semibold italic hover:underline hover: underline-offset-2"
+                  <div className="flex flex-wrap flex-grow gap-x-1">
+                    {!!stadtteil && stadtteil !== "Andere Orte" && (
+                      <p
+                        id="stadtteil"
+                        className="ml-1 block font-semibold italic hover:underline hover: underline-offset-2"
+                      >
+                        {stadtteil + ", "}
+                      </p>
+                    )}
+                    <Link
+                      href={`/bezirke/${encodeURIComponent(bezirk)}`}
+                      id="bezirk"
+                      className="block font-semibold italic hover:underline hover: underline-offset-2"
                     >
-                      {stadtteil},
-                    </p>
-                  )}
-                  <Link
-                    href={`/bezirke/${encodeURIComponent(bezirk)}`}
-                    id="bezirk"
-                    className="block font-semibold italic hover:underline hover: underline-offset-2"
-                  >
-                    {bezirk}
-                  </Link>
+                      {bezirk}
+                    </Link>
+                  </div>
                 </div>
               )}
 
@@ -258,7 +264,7 @@ export default function FlohmarktTemplate({
             </div>
             <div
               id="date"
-              className={`w-full sm:max-w-[calc(50%-4px)] md:max-w-full min-h-fit py-2 px-4 rounded bg-hh-300 ${type === "laterne" ? "bg-opa75" : "bg-opacity-25"}`}
+              className={`w-full sm:max-w-[calc(50%-4px)]  ${!!image && "md:max-w-full"} min-h-fit py-2 px-4 rounded bg-hh-300 ${type === "laterne" ? "bg-opa75" : "bg-opacity-25"}`}
             >
               <h2 className="text-lg font-semibold">Datum:</h2>
               <div className="flex flex-col gap-1">

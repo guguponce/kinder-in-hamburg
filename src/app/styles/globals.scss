@@ -304,16 +304,25 @@ picture {
     grid-area: details;
   }
 }
+#flohmarkt-template {
+  container-type: inline-size;
+}
 
-#FT-grid {
-  outline: 2px solid red;
-  outline-offset: 2px;
+#FT-Flex {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+#FT-Grid {
   gap: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  @media screen and (min-width: 768px) {
+}
+@container (min-width: 768px) {
+  #FT-Grid {
     display: grid;
     justify-content: center;
     align-items: start;
@@ -324,19 +333,33 @@ picture {
       "locationdate hero"
       "externallink externalLink";
   }
-  @media screen and (min-width: 1024px) {
-    grid-template-columns: 400px 1fr;
+  // @media screen and (min-width: 768px) {
+  //   display: grid;
+  //   justify-content: center;
+  //   align-items: start;
+  //   grid-template-columns: 300px 1fr;
+  //   grid-template-rows: min-content 1fr auto;
+  //   grid-template-areas:
+  //     "image hero"
+  //     "locationdate hero"
+  //     "externallink externalLink";
+  // }
+}
+@container (min-width: 1024px) {
+  #FT-Grid {
+    background: #000;
+    grid-template-columns: minmax(300px, 400px) minmax(60%, 1fr);
   }
-  #FT-image {
-    grid-area: image;
-  }
-  #flohmarkt-hero {
-    grid-area: hero;
-  }
-  #external-link {
-    grid-area: externalLink;
-  }
-  #location-date {
-    grid-area: locationdate;
-  }
+}
+#FT-image {
+  grid-area: image;
+}
+#flohmarkt-hero {
+  grid-area: hero;
+}
+#external-link {
+  grid-area: externalLink;
+}
+#location-date {
+  grid-area: locationdate;
 }
