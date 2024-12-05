@@ -3,7 +3,7 @@ import ShortAbout from "@components/@Index/ShortAbout";
 import FlohmaerkteContainer from "./components/@Index/FlohmaerkteContainer";
 import LaternenBanner from "./components/@Index/laternenumzug/LaternenBanner";
 import WeihnachtsBanner from "./components/@Index/WeihnachtsBanner";
-import Nikolaus from "./(events)/weihnachtszeit/Nikolaus";
+import Nikolaus from "./components/Nikolaus";
 
 export default function Home() {
   return (
@@ -14,7 +14,6 @@ export default function Home() {
       <div className="w-fit flex flex-col justify-center lg:flex-row lg:justify-between items-center gap-4">
         <WeihnachtsBanner />
         <Nikolaus />
-        {/* <LaternenBanner /> */}
       </div>
       <FlohmaerkteContainer />
       <ShortAbout></ShortAbout>

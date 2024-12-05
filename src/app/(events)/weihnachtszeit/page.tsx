@@ -11,7 +11,7 @@ import { Metadata } from "next";
 import Attraktionen from "./Attraktionen";
 import AdventsEvents from "./AdventsEvents";
 import WeihnachtsmaerkteHero from "./WeihnachtsmaerkteHero";
-import Nikolaus from "./Nikolaus";
+import Nikolaus from "../../components/Nikolaus";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -201,7 +201,7 @@ export default async function WeihnachtszeitPage() {
           }}
         >
           <WeihnachtsmaerkteMap
-            mapContainerClassName="p-2 h-[50vh] max-h-[calc(50%-3rem)] bg-negative-800"
+            mapContainerClassName="h-[50vh] max-h-[calc(50%-3rem)]"
             darkBackground
             square={false}
             currentEvents={weihnachtsmaerkte}
