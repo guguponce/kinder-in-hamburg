@@ -37,10 +37,14 @@ export default function ExpandableContainer({
       }
     }
   }, [contentHeight, initialHeight]);
-
   return (
     <section
-      className={`${open || contentHeight < initialHeight ? "h-fit" : `h-[${initialHeight}px] md:h-[${initialHeight / 2}px]`} expandable-container-box ${shadow && "shadow-lg"} relative mb-4 lg:mb-0 rounded-md p-2 bg-hh-200 bg-opacity-25 lg:max-w-full overflow-hidden`}
+      style={
+        open || contentHeight < initialHeight
+          ? { height: "fit-content" }
+          : { maxHeight: `${initialHeight}px` }
+      }
+      className={`expandable-container-box ${shadow && "shadow-lg"} relative mb-4 lg:mb-0 rounded-md p-2 bg-hh-200 bg-opacity-25 lg:max-w-full overflow-hidden`}
       ref={containerRef}
     >
       {children}
