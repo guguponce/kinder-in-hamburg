@@ -13,7 +13,7 @@ export default function Home() {
     >
       <div className="w-fit flex flex-col justify-center lg:flex-row lg:justify-between items-center gap-4">
         <WeihnachtsBanner />
-        <Nikolaus />
+        <Nikolaus shuffleContainerClassname="w-full aspect-[2/3]" />
       </div>
       <FlohmaerkteContainer />
       <ShortAbout></ShortAbout>

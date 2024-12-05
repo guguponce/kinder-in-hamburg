@@ -21,7 +21,9 @@ export default function ShuffleGallery({
   idSetter,
   titleUnder = false,
   dark = false,
+  transparent = false,
 }: {
+  transparent?: boolean;
   titleUnder?: boolean;
   dark?: boolean;
   shuffle?: boolean;
@@ -64,7 +66,7 @@ export default function ShuffleGallery({
   return (
     <div
       className={`relative flex flex-col items-center rounded-md min-w-full ${
-        dark ? "bg-hh-700" : "bg-hh-400"
+        transparent ? "" : dark ? "bg-hh-700" : "bg-hh-400"
       } bg-opacity-25 h-full gap-2 p-2 ${shuffle ? "pb-12" : ""}`}
     >
       <article className="h-full w-full md:aspect-square border border-hh-200 shadow-sm rounded overflow-hidden bg-hh-400 bg-opacity-25 flex flex-col items-center gap-2 relative">
