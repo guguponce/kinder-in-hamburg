@@ -8,18 +8,21 @@ import React from "react";
 export default async function Nikolaus({
   events,
   shuffleContainerClassname,
+  idSetter,
 }: {
+  idSetter?: React.Dispatch<React.SetStateAction<number>>;
   events?: iFlohmarkt[];
   shuffleContainerClassname?: string;
 }) {
   const eventsList =
     events || (await getFutureEventsWithTitle("Nikolaus ")) || [];
+  if (eventsList.length === 0) return null;
   return (
     <article
       id="nikolaus"
       className="p-2 md:p-4 w-fit min-w-[280px] max-w-[300px] rounded-lg mx-auto self-stretch flex flex-col items-center gap-1 text-positive-100"
       style={{
-        background: "linear-gradient(45deg, #405b3a 0%, #4e7247   100%)",
+        background: "linear-gradient(45deg, #405b3a 0%, #4e7247 100%)",
       }}
     >
       <Link href="weihnachtszeit#nikolaus" className="text-xl font-semibold">
@@ -30,6 +33,7 @@ export default async function Nikolaus({
       </p>
       <div className={cn("max-w-full aspect-[5/8]", shuffleContainerClassname)}>
         <ShuffleGallery
+          idSetter={idSetter}
           list={eventsList}
           size="medium"
           shuffle
