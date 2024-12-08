@@ -6,6 +6,7 @@ import ShuffleIcon from "../@Icons/ShuffleIcon";
 import SpielplatzPoster from "./SpielplatzPoster";
 import Link from "next/link";
 import {
+  cn,
   isTypeFlohmarkt,
   isTypePost,
   isTypeSpielplatz,
@@ -22,7 +23,9 @@ export default function ShuffleGallery({
   titleUnder = false,
   dark = false,
   transparent = false,
+  posterClassname,
 }: {
+  posterClassname?: string;
   transparent?: boolean;
   titleUnder?: boolean;
   dark?: boolean;
@@ -71,7 +74,12 @@ export default function ShuffleGallery({
     >
       <article className="h-full w-full md:aspect-square border border-hh-200 shadow-sm rounded overflow-hidden bg-hh-400 bg-opacity-25 flex flex-col items-center gap-2 relative">
         {isTypeFlohmarkt(currentArticle) ? (
-          <div className="mx-auto h-full object-contain sm:w-full  flex justify-center items-center">
+          <div
+            className={cn(
+              "mx-auto h-full object-contain sm:w-full  flex justify-center items-center",
+              posterClassname
+            )}
+          >
             <FlohmarktPoster
               contain
               bezirk={currentArticle.bezirk}
