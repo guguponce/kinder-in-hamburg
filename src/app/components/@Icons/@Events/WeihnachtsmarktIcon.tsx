@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function WeihnachtsmaarktIcon({
+export default function WeihnachtsmarktIcon({
   size = "24px",
   color = "#33404D",
   desaturate = false,

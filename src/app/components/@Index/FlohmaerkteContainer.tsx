@@ -2,12 +2,42 @@ import BezirkeScrollableEvents from "@app/components/BezirkeScrollableEvents";
 import React from "react";
 import BezirkableEventsList from "@app/components/BezirkableEventsList";
 import { getTodayNexMonday } from "@app/utils/functions";
-import { getApprovedEvents } from "@app/api/dbActions";
+import { getApprovedEvents, getThisWeekEvents } from "@app/api/dbActions";
 import dynamic from "next/dynamic";
 import TodaysFlohmaerkte from "../TodaysFlohmaerkte";
 import ErrorFetchingData from "../@NotFound/ErrorFetchingData";
 import PaperPlane from "../@Icons/PaperPlane";
+import { iFlohmarkt } from "@app/utils/types";
 
+function sortByFlohmaerkteDate(list: iFlohmarkt[], today: number) {
+  const timezoneOffset = -120 * 60 * 1000;
+  const utcMidnight = new Date();
+  utcMidnight.setHours(24, 0, 0, 0);
+  const nextMidnight = utcMidnight.getTime() + timezoneOffset;
+  return list
+    .sort((a, b) => a.date - b.date)
+    .reduce(
+      (acc, floh) => {
+        if (floh.date < nextMidnight) {
+          acc.todayFlohmaerkte.push(floh);
+        } else if (floh.date > today) {
+          acc.thisWeekFlohmaerkte.push(floh);
+        } else {
+          acc.futureFlohmaerkte.push(floh);
+        }
+        return acc;
+      },
+      {
+        todayFlohmaerkte: [],
+        thisWeekFlohmaerkte: [],
+        futureFlohmaerkte: [],
+      } as {
+        thisWeekFlohmaerkte: iFlohmarkt[];
+        todayFlohmaerkte: iFlohmarkt[];
+        futureFlohmaerkte: iFlohmarkt[];
+      }
+    );
+}
 const DynamicEventsMap = dynamic(() => import("../@Map/DynamicEventsMap"), {
   ssr: false,
   loading: () => (
@@ -21,28 +51,21 @@ const DynamicEventsMap = dynamic(() => import("../@Map/DynamicEventsMap"), {
   ),
 });
 export default async function FlohmaerkteContainer() {
-  const flohmaerkte = await getApprovedEvents();
+  const flohmaerkte = await getThisWeekEvents();
   if (!flohmaerkte) return <ErrorFetchingData type="Flohmärkte" />;
-  const { today, nextMonday } = getTodayNexMonday();
-  const yesterdayNight = today - 1000 * 60 * 60;
-  const thisWeekFlohmaerkte = flohmaerkte.filter(
-    ({ date }) => date > yesterdayNight && date < nextMonday
-  );
-  const futureFlohmaerkte = flohmaerkte
-    .filter(({ date }) => date > nextMonday)
-    .sort((a, b) => a.date - b.date);
-  const timezoneOffset = -120 * 60 * 1000;
-  const utcMidnight = new Date();
-  utcMidnight.setHours(24, 0, 0, 0);
-  const nextMidnight = utcMidnight.getTime() + timezoneOffset;
-  const todayFlohmaerkte = thisWeekFlohmaerkte.filter(
-    ({ date }) => date < nextMidnight
-  );
+  const { today } = getTodayNexMonday();
+  const { thisWeekFlohmaerkte, futureFlohmaerkte, todayFlohmaerkte } =
+    sortByFlohmaerkteDate(flohmaerkte, today - 1000 * 60 * 60);
+
   const isSunday = new Date().getDay() === 0;
   const onlyToday = todayFlohmaerkte.length === thisWeekFlohmaerkte.length;
   return (
-    <div className="rounded-lg bg-gradient-to-b from-[#f7887af0] via-[#f7887af0]  to-[#fdd1cb90] w-[calc(100%-2rem)] p-1 sm:p-4 flex flex-col items-center min-h-[50vh] max-w-[1000px] text-hh-50">
-      <h1 className=" text-4xl font-bold p-2 lg:pb-4 rounded">Flohmärkte</h1>
+    <div
+      className={`rounded-lg bg-gradient-to-b from-[#f7887af0] via-[#f7887af0]  to-[#fdd1cb90] w-[calc(100%-2rem)] p-1 sm:p-4 flex flex-col items-center min-h-[50vh] ${thisWeekFlohmaerkte.length ? "max-w-[1000px]" : "max-w-[800px]"} text-hh-50"`}
+    >
+      <h1 className=" text-4xl font-bold p-2 lg:pb-4 rounded text-hh-950">
+        Flohmärkte
+      </h1>
       <h2 className="w-fit text-base italic mb-2 p-2 md:p-4 rounded-lg border-2 font-semibold text-hh-50 border-hh-700 max-w-[480px] text-center">
         Die Hochsaison der Flohmärkte ist vorbei, aber im Frühjahr 2025 geht es
         wieder los.
@@ -93,7 +116,9 @@ export default async function FlohmaerkteContainer() {
           >
             <div className="max-w-full flex flex-col items-center">
               <h2 className="text-2xl font-semibold text-hh-800 text-center p-1 lg:p-2">
-                Für den Rest der Woche finden keine Flohmärkte statt
+                {flohmaerkte.length
+                  ? "Diese Woche finden keine Flohmärkte statt"
+                  : "Für den Rest der Woche finden keine Flohmärkte statt"}
               </h2>
               <p className="text-hh-800">
                 Wenn ihr einen veranstaltet oder kennt, schreibt uns gerne eine
@@ -109,14 +134,16 @@ export default async function FlohmaerkteContainer() {
             </div>
           </section>
         )}
-        <BezirkableEventsList
-          title={
-            !!thisWeekFlohmaerkte.length
-              ? "Ab nächster Woche"
-              : "Zukünftige Flohmärkte"
-          }
-          eventsList={futureFlohmaerkte}
-        ></BezirkableEventsList>
+        {!!flohmaerkte.length && (
+          <BezirkableEventsList
+            title={
+              !!thisWeekFlohmaerkte.length
+                ? "Ab nächster Woche"
+                : "Zukünftige Flohmärkte"
+            }
+            eventsList={futureFlohmaerkte}
+          ></BezirkableEventsList>
+        )}
       </div>
     </div>
   );
