@@ -12,8 +12,8 @@ import React, { useMemo, useState } from "react";
 interface AttraktionenProps {
   attraktionen: {
     karussell: iFlohmarkt[];
-    nikolaus: iFlohmarkt[];
     kinderprogramm: iFlohmarkt[];
+    weihnachtsmann: iFlohmarkt[];
   };
   children?: React.ReactNode;
 }
@@ -56,7 +56,7 @@ export default function Attraktionen({ attraktionen }: AttraktionenProps) {
             variant="hh-dark"
             size="small"
             fontSize="xs"
-            className={`px-2 py-1 rounded-lg text-sm ${attType !== "nikolaus" && "capitalize"} flex gap-2 items-center min-w-fit ${selectedAttraktion === attType ? "outline-2 outline-hh-900 outline-offset-1" : "opacity-25"} shadow-sm`}
+            className={`px-2 py-1 rounded-lg text-sm ${attType !== "weihnachtsmann" && "capitalize"} flex gap-2 items-center min-w-fit ${selectedAttraktion === attType ? "outline-2 outline-hh-900 outline-offset-1" : "opacity-25"} shadow-sm`}
           >
             {attType === "karussell" && (
               <KarussellBigIcon
@@ -64,7 +64,7 @@ export default function Attraktionen({ attraktionen }: AttraktionenProps) {
               />
             )}
             {attType === "kinderprogramm" && <BoyGirlIcon color="#fefefe" />}
-            {attType === "nikolaus" && (
+            {attType === "weihnachtsmann" && (
               <WeihnachtsmannIcon
                 color={selectedAttraktion === attType ? "#fefefe" : "#fefefe"}
               />
@@ -72,17 +72,14 @@ export default function Attraktionen({ attraktionen }: AttraktionenProps) {
             <span
               className={`sm:block ${selectedAttraktion === attType ? "block" : "hidden"}`}
             >
-              {attType === "nikolaus" ? "Nikolaus am 06.12" : attType}
+              {attType === "weihnachtsmann" ? "Weihnachtsmann" : attType}
             </span>
           </Button>
         ))}
       </div>
       <ScrollableContainer>
         {displayList.map(
-          (
-            { id, image, title, date, optionalComment, bezirk, stadtteil },
-            index
-          ) => (
+          ({ id, image, title, date, optionalComment, bezirk, stadtteil }) => (
             <React.Fragment key={id}>
               <TextPriorityCard
                 id={id}
