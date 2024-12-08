@@ -11,7 +11,7 @@ import { Metadata } from "next";
 import Attraktionen from "./Attraktionen";
 import AdventsEvents from "./AdventsEvents";
 import WeihnachtsmaerkteHero from "./WeihnachtsmaerkteHero";
-import Nikolaus from "../../components/Nikolaus";
+import WeihMapContainer from "./WeihMapContainer";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -63,18 +63,6 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-const WeihnachtsmaerkteMap = dynamic(() => import("./WeihnachtsmaerkteMap"), {
-  ssr: false,
-  loading: () => (
-    <article className="w-full max-w-[800px] aspect-square sm:aspect-video max-h-[60vh]">
-      <img
-        src="/assets/bezirke/hamburg.webp"
-        alt="Hamburg"
-        className="w-full h-full object-cover"
-      />
-    </article>
-  ),
-});
 export default async function WeihnachtszeitPage() {
   const weihnachtsmaerkte =
     await getFutureApprovedEventsFromType("weihnachtsmarkt");
@@ -83,21 +71,9 @@ export default async function WeihnachtszeitPage() {
   if (!weihnachtsmaerkte) return <NotFound multiples type="event" />;
   if (!weihnachtsmaerkte.length) return;
   const { today } = getTodayNexMonday();
-  const lastMidnight = new Date(today).setHours(0, 0, 0, 0);
 
   const orderedEvents = [...weihnachtsmaerkte, ...adventsEvents].sort(
     (a, b) => a.date - b.date
-  );
-  const [futureEvents, thisWeekEvents] = orderedEvents.reduce(
-    (acc, event) => {
-      if (event.date < today) {
-        acc[1].push(event);
-      } else {
-        acc[0].push(event);
-      }
-      return acc;
-    },
-    [[], []] as [typeof weihnachtsmaerkte, typeof weihnachtsmaerkte]
   );
   const schiffEventsIDS = [1732400443361, 1732318110756, 1732235057521];
   const [schiffEvents, andereEvents] = adventsEvents.reduce(
@@ -125,17 +101,11 @@ export default async function WeihnachtszeitPage() {
     ({ optionalComment }) =>
       optionalComment && /karussell/gi.test(optionalComment)
   );
-  const maerkteMitNikolaus = weihnachtsmaerkte.filter(
-    ({ optionalComment }) =>
-      optionalComment && /nikolaus/gi.test(optionalComment)
-  );
   const maerkteMitWeihnachtsmann = weihnachtsmaerkte.filter(
     ({ optionalComment }) =>
       optionalComment && /weihnachtsmann/gi.test(optionalComment)
   );
-  const nikolausEvents = andereEvents.filter(({ title, optionalComment }) =>
-    /nikolaus /gi.test(title)
-  );
+
   return (
     <main
       className={`flex flex-col gap-4 items-center w-full  ${!!todayLaternenumzuege.length ? "sm:max-w-[1000px]" : "sm:max-w-[800px]"} p-1 mb-4`}
@@ -159,25 +129,10 @@ export default async function WeihnachtszeitPage() {
             ) : null
           )}
         </div>
-        <div className="flex flex-col gap-1 outline outline-2 outline-negative-200">
-          <h2 className="text-2xl font-semibold">Nikolaus events</h2>
-          {nikolausEvents
-            .filter(
-              ({ optionalComment }) => !optionalComment?.includes("attribution")
-            )
-            .map((event, i) => (
-              <Link
-                key={event.id}
-                href={"/events/" + event.id}
-                className="flex gap-2 items-center flex-wrap bg-negative-600 text-negative-50"
-              >
-                {i + 1} {event.title}
-              </Link>
-            ))}
-        </div>
-        {/* <div className="flex flex-col gap-1 outline outline-2 my-4 outline-negative-200">
+
+        <div className="flex flex-col gap-1 outline outline-2 my-4 outline-negative-200">
           <h2 className="text-2xl font-semibold">Märkte mit Nikolaus</h2>
-          {maerkteMitNikolaus.map((event, i) => (
+          {maerkteMitWeihnachtsmann.map((event, i) => (
             <Link
               key={event.id}
               href={"/events/" + event.id}
@@ -186,35 +141,21 @@ export default async function WeihnachtszeitPage() {
               {i + 1} {event.title}
             </Link>
           ))}
-        </div> */}
+        </div>
       </AdminServerComponent>
       <WeihnachtsmaerkteHero
         orderedEvents={orderedEvents}
         todayLaternenumzuege={todayLaternenumzuege}
       />
-      <section className="w-full max-w-[1200px] flex flex-wrap gap-2 md:gap-4 items-center justify-center">
-        <Nikolaus events={nikolausEvents} />
-        <article
-          className="p-2 md:p-4 max-w-full xs:min-w-[400px] max-h-[60vh] min-h-[250px] flex-grow sm:max-w-[800px] rounded-lg self-stretch"
-          style={{
-            background: "linear-gradient(45deg, #4e7247 0%, #628d5a   100%)",
-          }}
-        >
-          <WeihnachtsmaerkteMap
-            mapContainerClassName="h-[50vh] max-h-[calc(50%-3rem)]"
-            darkBackground
-            square={false}
-            currentEvents={weihnachtsmaerkte}
-            future={[...schiffEvents, ...andereEvents]}
-            today={lastMidnight}
-          />
-        </article>
-      </section>
+      <WeihMapContainer
+        adventsEvents={adventsEvents}
+        weihnachtsmaerkte={weihnachtsmaerkte}
+      />
       <Attraktionen
         attraktionen={{
           karussell: maerkteMitCarousell,
           kinderprogramm: maerkteMitKinderprogramm,
-          nikolaus: maerkteMitNikolaus,
+          weihnachtsmann: maerkteMitWeihnachtsmann,
         }}
       />
       {!!adventsEvents.length && (

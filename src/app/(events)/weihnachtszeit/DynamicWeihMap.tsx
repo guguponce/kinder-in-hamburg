@@ -3,7 +3,7 @@ import GeneralMap from "@components/@Map/GeneralMap";
 import FlohmarktPopUP from "@components/@Map/PopUpsMarkers/FlohmarktPopUP";
 import { iEventType, iFlohmarkt } from "@app/utils/types";
 import { Marker } from "react-leaflet";
-import React from "react";
+import React, { useMemo } from "react";
 import { divIcon, point } from "leaflet";
 import { addressWithoutCity, cn } from "@app/utils/functions";
 import MarkerClusterGroup from "react-leaflet-cluster";
@@ -12,24 +12,25 @@ import {
   createNormalSizeIcon,
 } from "@components/@Map/functions";
 import Button from "@app/components/@Buttons/Button";
-import WeihnachtsmaarktIcon from "@app/components/@Icons/@Events/WeihnachtsmarktIcon";
+import WeihnachtsmarktIcon from "@components/@Icons/@Events/WeihnachtsmarktIcon";
 import BoyGirlIcon from "@app/components/@Icons/@Events/BoyGirlIcon";
 
 const weihnachtsmarktIcon = createWeihnachtsmarktIcon(24);
 const smallWeihnachtsmarktIcon = createWeihnachtsmarktIcon(20);
 const eventIcon = createNormalSizeIcon("#405b3a", 30, "#2d3d2a");
-export default function DynamicEventsMap({
+const selectedEventIcon = createNormalSizeIcon("#ed5946", 35, "#da3c28");
+export default function DynamicWeihMap({
+  selectedEventID,
   currentEvents,
   future = [],
-  square = true,
   mapContainerClassName,
 }: {
+  selectedEventID?: number;
   eventType?: iEventType | "flohmaerkte";
-  today: number;
+  today?: number;
   darkBackground?: boolean;
   currentEvents: iFlohmarkt[];
   future?: iFlohmarkt[];
-  square?: boolean;
   mapContainerClassName?: string;
 }) {
   //   const [selectedDate, setSelectedDate] = React.useState<number | undefined>(
@@ -46,17 +47,45 @@ export default function DynamicEventsMap({
   const [eventTypes, setEventTypes] = React.useState<
     (iEventType | "flohmaerkte")[]
   >(["weihnachtsmarkt"]);
+  const selectedEvent = useMemo(
+    () => future.find(({ id }) => id === selectedEventID),
+    [selectedEventID, future]
+  );
   return (
-    <div className="w-full sm:w-full flex flex-col gap-2 rounded">
+    <div className="w-full max-w-full sm:w-full flex flex-col gap-2 rounded">
       <section
         className={cn(
-          `min-h-full min-w-full flex justify-center rounded overflow-hidden`,
+          `min-w-full h-[60vh] min-h-[250px] max-h-[500px] flex-grow flex justify-center rounded overflow-hidden`,
           mapContainerClassName
         )}
       >
         <GeneralMap zoom={11}>
           <>
-            {" "}
+            {selectedEvent &&
+              eventTypes.some((type) => type !== "weihnachtsmarkt") && (
+                <Marker
+                  icon={selectedEventIcon}
+                  key={selectedEvent.id}
+                  zIndexOffset={200}
+                  position={[
+                    selectedEvent.lat || 53.5511,
+                    selectedEvent.lon || 9.9937,
+                  ]}
+                >
+                  <FlohmarktPopUP
+                    endDate={selectedEvent.endDate}
+                    id={selectedEvent.id}
+                    address={
+                      addressWithoutCity(selectedEvent.address) +
+                      " " +
+                      selectedEvent.stadtteil
+                    }
+                    date={selectedEvent.date}
+                    title={selectedEvent.title}
+                    type={!selectedEvent.type ? "flohmaerkte" : "events"}
+                  />
+                </Marker>
+              )}
             <MarkerClusterGroup
               chunkedLoading
               maxClusterRadius={10}
@@ -80,27 +109,28 @@ export default function DynamicEventsMap({
                     endDate,
                     stadtteil,
                     type,
-                  }) => (
-                    <React.Fragment key={id}>
-                      <Marker
-                        icon={eventIcon}
-                        key={id}
-                        zIndexOffset={200}
-                        position={[lat || 53.5511, lon || 9.9937]}
-                      >
-                        <FlohmarktPopUP
-                          endDate={endDate}
-                          id={id}
-                          address={
-                            addressWithoutCity(address) + " " + stadtteil
-                          }
-                          date={date}
-                          title={title}
-                          type={!type ? "flohmaerkte" : "events"}
-                        />
-                      </Marker>
-                    </React.Fragment>
-                  )
+                  }) =>
+                    id === selectedEventID ? null : (
+                      <React.Fragment key={id}>
+                        <Marker
+                          icon={eventIcon}
+                          key={id}
+                          zIndexOffset={200}
+                          position={[lat || 53.5511, lon || 9.9937]}
+                        >
+                          <FlohmarktPopUP
+                            endDate={endDate}
+                            id={id}
+                            address={
+                              addressWithoutCity(address) + " " + stadtteil
+                            }
+                            date={date}
+                            title={title}
+                            type={!type ? "flohmaerkte" : "events"}
+                          />
+                        </Marker>
+                      </React.Fragment>
+                    )
                 )}
             </MarkerClusterGroup>
             {eventTypes.includes("weihnachtsmarkt") &&
@@ -164,7 +194,7 @@ export default function DynamicEventsMap({
             className={`px-2 py-1 rounded-lg text-sm capitalize flex gap-2 items-center min-w-fit ${eventTypes?.includes(type) ? "outline-2 outline-positive-900 outline-offset-1" : "opacity-25"} shadow-sm`}
           >
             {type === "weihnachtsmarkt" ? (
-              <WeihnachtsmaarktIcon color="#fefefe" />
+              <WeihnachtsmarktIcon color="#fefefe" />
             ) : (
               <BoyGirlIcon color="#fefefe" />
             )}
