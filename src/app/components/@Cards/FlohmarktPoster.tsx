@@ -4,6 +4,8 @@ import React from "react";
 import FlohmarktBackground from "../@Icons/@Flohmarkt/FlohmarktBackground";
 import { iEventType } from "@app/utils/types";
 
+const FlohmarktBackgroundMemo = React.memo(FlohmarktBackground);
+
 interface iFlohmarktPosterProps {
   contain?: boolean;
   size?: "small" | "medium" | "large";
@@ -54,7 +56,7 @@ export default function FlohmarktPoster({
     >
       {!image &&
         (eventType === "flohmarkt" ? (
-          <FlohmarktBackground
+          <FlohmarktBackgroundMemo
             randomNumber={
               typeof index === "number"
                 ? Number("0." + (index + 1) * 72584270527)
