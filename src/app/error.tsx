@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 import ErrorComponent from "./components/ErrorComponent";
 
 export default function ErrorBoundary({

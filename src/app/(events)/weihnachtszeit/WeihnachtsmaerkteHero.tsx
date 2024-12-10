@@ -28,21 +28,18 @@ export default function WeihnachtsmaerkteHero({
         </p>
       </div>
       <section className="self-start max-w-full flex justify-center items-center flex-wrap gap-4">
-        {!!todayLaternenumzuege.length && (
+        {/* {!!todayLaternenumzuege.length && (
           <div className="flex flex-col items-center gap-1 w-[300px]">
             <h2 className="text-2xl font-semibold">Heute</h2>
             <ClientLaterneGallery eventsList={todayLaternenumzuege} />
           </div>
-        )}
-        <div
-          className={`flex-grow ${!!todayLaternenumzuege.length && "md:max-w-[calc(100%-332px)]"}`}
-        >
-          <BezirkableEventsList
-            type="events"
-            variant="transparent-dark"
-            eventsList={orderedEvents}
-          />
-        </div>
+        )} */}
+
+        <BezirkableEventsList
+          type="events"
+          variant="transparent-dark"
+          eventsList={orderedEvents}
+        />
       </section>
     </section>
   );

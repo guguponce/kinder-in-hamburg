@@ -55,7 +55,7 @@ export default function DynamicWeihMap({
     <div className="w-full max-w-full sm:w-full flex flex-col gap-2 rounded">
       <section
         className={cn(
-          `min-w-full h-[60vh] min-h-[250px] max-h-[500px] flex-grow flex justify-center rounded overflow-hidden`,
+          `min-w-full h-[60vh] max-h-[300px] min-h-[250px] sm:max-h-[360px] flex-grow flex justify-center rounded overflow-hidden`,
           mapContainerClassName
         )}
       >

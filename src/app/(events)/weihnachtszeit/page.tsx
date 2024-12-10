@@ -143,13 +143,13 @@ export default async function WeihnachtszeitPage() {
           ))}
         </div>
       </AdminServerComponent>
-      <WeihnachtsmaerkteHero
-        orderedEvents={orderedEvents}
-        todayLaternenumzuege={todayLaternenumzuege}
-      />
       <WeihMapContainer
         adventsEvents={adventsEvents}
         weihnachtsmaerkte={weihnachtsmaerkte}
+      />
+      <WeihnachtsmaerkteHero
+        orderedEvents={orderedEvents}
+        todayLaternenumzuege={todayLaternenumzuege}
       />
       <Attraktionen
         attraktionen={{

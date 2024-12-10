@@ -23,7 +23,7 @@ export default function ShuffleMapBox({
 
   if (adventsEvents.length === 0) return null;
   return (
-    <section className="w-full max-w-[1200px] flex flex-wrap gap-2 md:gap-4 items-center justify-center">
+    <section className="w-full max-w-[1200px] max-h-[120vh] flex flex-wrap gap-2 md:gap-4 items-center justify-center">
       <article
         id="nikolaus"
         className="p-2 md:p-4 w-fit min-w-[280px] max-w-[300px] rounded-lg mx-auto self-stretch flex flex-col items-center gap-1 text-positive-100"
@@ -38,15 +38,18 @@ export default function ShuffleMapBox({
           Fast jeden Tag gibt es Advents-Events in verschiedenen Stadtteilen.
         </p>
         <div
-          className={cn("max-w-full aspect-[2/3]", shuffleContainerClassname)}
+          className={cn(
+            "max-w-full aspect-[2/3] object-contain",
+            shuffleContainerClassname
+          )}
         >
           <ShuffleGallery
             idSetter={setSelectedID}
             list={adventsEvents}
-            size="large"
+            size="small"
             titleUnder
             transparent
-            posterClassname="max-w-[200px] w-full aspect-[2/3]"
+            posterClassname="max-w-[180px] min-w-[180px] aspect-[2/3] my-auto h-auto"
           />
         </div>
       </article>
