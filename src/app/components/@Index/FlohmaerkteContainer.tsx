@@ -134,7 +134,7 @@ export default async function FlohmaerkteContainer() {
             </div>
           </section>
         )}
-        {!!flohmaerkte.length && (
+        {!!futureFlohmaerkte.length && (
           <BezirkableEventsList
             title={
               !!thisWeekFlohmaerkte.length
