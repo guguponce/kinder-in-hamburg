@@ -4,6 +4,7 @@ import FlohmaerkteContainer from "./components/@Index/FlohmaerkteContainer";
 import LaternenBanner from "./components/@Index/laternenumzug/LaternenBanner";
 import WeihnachtsBanner from "./components/@Index/WeihnachtsBanner";
 import Nikolaus from "./components/Nikolaus";
+import Banner from "./components/Banner";
 
 export default function Home() {
   return (
@@ -11,10 +12,21 @@ export default function Home() {
       id="homepage-main"
       className="w-full flex flex-col items-center gap-4 xs:px-2"
     >
-      <div className="w-fit flex flex-col justify-center lg:flex-row lg:justify-between items-center gap-4">
-        <WeihnachtsBanner />
-        <Nikolaus shuffleContainerClassname="w-full aspect-[2/3]" />
-      </div>
+      <Banner className="max-w-[600px]">
+        <Banner.Image
+          alt="Wir sind am Werk"
+          src="/assets/logo/workinprogress.png"
+          className="invert max-h-[50vh]"
+          imgClassname="aspect-[3/4] w-auto mx-auto"
+        ></Banner.Image>
+        <Banner.TextSide>
+          <Banner.Title>Bald geht&apos;s weiter</Banner.Title>
+          <Banner.Text className="not-italic text-base md:text-lg px-2">
+            Wir renovieren noch ein bisschen, aber bald ist alles wieder frisch
+            und besser! Schau bald wieder vorbei, es gibt Neues zu entdecken!
+          </Banner.Text>
+        </Banner.TextSide>
+      </Banner>
       <FlohmaerkteContainer />
       <ShortAbout></ShortAbout>
     </main>
