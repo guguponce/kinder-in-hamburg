@@ -19,23 +19,23 @@ export default function ImgPriorityCard({
   const classname =
     size === "small"
       ? {
-          container: "min-w-[150px] w-full max-w-[180px]",
-          title: "text-md sm:text-md md:text-base",
+          container: "min-w-[150px] w-full max-w-[160px] sm:max-w-[180px]",
+          title: "text-sm sm:text-base",
           description: "hidden",
           bezirk: "text-base ",
         }
       : size === "medium"
         ? {
             container: "min-w-[160px] w-full max-w-[250px]",
-            title: "text-md sm:text-lg md:text-xl",
+            title: "text-base sm:text-lg md:text-xl",
             description: "truncate-2 text-sm italic",
-            bezirk: "text-sm md:text-md text-hh-900",
+            bezirk: "text-sm md:text-base text-hh-900",
           }
         : {
             container: "min-w-[200px] w-full max-w-[300px]",
-            title: "text-md sm:text-base md:text-xl",
+            title: "text-base sm:text-base md:text-xl",
             description: "truncate-2  text-sm sm:text-base italic",
-            bezirk: "text-sm sm:text-md md:text-lg text-hh-900",
+            bezirk: "text-sm sm:text-base md:text-lg text-hh-900",
           };
   return (
     <Link

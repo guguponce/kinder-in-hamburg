@@ -27,7 +27,7 @@ export default function FullImageWeatherBox({
     >
       {children}
       <article className="self-end flex flex-col p-4 justify-center w-full md:w- break-words  overflow-hidden text-hh-500 bg-gray-900 bg-opacity-50 rounded hover:bg-opacity-55 hover:shadow-md">
-        <h3 className="truncate-2 break-words cardTitle font-bold text-sm sm:text-md md:text-lg text-hh-100  break-word max-w-full">
+        <h3 className="truncate-2 break-words cardTitle font-bold text-sm sm:text-base md:text-lg text-hh-100  break-word max-w-full">
           {title}
         </h3>
         {text && (

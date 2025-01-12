@@ -25,12 +25,12 @@ export default function TextPriorityCard({
         ? {
             container: "min-w-[160px] max-w-[250px]",
             description: "truncate-5  text-xs",
-            title: "text-md sm:text-lg md:text-xl",
+            title: "text-base sm:text-lg md:text-xl",
           }
         : {
             container: "min-w-[200px] max-w-[300px]",
             description: "truncate-5  text-sm",
-            title: "text-md sm:text-base md:text-xl",
+            title: "text-base sm:text-base md:text-xl",
           };
   return (
     <Link

@@ -15,12 +15,12 @@ export default function ImageCard({
           container: "min-w-[150px] max-w-[180px]",
         }
       : size === "medium"
-      ? {
-          container: "min-w-[160px] max-w-[250px]",
-        }
-      : {
-          container: "min-w-[200px] max-w-[300px]",
-        };
+        ? {
+            container: "min-w-[160px] max-w-[250px]",
+          }
+        : {
+            container: "min-w-[200px] max-w-[300px]",
+          };
   return (
     <Link
       href={link || `/posts/${id}`}
@@ -37,7 +37,7 @@ export default function ImageCard({
         />
       </div>
       <div className="absolute bottom-0 cardContent w-full bg-gradient-to-t from-black via-[#1111118f] to-transparent overflow-hidden flex-grow flex flex-col p-2">
-        <h2 className="truncate-2 break-words cardTitle font-bold text-sm sm:text-md md:text-lg text-hh-100  w-full">
+        <h2 className="truncate-2 break-words cardTitle font-bold text-sm sm:text-base md:text-lg text-hh-100  w-full">
           {title}
         </h2>
       </div>

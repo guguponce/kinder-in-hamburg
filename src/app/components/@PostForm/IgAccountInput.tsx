@@ -28,7 +28,7 @@ export default function IgAccountInput({
         <div className="flex flex-col">
           <label
             htmlFor="igName"
-            className="text-md font-semibold leading-7 text-hh-800"
+            className="text-base font-semibold leading-7 text-hh-800"
           >
             Name
           </label>
@@ -57,7 +57,7 @@ export default function IgAccountInput({
         <div className="flex flex-col">
           <label
             htmlFor="igDescription"
-            className="text-md font-semibold leading-7"
+            className="text-base font-semibold leading-7"
           >
             Beschreibung
           </label>

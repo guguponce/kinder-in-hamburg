@@ -126,7 +126,7 @@ HorizontalCard.PostInfo = function PostInfo({
       {stadtteil && (
         <h4 className="text-hh-700 font-semibold text-sm">{stadtteil}</h4>
       )}
-      <h2 className="truncate-2 break-words cardTitle font-bold text-sm sm:text-md md:text-lg text-hh-950  break-word max-w-full text-md sm:text-base">
+      <h2 className="truncate-2 break-words cardTitle font-bold text-sm sm:text-base md:text-lg text-hh-950  break-word max-w-full">
         {title}
       </h2>
       {description && (

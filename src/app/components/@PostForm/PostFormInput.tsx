@@ -44,7 +44,7 @@ export default function PostFormInput({
       <div className="relative flex flex-col">
         <label
           htmlFor={inputID}
-          className="text-md font-semibold leading-7 w-fit text-hh-800"
+          className="text-base font-semibold leading-7 w-fit text-hh-800"
         >
           {inputLabel}
           {required && (

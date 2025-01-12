@@ -662,7 +662,7 @@ export default function PostForm({
           id="minmax-box"
           className="p-2 rounded bg-hh-100 bg-opacity-20 flex flex-col gap-1 self-start"
         >
-          <h3 className="text-md font-semibold leading-7 w-fit  text-hh-800">
+          <h3 className="text-base font-semibold leading-7 w-fit  text-hh-800">
             Alter Empfehlung
           </h3>
           <div id="minmax-box" className="flex flex-wrap gap-4">
