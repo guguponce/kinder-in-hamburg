@@ -224,7 +224,8 @@ export const getAllSuggestedPosts = async () => {
   try {
     const { data, error } = await supabaseAdmin
       .from("kih-suggestions")
-      .select("*");
+      .select("*")
+      .order("lastUpdate", { ascending: false });
     if (error) {
       throw new Error("There was a problem getting the suggested posts.");
     }
@@ -901,6 +902,7 @@ export const setAllPreviousEventsAsOld = async (
         ["approved", "pending"].includes(f.status) &&
         (!f.endDate || f.endDate < today)
     );
+    // revalidate!
     if (!flohsToFilter || flohsToFilter.length === 0)
       return "No old events found.";
     const oldFlohs = [];
@@ -1277,6 +1279,7 @@ export const addEvent = async (
   event: iFlohmarkt,
   eventTable: string = "flohmaerkte"
 ) => {
+  console.log("adding event");
   try {
     const user = await getServerUser();
     if (!user?.email) {
@@ -1304,6 +1307,7 @@ export const addEvent = async (
     }
     return "Event added";
   } catch (error) {
+    console.log("Error adding event", error);
     throw new Error("Error adding event" + (error as PostgrestError).message);
   }
 };
@@ -1368,7 +1372,6 @@ export const updateEvent = async (
       .match({ id: event.id });
 
     if (error) {
-      console.log(error.message);
       throw new Error("Error updating event");
     }
     return "Updated";
