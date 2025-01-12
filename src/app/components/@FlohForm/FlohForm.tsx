@@ -100,7 +100,6 @@ export default function FlohForm({
   const [closedDatesArray, setClosedDates] = React.useState<number[]>(
     closedDates || []
   );
-
   const newID = useRef(Date.now());
   const {
     register,
@@ -198,9 +197,10 @@ export default function FlohForm({
               : `/events/${data.id}`
           );
         })
-        .catch((error) =>
-          setSubmitError({ isError: true, errorMessage: error.message })
-        );
+        .catch((error) => {
+          console.log(error);
+          setSubmitError({ isError: true, errorMessage: error.message });
+        });
     },
     [
       imagesUrlsReady,
@@ -529,7 +529,7 @@ export default function FlohForm({
                   <div className="flex flex-col gap-1 flex-wrap">
                     <label
                       htmlFor="starttime"
-                      className="text-md font-semibold leading-7 w-fit"
+                      className="text-base font-semibold leading-7 w-fit"
                     >
                       Startzeit
                     </label>
@@ -545,7 +545,7 @@ export default function FlohForm({
                   <div className="flex flex-col gap-1 flex-wrap">
                     <label
                       htmlFor="endtime"
-                      className="text-md font-semibold leading-7 w-fit"
+                      className="text-base font-semibold leading-7 w-fit"
                     >
                       Endzeit
                     </label>
