@@ -23,7 +23,8 @@ export default function Home() {
           <Banner.Title>Bald geht&apos;s weiter</Banner.Title>
           <Banner.Text className="not-italic text-base md:text-lg px-2">
             Wir renovieren noch ein bisschen, aber bald ist alles wieder frisch
-            und besser! Schau bald wieder vorbei, es gibt Neues zu entdecken!
+            und besser! Schau in den nächsten Wochen wieder vorbei, es gibt
+            Neues zu entdecken!
           </Banner.Text>
         </Banner.TextSide>
       </Banner>
