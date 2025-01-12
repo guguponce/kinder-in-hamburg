@@ -11,6 +11,7 @@ import HorizontalCard from "@app/components/@Cards/HorizontalCard";
 import ExpandableContainer from "@app/components/ExpandableContainer";
 import { createStandortMapIcon } from "@app/components/@Map/functions";
 
+const ExpandableContainerMemo = React.memo(ExpandableContainer);
 const OptionalExpandableContainer = ({
   children,
   length,
@@ -22,13 +23,13 @@ const OptionalExpandableContainer = ({
 }) => (
   <div className="flex-grow">
     {expandable ? (
-      <ExpandableContainer
+      <ExpandableContainerMemo
         type="Posts"
         contentHeight={length > 2 ? 250 : 200}
         initialHeight={length > 2 ? 240 : 190}
       >
         {children}
-      </ExpandableContainer>
+      </ExpandableContainerMemo>
     ) : (
       <>{children}</>
     )}
