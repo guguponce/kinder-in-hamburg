@@ -46,6 +46,7 @@ export default async function OtherEventsHorizontalCards({
       return acc;
     }, [] as iEventType[]);
   const typesString = replaceEventTypes(types).join(", ");
+  if (Object.keys(eventsByDate).length === 0) return null;
   return (
     <section
       className={`otherEventsHorizontalCards w-full rounded sm:p-2 my-2 flex flex-col ${style}`}
