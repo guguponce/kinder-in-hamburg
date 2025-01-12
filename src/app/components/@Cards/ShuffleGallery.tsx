@@ -76,7 +76,7 @@ export default function ShuffleGallery({
         {isTypeFlohmarkt(currentArticle) ? (
           <div
             className={cn(
-              "mx-auto h-full object-contain sm:w-full  flex justify-center items-center",
+              "mx-auto h-full object-contain sm:w-full flex justify-center items-center",
               posterClassname
             )}
           >
