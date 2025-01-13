@@ -382,7 +382,7 @@ export type iBezirk =
   | "Wandsbek"
   | "Bergedorf"
   | "Harburg"
-  | "Außerhalb Hamburg";
+  | "Umland Hamburg";
 
 // FLOHMARKT
 export interface iFlohmarkt {

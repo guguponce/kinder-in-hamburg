@@ -29,8 +29,8 @@ export default function Attraktionen({ attraktionen }: AttraktionenProps) {
       Array.from(
         new Set(attraktionen[selectedAttraktion].map(({ bezirk }) => bezirk))
       ).sort((a, b) => {
-        if (a === "Außerhalb Hamburg") return 1;
-        if (b === "Außerhalb Hamburg") return -1;
+        if (a === "Umland Hamburg") return 1;
+        if (b === "Umland Hamburg") return -1;
         return a.localeCompare(b);
       }),
     [selectedAttraktion, attraktionen]

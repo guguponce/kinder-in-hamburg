@@ -14,7 +14,7 @@ export const bezirke: iBezirk[] = [
   "Wandsbek",
   "Bergedorf",
   "Harburg",
-  "Außerhalb Hamburg",
+  "Umland Hamburg",
 ];
 
 export const eventTypes: iEventType[] = [
@@ -540,7 +540,7 @@ export const BEZIRK_TO_STADTTEILE: { [key in iBezirk]: string[] } = {
     "Neuenfelde",
     "Cranz",
   ],
-  "Außerhalb Hamburg": [
+  "Umland Hamburg": [
     "Ahrensburg",
     "Bargteheide",
     "Bönningstedt",

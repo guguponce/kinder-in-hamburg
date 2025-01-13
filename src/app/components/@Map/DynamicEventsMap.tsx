@@ -123,7 +123,15 @@ export default function DynamicEventsMap({
     iEventType | undefined
   >();
   const { current: bezirke } = useRef(
-    Array.from(new Set([...thisWeek, ...future].map((p) => p.bezirk).flat()))
+    Array.from(
+      new Set([...thisWeek, ...future].map((p) => p.bezirk).flat())
+    ).sort((a, b) =>
+      a === "Umland Hamburg"
+        ? 1
+        : b === "Umland Hamburg"
+          ? -1
+          : a.localeCompare(b)
+    )
   );
 
   const { current: eventsByDate } = useRef(

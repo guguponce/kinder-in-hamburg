@@ -38,7 +38,7 @@ export default async function BezirkeScrollableEvents({
       {title &&
         (!!filteredList.length ? (
           <div className="max-w-full">
-            <h2 className="text-xl sm:text-2xl font-semibold text-white text-start self-start p-2 lg:p-4">
+            <h2 className="text-xl sm:text-2xl font-semibold text-white text-start md:text-center self-start p-2 lg:p-4">
               {title}
             </h2>
           </div>
@@ -61,7 +61,7 @@ export default async function BezirkeScrollableEvents({
             </a>
           </div>
         ))}
-      <div className="overflow-x-auto w-fit max-w-full flex justify-center flex-wrap gap-2 items-stretch">
+      <div className="overflow-x-auto w-fit max-w-full flex justify-center flex-wrap gap-2 items-stretch mx-auto">
         {displayBezirke.map((currentBezirk) => (
           <div
             key={currentBezirk}

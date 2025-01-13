@@ -29,8 +29,8 @@ export default async function AllPostsPage() {
                     status === "approved"
                       ? "bg-positive-300"
                       : status === "rejected"
-                      ? "bg-negative-300"
-                      : "bg-hh-300"
+                        ? "bg-negative-300"
+                        : "bg-hh-300"
                   } p-2 rounded-md flex justify-around flex-wrap gap-4 items-center min-w-[350px] max-w-[450px] w-2/5 lg:w-[600px]`}
                 >
                   <div className="min-w-[275px] lg:max-w-[450px] h-[160px] flex-grow">

@@ -20,6 +20,7 @@ export default function BezirkIcon({
     bergedorf: "bergedorfIcon.svg",
     "ausserhalb hamburg": "bezirkeIcon.svg",
     "außerhalb hamburg": "bezirkeIcon.svg",
+    "umland hamburg": "bezirkeIcon.svg",
   };
   return (
     <img
