@@ -125,7 +125,7 @@ export default async function SpielplatzPage({
         {spielgeraete && <Spielgeraete spielgeraete={spielgeraete} />}
         <section
           id="spielplatz-map-container"
-          className="flex flex-col gap-2 p-2 bg-hh-200 bg-opacity-25 rounded-md w-full lg:h-fit lg:max-w-[400px]"
+          className="flex flex-col gap-2 p-2 bg-hh-200 bg-opacity-25 rounded-md w-full h-fit lg:h-fit lg:max-w-[400px]"
         >
           <div className="flex justify-center gap-2 w-full max-w-[800px] mx-auto min-h-32 rounded">
             <div
