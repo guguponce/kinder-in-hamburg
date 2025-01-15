@@ -1,5 +1,6 @@
 "use client";
 import SpielgeraeteIcon from "@app/components/@Icons/@Spielplatz/SpielgeraeteIcon";
+import { spielgeraeteList } from "@app/utils/constants";
 import React, { useLayoutEffect, useState } from "react";
 
 export default function Spielgeraete({
@@ -31,6 +32,9 @@ export default function Spielgeraete({
       setSpielgeraeteHeight(spielgeraeteRef.current.scrollHeight);
     }
   }, [spielgeraete]);
+  // const spielgeraeteOrder = spielgeraeteList.filter((spielgeraet) =>
+  //   spielgeraete.includes(spielgeraet)
+  // );
 
   return (
     <section
@@ -41,20 +45,13 @@ export default function Spielgeraete({
       ref={containerRef}
     >
       <div
-        className="flex flex-wrap gap-2 justify-evenly lg:justify-end"
+        className="flex flex-wrap gap-2 justify-center lg:justify-end"
         ref={spielgeraeteRef}
       >
         {spielgeraete.map((spielgeraet) => (
           <div
             key={spielgeraet}
-            className={`${
-              [
-                "kinderfahrrad/roller geeignet",
-                "schaukel mit fixiermöglichkeit",
-              ].includes(spielgeraet.toLowerCase())
-                ? "max-w-fit"
-                : "max-w-[240px]"
-            } bg-hh-200 p-2 rounded-md capitalize flex-grow flex items-center gap-2 font-semibold text-hh-900  h-10`}
+            className={`spielgeraet bg-hh-200 p-2 rounded-md capitalize  flex items-center gap-2 font-semibold text-hh-900  h-10`}
           >
             <div className="iconContainer h-full aspect-square">
               <SpielgeraeteIcon
