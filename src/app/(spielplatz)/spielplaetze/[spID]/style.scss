@@ -3,16 +3,16 @@
   height: fit-content;
   grid-template-columns: 1fr;
   grid-template-areas:
-    "spielgeraete"
     "data"
+    "spielgeraete"
     "map";
   @media (min-width: 1024px) {
     grid-template-columns: 400px 1fr;
     gap: 1rem;
     grid-template-rows: minmax(50px, auto) minmax(auto, 1fr);
     grid-template-areas:
-      "map spielgeraete"
-      "map data";
+      "map data"
+      "map spielgeraete";
 
     //   "header header header header header header"
     //   "map map spielgeraete spielgeraete spielgeraete spielgeraete"
