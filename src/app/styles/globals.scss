@@ -90,6 +90,19 @@ picture {
   background-size: cover;
   shape-margin: 1rem;
 }
+
+button,
+input,
+select,
+textarea,
+form {
+  &:focus,
+  &:focus-visible,
+  &:focus-within {
+    outline: 2px solid $hh-900;
+  }
+}
+
 @mixin truncate($lines) {
   position: relative;
   display: -webkit-box;
@@ -362,4 +375,18 @@ picture {
 }
 #location-date {
   grid-area: locationdate;
+}
+
+#searchInputForm {
+  &:has(input:focus-visible) {
+    border-color: $hh-800;
+  }
+}
+
+.deleteFilterButton:hover,
+.deleteFilterButton:focus,
+.deleteFilterButton:active {
+  svg {
+    stroke: #982a1c;
+  }
 }
