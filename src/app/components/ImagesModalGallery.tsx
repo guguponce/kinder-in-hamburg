@@ -28,7 +28,7 @@ export default function ImagesModalButton({
         </div>
       )}
 
-      <ScrollableContainer>
+      <ScrollableContainer color="800">
         {images.map((img, i) => (
           <div
             role="button"
