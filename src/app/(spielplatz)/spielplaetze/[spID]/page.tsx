@@ -140,7 +140,7 @@ export default async function SpielplatzPage({
                     <Link
                       href={`/bezirke/${encodeURIComponent(bezirk)}`}
                       id="bezirk"
-                      className="block font-semibold italic hover:underline hover: underline-offset-2"
+                      className="block font-semibold italic hover:underline hover:underline-offset-2"
                     >
                       {bezirk}
                     </Link>
@@ -151,7 +151,7 @@ export default async function SpielplatzPage({
                     {/* <PostLogo logo="stadtteil" color="#1F262E" /> */}
                     <p
                       id="stadtteil"
-                      className="ml-1 block font-semibold italic hover:underline hover: underline-offset-2"
+                      className="ml-1 block font-semibold italic"
                     >
                       {stadtteil}
                     </p>
