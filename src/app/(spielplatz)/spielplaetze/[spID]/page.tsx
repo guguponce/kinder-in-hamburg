@@ -65,6 +65,7 @@ export default async function SpielplatzPage({
         .join("+")
     : "";
   const { number } = spielplatz.address || { number: "" };
+  const types = type.filter((t) => t !== "outdoor");
   return (
     <main
       id="spielplatz-page"
@@ -105,10 +106,11 @@ export default async function SpielplatzPage({
           {!title.toLowerCase().includes("spielplatz") && "Spielplatz "}
           {title}
         </h1>
-        {!!type.length && (
+        {!!types.length && (
           <div className="flex justify-center items-center flex-wrap gap-2 text-base text-hh-950 p-2">
-            {type.map((t) =>
-              t === "outdoor" ? null : (
+            {types
+              .filter((t) => t !== "outdoor")
+              .map((t) => (
                 <h3
                   // href={"/spielplaetze/type/" + t}
                   key={t}
@@ -116,8 +118,7 @@ export default async function SpielplatzPage({
                 >
                   {t}
                 </h3>
-              )
-            )}
+              ))}
           </div>
         )}
       </div>
