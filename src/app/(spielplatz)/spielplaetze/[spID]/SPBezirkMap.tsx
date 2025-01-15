@@ -52,26 +52,28 @@ export default function SPBezirkMap({
     );
   }, [spList, currentSpielplatz, maxDistance]);
 
-  const filteredCurrentList = useMemo(
+  const otherSpielplaetzeList = useMemo(
     () => displayedSpList.filter((sp) => sp.id !== currentSP),
     [displayedSpList, currentSP]
   );
   const { selectedSP, otherSP } = useMemo(() => {
     return {
-      selectedSP: filteredCurrentList[selectedIndex],
-      otherSP: filteredCurrentList.filter((s) => s.id !== selectedIndex),
+      selectedSP: otherSpielplaetzeList[selectedIndex],
+      otherSP: otherSpielplaetzeList.filter((s) => s.id !== selectedIndex),
     };
-  }, [selectedIndex, filteredCurrentList]);
+  }, [selectedIndex, otherSpielplaetzeList]);
 
   return (
     <div
-      className={`w-full max-w-[400px] md:max-w-full ${
-        !!filteredCurrentList.length
-          ? "max-h-[80vh] md:max-h-[300px] lg:max-h-[calc(100dvh-1rem)] h-full"
-          : "h-[400px]"
-      }  aspect-[0.5] shadow-md bg-hh-700 bg-opacity-90  flex flex-col md:flex-row lg:flex-col items-stretch lg:items-center p-2 gap-2 rounded mx-auto`}
+      className={`w-full max-w-[400px] sm:max-w-full ${
+        !!otherSpielplaetzeList.length
+          ? "sm:max-h-[300px] lg:max-h-[calc(100dvh-1rem)] h-fit max-h-fit sm:aspect-[0.5] bg-hh-700 shadow-md p-2 "
+          : "sm:h-[300px] justify-center bg-transparent"
+      } bg-opacity-90  flex flex-col sm:flex-row lg:flex-col items-stretch lg:items-center gap-2 rounded mx-auto`}
     >
-      <article className="w-full py-2 px-1 md:w-1/2 lg:w-full flex-grow md:h-full flex flex-col items-center rounded bg-hh-800">
+      <article
+        className={`w-full p-2 ${otherSpielplaetzeList.length ? "sm:w-1/2" : "sm:max-w-[600px]"} lg:w-full aspect-[4/3] sm:aspect-auto sm:h-full flex flex-col items-center rounded bg-hh-800`}
+      >
         <div className="w-full flex flex-wrap justify-around gap-2 mx-auto px-4 py-2 rounded-[2px_2px_0_0] bg-hh-50">
           {[
             { title: currentSpielplatz?.title, color: "negative-700" },
@@ -138,11 +140,11 @@ export default function SPBezirkMap({
           </GeneralMap>
         </div>
       </article>
-      {selector && !!filteredCurrentList.length && (
-        <article className="w-full md:w-1/2 lg:w-full h-1/2 md:h-full lg:h-1/2 min-h-fit border-4 border-orange-300 rounded-md">
+      {selector && !!otherSpielplaetzeList.length && (
+        <article className="w-full sm:w-1/2 lg:w-full  aspect-[4/3] sm:aspect-auto sm:h-full lg:h-1/2 min-h-fit border-4 border-orange-300 rounded-md">
           <ShuffleGallery
             idSetter={setSelectedIndex}
-            list={filteredCurrentList}
+            list={otherSpielplaetzeList}
             shuffle={true}
             size="medium"
           ></ShuffleGallery>
