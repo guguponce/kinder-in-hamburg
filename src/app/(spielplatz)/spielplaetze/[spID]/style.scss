@@ -41,3 +41,8 @@
     grid-area: flohmaerkte;
   }
 }
+
+.spielgeraet {
+  display: grid;
+  grid-template-columns: 24px auto;
+}
