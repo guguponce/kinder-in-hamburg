@@ -198,7 +198,7 @@ export default function FlohmarktTemplate({
                     {!!stadtteil && stadtteil !== "Andere Orte" && (
                       <p
                         id="stadtteil"
-                        className="ml-1 block font-semibold italic hover:underline hover: underline-offset-2"
+                        className="ml-1 block font-semibold italic"
                       >
                         {stadtteil + ", "}
                       </p>
@@ -206,7 +206,7 @@ export default function FlohmarktTemplate({
                     <Link
                       href={`/bezirke/${encodeURIComponent(bezirk)}`}
                       id="bezirk"
-                      className="block font-semibold italic hover:underline hover: underline-offset-2"
+                      className="block font-semibold italic hover:underline hover:underline-offset-2"
                     >
                       {bezirk}
                     </Link>

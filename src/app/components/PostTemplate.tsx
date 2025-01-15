@@ -149,7 +149,7 @@ export default function PostTemplate({
                   <Link
                     href={`/bezirke/${encodeURIComponent(bezirk)}`}
                     id="bezirk"
-                    className="block font-semibold italic hover:underline hover: underline-offset-2"
+                    className="block font-semibold italic hover:underline hover:underline-offset-2"
                   >
                     {bezirk}
                   </Link>
@@ -158,10 +158,7 @@ export default function PostTemplate({
               {!!stadtteil && (
                 <div className="ml-6 flex gap-1 items-center">
                   {/* <PostLogo logo="stadtteil" color="#1F262E" /> */}
-                  <p
-                    id="stadtteil"
-                    className="ml-1 block font-semibold italic hover:underline hover: underline-offset-2"
-                  >
+                  <p id="stadtteil" className="ml-1 block font-semibold italic">
                     {stadtteil}
                   </p>
                 </div>
