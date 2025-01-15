@@ -3,15 +3,15 @@ import { iSpielplatz } from "@app/utils/types";
 import React, { useMemo, useRef } from "react";
 
 import "leaflet/dist/leaflet.css";
-import { Marker, Popup } from "react-leaflet";
+import { Marker } from "react-leaflet";
 import { divIcon } from "leaflet";
-import Link from "next/link";
 import TriangleIcon from "@components/@Icons/TriangleIcon";
 import ShuffleGallery from "@app/components/@Cards/ShuffleGallery";
 import GeneralMap from "@app/components/@Map/GeneralMap";
 import MarkersLists from "@app/components/@Map/PopUpsMarkers/MarkersLists";
 import { createStandortMapIcon } from "@app/components/@Map/functions";
 import { distanceFilter } from "@app/utils/functions";
+import SpielplatzPopUP from "@app/components/@Map/PopUpsMarkers/SpielplatzPopUP";
 
 const CurrentSelectedSpielplatzIcon = divIcon({
   html: createStandortMapIcon("#F6AA1C", 30),
@@ -112,29 +112,12 @@ export default function SPBezirkMap({
                 position={[selectedSP.lat, selectedSP.lon]}
                 icon={CurrentSelectedSpielplatzIcon}
               >
-                <Popup
-                  className="font-sans"
-                  keepInView={true}
-                  autoPan={true}
-                  maxWidth={200}
-                >
-                  <Link
-                    href={`/spielplaetze/${selectedSP.id}`}
-                    className="font-semibold text-base block"
-                    target="_blank"
-                  >
-                    {selectedSP.title}
-                  </Link>
-                  <small className="text-sm font-bold capitalize block">
-                    {selectedSP.type?.join(" / ") || ""}
-                  </small>
-                  {selectedSP.spielgeraete && (
-                    <small className="text-xs font-semibold italic  capitalize block">
-                      {selectedSP.spielgeraete.slice(0, 8).join(" - ") || ""}
-                      {selectedSP.spielgeraete.length > 8 ? "..." : ""}
-                    </small>
-                  )}
-                </Popup>
+                <SpielplatzPopUP
+                  title={selectedSP.title}
+                  id={selectedSP.id}
+                  type={selectedSP.type}
+                  spielgeraete={selectedSP.spielgeraete || []}
+                />
               </Marker>
             )}
           </GeneralMap>
