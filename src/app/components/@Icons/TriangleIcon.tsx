@@ -11,9 +11,13 @@ export default function TriangleIcon({
 }) {
   return (
     <svg
-      className={`${color === "#fefefe" ? "hover:fill-gray-300" : "hover:fill-hh-700"} ${size === "full" ? "w-full h-full" : `w-[${size}] h-[${size}]`}`}
+      className={
+        color === "#fefefe" ? "hover:fill-gray-300" : `hover:fill-hh-700`
+      }
       fill={color}
       viewBox="0 0 24 24"
+      width={size}
+      height={size}
       transform={`rotate(${rotate})`}
       xmlns="http://www.w3.org/2000/svg"
     >
