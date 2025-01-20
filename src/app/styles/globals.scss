@@ -188,10 +188,10 @@ form {
     opacity: 1;
   }
 }
+
 .horizontalScrollbar {
   scroll-snap-align: start;
   scroll-snap-type: x mandatory;
-  cursor: pointer;
 }
 .horizontalScrollbar::-webkit-scrollbar-thumb {
   border-radius: 1rem;
@@ -210,7 +210,6 @@ form {
 .verticalScrollbar {
   scroll-snap-align: start;
   scroll-snap-type: y mandatory;
-  cursor: pointer;
 }
 .verticalScrollbar::-webkit-scrollbar-thumb {
   border-radius: 1rem;
