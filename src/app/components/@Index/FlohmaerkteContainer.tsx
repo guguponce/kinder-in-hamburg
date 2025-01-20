@@ -70,8 +70,8 @@ export default async function FlohmaerkteContainer() {
         Flohmärkte
       </h1>
       <h2 className="w-fit text-base italic mb-2 p-2 md:p-4 rounded-lg border-2 font-semibold text-hh-50 border-hh-700 max-w-[480px] text-center">
-        Die Hochsaison der Flohmärkte ist vorbei, aber im Frühjahr geht es
-        wieder los.
+        Die Hochsaison der Flohmärkte hat noch nicht begonnen, aber im Frühjahr
+        geht es endlich los.
       </h2>
 
       <div className="flex flex-col items-center gap-4 lg:gap-8 max-w-full">
