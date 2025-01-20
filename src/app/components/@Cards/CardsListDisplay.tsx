@@ -6,13 +6,18 @@ import ImgPriorityCard from "./ImgPriorityCard";
 
 const ImgPriorityCardMemo = React.memo(ImgPriorityCard);
 export default function CardsListDisplay({
+  children,
   cardPosts,
 }: {
   cardPosts: iPost[];
+  children?: React.ReactNode;
 }) {
   return (
     <div
-      className={`gap-2 lg:gap-8 min-h-[350px] h-full overflow-auto p-2 w-full grid grid-cols-[repeat(auto-fit,minmax(160px,1fr))] justify-items-center`}
+      className={`rounded-lg bg-hh-100 gap-2 lg:gap-8 min-h-[350px] h-full overflow-auto p-2 lg:p-4 w-full grid grid-cols-[repeat(auto-fit,minmax(160px,1fr))] justify-items-center`}
+      style={{
+        boxShadow: "inset 4px 4px 8px #bfc2c3, inset -4px -4px 8px #ffffff",
+      }}
     >
       {cardPosts.map(({ id, title, text, image, categories }) => (
         <React.Fragment key={id}>
@@ -32,6 +37,17 @@ export default function CardsListDisplay({
           />
         </React.Fragment>
       ))}
+      {cardPosts.length === 0 && (
+        <div className=" text-gray-500 text-lg h-1/2 flex items-center justify-center flex-col">
+          <h3 className="text-lg md:text-2xl font-semibold">
+            Oops! Nichts gefunden
+          </h3>
+          <h4 className="md:text-xl">
+            Vielleicht hilft es, die Filter zu ändern.
+          </h4>
+          {children}
+        </div>
+      )}
     </div>
   );
 }
