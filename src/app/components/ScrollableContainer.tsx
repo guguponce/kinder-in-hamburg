@@ -1,6 +1,5 @@
 import { cn } from "@app/utils/functions";
-import React, { useEffect } from "react";
-import TriangleIcon from "./@Icons/TriangleIcon";
+import React from "react";
 import ScrollableContainerButtons from "./ScrollableContainerButtons";
 
 export default function ScrollableContainer({
