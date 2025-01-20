@@ -410,3 +410,10 @@ form {
     stroke: #982a1c;
   }
 }
+
+.deleteFilterButton:hover {
+  svg {
+    fill: $hh-50;
+    width: 1.5rem !important;
+  }
+}
