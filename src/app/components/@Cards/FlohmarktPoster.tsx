@@ -52,7 +52,7 @@ export default function FlohmarktPoster({
         image ? "" : "bg-gradient-to-b from-[#e1e4e59f] to-[#d0d7da9f] p-2"
       } w-full ${
         size === "small" ? "min-w-[144px]" : "min-w-[180px]"
-      } h-full shadow-md rounded flex flex-col items-center  justify-between text-center hover:scale-[1.01] hover:shadow-xl`}
+      } h-full shadow-md rounded flex flex-col items-center justify-between text-center hover:scale-[1.01] hover:shadow-xl focus-visible:border-2 focus-visible:border-hh-900`}
     >
       {!image &&
         (eventType === "flohmarkt" ? (
