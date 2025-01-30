@@ -183,6 +183,16 @@ form {
   }
 }
 
+.scrollButton {
+  opacity: 0;
+
+  &:focus {
+    opacity: 100;
+  }
+  @media (min-width: 768px) or (pointer: fine) {
+    opacity: 100;
+  }
+}
 .scrollable-container:hover {
   .scrollButton {
     opacity: 1;
@@ -327,7 +337,7 @@ form {
   @media screen and (min-width: 1200px) {
     grid-template-columns: 400px 1fr;
   }
-  #back-buttons {
+  #template-top-links {
     grid-area: buttons;
   }
   #text {
