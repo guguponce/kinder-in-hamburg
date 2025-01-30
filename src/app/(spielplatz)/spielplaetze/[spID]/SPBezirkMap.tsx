@@ -72,7 +72,7 @@ export default function SPBezirkMap({
       } bg-opacity-90  flex flex-col sm:flex-row lg:flex-col items-stretch lg:items-center gap-2 rounded mx-auto`}
     >
       <article
-        className={`w-full p-2 ${otherSpielplaetzeList.length ? "sm:w-1/2" : "sm:max-w-[600px]"} lg:w-full aspect-[4/3] sm:aspect-auto sm:h-full flex flex-col items-center rounded bg-hh-800`}
+        className={`w-full p-2 ${otherSpielplaetzeList.length ? "sm:w-1/2" : "sm:max-w-[600px]"} lg:w-full aspect-[4/3] sm:aspect-auto lg:aspect-square sm:h-full flex flex-col items-center rounded bg-hh-800`}
       >
         <div className="w-full flex flex-wrap justify-around gap-2 mx-auto px-4 py-2 rounded-[2px_2px_0_0] bg-hh-50">
           {[
