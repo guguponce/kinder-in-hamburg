@@ -58,6 +58,7 @@ export default function ScrollableContainerButtons({
       {isScrollable && (
         <>
           <button
+            tabIndex={1}
             style={{ zIndex: 300 }}
             onClick={() => {
               if (scrollRef.current) {
@@ -73,14 +74,15 @@ export default function ScrollableContainerButtons({
                   });
               }
             }}
-            className={`opacity-0 scrollButton scrollButtonLeftUp ${vertical ? "rotate-90 top-0 right-0" : "bottom-0 left-0"} p-[1px] absolute rounded-[4px_0_0_4px] bg-hh-${color} flex justify-start items-center text-hh-50 focus:outline-none focus-within:outline-none focus-visible:outline-none transition-opacity`}
+            className={`scrollButton scrollButtonLeftUp ${vertical ? "rotate-90 top-0 -translate-x-1/2 left-1/2" : "-translate-y-1/2 top-1/2 left-2"} p-[1px] absolute rounded-[4px_0_0_4px] bg-hh-${color} bg-opacity-40 hover:bg-opacity-60 flex justify-start items-center text-hh-50 transition-opacity`}
           >
-            <span className="w-[6px] md:w-[10px] aspect-square flex items-center justify-center">
+            <span className="w-4 md:w-8 aspect-square flex items-center justify-center">
               <TriangleIcon color={"#fefefe"} rotate={270} size="100%" />
             </span>
           </button>
 
           <button
+            tabIndex={2}
             style={{ zIndex: 300 }}
             onClick={() => {
               if (scrollRef.current) {
@@ -97,9 +99,9 @@ export default function ScrollableContainerButtons({
                   });
               }
             }}
-            className={`opacity-0 scrollButton scrollButtonRightDown ${vertical ? "rotate-90 bottom-0 right-0" : "bottom-0 right-0"} p-[1px] absolute rounded-[0_4px_4px_0] bg-hh-${color} flex justify-start items-center text-hh-50 focus:outline-none focus-within:outline-none focus-visible:outline-none transition-opacity`}
+            className={`scrollButton scrollButtonRightDown ${vertical ? "rotate-90 bottom-0 -translate-x-1/2 left-1/2" : "-translate-y-1/2 top-1/2 right-2"} p-[1px] absolute rounded-[0_4px_4px_0] bg-hh-${color} bg-opacity-40 hover:bg-opacity-60 flex justify-start items-center text-hh-50 transition-opacity`}
           >
-            <span className="w-[6px] md:w-[10px] aspect-square flex items-center justify-center">
+            <span className="w-4 md:w-8 aspect-square flex items-center justify-center">
               <TriangleIcon color={"#fefefe"} rotate={90} size="100%" />
             </span>
           </button>
