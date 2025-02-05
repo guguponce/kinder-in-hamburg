@@ -1,5 +1,5 @@
 import React from "react";
-import { getApprovedPostWithCat } from "@app/api/dbActions";
+import { getPostsWithCat } from "@app/api/dbActions";
 import { getTypeSpielplaetze } from "@app/api/spActions";
 import Badeseen from "./Badeseen";
 import Freibaeder from "./Freibaeder";
@@ -14,7 +14,7 @@ const WaterMapContainer = dynamic(() => import("./WaterMapContainer"), {
 });
 
 export default async function SommerInHamburgPage() {
-  const badeplaetze = (await getApprovedPostWithCat("Badeplatz")) || [];
+  const badeplaetze = (await getPostsWithCat(["Badeplatz"])) || [];
   const freibaeder = badeplaetze.filter(
     (post) => !post.title.toLocaleLowerCase().includes("see")
   );

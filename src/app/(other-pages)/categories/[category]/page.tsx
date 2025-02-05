@@ -1,4 +1,4 @@
-import { getSuggestedPostWithCat } from "@app/api/dbActions";
+import { getPostsWithCat } from "@app/api/dbActions";
 import RandomRecommendation from "@app/components/@Cards/RandomRecommendation";
 import DynamicCategoryMap from "@app/components/@Map/DynamicCategoryMap";
 import PointsGallery from "@app/components/@PostForm/PointsGallery";
@@ -18,7 +18,11 @@ export default async function CategoriesPage({
   const category = parseParams(cat) as categoryName;
   if (!categoryNames.includes(category)) return <NotFound type="categories" />;
   //----------------------------------------------------------
-  const categoryPosts = await getSuggestedPostWithCat(category);
+  const categoryPosts = await getPostsWithCat(
+    [category],
+    false,
+    "kih-suggestions"
+  );
   console;
   if (!categoryPosts) return <NotFound type="categories" />;
   const highlightedWithImages = categoryPosts.filter(
@@ -71,7 +75,7 @@ export default async function CategoriesPage({
           </FilterablePostList>
         </section>
         {/* {category === "Badeplatz" && ( */}
-        <DynamicCategoryMap catPosts={categoryPosts} category={category} />
+        <DynamicCategoryMap catPosts={categoryPosts} category={[category]} />
         {/* )} */}
       </main>
     </AdminRoute>

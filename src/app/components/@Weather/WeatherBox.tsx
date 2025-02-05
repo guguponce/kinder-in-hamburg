@@ -1,8 +1,4 @@
-import {
-  getApprovedPostsWithCatAndBezirk,
-  getApprovedPostWithCat,
-  getSuggestionsWithCatAndBezirk,
-} from "@app/api/dbActions";
+import { getPostsWithCat, getPostsWithCatAndBezirk } from "@app/api/dbActions";
 import { getWeatherData } from "@app/api/weatherAPI";
 import { WEATHER_CODES } from "@app/utils/constants";
 import React from "react";
@@ -32,21 +28,20 @@ export default async function WeatherBox({
     activity
   );
   const retrievedSuggestions = bezirk
-    ? await getApprovedPostsWithCatAndBezirk(
-        activityType as categoryName,
-        bezirk
-      ).then((res) => {
+    ? await getPostsWithCatAndBezirk(activityType as categoryName, bezirk).then(
+        (res) => {
+          if (res && res.length > 0) return res;
+          return getPostsWithCatAndBezirk(
+            activityType === "Indoor" ? "Outdoor" : "Indoor",
+            bezirk
+          );
+        }
+      )
+    : await getPostsWithCat([activityType]).then((res) => {
         if (res && res.length > 0) return res;
-        return getSuggestionsWithCatAndBezirk(
+        return getPostsWithCat([
           activityType === "Indoor" ? "Outdoor" : "Indoor",
-          bezirk
-        );
-      })
-    : await getApprovedPostWithCat(activityType).then((res) => {
-        if (res && res.length > 0) return res;
-        return getApprovedPostWithCat(
-          activityType === "Indoor" ? "Outdoor" : "Indoor"
-        );
+        ]);
       });
   if (!retrievedSuggestions)
     return <div>There was a problem retrieving suggestions</div>;

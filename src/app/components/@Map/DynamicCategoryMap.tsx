@@ -1,4 +1,4 @@
-import { getApprovedPostWithCat } from "@app/api/dbActions";
+import { getPostsWithCat } from "@app/api/dbActions";
 import { addLatLongToPost } from "@app/utils/functions";
 import { categoryName, iPost } from "@app/utils/types";
 import dynamic from "next/dynamic";
@@ -11,9 +11,9 @@ export default async function DynamicCategoryMap({
   catPosts,
 }: {
   catPosts?: iPost[];
-  category: categoryName;
+  category: categoryName[];
 }) {
-  const categoryPosts = catPosts || (await getApprovedPostWithCat(category));
+  const categoryPosts = catPosts || (await getPostsWithCat(category));
 
   if (!categoryPosts) return <>No posts from the zone</>;
   const postsWithCoordinates = (

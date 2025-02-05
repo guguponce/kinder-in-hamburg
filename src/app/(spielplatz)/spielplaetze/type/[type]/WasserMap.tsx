@@ -1,4 +1,3 @@
-import { getApprovedPostWithCat } from "@app/api/dbActions";
 import MarkersLists from "@app/components/@Map/PopUpsMarkers/MarkersLists";
 import { joinAddress } from "@app/utils/functions";
 import { iListsFPS, iPost, iSpielplatz } from "@app/utils/types";

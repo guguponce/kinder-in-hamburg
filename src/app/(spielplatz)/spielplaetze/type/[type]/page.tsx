@@ -7,7 +7,7 @@ import React from "react";
 import Link from "next/link";
 import AdminRoute from "@app/providers/AdminRoute";
 import WasserMap from "./WasserMap";
-import { getApprovedPostWithCat } from "@app/api/dbActions";
+import { getPostsWithCat } from "@app/api/dbActions";
 // import Planschbecken from "./Planschbecken";
 
 const SpielplatzMap = dynamic(() => import("@components/@Map/SpielplatzMap"), {
@@ -24,7 +24,7 @@ export default async function SingleSpielplatzType({
   const spielplaetze = await getTypeSpielplaetze(spType as iSPType);
   const badePosts =
     spType === "planschbecken"
-      ? (await await getApprovedPostWithCat("badeplatz")) || []
+      ? (await await getPostsWithCat(["Badeplatz"])) || []
       : [];
   if (!spielplaetze) return <NotFound type="spielplatzType" />;
   const displayedSP = [...spielplaetze].sort((a, b) =>

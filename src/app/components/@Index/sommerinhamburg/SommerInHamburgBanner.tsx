@@ -1,4 +1,4 @@
-import { getApprovedPostWithCat } from "@app/api/dbActions";
+import { getPostsWithCat } from "@app/api/dbActions";
 import { getTypeSpielplaetze } from "@app/api/spActions";
 import React from "react";
 import BadenGallery from "./BadenGallery";
@@ -9,7 +9,7 @@ import Banner from "@app/components/Banner";
 
 export default async function SommerInHamburgBanner() {
   const weather = await getWeatherData();
-  const badeplaetze = (await getApprovedPostWithCat("Badeplatz")) || [];
+  const badeplaetze = (await getPostsWithCat(["Badeplatz"])) || [];
   const freibaeder = badeplaetze.filter(
     (post) => !post.title.toLocaleLowerCase().includes("see")
   );

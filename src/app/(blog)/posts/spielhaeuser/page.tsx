@@ -1,4 +1,4 @@
-import { getApprovedPostWithCat } from "@app/api/dbActions";
+import { getPostsWithCat } from "@app/api/dbActions";
 import AdminRoute from "@app/providers/AdminRoute";
 import dynamic from "next/dynamic";
 import React from "react";
@@ -8,7 +8,7 @@ const SpielhaeuserMap = dynamic(() => import("./SpielhaeuserMap"), {
 });
 
 export default async function SpielhaeuserPage() {
-  const sphList = await getApprovedPostWithCat("spielhaus");
+  const sphList = await getPostsWithCat(["Spielhaus"]);
   if (!sphList) throw Error("No Spielhaus retrieved");
   return (
     <AdminRoute>
