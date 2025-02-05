@@ -62,7 +62,7 @@ export default function ImgPriorityCard({
           spielgeraete && (
             <SpielplatzgeraeteBackground
               bgColor="#33404D"
-              color="#1F262E"
+              color="#343b3e"
               spList={spielgeraete}
             />
           )

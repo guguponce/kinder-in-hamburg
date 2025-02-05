@@ -24,8 +24,8 @@ export default function StackedCards({
       size === "small"
         ? "text-[10px]"
         : size === "medium"
-        ? "text-xs"
-        : "text-sm"
+          ? "text-xs"
+          : "text-sm"
     } bg-gradient-to-t -translate-x-1/2 left-1/2 from-black via-[#1111118f] to-transparent rounded-md hover:shadow-xl shadow-lg bg-center bg-cover flex flex-col justify-end`,
     body: `bg-gradient-to-t from-black  to-transparent ${
       size === "small" ? "hidden" : "p-2"
@@ -40,7 +40,7 @@ export default function StackedCards({
           style={{
             backgroundImage: post.image
               ? `url(${post.image[0]})`
-              : "linear-gradient(to bottom, #33404D, #1F262E)",
+              : "linear-gradient(to bottom, #33404D, #343b3e)",
           }}
         >
           <div className={classnames.body}>

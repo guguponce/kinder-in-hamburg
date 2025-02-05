@@ -60,7 +60,7 @@ export default function HorizontalCard({
               {spielgeraete ? (
                 <SpielplatzgeraeteBackground
                   spList={spielgeraete}
-                  color="#1F262E"
+                  color="#343b3e"
                   size="2rem"
                 />
               ) : (
