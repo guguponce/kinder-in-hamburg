@@ -322,9 +322,8 @@ form {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
 
-  @media screen and (min-width: 1024px) {
+  @media screen and (min-width: 768px) {
     display: grid;
     gap: 1rem;
     align-items: start;
@@ -339,11 +338,18 @@ form {
   }
   #template-top-links {
     grid-area: buttons;
+    .backButton:hover,
+    .backButton:focus,
+    .backButton:active {
+      .arrow {
+        outline: 2px solid $hh-900;
+      }
+    }
   }
   #text {
     grid-area: text;
   }
-  #details {
+  #post-details {
     grid-area: details;
   }
 }
