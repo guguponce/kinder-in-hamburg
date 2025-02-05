@@ -250,28 +250,10 @@ export const getPendingPosts = async () => {
   }
 };
 
-export const getSuggestionsWithCat = async (category: string) => {
-  try {
-    if (!checkCategory(category))
-      throw new Error("Invalid Category: " + category);
-    const { data, error } = await supabaseAdmin
-      .from("kih-suggestions")
-      .select()
-      .ilike("categories", `%${category}%`);
-    if (error) {
-      throw new Error(
-        "There was a problem getting the posts for this category."
-      );
-    }
-    return parseAllPosts(data);
-  } catch (error) {
-    return false;
-  }
-};
-
-export const getApprovedPostsWithCatAndBezirk = async (
+export const getPostsWithCatAndBezirk = async (
   category: categoryName,
-  bezirk: iBezirk
+  bezirk: iBezirk,
+  db: "kih-approved-blogposts" | "kih-suggestions" = "kih-approved-blogposts"
 ) => {
   if (!checkCategory(category))
     throw new Error("Invalid Category: " + category);
@@ -279,34 +261,9 @@ export const getApprovedPostsWithCatAndBezirk = async (
 
   try {
     const { data, error } = await supabaseAdmin
-      .from("kih-approved-blogposts")
+      .from(db)
       .select()
       .ilike("status", "approved")
-      .ilike("categories", `%${category}%`)
-      .like("bezirk", bezirk);
-    if (error) {
-      throw new Error(
-        "There was a problem getting the posts for this Category and Bezirk."
-      );
-    }
-    return parseAllPosts(data);
-  } catch (error) {
-    return false;
-  }
-};
-
-export const getSuggestionsWithCatAndBezirk = async (
-  category: categoryName,
-  bezirk: iBezirk
-) => {
-  if (!checkCategory(category))
-    throw new Error("Invalid Category: " + category);
-  if (!checkBezirk(bezirk)) throw new Error("Invalid Bezirk: " + bezirk);
-
-  try {
-    const { data, error } = await supabaseAdmin
-      .from("kih-suggestions")
-      .select()
       .ilike("categories", `%${category}%`)
       .like("bezirk", bezirk);
     if (error) {
@@ -430,39 +387,25 @@ export const updatePostStatus = async <
 };
 
 // APPROVED BLOGPOSTS
-export const getApprovedPostWithCat = async (category: string) => {
-  if (!checkCategory(category))
-    throw new Error("Invalid Category: " + category);
+export const getPostsWithCat = async (
+  categories: categoryName[],
+  pinnedPosts?: boolean,
+  db: "kih-approved-blogposts" | "kih-suggestions" = "kih-approved-blogposts"
+) => {
+  const pinnedQuery = pinnedPosts ? "pinnedPost.eq.true" : "";
   try {
+    const catquery = categories
+      .map((cat) => `categories.ilike.%${cat}%` + pinnedQuery)
+      .join(",");
     const { data, error } = await supabaseAdmin
-      .from("kih-approved-blogposts")
-      .select()
-      .ilike("status", "approved")
-      .ilike("categories", `%${category}%`);
+      .from(db)
+      .select("*")
+      .or(catquery + pinnedQuery);
     if (error) {
-      throw new Error(
-        "There was a problem getting the posts for this category."
-      );
+      console.error("Error fetching posts:", error);
+      return [];
     }
-    return parseAllPosts(data);
-  } catch (error) {
-    return false;
-  }
-};
 
-export const getSuggestedPostWithCat = async (category: string) => {
-  if (!checkCategory(category))
-    throw new Error("Invalid Category: " + category);
-  try {
-    const { data, error } = await supabaseAdmin
-      .from("kih-suggestions")
-      .select()
-      .ilike("categories", `%${category}%`);
-    if (error) {
-      throw new Error(
-        "There was a problem getting the posts for this category."
-      );
-    }
     return parseAllPosts(data);
   } catch (error) {
     return false;
