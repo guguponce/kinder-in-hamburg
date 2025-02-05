@@ -10,11 +10,13 @@ export default function BezirkableEventsList({
   eventsList,
   variant = "light",
   type = "flohmaerkte",
+  withDate,
 }: {
   type?: "flohmaerkte" | "events";
   title?: string;
   variant?: "light" | "dark" | "transparent-light" | "transparent-dark";
   eventsList: iFlohmarkt[];
+  withDate?: boolean;
 }) {
   const [bezirk, setBezirk] = React.useState<iBezirk | "all">("all");
   const bezirkeList = useMemo(
@@ -108,7 +110,7 @@ export default function BezirkableEventsList({
             ) => (
               <article
                 key={id}
-                className={`overflow-hidden h-[250px] min-w-[180px] shadow-lg ${
+                className={`relative flex flex-col items-center gap-[2px] overflow-hidden h-[250px] min-w-[180px] shadow-lg ${
                   i === filteredList.length - 1 ? "" : "mr-4"
                 }`}
               >
@@ -124,6 +126,15 @@ export default function BezirkableEventsList({
                   prefixLink={`/${type}/`}
                   endDate={endDate}
                 />
+                {withDate && (
+                  <div className="absolute z-50 -translate-x-1/2 bottom-0 left-1/2 rounded-[4px_4px_0_0] flex justify-center w-3/4  p-1 text-xs bg-hh-800 backdrop-blur-sm bg-opacity-50 text-white">
+                    {new Date(date).toLocaleDateString("de-DE", {
+                      weekday: "short",
+                      day: "numeric",
+                      month: "long",
+                    })}
+                  </div>
+                )}
               </article>
             )
           )}

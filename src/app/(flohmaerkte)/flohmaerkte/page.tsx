@@ -155,6 +155,7 @@ export default async function FlohmarktPage() {
         <BezirkableEventsList
           title="Ab nächster Woche"
           eventsList={futureFlohmaerkte}
+          withDate
         ></BezirkableEventsList>
         <OtherEventsHorizontalCards variant="dark" />
       </section>
