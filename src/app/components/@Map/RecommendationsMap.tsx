@@ -1,8 +1,8 @@
 import {
-  getApprovedPostWithID,
   getEventsFromBezirkStadtteil,
   getEventWithID,
   getPostsFromBezirkStadtteile,
+  getSuggestedPostWithID,
 } from "@app/api/dbActions";
 import {
   getSpielplatzFromBezirkStadtteil,
@@ -37,12 +37,13 @@ const GeneralMap = dynamic(() => import("@components/@Map/GeneralMap"), {
     </article>
   ),
 });
+type iItemTypes = "flohmaerkte" | "posts" | "spielplaetze" | "events";
 type iGetList = {
   list: iListsFPS;
   currentItem: iPost | iFlohmarkt | iSpielplatz | false;
 };
 async function getItemsNearby(
-  type: "flohmaerkte" | "posts" | "spielplaetze" | "events",
+  type: iItemTypes,
   bezirk: iBezirk,
   stadtteile: string[]
 ) {
@@ -66,32 +67,31 @@ async function getList(
   id: number,
   bezirk: iBezirk,
   stadtteile: string[],
-  recommendationsList?: iListsFPS,
-  avoid?: Array<"flohmaerkte" | "posts" | "spielplaetze" | "events">
+  recommendationsList: iListsFPS = {},
+  avoid?: Array<iItemTypes>
 ) {
-  let recList: iListsFPS = recommendationsList || {};
   let acc: iGetList = {
-    list: recList,
+    list: recommendationsList,
     currentItem: false,
   };
   const promises = ["flohmaerkte", "posts", "spielplaetze", "events"]
     .filter((key) => !avoid?.includes(key as (typeof avoid)[number]))
-    .map(async (key) => {
-      const itemType = key as
-        | "flohmaerkte"
-        | "posts"
-        | "spielplaetze"
-        | "events";
-      const items = recList[itemType] as iFlohmarkt[] & iPost[] & iSpielplatz[];
+    .map(async (t) => {
+      const itemType = t as "flohmaerkte" | "posts" | "spielplaetze" | "events";
       const itemsNearby =
-        items || (await getItemsNearby(itemType, bezirk, stadtteile)) || [];
+        (recommendationsList[itemType] as iFlohmarkt[] &
+          iPost[] &
+          iSpielplatz[]) ||
+        (await getItemsNearby(itemType, bezirk, stadtteile)) ||
+        [];
       acc.list[itemType] = itemsNearby;
       const current =
         acc.currentItem ||
         acc.list[itemType]?.find((post) => post.id === id) ||
         (type === "post"
-          ? await getApprovedPostWithID(id.toString())
-          : type === "flohmarkt"
+          ? await getSuggestedPostWithID(id.toString())
+          : // ------------------- await getApprovedPostWithID(id.toString())
+            type === "flohmarkt"
             ? await getEventWithID(id.toString())
             : type === "spielplatz"
               ? await getSpielplatzWithID(id.toString())
@@ -155,10 +155,7 @@ export default async function RecommendationsMap({
       showFlohmaerkte ? null : "flohmaerkte",
       showPosts ? null : "posts",
       showSpielplaetze ? null : "spielplaetze",
-    ].filter(
-      (item): item is "flohmaerkte" | "posts" | "spielplaetze" | "events" =>
-        item !== null
-    )
+    ].filter((item): item is iItemTypes => item !== null)
   );
 
   if (
@@ -196,7 +193,7 @@ export default async function RecommendationsMap({
           posts: postsNearby || [],
           spielplaetze: spielplaetzeNearby || [],
         },
-        maxDistance + 2000
+        maxDistance
       );
   if (currentType === "flohmarkt")
     defList.flohmaerkte = defList.flohmaerkte?.filter(
@@ -248,14 +245,19 @@ export default async function RecommendationsMap({
   return (
     <article
       id="map"
-      className="w-full max-w-[800px] min-h-[400px] rounded-md bg-gradient-to-b from-hh-500 to-hh-400 flex flex-col gap-2 p-2 mx-auto text-hh-50"
+      className="w-full max-w-[800px] min-h-[400px] rounded bg-hh-100 bg-opacity-20 flex flex-col gap-2 p-2 mx-auto text-hh-50"
     >
       <div className="w-full h-[400px] flex-grow flex flex-col">
         {!onlyCurrentRef && (
-          <h3 className="text-xl font-semibold w-fit px-8">in der Nähe</h3>
+          <h3 className="text-xl font-semibold w-fit lg:px-2">in der Nähe</h3>
         )}
         <GeneralMap zoom={14} currentTarget={currentItem || undefined}>
           <MarkersLists
+            currentLocation={
+              currentItem
+                ? { lat: currentItem.lat, lon: currentItem.lon }
+                : undefined
+            }
             cluster={false}
             lists={defList}
             showFlohmaerkte={showFlohmaerkte}
