@@ -21,10 +21,11 @@ export default function BezirkIcon({
     "ausserhalb hamburg": "bezirkeIcon.svg",
     "außerhalb hamburg": "bezirkeIcon.svg",
     "umland hamburg": "bezirkeIcon.svg",
+    hamburg: "bezirkeIcon.svg",
   };
   return (
     <img
-      className={`bezirkIcon w-fit h-full object-contain saturate-0 hover:invert-[0.2] transition-colors`}
+      className={`bezirkIcon w-fit h-full object-contain saturate-0 hover:invert-[0.05] transition-all`}
       src={"/assets/bezirke/" + bezirkIcons[bezirk.toLocaleLowerCase()]}
       alt=""
     />
