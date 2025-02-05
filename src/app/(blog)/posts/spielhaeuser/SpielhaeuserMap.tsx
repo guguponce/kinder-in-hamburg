@@ -10,6 +10,7 @@ import Link from "next/link";
 import HorizontalCard from "@app/components/@Cards/HorizontalCard";
 import ExpandableContainer from "@app/components/ExpandableContainer";
 import { createStandortMapIcon } from "@app/components/@Map/functions";
+import StandortIcon from "@app/components/@Icons/StandortIcon";
 
 const ExpandableContainerMemo = React.memo(ExpandableContainer);
 const OptionalExpandableContainer = ({
@@ -78,12 +79,16 @@ const PostMarker = ({
         </small>
       )}
       {address && (
-        <p className="text-xs">
-          {joinAddress(address)}
-          <span className="block text-xs font-semibold">
-            {stadtteil} - {bezirk}
-          </span>
-        </p>
+        <div className="mt-auto flex items-center gap-1">
+          {" "}
+          <StandortIcon color="#0078A8" />
+          <p className="text-xs">
+            {joinAddress(address)}
+            <span className="block text-xs font-semibold">
+              {stadtteil} - {bezirk}
+            </span>
+          </p>
+        </div>
       )}
     </Popup>{" "}
   </Marker>

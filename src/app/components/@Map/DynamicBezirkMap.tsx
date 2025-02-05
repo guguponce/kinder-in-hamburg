@@ -24,7 +24,11 @@ export default async function DynamicMap({
   if (!currentTarget) return <></>;
   return (
     <GeneralMap>
-      <MarkersLists lists={{ posts: postsWithCoordinates }} showPosts={true} />
+      <MarkersLists
+        lists={{ posts: postsWithCoordinates }}
+        showPosts={true}
+        currentLocation={{ lat: currentTarget.lat, lon: currentTarget.lon }}
+      />
     </GeneralMap>
   );
 }

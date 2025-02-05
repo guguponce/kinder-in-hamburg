@@ -32,9 +32,9 @@ export default function DynamicThisWeekNearbyMap({
   spielplaetzeOneKM: iSpielplatz[];
   weitereFlohmaerkte: iFlohmarkt[];
 }) {
-  const current = useRef(currentTarget);
-  const spielplaetzeNearby = useRef(spielplaetzeOneKM);
-  const flohmaerkte = useRef(weitereFlohmaerkte);
+  const { current } = useRef(currentTarget);
+  const { current: spielplaetzeNearby } = useRef(spielplaetzeOneKM);
+  const { current: flohmaerkte } = useRef(weitereFlohmaerkte);
   const [showSpielplaetze, setShowSpielplaetze] = useState(true);
   const [showFlohmaerkte, setShowFlohmaerkte] = useState(true);
 
@@ -58,7 +58,7 @@ export default function DynamicThisWeekNearbyMap({
           </span>
         </button>
         <div className="flex flex-wrap justify-center w-fit gap-4">
-          {flohmaerkte.current.length > 0 && (
+          {flohmaerkte.length > 0 && (
             <button
               className="flex"
               onClick={() => setShowFlohmaerkte((prev) => !prev)}
@@ -72,7 +72,7 @@ export default function DynamicThisWeekNearbyMap({
               </span>
             </button>
           )}
-          {!!spielplaetzeNearby.current.length && (
+          {!!spielplaetzeNearby.length && (
             <button
               className="flex"
               onClick={() => setShowSpielplaetze((prev) => !prev)}
@@ -89,13 +89,14 @@ export default function DynamicThisWeekNearbyMap({
         </div>
       </aside>
       <article className="w-full max-w-[800px] aspect-square sm:aspect-video max-h-[60vh]">
-        <GeneralMap currentTarget={current.current} zoom={15}>
+        <GeneralMap currentTarget={current} zoom={15}>
           <MarkersLists
+            currentLocation={{ lat: current.lat, lon: current.lon }}
             showSpielplaetze={showSpielplaetze}
             showFlohmaerkte={showFlohmaerkte}
             lists={{
-              flohmaerkte: flohmaerkte.current,
-              spielplaetze: spielplaetzeNearby.current,
+              flohmaerkte: flohmaerkte,
+              spielplaetze: spielplaetzeNearby,
             }}
           />
         </GeneralMap>
