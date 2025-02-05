@@ -5,13 +5,10 @@ import React from "react";
 import SPBezirkMap from "./SPBezirkMapContainer";
 import FlohmaerkteNearby from "../FlohmaerkteNearby";
 import dynamic from "next/dynamic";
-import ImagesModalButton from "@app/components/ImagesModalGallery";
-import Spielgeraete from "./Spielgeraete";
-import PostLogo from "@app/components/@Icons/@PostLogo/PostLogo";
-import Link from "next/link";
+import ImagesModalGallery from "@app/components/ImagesModalGallery";
 import { Metadata } from "next";
-import BezirkIcon from "@components/@Icons/@BezirkIcon/BezirkIcon";
 import AdminEditButtons from "@app/components/@Buttons/AdminEditButtons";
+import LocationBox from "@app/components/@Templates/LocationBox";
 
 interface SpielplatzPageProps {
   params: { spID: string };
@@ -53,6 +50,7 @@ export default async function SpielplatzPage({
     title,
     spielgeraete = [],
     bezirk,
+    address,
     status,
     stadtteil,
     type,
@@ -64,7 +62,6 @@ export default async function SpielplatzPage({
         .map((part) => part.replace(" ", "+"))
         .join("+")
     : "";
-  const { number } = spielplatz.address || { number: "" };
   const types = type.filter((t) => t !== "outdoor");
   return (
     <main
@@ -100,7 +97,7 @@ export default async function SpielplatzPage({
       />
       <div
         id="spielplatz-header"
-        className="text-4xl min-h-16 font-bold text-center text-hh-50 flex flex-col justify-center items-center gap-4 lg:p-4"
+        className="text-4xl min-h-16 font-bold text-center text-hh-50 flex flex-col justify-center items-center gap-4 lg:p-4 lg:pb-0"
       >
         <h1 className="flex justify-center items-center flex-wrap">
           {!title.toLowerCase().includes("spielplatz") && "Spielplatz "}
@@ -122,75 +119,25 @@ export default async function SpielplatzPage({
           </div>
         )}
       </div>
-      <div id="spielplatz-grid" className="w-full xs:px-2 sm:px-4 gap-4">
-        {spielgeraete && <Spielgeraete spielgeraete={spielgeraete} />}
+      <div id="spielplatz-grid" className="w-full xs:px-2 sm:px-4">
+        {/* {spielgeraete && <Spielgeraete spielgeraete={spielgeraete} />} */}
         <section
           id="spielplatz-map-container"
-          className="flex flex-col gap-2 p-2 bg-hh-200 bg-opacity-25 rounded-md w-full lg:h-fit lg:max-w-[400px]"
+          className="flex flex-col gap-2 p-2 bg-hh-200 bg-opacity-25 rounded-md w-full lg:h-fit lg:max-w-[400px] mb-2"
         >
           <div className="flex justify-center gap-2 w-full max-w-[800px] mx-auto min-h-32 rounded">
-            <div
-              id="location"
-              className="relative flex w-full max-w-[400px] h-fit rounded text-white bg-hh-600 bg-opacity-75 py-2 px-4"
-            >
-              <div className="flex flex-col justify-between flex-grow max-w-[66%]">
-                <h2 className="text-lg font-semibold">Standort:</h2>
-                {bezirk && (
-                  <div className="flex gap-1 items-center">
-                    <PostLogo logo="hamburg" color="#fefefe" />
-                    <Link
-                      href={`/bezirke/${encodeURIComponent(bezirk)}`}
-                      id="bezirk"
-                      className="block font-semibold italic hover:underline hover:underline-offset-2"
-                    >
-                      {bezirk}
-                    </Link>
-                  </div>
-                )}
-                {!!stadtteil && (
-                  <div className="ml-6 flex gap-1 items-center">
-                    {/* <PostLogo logo="stadtteil" color="#1F262E" /> */}
-                    <p
-                      id="stadtteil"
-                      className="ml-1 block font-semibold italic"
-                    >
-                      {stadtteil}
-                    </p>
-                  </div>
-                )}
-
-                <section id="location" className="flex gap-[6px] ml-[2px]">
-                  <div className="min-w-5 mt-1">
-                    <PostLogo logo="map" color="#fefefe" size="20px" />
-                  </div>
-                  <Link
-                    href={"https://www.google.com/maps/place/" + addressQuery}
-                    className="italic hover:underline hover:underline-offset-2 flex flex-col flex-grow"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <span className="flex flex-wrap gap-1">
-                      <span className="block">
-                        {spielplatz.address?.street}{" "}
-                        {number && parseInt(number) > 0 && number},
-                      </span>
-                      <span className="block">
-                        {spielplatz.address?.PLZ} {spielplatz.address?.city}
-                      </span>
-                    </span>
-                  </Link>
-                </section>
-              </div>
-              <div className="absolute right-4 h-full aspect-square w-32 top-0 flex justify-center items-center">
-                <BezirkIcon bezirk={bezirk} />
-              </div>
-            </div>
+            <LocationBox
+              address={address}
+              bezirk={bezirk}
+              stadtteil={stadtteil}
+              dark
+            />
           </div>
           <SPBezirkMap currentSP={id} bezirk={bezirk} stadtteil={stadtteil} />
         </section>
-        <div
+        <section
           id="spielplatz-data"
-          className="flex flex-col justify-start items-center gap-4 w-full h-fit lg:h-full overflow-hidden flex-grow"
+          className="flex flex-col justify-start items-center gap-4 w-full h-fit lg:h-full overflow-hidden flex-grow mb-2"
         >
           <SpielplatzgeraeteBackground
             small={false}
@@ -204,7 +151,7 @@ export default async function SpielplatzPage({
                 id="image-container"
                 className="w-full h-72 bg-hh-950 bg-opacity-10 flex gap-2 p-2 pb-4 justify-center items-center"
               >
-                <ImagesModalButton images={image} title={title} />
+                <ImagesModalGallery images={image} title={title} />
               </section>
             )}
 
@@ -225,15 +172,14 @@ export default async function SpielplatzPage({
               </section>
             )}
           </div>
-
-          <FlohmaerkteNearby
-            title={"Spielplatz " + title}
-            bezirk={bezirk}
-            stadtteil={stadtteil}
-            lat={lat}
-            lon={lon}
-          />
-        </div>
+        </section>
+        <FlohmaerkteNearby
+          title={"Spielplatz " + title}
+          bezirk={bezirk}
+          stadtteil={stadtteil}
+          lat={lat}
+          lon={lon}
+        />
       </div>
 
       {/* <CategoryBezirkStadtteileRecommendation
