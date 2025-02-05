@@ -287,11 +287,13 @@ export const getTimeRainAndActivity = (
   const nextRain = whenWillRainLater(hours);
   const sunsetIndex = hours.find((h) => h.IsDaylight)?.Hour || 19;
 
-  const activityType =
+  const activityType: "Indoor" | "Outdoor" =
     nextRain !== -1 && nextRain + 1 + currentHour < sunsetIndex
       ? "Indoor"
       : activity === "Both"
-        ? ["Indoor", "Outdoor"][Math.floor(Math.random() * 2)]
+        ? (["Indoor", "Outdoor"][Math.floor(Math.random() * 2)] as
+            | "Indoor"
+            | "Outdoor")
         : activity;
   return { currentTime, currentHour, nextRain, activityType, sunsetIndex };
 };

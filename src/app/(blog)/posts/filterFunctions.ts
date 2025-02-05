@@ -5,15 +5,17 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 export const orderListFx = (list: iPost[], order: string) => {
   switch (order) {
     case "neueste":
-      return list.sort(
+      return [...list].sort(
         (a, b) => (b.lastUpdate || b.createdAt) - (a.lastUpdate || a.createdAt)
       );
     case "beliebste":
-      return list.sort((a, b) => (a.pinnedPost ? -1 : b.pinnedPost ? 1 : 0));
+      return [...list].sort((a, b) =>
+        a.pinnedPost ? -1 : b.pinnedPost ? 1 : 0
+      );
     case "az":
-      return list.sort((a, b) => a.title.localeCompare(b.title));
+      return [...list].sort((a, b) => a.title.localeCompare(b.title));
     case "za":
-      return list.sort((a, b) => b.title.localeCompare(a.title));
+      return [...list].sort((a, b) => b.title.localeCompare(a.title));
     default:
       return list;
   }
