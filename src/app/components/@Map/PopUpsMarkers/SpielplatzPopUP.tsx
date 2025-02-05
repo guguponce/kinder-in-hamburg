@@ -10,8 +10,10 @@ export default function SpielplatzPopUP({
   type,
   spielgeraete,
   address,
+  distance,
 }: {
   title: string;
+  distance?: number;
   id: number;
   type: string[];
   spielgeraete: string[];
@@ -46,6 +48,16 @@ export default function SpielplatzPopUP({
           {" "}
           <StandortIcon color="#0078A8" />
           <p className="text-xs m-0 font-sans">{address}</p>
+          {distance && (
+            <h4 className="text-sm font-semibold flex flex-col items-center px-1 border-2 border-[#0078A8] rounded-sm min-w-fit">
+              <span className="block">
+                {distance > 500
+                  ? (distance / 1000).toFixed(2) + "km"
+                  : distance.toFixed(0) + "m"}
+              </span>{" "}
+              <span className="block text-[10px]">entfernt</span>
+            </h4>
+          )}
         </div>
       )}
     </Popup>

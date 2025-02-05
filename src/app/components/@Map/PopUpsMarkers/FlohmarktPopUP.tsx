@@ -12,6 +12,7 @@ export default function FlohmarktPopUP({
   date,
   image,
   endDate,
+  distance,
   type = "flohmaerkte",
 }: {
   image?: string;
@@ -20,6 +21,7 @@ export default function FlohmarktPopUP({
   address: string;
   date: number;
   endDate?: number;
+  distance?: number;
   type?: "flohmaerkte" | "events";
 }) {
   return (
@@ -42,7 +44,7 @@ export default function FlohmarktPopUP({
             {title}
           </Link>
           <div className="flex gap-1 items-center font-sans">
-            {/* <PostLogo logo="date" color="#1F262E" /> */}
+            {/* <PostLogo logo="date" color="#343b3e" /> */}
             <small className="font-semibold italic">
               <span className="not-italic">📅 </span>
               {endDate ? "Vom " : "Am "}
@@ -53,6 +55,16 @@ export default function FlohmarktPopUP({
           <div className="flex gap-1 items-center font-sans">
             <StandortIcon size="1rem" color="#343b3e" />
             <p className="text-xs">{address}</p>
+            {distance && (
+              <h4 className="text-sm font-semibold flex flex-col items-center px-1 border-2 border-[#0078A8] rounded-sm min-w-fit">
+                <span className="block">
+                  {distance > 500
+                    ? (distance / 1000).toFixed(2) + "km"
+                    : distance.toFixed(0) + "m"}
+                </span>{" "}
+                <span className="block text-[10px]">entfernt</span>
+              </h4>
+            )}
           </div>
         </div>
       </div>

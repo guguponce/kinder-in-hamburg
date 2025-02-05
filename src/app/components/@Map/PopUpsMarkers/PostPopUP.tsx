@@ -1,4 +1,5 @@
 "use client";
+import StandortIcon from "@app/components/@Icons/StandortIcon";
 import { joinAddress } from "@app/utils/functions";
 import { iAddress } from "@app/utils/types";
 import Link from "next/link";
@@ -11,8 +12,10 @@ export default function PostPopUP({
   categories,
   address,
   image,
+  distance,
 }: {
   image?: string;
+  distance?: number;
   id: number;
   title: string;
   categories: string[];
@@ -37,7 +40,22 @@ export default function PostPopUP({
           <small className="font-semibold italic">
             {categories.join(" - ")}
           </small>
-          <p className="text-xs">{joinAddress(address)}</p>
+          {address && (
+            <div className="mt-auto flex items-center gap-1">
+              <StandortIcon color="#0078A8" />
+              <p className="text-xs m-0 font-sans">{joinAddress(address)}</p>
+              {distance && (
+                <h4 className="text-sm font-semibold flex flex-col items-center px-1 border-2 border-[#0078A8] rounded-sm min-w-fit">
+                  <span className="block">
+                    {distance > 500
+                      ? (distance / 1000).toFixed(2) + "km"
+                      : distance.toFixed(0) + "m"}
+                  </span>{" "}
+                  <span className="block text-[10px]">entfernt</span>
+                </h4>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </Popup>

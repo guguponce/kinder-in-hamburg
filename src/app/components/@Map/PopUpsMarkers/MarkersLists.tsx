@@ -2,7 +2,7 @@
 import FlohmarktPopUP from "@components/@Map/PopUpsMarkers/FlohmarktPopUP";
 import PostPopUP from "@components/@Map/PopUpsMarkers/PostPopUP";
 import SpielplatzPopUP from "@components/@Map/PopUpsMarkers/SpielplatzPopUP";
-import { joinAddress } from "@app/utils/functions";
+import { haversineDistance, joinAddress } from "@app/utils/functions";
 import { iAddress, iListsFPS } from "@app/utils/types";
 import { divIcon, point } from "leaflet";
 import React from "react";
@@ -59,6 +59,7 @@ export default function MarkersLists({
   showPosts = true,
   cluster = true,
   customPostMarker,
+  currentLocation,
 }: {
   lists: iListsFPS;
   showSpielplaetze?: boolean;
@@ -86,6 +87,7 @@ export default function MarkersLists({
     bezirk?: string;
   }) => React.JSX.Element;
   cluster?: boolean;
+  currentLocation?: { lat?: number; lon?: number };
 }) {
   const flohmaerkte = lists.flohmaerkte || [];
   const posts = lists.posts || [];
@@ -105,6 +107,16 @@ export default function MarkersLists({
                 position={[lat!, lon!]}
               >
                 <FlohmarktPopUP
+                  distance={
+                    currentLocation?.lat && currentLocation?.lon
+                      ? haversineDistance(
+                          currentLocation.lon,
+                          currentLocation.lat,
+                          lon!,
+                          lat!
+                        )
+                      : undefined
+                  }
                   address={address}
                   date={date}
                   title={title}
@@ -144,6 +156,16 @@ export default function MarkersLists({
                   position={[lat!, lon!]}
                 >
                   <FlohmarktPopUP
+                    distance={
+                      currentLocation?.lat && currentLocation?.lon
+                        ? haversineDistance(
+                            currentLocation.lon,
+                            currentLocation.lat,
+                            lon!,
+                            lat!
+                          )
+                        : undefined
+                    }
                     id={id}
                     title={title}
                     address={address}
@@ -200,6 +222,16 @@ export default function MarkersLists({
                       position={[lat!, lon!]}
                     >
                       <PostPopUP
+                        distance={
+                          currentLocation?.lat && currentLocation?.lon
+                            ? haversineDistance(
+                                currentLocation.lon,
+                                currentLocation.lat,
+                                lon!,
+                                lat!
+                              )
+                            : undefined
+                        }
                         image={image && image[0]}
                         address={address!}
                         categories={categories}
@@ -225,6 +257,16 @@ export default function MarkersLists({
                 icon={spielplatzIcon}
               >
                 <SpielplatzPopUP
+                  distance={
+                    currentLocation?.lat && currentLocation?.lon
+                      ? haversineDistance(
+                          currentLocation.lon,
+                          currentLocation.lat,
+                          lon!,
+                          lat!
+                        )
+                      : undefined
+                  }
                   address={joinAddress(address!)}
                   title={title}
                   id={id}
