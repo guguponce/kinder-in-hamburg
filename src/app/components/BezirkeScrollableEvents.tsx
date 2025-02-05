@@ -61,12 +61,13 @@ export default async function BezirkeScrollableEvents({
             </a>
           </div>
         ))}
-      <div className="overflow-x-auto w-fit max-w-full flex justify-center flex-wrap gap-2 items-stretch mx-auto">
+      <div className="overflow-x-auto w-fit lg:w-full max-w-full flex justify-center flex-wrap gap-2 items-stretch mx-auto">
         {displayBezirke.map((currentBezirk) => (
           <div
             key={currentBezirk}
-            className={`min-w-[248px] flex items-center flex-col rounded bg-hh-600 bg-opacity-50 p-2 ${
-              eventsByBezirke[currentBezirk].length > 4
+            className={`min-w-[248px] max-w-full flex items-center flex-col rounded bg-hh-600 bg-opacity-50 p-2 ${
+              eventsByBezirke[currentBezirk].length > 4 ||
+              displayBezirke.length === 1
                 ? "w-fit"
                 : "xl:w-[calc(33%-0.5rem)] lg:w-[calc(50%-1rem)]"
             } max-w-full shadow-md`}
