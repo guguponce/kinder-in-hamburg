@@ -174,7 +174,7 @@ export default function FlohmarktTemplate({
             {openHours && (
               <div className="relative border-2 border-hh-800 rounded p-2 md:px-4 mx-auto min-w-[280px] max-w-full">
                 <div className="absolute right-2 top-2">
-                  <PostLogo logo="clock" color="#1F262E" size="1.25rem" />
+                  <PostLogo logo="clock" color="#343b3e" size="1.25rem" />
                 </div>
                 <h3 className="font-semibold">Öffnungszeiten:</h3>
                 <DisplayTypeText text={openHours} type="paragraph" />
@@ -193,7 +193,7 @@ export default function FlohmarktTemplate({
               <h2 className="text-lg font-semibold">Standort:</h2>
               {bezirk && (
                 <div className="flex gap-1">
-                  <PostLogo logo="hamburg" color="#1F262E" />
+                  <PostLogo logo="hamburg" color="#343b3e" />
                   <div className="flex flex-wrap flex-grow gap-x-1">
                     {!!stadtteil && stadtteil !== "Andere Orte" && (
                       <p
@@ -217,7 +217,7 @@ export default function FlohmarktTemplate({
               {!!address && (
                 <div className="flex gap-[6px] ml-[2px]">
                   <div className="min-w-5 mt-1">
-                    <PostLogo logo="map" color="#1F262E" size="20px" />
+                    <PostLogo logo="map" color="#343b3e" size="20px" />
                   </div>
                   {Object.values(separated).some(Boolean) ? (
                     <Link
@@ -269,7 +269,7 @@ export default function FlohmarktTemplate({
               <h2 className="text-lg font-semibold">Datum:</h2>
               <div className="flex flex-col gap-1">
                 <div className="flex gap-1 flex-wrap">
-                  <PostLogo logo="date" color="#1F262E" />
+                  <PostLogo logo="date" color="#343b3e" />
                   <time
                     dateTime={new Date(date).toLocaleDateString()}
                     className="block font-semibold"
@@ -280,7 +280,7 @@ export default function FlohmarktTemplate({
                 {!openHours && time && (
                   <div className="flex gap-1 items-center">
                     <div className="px-[2px]">
-                      <PostLogo logo="clock" color="#1F262E" size="1.25rem" />
+                      <PostLogo logo="clock" color="#343b3e" size="1.25rem" />
                     </div>
                     <h3 className="block font-semibold">
                       {startTime && <span>{startTime}</span>}
