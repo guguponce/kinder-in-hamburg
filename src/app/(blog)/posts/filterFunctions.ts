@@ -1,5 +1,6 @@
+import { bezirke as bezirkeNames, categoryNames } from "@app/utils/constants";
 import { getPlainText } from "@app/utils/functions";
-import { iPost } from "@app/utils/types";
+import { iBezirk, iPost } from "@app/utils/types";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 export const orderListFx = (list: iPost[], order: string) => {
@@ -144,7 +145,8 @@ export const removeFilter = ({
           filterType,
           "",
           new URLSearchParams(searchParams.toString())
-        )
+        ),
+      { scroll: false }
     );
   } else if (stateType === "object" && arrayStateSetter) {
     arrayStateSetter(
@@ -158,7 +160,75 @@ export const removeFilter = ({
           value,
           value === "all" ? [] : (state as string[]),
           new URLSearchParams(searchParams.toString())
-        )
+        ),
+      { scroll: false }
     );
   }
+};
+
+export const getAvailableStadtteile = (
+  postsList: iPost[],
+  bezirke: iBezirk[]
+) => {
+  const bWS = postsList.reduce(
+    (acc, post) => {
+      const { stadtteil, bezirk } = post;
+      if (!bezirke.includes(bezirk) || !stadtteil) return acc;
+
+      if (!acc[bezirk]) acc[bezirk] = new Set<string>();
+
+      acc[bezirk].add(stadtteil);
+
+      return acc;
+    },
+    {} as Record<string, Set<string>>
+  );
+
+  const result = Object.fromEntries(
+    Object.entries(bWS).map(([bezirk, stadtteileSet]) => [
+      bezirk,
+      Array.from(stadtteileSet),
+    ])
+  );
+
+  return result;
+};
+
+export const getAvailableBezirke = (postsList: iPost[]) => {
+  let bezirke = new Set<iBezirk>();
+  for (let i = 0; i < postsList.length; i++) {
+    const { bezirk } = postsList[i];
+    bezirke.add(bezirk);
+    if (bezirke.size === bezirkeNames.length) break;
+  }
+  return Array.from(bezirke).sort((a, b) => a.localeCompare(b));
+};
+export const getAvailableCategories = (postsList: iPost[]) => {
+  let categories = new Set<string>();
+  for (let i = 0; i < postsList.length; i++) {
+    const { categories: cats } = postsList[i];
+    for (let j = 0; j < cats.length; j++) {
+      categories.add(cats[j]);
+      if (categories.size === categoryNames.length) break;
+    }
+    if (categories.size === categoryNames.length) break;
+  }
+  return Array.from(categories).sort((a, b) => a.localeCompare(b));
+};
+export type orderType = "neueste" | "beliebste" | "az" | "za";
+export const orderOptionsNames = {
+  neueste: "Neueste",
+  beliebste: "Beliebteste",
+  az: "A-Z (Name)",
+  za: "Z-A (Name)",
+};
+export const orderOptions: Array<orderType> = [
+  "neueste",
+  "beliebste",
+  "az",
+  "za",
+];
+export const isTypeOrder = (type: string | null): type is orderType => {
+  if (!type) return false;
+  return type in orderOptionsNames;
 };
