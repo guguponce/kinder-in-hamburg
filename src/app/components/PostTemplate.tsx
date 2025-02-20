@@ -65,7 +65,7 @@ export default function PostTemplate({
             </React.Fragment>
           ))}
         </article>
-        <div className="flex items-center gap-2 flex-wrap">
+        <div className="flex items-stretch  gap-2 flex-wrap">
           {((minAge && minAge > 0) || !!maxAge) && (
             <section
               id="age"
@@ -111,7 +111,7 @@ export default function PostTemplate({
           bezirk={bezirk}
           stadtteil={stadtteil}
           currentType="post"
-          maxDistance={1500}
+          maxDistance={1000}
         />
       </section>
       {/* {"Augusto Ponce" !== addedBy.name && (

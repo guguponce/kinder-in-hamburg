@@ -15,8 +15,8 @@ const formatText = (text: string) => {
     regex,
     (
       match,
-      semiboldText,
       boldText,
+      semiboldText,
       italicText,
       underlinedText,
       upperText,
@@ -33,7 +33,11 @@ const formatText = (text: string) => {
 
       // Push the formatted part based on the match
       if (boldText) {
-        formattedText.push(<strong key={index}>{boldText}</strong>);
+        formattedText.push(
+          <strong className="font-extrabold" key={index}>
+            {boldText}
+          </strong>
+        );
       } else if (semiboldText) {
         formattedText.push(
           <span className="font-semibold" key={index}>

@@ -198,7 +198,7 @@ export default function FlohForm({
           );
         })
         .catch((error) => {
-          console.log(error);
+          console.error(error);
           setSubmitError({ isError: true, errorMessage: error.message });
         });
     },

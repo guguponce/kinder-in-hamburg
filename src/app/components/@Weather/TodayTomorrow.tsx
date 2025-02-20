@@ -22,7 +22,7 @@ export default function TodayTomorrow({
             logo={WEATHER_CODES[todayCode.toString()].overallCondition}
             size="75%"
           />
-          <h4 className="font-semibold">{todayTemp}°</h4>
+          <h4 className="font-semibold">{todayTemp.toFixed(0)}°</h4>
         </div>
       </div>
       <div className="h-full w-1 bg-hh-700 rounded"></div>
@@ -33,7 +33,7 @@ export default function TodayTomorrow({
             logo={WEATHER_CODES[tomorrowCode.toString()].overallCondition}
             size="75%"
           />
-          <h4 className="font-semibold">{tomorrowTemp}°</h4>
+          <h4 className="font-semibold">{tomorrowTemp.toFixed(0)}°</h4>
         </div>
       </div>
     </div>

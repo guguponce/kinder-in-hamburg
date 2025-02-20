@@ -29,7 +29,6 @@ export default async function SommerInHamburgPage() {
   const planschbecken = (await getTypeSpielplaetze("planschbecken")) || [];
   if ([...badeplaetze, ...wasserspielplaetze, ...planschbecken].length === 0)
     return null;
-  console.log("badeplaetze", badeplaetze);
   const weather = await getWeatherData();
   return (
     <main className="max-w-[1000px] w-full mx-auto flex flex-col gap-4 items-center bg-hh-900 bg-opacity-20 p-4 rounded">

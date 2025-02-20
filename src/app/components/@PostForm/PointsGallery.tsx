@@ -36,7 +36,11 @@ export default function PointsGallery({
       }  rounded-lg bg-center bg-cover flex flex-col gap-2 ${
         children ? "justify-between" : "justify-end"
       } p-4 shadow-lg`}
-      style={{ backgroundImage: `url(${currentPost.image![0]})` }}
+      style={{
+        backgroundImage: `url(${currentPost.image![0]})`,
+        backgroundSize: "contain",
+        backgroundRepeat: "no-repeat",
+      }}
     >
       {children}
       <div className="flex flex-col items-center gap-1">

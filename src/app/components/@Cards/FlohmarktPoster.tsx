@@ -124,7 +124,7 @@ export default function FlohmarktPoster({
                 Heute
               </h3>
             ) : (
-              <h3 className="text-sm font-semiboldtext-hh-800">
+              <h3 className="text-sm font-semibold text-hh-800">
                 {getDate(date)}
               </h3>
             )}
