@@ -20,7 +20,9 @@ export default function ScrollableCardList({
   key,
   linkPrefix,
   withDate,
+  cardClassname,
 }: {
+  cardClassname?: string;
   key?: string;
   size: "small" | "medium" | "large";
   posts: iPost[] | iFlohmarkt[];
@@ -47,6 +49,7 @@ export default function ScrollableCardList({
                 aspectRatio: 0.66,
                 link: linkPrefix ? `${linkPrefix}${id}` : `/posts/${id}`,
                 size: size,
+                cardContainerClassname: cardClassname,
                 description: parseDescriptionWithTags(getPlainText(text)),
               })}
             </React.Fragment>
