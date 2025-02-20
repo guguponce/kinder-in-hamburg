@@ -1,4 +1,6 @@
 import { createBrowserClient } from "@supabase/ssr";
+import { User } from "@supabase/supabase-js";
+import { useEffect, useState } from "react";
 
 export const createClient = () => {
   return createBrowserClient(
@@ -7,14 +9,22 @@ export const createClient = () => {
   );
 };
 
-export const getClientSession = async () => {
+export const GetUserHook = () => {
   const supabase = createClient();
-  const { data: session, error } = await supabase.auth.getSession();
-  if (error) {
-    if ("Auth session missing!" === error.message) return { user: null };
-    console.error("getClientSession", error, "getClientSession");
-  }
-  return session;
+  const [user, setUser] = useState<null | User>();
+  useEffect(() => {
+    supabase.auth.getUser().then((session) => {
+      const {
+        data: { user },
+        error,
+      } = session;
+      setUser(user);
+      if (error) {
+        // console.error("getUser", error, "getUser");
+      }
+    });
+  }, [supabase]);
+  return user;
 };
 
 export const getClientUser = async () => {
