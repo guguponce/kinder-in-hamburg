@@ -3,6 +3,7 @@ import { headers } from "next/headers";
 import { createClient } from "@auth/server";
 import { redirect } from "next/navigation";
 import { iUserMetadata } from "./types";
+import { revalidatePath } from "next/cache";
 
 export const signIn = async () => {
   const supabase = createClient();
@@ -19,6 +20,7 @@ export const signOut = async () => {
   const supabase = createClient();
   const { error } = await supabase.auth.signOut();
   if (error) console.error("signOut", error, "signOut");
+  revalidatePath("/");
   return redirect("/");
 };
 
@@ -34,9 +36,9 @@ export const getServerUser = async () => {
   const { data: userData, error } = await supabase.auth.getUser();
   if (error) {
     if ("Auth session missing!" === error.message) return null;
-    const session = await getServerSession();
-    if (!session) return null;
-    return session?.user.user_metadata as iUserMetadata;
+    // const session = await getServerSession();
+    // if (!session) return null;
+    // return session?.user.user_metadata as iUserMetadata;
   }
   const { user } = userData;
   if (!user) return null;
