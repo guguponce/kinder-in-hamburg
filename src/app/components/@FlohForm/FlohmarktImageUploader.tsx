@@ -307,38 +307,38 @@ const ImageUploader = ({
                 <img
                   src={localImageUrl[i]}
                   alt={image.name}
-                  className="w-36 h-36 object-cover"
+                  className="w-full max-w-[400px] object-cover"
                 />
                 <p>
                   {image.size > 1000000
                     ? `(${(image.size / 1000000).toFixed(2)} mb)`
                     : `(${(image.size / 1000).toFixed(2)} kb)`}
                 </p>
+                <div className="flex gap-4">
+                  <button
+                    className="rounded bg-positive-700 px-4 py-2 font-bold text-white hover:bg-yellow-700"
+                    disabled={
+                      !imageFile.length ||
+                      (uploadStatus !== "await" && uploadStatus !== "success")
+                    }
+                    onClick={() => handleUpload()}
+                  >
+                    Upload Image
+                  </button>
+                  <button
+                    className="flex h-10 w-fit items-center justify-center rounded bg-negative-500 px-2 py-2 font-bold text-white hover:bg-negative-700 "
+                    onClick={() => {
+                      setImageFile([]);
+                      setLocalImageUrl([]);
+                      fileInputRef.current!.value = "";
+                    }}
+                  >
+                    Cancel
+                  </button>
+                </div>
               </li>
             ))}
           </ol>
-          <div className="flex gap-4">
-            <button
-              className="rounded bg-positive-700 px-4 py-2 font-bold text-white hover:bg-yellow-700"
-              disabled={
-                !imageFile.length ||
-                (uploadStatus !== "await" && uploadStatus !== "success")
-              }
-              onClick={() => handleUpload()}
-            >
-              Upload Images
-            </button>
-            <button
-              className="flex h-10 w-fit items-center justify-center rounded bg-negative-500 px-2 py-2 font-bold text-white hover:bg-negative-700 "
-              onClick={() => {
-                setImageFile([]);
-                setLocalImageUrl([]);
-                fileInputRef.current!.value = "";
-              }}
-            >
-              Cancel
-            </button>
-          </div>
         </div>
       )}
       {(!!previousImage.length ||
