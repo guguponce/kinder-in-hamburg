@@ -64,7 +64,7 @@ export default function BezirkableEventsList({
 
   return (
     <section
-      className={`bezirkableEventsList w-full rounded sm:px-2 md:px-4 py-2 my-2 flex flex-col ${containerStyle}`}
+      className={`bezirkableEventsList max-w-full rounded sm:px-2 md:px-4 py-2 my-2 flex flex-col ${containerStyle}`}
     >
       {title && title !== "" && (
         <h2 className="text-2xl font-semibold text-start self-start p-2">
