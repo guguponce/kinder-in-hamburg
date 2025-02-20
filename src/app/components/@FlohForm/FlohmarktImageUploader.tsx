@@ -115,8 +115,8 @@ async function convertToWebp(
 ) {
   const url = URL.createObjectURL(file);
   if (file.size < maxFileKb * 1000) {
-    fileSetter((prev) => [...prev, file]);
-    urlSetter((prev) => [...prev, url]);
+    fileSetter([file]);
+    urlSetter([url]);
     return;
   }
   const img = new Image();
@@ -135,8 +135,8 @@ async function convertToWebp(
       const { url } = reduceQualityUnderSpecificKb(canvas, maxFileKb);
       if (url) {
         const file = createBlob(url);
-        fileSetter((prev) => [...prev, file]);
-        urlSetter((prev) => [...prev, url]);
+        fileSetter([file]);
+        urlSetter([url]);
       } else {
         console.log("Error in convertToWebp", file, url);
       }
@@ -220,7 +220,7 @@ const ImageUploader = ({
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     if (event.target.files) {
-      const convertedImage = await convertToWebp(
+      await convertToWebp(
         event.target.files[0],
         400,
         40,
@@ -251,6 +251,7 @@ const ImageUploader = ({
     )
       .then(() => {
         setImageFile([]);
+        setLocalImageUrl([]);
         fileInputRef.current!.value = "";
       })
       .catch((error) => {
@@ -331,6 +332,7 @@ const ImageUploader = ({
               className="flex h-10 w-fit items-center justify-center rounded bg-negative-500 px-2 py-2 font-bold text-white hover:bg-negative-700 "
               onClick={() => {
                 setImageFile([]);
+                setLocalImageUrl([]);
                 fileInputRef.current!.value = "";
               }}
             >
