@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import ExpandableContainer from "./ExpandableContainer";
 import { iFlohmarkt } from "@app/utils/types";
-import { getDate } from "@app/utils/functions";
+import { cn, getDate } from "@app/utils/functions";
 import HorizontalCard from "./@Cards/HorizontalCard";
 
 function addressWithoutCity(address: string) {
@@ -16,10 +16,12 @@ function addressWithoutCity(address: string) {
   }
 }
 
-export default function WeitereFlohmaerkte({
+export default function WeitereEvents({
   type,
   displayedMarkers,
+  boxStyle,
 }: {
+  boxStyle?: string;
   type:
     | "Spielplätze"
     | "Spielgeräte"
@@ -56,33 +58,115 @@ export default function WeitereFlohmaerkte({
     (a, b) => parseInt(a) - parseInt(b)
   );
   return (
-    <div ref={listRef} className="w-full flex flex-col gap-4 items-stretch">
-      {orderedDates.map((date) => (
+    <div
+      ref={listRef}
+      className="w-fit max-w-full flex flex-col gap-4 items-stretch justify-stretch"
+    >
+      {orderedDates.map((date, i) => (
         <React.Fragment key={date}>
-          <ExpandableContainer
-            type={type}
-            contentHeight={contentHeight}
-            initialHeight={
-              flohmaerkteByDate.current[date].length < 2 ? 180 : 128 * 2 + 32
-            }
+          <article
+            className={cn(
+              "flex flex-col gap-2 w-fit flex-grow bg-hh-400 rounded",
+              boxStyle
+            )}
           >
-            <article className="flex flex-col gap-2 items-stretch w-full">
+            <ExpandableContainer
+              type={type}
+              contentHeight={contentHeight}
+              initialHeight={
+                flohmaerkteByDate.current[date].length < 2 ? 180 : 128 * 2 + 32
+              }
+            >
               <h3 className="text-lg font-semibold text-hh-900">
                 {getDate(parseInt(date))}
               </h3>
               <div className="flex flex-wrap justify-center gap-2 items-stretch">
+                {i === 1 &&
+                  flohmaerkteByDate.current[date].map(
+                    (
+                      {
+                        title,
+                        address,
+                        date,
+                        id,
+                        time,
+                        image,
+                        stadtteil,
+                        type,
+                      },
+                      i,
+                      arr
+                    ) => (
+                      <div
+                        key={id}
+                        className={`w-[360px] ${arr.length > 1 ? "md:w-[calc(50%-1rem)]" : "md:w-[calc(50%-1rem)]"}`}
+                      >
+                        <HorizontalCard
+                          type={type || "flohmarkt"}
+                          id={id}
+                          title={title}
+                          link={`/${type ? "events" : "flohmaerkte"}/${id}`}
+                          image={image || ""}
+                        >
+                          <HorizontalCard.FlohmarktInfo
+                            title={title}
+                            address={addressWithoutCity(address)}
+                            stadtteil={stadtteil}
+                            date={date}
+                            time={time}
+                          />
+                        </HorizontalCard>
+                      </div>
+                    )
+                  )}{" "}
+                {i === 1 &&
+                  flohmaerkteByDate.current[date].map(
+                    (
+                      {
+                        title,
+                        address,
+                        date,
+                        id,
+                        time,
+                        image,
+                        stadtteil,
+                        type,
+                      },
+                      i,
+                      arr
+                    ) => (
+                      <div
+                        key={id}
+                        className={`w-[360px] ${arr.length > 1 ? "md:w-[calc(50%-1rem)]" : "md:w-[calc(50%-1rem)]"}`}
+                      >
+                        <HorizontalCard
+                          type={type || "flohmarkt"}
+                          id={id}
+                          title={title}
+                          link={`/${type ? "events" : "flohmaerkte"}/${id}`}
+                          image={image || ""}
+                        >
+                          <HorizontalCard.FlohmarktInfo
+                            title={title}
+                            address={addressWithoutCity(address)}
+                            stadtteil={stadtteil}
+                            date={date}
+                            time={time}
+                          />
+                        </HorizontalCard>
+                      </div>
+                    )
+                  )}
                 {flohmaerkteByDate.current[date].map(
-                  ({
-                    title,
-                    address,
-                    date,
-                    id,
-                    time,
-                    image,
-                    stadtteil,
-                    type,
-                  }) => (
-                    <div key={id} className="w-[360px] md:w-[calc(50%-1rem)]">
+                  (
+                    { title, address, date, id, time, image, stadtteil, type },
+                    i,
+                    arr
+                  ) => (
+                    <div
+                      key={id}
+                      className={`w-[360px] ${arr.length > 1 ? "md:w-[calc(50%-1rem)]" : ""}`}
+                    >
                       <HorizontalCard
                         type={type || "flohmarkt"}
                         id={id}
@@ -102,8 +186,8 @@ export default function WeitereFlohmaerkte({
                   )
                 )}{" "}
               </div>
-            </article>
-          </ExpandableContainer>
+            </ExpandableContainer>
+          </article>
         </React.Fragment>
       ))}
     </div>
