@@ -64,12 +64,12 @@ export default async function FlohmaerkteContainer() {
 
   return (
     <div
-      className={`rounded-lg bg-gradient-to-b from-[#f7887af0] via-[#f7887af0]  to-[#fdd1cb90] w-[calc(100%-2rem)] p-1 sm:p-4 flex flex-col items-center min-h-[50vh] ${thisWeekFlohmaerkteLength ? "max-w-[1000px]" : "max-w-[800px]"} text-hh-50"`}
+      className={`rounded-lg bg-gradient-to-b from-[#d0d7da50] via-[#d0d7da50] to-hh-50 bg-opacity-25 w-[calc(100%-2rem)] p-1 sm:p-4 flex flex-col items-center min-h-[50vh] ${thisWeekFlohmaerkteLength ? "max-w-[1000px]" : "max-w-[800px]"} text-hh-50"`}
     >
       <h1 className=" text-4xl font-bold p-2 lg:pb-4 rounded text-hh-950">
         Flohmärkte
       </h1>
-      <h2 className="w-fit text-base italic mb-2 p-2 md:p-4 rounded-lg border-2 font-semibold text-hh-50 border-hh-700 max-w-[480px] text-center">
+      <h2 className="w-fit text-base italic mb-2 p-2 bg-hh-800 bg-opacity-75 md:p-4 rounded-lg border-2 font-semibold text-hh-50 border-hh-700 max-w-[480px] text-center">
         Die Hochsaison der Flohmärkte hat noch nicht begonnen, aber im Frühjahr
         geht es endlich los.
       </h2>
@@ -147,7 +147,7 @@ export default async function FlohmaerkteContainer() {
         )} */}
         <Link
           href="/flohmaerkte"
-          className="self-end text-hh-800 underline-offset-2 underline hover:text-hh-700 hover:underline-offset-4 transition-all"
+          className="text-hh-800 underline-offset-2 underline hover:text-hh-700 hover:underline-offset-4 transition-all self-end mx-2 py-1 px-2 rounded hover:backdrop-brightness-95"
         >
           Alle Flohmärkte entdecken
         </Link>
