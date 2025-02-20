@@ -395,7 +395,7 @@ export const getPostsWithCat = async (
   const pinnedQuery = pinnedPosts ? "pinnedPost.eq.true" : "";
   try {
     const catquery = categories
-      .map((cat) => `categories.ilike.%${cat}%` + pinnedQuery)
+      .map((cat) => `categories.ilike.%${cat}%`)
       .join(",");
     const { data, error } = await supabaseAdmin
       .from(db)
@@ -571,7 +571,7 @@ export const getPinnedPosts = async () => {
     if (error) {
       throw new Error("There was a problem getting the pinned posts.");
     }
-    return parseAllPosts(data);
+    return parseAllPosts(data).sort(() => Math.random() - 0.5);
   } catch (error) {
     return false;
   }
@@ -1222,7 +1222,6 @@ export const addEvent = async (
   event: iFlohmarkt,
   eventTable: string = "flohmaerkte"
 ) => {
-  console.log("adding event");
   try {
     const user = await getServerUser();
     if (!user?.email) {
