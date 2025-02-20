@@ -60,6 +60,40 @@ export const categoryNames = [
   "Jugendeinrichtung",
   "Badeplatz",
 ];
+export const pluralCategories = {
+  Indoor: "Indoor",
+  Outdoor: "Outdoor",
+  "Wochenende Ausflüge": "Wochenende Ausflugsziele",
+  Kostenlos: "Kostenlose",
+  Spielplatz: "Spielplätze",
+  Museum: "Museen",
+  "Unter 2": "Für Kinder unter 2",
+  Tiere: "Tiere",
+  Sport: "Sport",
+  Geburtstage: "Für Geburtstage",
+  "Essen/Café": "Cafés und Orte zum Essen",
+  Shops: "Shops",
+  Spielhaus: "Spielhäuser",
+  Jugendeinrichtung: "Jugendeinrichtungen",
+  Badeplatz: "Badeplätze",
+};
+export const pluralCategoryEmpfehlungen = {
+  Indoor: "Indoor-Orte",
+  Outdoor: "Outdoor-Orte",
+  "Wochenende Ausflüge": "Wochenende Ausflugsziele",
+  Kostenlos: "Kostenlose Aktivitäten",
+  Spielplatz: "Spielplätze",
+  Museum: "Museen",
+  "Unter 2": "Empfehlungen für Kinder unter 2",
+  Tiere: "Orte mit Tieren",
+  Sport: "Sport Aktivitäten",
+  Geburtstage: "Orte für Geburtstagsfeiern",
+  "Essen/Café": "Cafés und Orte zum Essen",
+  Shops: "Empfohlene Shops",
+  Spielhaus: "Spielhäuser",
+  Jugendeinrichtung: "Jugendeinrichtungen",
+  Badeplatz: "Badeplätze",
+};
 
 export const relatedCategories: { [x: string]: categoryName[] } = {
   Indoor: ["Spielplatz", "Museum", "Essen/Café"],

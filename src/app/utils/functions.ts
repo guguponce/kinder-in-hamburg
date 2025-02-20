@@ -377,10 +377,10 @@ export const getLatLong = async (address: string) => {
 export const addLatLongToPost = async (post: iPost) => {
   if (post.lat && post.lon) return post;
   if (!post.address) return false;
-
+  if (!post.address.street || !post.address.PLZ || !post.address.city)
+    return "No complete address";
   const addressQuery = getAddressQuery(post.address);
   const { lat, lon } = await getLatLong(addressQuery);
-
   return {
     ...post,
     lat: parseFloat(lat),
