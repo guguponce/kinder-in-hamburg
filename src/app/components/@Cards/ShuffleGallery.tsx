@@ -7,12 +7,15 @@ import SpielplatzPoster from "./SpielplatzPoster";
 import Link from "next/link";
 import {
   cn,
+  getPlainText,
   isTypeFlohmarkt,
   isTypePost,
   isTypeSpielplatz,
 } from "@app/utils/functions";
 import PostPoster from "./PostPoster";
 import FlohmarktPoster from "./FlohmarktPoster";
+import TextPriorityCard from "./TextPriorityCard";
+import ImageCard from "./ImageCard";
 
 export default function ShuffleGallery({
   children,
@@ -24,7 +27,11 @@ export default function ShuffleGallery({
   dark = false,
   transparent = false,
   posterClassname,
+  postPoster = true,
+  shuffleContainerClassName,
 }: {
+  shuffleContainerClassName?: string;
+  postPoster?: boolean;
   posterClassname?: string;
   transparent?: boolean;
   titleUnder?: boolean;
@@ -68,11 +75,14 @@ export default function ShuffleGallery({
   const { currentArticle, backupImg } = article;
   return (
     <div
-      className={`relative flex flex-col items-center rounded-md min-w-full ${
-        transparent ? "" : dark ? "bg-hh-700" : "bg-hh-400"
-      } bg-opacity-25 h-full gap-2 p-2 ${shuffle ? "pb-12" : ""}`}
+      className={cn(
+        `relative flex flex-col items-center rounded-md min-w-full bg-opacity-25 h-full gap-2 p-2
+        ${transparent ? "" : dark ? "bg-hh-700" : "bg-hh-400"}
+        ${shuffle ? "pb-12" : ""}`,
+        shuffleContainerClassName
+      )}
     >
-      <article className="h-full w-full md:aspect-square border border-hh-200 shadow-sm rounded overflow-hidden bg-hh-400 bg-opacity-25 flex flex-col items-center gap-2 relative">
+      <article className="h-full w-full md:aspect-square shadow rounded overflow-hidden bg-hh-400 bg-opacity-25 flex flex-col items-center gap-2 relative hover:shadow-2xl">
         {isTypeFlohmarkt(currentArticle) ? (
           <div
             className={cn(
@@ -94,6 +104,26 @@ export default function ShuffleGallery({
               id={currentArticle.id}
             />
           </div>
+        ) : isTypePost(currentArticle) && !postPoster ? (
+          !!currentArticle.image?.length ? (
+            <ImageCard
+              cardContainerClassname="w-full h-full max-w-none aspect-auto sm:w-full md:w-full sm:max-w-full md:max-w-full"
+              title={currentArticle.title}
+              image={currentArticle.image[0]}
+              size={size}
+              id={currentArticle.id}
+              description={getPlainText(currentArticle.text).slice(0, 10)}
+            />
+          ) : (
+            <TextPriorityCard
+              cardContainerClassname="w-full h-full max-w-none aspect-auto sm:w-full md:w-full sm:max-w-full md:max-w-full"
+              title={currentArticle.title}
+              size={size}
+              id={currentArticle.id}
+              image={currentArticle.image ? currentArticle.image[0] : ""}
+              description={getPlainText(currentArticle.text).slice(0, 220)}
+            />
+          )
         ) : (
           <Link
             href={`${
@@ -143,7 +173,7 @@ export default function ShuffleGallery({
               shuffle
                 ? ""
                 : "bg-hh-900 bg-opacity-15 hover:bg-hh-950 hover:bg-opacity-20 rounded-md shadow-md hover:shadow-lg transition-all duration-200 ease-in-out"
-            } p-1 ml-1 aspect-square -rotate-90`}
+            } p-1 ml-1 aspect-square -rotate-90 rounded focus:outline-hh-800 focus-visible:outline-hh-800 focus:-outline-offset-4 focus-visible:-outline-offset-4`}
             onClick={() => {
               const index =
                 currentIndex === 0 ? originalList.length - 1 : currentIndex - 1;
@@ -157,7 +187,7 @@ export default function ShuffleGallery({
           {shuffle && (
             <button
               title="Shuffle"
-              className="aspect-square hover:p-0 h-fit hover:bg-opacity-10 hover:bg-hh-50 rounded-full"
+              className="aspect-square hover:p-0 h-fit hover:bg-opacity-10 hover:bg-hh-50 rounded-lg  focus:outline-hh-800 focus-visible:outline-hh-800 focus:outline-offset-2 focus-visible:outline-offset-2"
               onClick={() => {
                 const availableIndexes = Array.from(
                   { length: originalList.length },
@@ -181,7 +211,7 @@ export default function ShuffleGallery({
               shuffle
                 ? ""
                 : "bg-hh-900 hover:bg-hh-950 hover:bg-opacity-20 bg-opacity-15 rounded-md shadow-md hover:shadow-lg transition-all duration-200 ease-in-out"
-            } p-1 mr-1 aspect-square rotate-90`}
+            } p-1 mr-1 aspect-square rotate-90 rounded focus:outline-hh-800 focus-visible:outline-hh-800 focus:-outline-offset-4 focus-visible:-outline-offset-4`}
             onClick={() => {
               const index = (currentIndex + 1) % originalList.length;
               setCurrentIndex(index);
