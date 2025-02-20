@@ -5,7 +5,7 @@ import { iBezirk, iEventType, iFlohmarkt } from "@app/utils/types";
 import { Marker } from "react-leaflet";
 import React, { useMemo, useRef } from "react";
 import { divIcon, point } from "leaflet";
-import { getDate, getTodayNexMonday } from "@app/utils/functions";
+import { cn, getDate, getTodayNexMonday } from "@app/utils/functions";
 import ScrollableContainer from "@components/ScrollableContainer";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import {
@@ -100,6 +100,7 @@ export default function DynamicEventsMap({
   showTermine = true,
   showBezirke = true,
   children,
+  className,
 }: {
   children?: React.ReactNode;
   showTermine?: boolean;
@@ -110,6 +111,7 @@ export default function DynamicEventsMap({
   thisWeek: iFlohmarkt[];
   future?: iFlohmarkt[];
   square?: boolean;
+  className?: string;
 }) {
   const [selectedDate, setSelectedDate] = React.useState<
     number | string | undefined
@@ -192,7 +194,12 @@ export default function DynamicEventsMap({
     return todayString === selectedDateString;
   }, [today, selectedDate]);
   return (
-    <div className="w-full sm:w-full flex flex-col md:flex-row md:flex-wrap items-stretch gap-2 rounded">
+    <div
+      className={cn(
+        "w-full sm:w-full flex flex-col md:flex-row md:flex-wrap items-stretch gap-2 rounded",
+        className
+      )}
+    >
       <section
         className={`max-h-[60vh] min-h-[250px] flex-grow xs:min-w-[300px] sm:max-w-[800px] aspect-square sm:aspect-[3/2] md:aspect-auto md:mx-auto ${square ? "w-full lg:aspect-square  lg:max-w-full" : "md:aspect-video lg:aspect-auto lg:h-[50vh] lg:max-w-full"} flex justify-center rounded overflow-hidden`}
       >

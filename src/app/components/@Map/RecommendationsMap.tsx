@@ -11,7 +11,7 @@ import {
 import StandortIcon from "@app/components/@Icons/StandortIcon";
 import MarkersLists from "@app/components/@Map/PopUpsMarkers/MarkersLists";
 import { PROXIMATE_STADTTEILE_FROM_OTHER_BEZIRK } from "@app/utils/constants";
-import { filterByDistance, getTodayNexMonday } from "@app/utils/functions";
+import { cn, filterByDistance, getTodayNexMonday } from "@app/utils/functions";
 import {
   iBezirk,
   iFlohmarkt,
@@ -117,7 +117,9 @@ export default async function RecommendationsMap({
   showSpielplaetze = true,
   showPosts = true,
   onlyCurrentRef = false,
+  containerClassName,
 }: {
+  containerClassName?: string;
   showFlohmaerkte?: boolean;
   showPosts?: boolean;
   showSpielplaetze?: boolean;
@@ -245,7 +247,10 @@ export default async function RecommendationsMap({
   return (
     <article
       id="map"
-      className="w-full max-w-[800px] min-h-[400px] rounded bg-hh-100 bg-opacity-20 flex flex-col gap-2 p-2 mx-auto text-hh-50"
+      className={cn(
+        "w-full max-w-[800px] min-h-[400px] rounded bg-hh-100 bg-opacity-20 flex flex-col gap-2 p-2 mx-auto text-hh-50",
+        containerClassName
+      )}
     >
       <div className="w-full h-[400px] flex-grow flex flex-col">
         {!onlyCurrentRef && (
@@ -253,11 +258,7 @@ export default async function RecommendationsMap({
         )}
         <GeneralMap zoom={14} currentTarget={currentItem || undefined}>
           <MarkersLists
-            currentLocation={
-              currentItem
-                ? { lat: currentItem.lat, lon: currentItem.lon }
-                : undefined
-            }
+            currentLocation={{ lat: currentItem.lat, lon: currentItem.lon }}
             cluster={false}
             lists={defList}
             showFlohmaerkte={showFlohmaerkte}
@@ -276,7 +277,7 @@ export default async function RecommendationsMap({
               <p>{currentItem.title}</p>
             </div>
             {!onlyCurrentRef && !!defList.flohmaerkte?.length && (
-              <div className="flex bg-hh-800 bg-opacity-20 rounded p-1">
+              <div className="w-fit max-w-full flex gap-2 bg-hh-800 bg-opacity-20 rounded p-1">
                 <StandortIcon color={tags.flohmaerkte.color} />
                 <p>
                   {defList.flohmaerkte?.length}{" "}
