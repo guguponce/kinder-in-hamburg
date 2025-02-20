@@ -30,9 +30,11 @@ export const createClient = (dynamicCookies?: ReadonlyRequestCookies) => {
     {
       cookies: {
         getAll() {
+          // if (!cookieStore) return [];
           return cookieStore.getAll();
         },
         setAll(cookiesToSet) {
+          // if (!cookieStore) return;
           try {
             cookiesToSet.forEach(({ name, value, options }) => {
               cookieStore.set(name, value, options);
