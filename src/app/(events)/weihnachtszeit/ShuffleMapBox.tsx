@@ -1,6 +1,6 @@
 "use client";
 import { iFlohmarkt } from "@app/utils/types";
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import Link from "next/link";
 import ShuffleGallery from "@app/components/@Cards/ShuffleGallery";
 import { cn } from "@app/utils/functions";
@@ -18,7 +18,7 @@ export default function ShuffleMapBox({
   const [selectedID, setSelectedID] = React.useState<number>(0);
   const selectedEventID = useMemo(
     () => adventsEvents[selectedID].id,
-    [selectedID]
+    [selectedID, adventsEvents]
   );
 
   if (adventsEvents.length === 0) return null;
