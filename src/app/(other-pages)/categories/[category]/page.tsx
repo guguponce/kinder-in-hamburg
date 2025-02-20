@@ -1,14 +1,32 @@
 import { getPostsWithCat } from "@app/api/dbActions";
-import RandomRecommendation from "@app/components/@Cards/RandomRecommendation";
-import DynamicCategoryMap from "@app/components/@Map/DynamicCategoryMap";
 import PointsGallery from "@app/components/@PostForm/PointsGallery";
-import FilterablePostList from "@app/components/FilterablePostList";
 import AdminRoute from "@app/providers/AdminRoute";
-import { categoryNames, relatedCategories } from "@app/utils/constants";
+import {
+  categoryNames,
+  pluralCategoryEmpfehlungen,
+  relatedCategories,
+} from "@app/utils/constants";
 import { parseParams, sortPostsByDate } from "@app/utils/functions";
 import { categoryName } from "@app/utils/types";
 import NotFound from "@app/components/@NotFound/NotFound";
 import React from "react";
+import ShuffleGallery from "@app/components/@Cards/ShuffleGallery";
+import { unstable_cache } from "next/cache";
+import dynamic from "next/dynamic";
+
+const cachedCategoryPosts = unstable_cache(
+  getPostsWithCat,
+  ["allSuggestedPosts"],
+  {
+    revalidate: 60 * 5, //7 5 min
+    tags: ["posts"],
+  }
+);
+
+const DynamicURLFilteredList = dynamic(
+  () => import("@app/(blog)/posts/URLFilteredList"),
+  { ssr: false }
+);
 
 export default async function CategoriesPage({
   params: { category: cat },
@@ -18,15 +36,14 @@ export default async function CategoriesPage({
   const category = parseParams(cat) as categoryName;
   if (!categoryNames.includes(category)) return <NotFound type="categories" />;
   //----------------------------------------------------------
-  const categoryPosts = await getPostsWithCat(
+  const categoryPosts = await cachedCategoryPosts(
     [category],
     false,
     "kih-suggestions"
   );
-  console;
   if (!categoryPosts) return <NotFound type="categories" />;
   const highlightedWithImages = categoryPosts.filter(
-    (post) => post.image && post.pinnedPost
+    ({ image, pinnedPost }) => !!image?.length && pinnedPost
   );
   const randomCategory =
     relatedCategories[category][
@@ -36,18 +53,20 @@ export default async function CategoriesPage({
     .filter((post) => post.categories.includes(randomCategory))
     .sort(() => 0.5 - Math.random());
   //-------------------------------
+  const randomlySorted = [...categoryPosts].sort(() => 0.5 - Math.random());
   //----------------------------
-
   return (
     <AdminRoute>
-      <main className="w-full max-w-[1200px] flex flex-col items-center gap-4 ">
-        <h1 className="text-4xl text-white font-bold">{category}</h1>
+      <main className="w-full max-w-[1200px] flex flex-col items-center gap-4 px-1 sm:px-2">
+        <h1 className="text-4xl text-white font-bold">
+          {pluralCategoryEmpfehlungen[category]}
+        </h1>
         <section
           id="category-hero"
           className="flex flex-wrap gap-4 justify-center w-full h-full"
         >
           {!!highlightedWithImages.length && (
-            <section className="w-full max-w-[600px] aspect-[1.5]">
+            <section className="w-full max-w-[600px] aspect-[1.5] backdrop-brightness-95  rounded-lg">
               <PointsGallery
                 horizontal={true}
                 posts={
@@ -61,22 +80,17 @@ export default async function CategoriesPage({
               </PointsGallery>
             </section>
           )}
-          <section className="h-full rounded-md flex flex-row flex-wrap justify-center gap-2">
-            <RandomRecommendation
+          <section className="w-64 max-w-full shadow-lg rounded relative overflow-hidden text-hh-50 italic">
+            <ShuffleGallery
+              list={randomlySorted}
+              postPoster={false}
               shuffle
-              size="medium"
-              posts={[...categoryPosts].sort(() => 0.5 - Math.random())}
+              size="large"
+              shuffleContainerClassName="shadow-none"
             />
           </section>
-          <FilterablePostList postsList={categoryPosts}>
-            <h1 className="font-bold min-w-fit text-center   text-3xl ">
-              All {category} Posts
-            </h1>
-          </FilterablePostList>
+          <DynamicURLFilteredList postsList={categoryPosts} />
         </section>
-        {/* {category === "Badeplatz" && ( */}
-        <DynamicCategoryMap catPosts={categoryPosts} category={[category]} />
-        {/* )} */}
       </main>
     </AdminRoute>
   );
