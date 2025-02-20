@@ -430,6 +430,12 @@ form {
 .deleteFilterButton:hover {
   svg {
     fill: $hh-50;
-    width: 1.5rem !important;
   }
+}
+
+.alterRange + .alterRangeTag {
+  opacity: 0;
+}
+.alterRange:focus + .alterRangeTag {
+  opacity: 1;
 }
