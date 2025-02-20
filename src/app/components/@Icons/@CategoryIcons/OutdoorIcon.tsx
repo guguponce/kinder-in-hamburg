@@ -1,13 +1,15 @@
 import React from "react";
 
-export default function MuseumIcon({ size = "24px", color = "#000" }) {
+export default function OutdoorIcon({ size = "24px", color = "#000" }) {
   return (
     <svg
       fill={color}
       width={size}
       height={size}
       xmlns="http://www.w3.org/2000/svg"
-      strokeWidth="0.5"
+      stroke={color}
+      viewBox="0 0 100 100"
+      strokeWidth="1.5"
     >
       <g id="SVGRepo_iconCarrier">
         {" "}
