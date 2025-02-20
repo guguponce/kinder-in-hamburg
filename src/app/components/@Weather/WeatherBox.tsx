@@ -8,16 +8,18 @@ import Link from "next/link";
 import ImageCard from "../@Cards/ImageCard";
 import TodayTomorrow from "./TodayTomorrow";
 import FullImageWeatherBox from "../FullImageWeatherBox";
-import { categoryName, iBezirk } from "@app/utils/types";
+import { categoryName, iBezirk, iPost } from "@app/utils/types";
 
 export default async function WeatherBox({
   full,
   bezirk,
   weatherAtRight,
+  posts,
 }: {
   weatherAtRight?: boolean;
   full?: boolean;
   bezirk?: iBezirk;
+  posts?: iPost[];
 }) {
   const weather = await getWeatherData();
   if (!weather) return <></>;
@@ -27,22 +29,25 @@ export default async function WeatherBox({
     weather.forecastHourly,
     activity
   );
-  const retrievedSuggestions = bezirk
-    ? await getPostsWithCatAndBezirk(activityType as categoryName, bezirk).then(
-        (res) => {
+  const retrievedSuggestions = posts
+    ? posts.filter((post) => post.categories.includes(activityType))
+    : bezirk
+      ? await getPostsWithCatAndBezirk(
+          activityType as categoryName,
+          bezirk
+        ).then((res) => {
           if (res && res.length > 0) return res;
           return getPostsWithCatAndBezirk(
             activityType === "Indoor" ? "Outdoor" : "Indoor",
             bezirk
           );
-        }
-      )
-    : await getPostsWithCat([activityType]).then((res) => {
-        if (res && res.length > 0) return res;
-        return getPostsWithCat([
-          activityType === "Indoor" ? "Outdoor" : "Indoor",
-        ]);
-      });
+        })
+      : await getPostsWithCat([activityType]).then((res) => {
+          if (res && res.length > 0) return res;
+          return getPostsWithCat([
+            activityType === "Indoor" ? "Outdoor" : "Indoor",
+          ]);
+        });
   if (!retrievedSuggestions)
     return <div>There was a problem retrieving suggestions</div>;
 
@@ -60,7 +65,8 @@ export default async function WeatherBox({
     Day: { Icon: tomorrowCode },
   } = weather.nextDays.dailyForecast[1];
   const tomorrowTemp = (tomorrowMin + tomorrowMax) / 2;
-  if (!weather && !suggestion) return <></>;
+
+  if (!weather || !suggestion) return <></>;
   return (
     <>
       {full ? (
@@ -81,7 +87,7 @@ export default async function WeatherBox({
               />
               <div className="flex flex-col items-center">
                 <h2 className="md:text-lg font-semibold ">
-                  {weather.currentWeather.Temp}°C
+                  {weather.currentWeather.Temp.toFixed(0)}°C
                   {/* <span className="ml-1 text-xs">
                     (
                     {currentTime.toLocaleTimeString("de-DE", {
@@ -129,7 +135,7 @@ export default async function WeatherBox({
           <WeatherIcon logo={overallCondition} size="100%" color="#141A1F" />
           <div className="flex flex-col items-center">
             <h2 className="text-lg font-semibold ">
-              {weather.currentWeather.Temp}°C
+              {weather.currentWeather.Temp.toFixed(0)}°C
               <span className="ml-1 text-xs">
                 (
                 {currentTime.toLocaleTimeString("de-DE", {
