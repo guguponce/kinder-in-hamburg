@@ -8,8 +8,28 @@ import FilterIcon from "@app/components/@Icons/FilterIcon";
 import ScrollableContainer from "@app/components/ScrollableContainer";
 import { cn } from "@app/utils/functions";
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
+interface iPostFilters {
+  params: string;
+  type?: "categories" | "bezirke";
+  queryFromType?: string;
+  availableCategories: string[];
+  categoriesFilter: string[];
+  setCategoriesFilter: React.Dispatch<React.SetStateAction<string[]>>;
+  availableBezirke: string[];
+  bezirkeFilter: string[];
+  setBezirkeFilter: React.Dispatch<React.SetStateAction<string[]>>;
+  availableStadtteile: Record<string, string[]>;
+  stadtteileFilter: string[];
+  setStadtteileFilter: React.Dispatch<React.SetStateAction<string[]>>;
+  queryAlter: string;
+  setQueryAlter: React.Dispatch<React.SetStateAction<string>>;
+  children?: React.ReactNode;
+  categoriesFilteringTogether: boolean;
+  setCategoriesFilteringTogether: React.Dispatch<React.SetStateAction<boolean>>;
+  resetFilters?: () => void;
+}
 const FiltersBox = ({
   title,
   children,
@@ -31,13 +51,22 @@ const FiltersBox = ({
       }}
       tabIndex={-1}
       className={cn(
-        `mb-2 w-full flex flex-col gap-1 pb-1 overflow-hidden text-hh-800 focus-visible:outline-2 focus-visible:outline-hh-950 focus-visible:outline-offset-2 rounded-lg ${isOpen && !disabled ? "h-fit outline-hh-800 outline outline-2 -outline-offset-1" : "h-10"}`,
+        `mb-2 w-full flex flex-col gap-1 pb-1 cursor-default overflow-hidden text-hh-800 focus-visible:outline-2 focus-visible:outline-hh-950 focus-visible:outline-offset-2 rounded-lg ${isOpen && !disabled ? "h-fit outline-hh-800 outline outline-2 -outline-offset-1" : "h-10"}`,
         boxStyle
       )}
     >
       <button
         disabled={disabled}
-        className={`min-h-10 flex justify-between items-center py-1 px-2 bg-hh-800 text-sm ${disabled ? "opacity-30" : ""} ${isOpen && !disabled ? "bg-opacity-90 hover:bg-opacity-100 text-hh-50 focus-within:rounded-[0.5rem_0.5rem_0_0]" : `${disabled ? "hover:bg-opacity-25" : "hover:bg-opacity-40"} rounded-lg bg-opacity-25 text-hh-800`}`}
+        className={cn(
+          "min-h-10 flex justify-between gap-x-1 items-center py-1 px-2 bg-hh-800 bg-opacity-90 text-hh-50 text-sm",
+          isOpen && !disabled
+            ? "hover:bg-opacity-80 focus-within:rounded-[0.5rem_0.5rem_0_0]"
+            : `${
+                disabled
+                  ? "bg-opacity-20 opacity-75 text-hh-800 flex-wrap py-0"
+                  : "hover:bg-opacity-100"
+              } rounded-lg`
+        )}
         style={{
           outlineColor: isOpen ? "#d0d7da" : "#33404D",
           outlineOffset: isOpen ? "-4px" : "-2px",
@@ -47,9 +76,15 @@ const FiltersBox = ({
       >
         <span className="font-semibold">{title}</span>
         <span
-          className={isOpen ? "font-semibold" : "text-lg font-bold px-[2px]"}
+          className={
+            isOpen
+              ? "font-semibold"
+              : title === "Stadtteile"
+                ? "text-[10px] text-end font-semibold"
+                : "text-lg font-bold px-[2px]"
+          }
         >
-          {isOpen ? "—" : "+"}
+          {isOpen ? "—" : disabled ? "(Wähl zuerst einen Bezirk)" : "+"}
         </span>
       </button>
       {isOpen && children}
@@ -107,30 +142,18 @@ export default function PostFilters({
   queryAlter,
   setQueryAlter,
   type,
+  queryFromType,
   categoriesFilteringTogether,
   setCategoriesFilteringTogether,
-}: {
-  params: string;
-  type: string;
-  availableCategories: string[];
-  categoriesFilter: string[];
-  setCategoriesFilter: React.Dispatch<React.SetStateAction<string[]>>;
-  availableBezirke: string[];
-  bezirkeFilter: string[];
-  setBezirkeFilter: React.Dispatch<React.SetStateAction<string[]>>;
-  availableStadtteile: Record<string, string[]>;
-  stadtteileFilter: string[];
-  setStadtteileFilter: React.Dispatch<React.SetStateAction<string[]>>;
-  queryAlter: string;
-  setQueryAlter: React.Dispatch<React.SetStateAction<string>>;
-  children?: React.ReactNode;
-  categoriesFilteringTogether: boolean;
-  setCategoriesFilteringTogether: React.Dispatch<React.SetStateAction<boolean>>;
-  resetFilters?: () => void;
-}) {
-  const router = useRouter();
+}: iPostFilters) {
+  const { push } = useRouter();
+  const modifyURL = useCallback(
+    (queries: string) => push(params + "?" + queries, { scroll: false }),
+    [params, push]
+  );
   const searchParams = useSearchParams();
   const [isOpen, setIsOpen] = React.useState(false);
+  const [isAlleAlterChecked, setIsAlleAlterChecked] = React.useState(true);
   const filterBlock = React.useRef<HTMLDivElement>(null);
   const resetFiltersButtonRef = React.useRef<HTMLButtonElement>(null);
   // Close filter on outside click
@@ -139,7 +162,7 @@ export default function PostFilters({
       if (!filterBlock.current) return;
       if (resetFiltersButtonRef.current?.contains(event.target as Node)) return;
       if (filterBlock.current.contains(event.target as Node)) return;
-      // setIsOpen(false);
+      setIsOpen(false);
     };
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape") setIsOpen(false);
@@ -156,6 +179,18 @@ export default function PostFilters({
     };
   }, [isOpen]);
 
+  const handleCheckboxChange = () => {
+    if (isAlleAlterChecked) {
+      setQueryAlter("0");
+    } else {
+      setQueryAlter("");
+    }
+    setIsAlleAlterChecked(!isAlleAlterChecked);
+  };
+  useEffect(() => {
+    if (queryAlter === "") setIsAlleAlterChecked(true);
+  }, [queryAlter]);
+  const decodedParamQuery = queryFromType && decodeURIComponent(queryFromType);
   return (
     <>
       <div className="absolute left-0 top-0 h-10 py-8 px-2 z-50 flex justify-center items-center">
@@ -187,13 +222,14 @@ export default function PostFilters({
         tabIndex={-1}
       >
         <div
-          className={`w-full flex items-center ${resetFilters ? "justify-between" : "justify-end"} h-6 pt-2 px-2`}
+          className={`w-full flex items-center ${resetFilters ? "justify-between" : "justify-end"} h-8 pt-2 px-2`}
         >
           <button
             ref={resetFiltersButtonRef}
             onClick={(e) => {
               e.stopPropagation();
               if (resetFilters) resetFilters();
+              handleCheckboxChange();
             }}
             className={`text-xs text-hh-50 bg-negative-700 rounded p-1 ${resetFilters ? "hover:bg-negative-800" : "opacity-0 pointer-events-none"}`}
             tabIndex={isOpen ? 0 : -1}
@@ -211,31 +247,33 @@ export default function PostFilters({
         <ScrollableContainer
           vertical
           containerStyle="justify-start flex-col max-h-full flex-grow gap-0"
-          boxStyle="h-fit block overflow-y-auto px-2"
+          boxStyle="h-fit block overflow-y-auto pt-1 px-2"
         >
-          <FiltersBox
-            title="Kategorien"
-            disabled={!availableCategories.length}
-            open={isOpen}
-          >
+          <FiltersBox title="Kategorien" open={isOpen}>
             <>
               <div className="flex flex-wrap gap-2 p-1">
-                {type !== "categories" && (
-                  <div className="flex flex-wrap gap-2">
-                    {availableCategories.map((cat) => (
+                <div className="flex flex-wrap gap-2">
+                  {!!decodedParamQuery && (
+                    <div
+                      className="px-1 bg-hh-800 text-hh-50 rounded text-xs border-2 border-hh-800 
+                      bg-opacity-100"
+                    >
+                      {decodedParamQuery}
+                    </div>
+                  )}
+                  {availableCategories.map((cat) =>
+                    cat === decodedParamQuery ? null : (
                       <button
                         tabIndex={isOpen ? 0 : -1}
                         key={cat}
                         onClick={() => {
-                          router.push(
-                            params +
-                              "?" +
-                              createArrayQueryString(
-                                "categories",
-                                cat,
-                                categoriesFilter,
-                                new URLSearchParams(searchParams.toString())
-                              )
+                          modifyURL(
+                            createArrayQueryString(
+                              "categories",
+                              cat,
+                              categoriesFilter,
+                              new URLSearchParams(searchParams.toString())
+                            )
                           );
                           setCategoriesFilter((prev) => {
                             if (prev.includes(cat)) {
@@ -252,9 +290,9 @@ export default function PostFilters({
                       >
                         {cat}
                       </button>
-                    ))}
-                  </div>
-                )}
+                    )
+                  )}
+                </div>
               </div>
               <div className="flex flex-col w-full px-1">
                 <div
@@ -300,15 +338,13 @@ export default function PostFilters({
                     tabIndex={isOpen ? 0 : -1}
                     key={bz}
                     onClick={() => {
-                      router.push(
-                        params +
-                          "?" +
-                          createArrayQueryString(
-                            "bezirke",
-                            bz,
-                            bezirkeFilter,
-                            new URLSearchParams(searchParams.toString())
-                          )
+                      modifyURL(
+                        createArrayQueryString(
+                          "bezirke",
+                          bz,
+                          bezirkeFilter,
+                          new URLSearchParams(searchParams.toString())
+                        )
                       );
                       setBezirkeFilter((prev) => {
                         if (prev.includes(bz)) {
@@ -350,15 +386,13 @@ export default function PostFilters({
                             id={stadtteil}
                             value={stadtteil}
                             onChange={() => {
-                              router.push(
-                                params +
-                                  "?" +
-                                  createArrayQueryString(
-                                    "stadtteile",
-                                    stadtteil,
-                                    stadtteileFilter,
-                                    new URLSearchParams(searchParams.toString())
-                                  )
+                              modifyURL(
+                                createArrayQueryString(
+                                  "stadtteile",
+                                  stadtteil,
+                                  stadtteileFilter,
+                                  new URLSearchParams(searchParams.toString())
+                                )
                               );
                               setStadtteileFilter((prev) => {
                                 if (prev.includes(stadtteil)) {
@@ -387,35 +421,65 @@ export default function PostFilters({
             </div>
           </FiltersBox>
           <FiltersBox title="Alter" open={isOpen}>
-            <div className="flex flex-col gap-2 px-2">
-              <label htmlFor="alter" className="font-semibold ">
-                Alter: {queryAlter} Jahr{queryAlter !== "1" && "e"} Alt
+            <div className="flex flex-col px-2">
+              <label
+                htmlFor="any-alter"
+                className="font-semibold text-xs xs:text-sm sm:text-base flex items-center gap-1 mb-2"
+              >
+                <input
+                  type="checkbox"
+                  id="any-alter"
+                  onChange={handleCheckboxChange}
+                  checked={isAlleAlterChecked}
+                />{" "}
+                Alle Altersgruppen
               </label>
-              <input
-                tabIndex={isOpen ? 0 : -1}
-                type="range"
-                id="alter"
-                placeholder="Alter"
-                value={queryAlter}
-                min={0}
-                max={27}
-                onChange={(e) => {
-                  router.push(
-                    params +
-                      "?" +
+              <div className="flex flex-col items-center relative mb-4">
+                <div className="relative w-full flex justify-between text-sm sm:text-base">
+                  <span>0</span>
+                  <span>27</span>
+                </div>
+                <input
+                  tabIndex={isOpen ? 0 : -1}
+                  type="range"
+                  placeholder="Alter"
+                  defaultValue={0}
+                  value={queryAlter}
+                  min={0}
+                  max={27}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (isAlleAlterChecked)
+                      setQueryAlter(!!queryAlter ? queryAlter : "5");
+                  }}
+                  onChange={(e) => {
+                    modifyURL(
                       createQueryString(
                         "alter",
                         e.target.value,
                         new URLSearchParams(searchParams.toString())
                       )
-                  );
-                  setQueryAlter(e.target.value);
-                }}
-              />
-              <div className="flex justify-between">
-                <span>0</span>
-                <span>27</span>
+                    );
+                    setIsAlleAlterChecked(false);
+                    setQueryAlter(e.target.value);
+                  }}
+                  className={`alterRange w-full ${isAlleAlterChecked ? "opacity-50" : ""}`}
+                />
+                <span
+                  className={`alterRangeTag absolute -bottom-5 text-red-800 font-bold z-30`}
+                  style={{
+                    left: `calc(${(parseInt(queryAlter) / 27) * 100}% - ${(parseInt(queryAlter) / 27) * 1}rem)`,
+                  }}
+                >
+                  {queryAlter}
+                </span>
               </div>
+
+              {/* {!!queryAlter && (
+                <p className="font-semibold text-sm">
+                  Alter: {queryAlter} Jahr{queryAlter !== "1" && "e"} Alt
+                </p>
+              )} */}
             </div>
           </FiltersBox>
         </ScrollableContainer>
