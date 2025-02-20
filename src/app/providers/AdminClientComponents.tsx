@@ -1,4 +1,5 @@
 "use client";
+import { GetUserHook } from "@app/api/auth/supabaseClient";
 import { useSupabaseSession } from "@app/providers/SessionContext";
 import React from "react";
 
@@ -7,13 +8,9 @@ function AdminFetchedClientComponent({
 }: {
   children: React.ReactNode;
 }) {
-  const { user, status } = useSupabaseSession();
+  const user = GetUserHook();
 
-  if (
-    status !== "authenticated" ||
-    !user ||
-    user?.email !== process.env.NEXT_PUBLIC_ADMIN_EMAIL
-  ) {
+  if (!user || user?.email !== process.env.NEXT_PUBLIC_ADMIN_EMAIL) {
     return <></>;
   }
   return <>{children}</>;

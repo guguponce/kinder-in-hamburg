@@ -220,7 +220,6 @@ const ImageUploader = ({
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     if (event.target.files) {
-      console.log(JSON.stringify(event.target.files[0]));
       const convertedImage = await convertToWebp(
         event.target.files[0],
         400,
@@ -228,10 +227,8 @@ const ImageUploader = ({
         setImageFile,
         setLocalImageUrl
       );
-      console.log("convertedImage", convertedImage);
     }
   };
-  console.log("imageFile", JSON.stringify(imageFile[0]));
   const handleUpload = async () => {
     await deletePreviousFlohmaerkteImages(id)
       .then(() => {
