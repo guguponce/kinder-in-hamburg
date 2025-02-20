@@ -74,9 +74,9 @@ export default function ScrollableContainerButtons({
                   });
               }
             }}
-            className={`scrollButton scrollButtonLeftUp ${vertical ? "rotate-90 top-0 -translate-x-1/2 left-1/2" : "-translate-y-1/2 top-1/2 left-2"} p-[1px] absolute rounded-[4px_0_0_4px] bg-hh-${color} bg-opacity-40 hover:bg-opacity-60 flex justify-start items-center text-hh-50 transition-opacity`}
+            className={`scrollButton scrollButtonLeftUp ${vertical ? "rotate-90 top-0 -translate-x-1/2 left-1/2" : "-translate-y-1/2 top-1/2 left-2"} p-[1px] absolute rounded-[4px_0_0_4px] bg-hh-${color} bg-opacity-75 hover:bg-opacity-60 flex justify-start items-center text-hh-50 transition-all backdrop-invert overflow-hidden`}
           >
-            <span className="w-4 md:w-8 aspect-square flex items-center justify-center">
+            <span className="w-6 sm:w-8 aspect-square flex items-center justify-center">
               <TriangleIcon color={"#fefefe"} rotate={270} size="100%" />
             </span>
           </button>
@@ -99,9 +99,9 @@ export default function ScrollableContainerButtons({
                   });
               }
             }}
-            className={`scrollButton scrollButtonRightDown ${vertical ? "rotate-90 bottom-0 -translate-x-1/2 left-1/2" : "-translate-y-1/2 top-1/2 right-2"} p-[1px] absolute rounded-[0_4px_4px_0] bg-hh-${color} bg-opacity-40 hover:bg-opacity-60 flex justify-start items-center text-hh-50 transition-opacity`}
+            className={`scrollButton scrollButtonRightDown ${vertical ? "rotate-90 bottom-0 -translate-x-1/2 left-1/2" : "-translate-y-1/2 top-1/2 right-2"} p-[1px] absolute rounded-[0_4px_4px_0] bg-hh-${color} bg-opacity-75 hover:bg-opacity-60 flex justify-start items-center text-hh-50 transition-all backdrop-invert overflow-hidden`}
           >
-            <span className="w-4 md:w-8 aspect-square flex items-center justify-center">
+            <span className="w-6 sm:w-8 aspect-square flex items-center justify-center">
               <TriangleIcon color={"#fefefe"} rotate={90} size="100%" />
             </span>
           </button>
