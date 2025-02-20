@@ -112,6 +112,7 @@ export default async function FlohmarktPage({
         <FlohmarktPageMapContainer
           spielplaetzeAround={spielplaetzeNearby}
           currentTarget={flohmarkt}
+          mapClassName="bg-hh-700 bg-opacity-90"
         />
         <SpielplaetzeNearby
           spielplaetzeNearby={spielplaetzeNearby}

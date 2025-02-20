@@ -52,7 +52,12 @@ export default async function BezirkPage({
           </article>
 
           <article className="max-h-[40dvh] min-h-[425px] w-[600px] max-w-screen md:aspect-[2.25] aspect-[1.5] bg-black">
-            <WeatherBox full weatherAtRight bezirk={bezirk as iBezirk} />
+            <WeatherBox
+              full
+              weatherAtRight
+              bezirk={bezirk as iBezirk}
+              posts={bezirkPosts}
+            />
           </article>
         </section>
         {!!flohmaerkte && !!flohmaerkte.length && (
@@ -60,7 +65,7 @@ export default async function BezirkPage({
             <BezirkeScrollableEvents
               events={flohmaerkte.sort((a, b) => a.date - b.date)}
               bezirk={bezirk as iBezirk}
-              title="Flea Markets"
+              title="Flohmärkte"
             />
           </section>
         )}
