@@ -1,11 +1,11 @@
 import React from "react";
-import LinkActive from "./LinkActive";
 import { logoFont } from "@app/styles/fonts/localfonts";
 import Link from "next/link";
 import BurgerMenu from "./BurgerMenu";
 import UserButtons from "./UserButtons";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
 import PostLogo from "../@Icons/@PostLogo/PostLogo";
+import NavLinks from "./NavLinks";
 
 export default async function Header() {
   return (
@@ -31,34 +31,9 @@ export default async function Header() {
           Kinder in HH
         </span>
       </Link>
+      <NavLinks />
       <AdminServerComponent>
-        <nav className="hidden font-semibold lg:flex items-center gap-4">
-          {[
-            { href: "/posts", name: "Posts", auth: true },
-            { href: "/flohmaerkte", name: "Flohmärkte", auth: true },
-            { href: "/categories", name: "Categories", auth: true },
-            { href: "/bezirke", name: "Bezirke", auth: true },
-          ].map(({ href, name, auth }) =>
-            auth ? (
-              <React.Fragment key={href}>
-                <Link key={href} href={href}>
-                  {name}
-                  <LinkActive linkHref={href} />
-                </Link>
-              </React.Fragment>
-            ) : (
-              <Link key={href} href={href}>
-                {name}
-                <LinkActive linkHref={href} />
-              </Link>
-            )
-          )}
-        </nav>
-      </AdminServerComponent>
-      <AdminServerComponent>
-        <div className="lg:ml-4 flex gap-2 items-center">
-          <UserButtons />
-        </div>
+        <UserButtons />
       </AdminServerComponent>
     </header>
   );

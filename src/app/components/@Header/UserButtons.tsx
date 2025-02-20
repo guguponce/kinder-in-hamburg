@@ -10,22 +10,24 @@ export default async function UserButtons({ user }: { user?: User | null }) {
   if (!userData) return <AuthButton email={null} />;
   const { email, full_name: name, picture: image } = userData as iUserMetadata;
   return (
-    <AvatarMenu
-      email={email}
-      initials={
-        name
-          ? name
-              ?.split(" ")
-              .slice(0, 2)
-              .map((n) => n[0])
-              .join("")
-          : ""
-      }
-      avatar={image}
-    >
-      <li className="p-2 list-none flex justify-center">
-        <AuthButton email={email} />
-      </li>
-    </AvatarMenu>
+    <div className="lg:ml-4 flex gap-2 items-center">
+      <AvatarMenu
+        email={email}
+        initials={
+          name
+            ? name
+                ?.split(" ")
+                .slice(0, 2)
+                .map((n) => n[0])
+                .join("")
+            : ""
+        }
+        avatar={image}
+      >
+        <li className="p-2 list-none flex justify-center">
+          <AuthButton email={email} />
+        </li>
+      </AvatarMenu>{" "}
+    </div>
   );
 }

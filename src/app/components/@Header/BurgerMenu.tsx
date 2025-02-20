@@ -1,4 +1,5 @@
 "use client";
+import { GetUserHook } from "@app/api/auth/supabaseClient";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useRef } from "react";
@@ -9,7 +10,7 @@ export default function BurgerMenu() {
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
-
+  const user = GetUserHook();
   const menuList = useRef<HTMLElement>(null);
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
@@ -24,6 +25,7 @@ export default function BurgerMenu() {
       document.removeEventListener("click", handleOutsideClick);
     };
   }, [menuOpen]);
+  if (!user) return null;
   return (
     <div className="flex items-center justify-center relative lg:hidden">
       <button
