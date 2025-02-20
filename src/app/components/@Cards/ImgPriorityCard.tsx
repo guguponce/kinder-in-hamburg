@@ -2,6 +2,7 @@ import { iCard } from "@app/utils/types";
 import Link from "next/link";
 import React from "react";
 import SpielplatzgeraeteBackground from "./SpielplatzgeraeteBackground";
+import { cn } from "@app/utils/functions";
 
 export default function ImgPriorityCard({
   size,
@@ -15,6 +16,7 @@ export default function ImgPriorityCard({
   bezirk,
   stadtteil,
   children,
+  cardContainerClassname,
 }: iCard) {
   const classname =
     size === "small"
@@ -40,9 +42,13 @@ export default function ImgPriorityCard({
   return (
     <Link
       href={link || `/posts/${id}`}
-      className={`${classname.container} singleCard ${
-        aspectRatio ? `aspect-[${aspectRatio}]` : "aspect-[0.66]"
-      } w-full rounded-md shadow-md hover:shadow-2xl flex flex-col items-center  bg-hh-50 overflow-hidden`}
+      className={cn(
+        `singleCard ${
+          aspectRatio ? `aspect-[${aspectRatio}]` : "aspect-[0.66]"
+        } w-full rounded-md shadow-md hover:shadow-2xl flex flex-col items-center  bg-hh-50 overflow-hidden`,
+        classname.container,
+        cardContainerClassname
+      )}
       role="link"
       aria-label={`Explore ${title}`}
     >

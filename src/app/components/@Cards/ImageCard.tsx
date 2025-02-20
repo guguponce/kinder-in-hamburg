@@ -1,9 +1,11 @@
+import { cn } from "@app/utils/functions";
 import { iCard } from "@app/utils/types";
 import Link from "next/link";
 import React from "react";
 
 export default function ImageCard({
   id,
+  cardContainerClassname,
   title,
   image,
   link,
@@ -24,7 +26,11 @@ export default function ImageCard({
   return (
     <Link
       href={link || `/posts/${id}`}
-      className={`${classname.container} singleCard relative aspect-[0.66]  w-1/3 rounded-md shadow-md hover:shadow-2xl flex flex-col items-center  bg-hh-50 overflow-hidden`}
+      className={cn(
+        "singleCard relative aspect-[0.66]  w-1/3 rounded-md shadow-md hover:shadow-2xl flex flex-col items-center  bg-hh-50 overflow-hidden",
+        classname.container,
+        cardContainerClassname
+      )}
       role="link"
       aria-label={`Explore ${title}`}
     >

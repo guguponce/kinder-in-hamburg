@@ -17,26 +17,28 @@ export default function TextPriorityCard({
   const classname =
     size === "small"
       ? {
-          container: "min-w-[150px] max-w-[180px]",
+          container: "min-w-[150px] max-w-[160px]",
           description: "truncate-3 text-xs",
           title: "text-sm",
         }
       : size === "medium"
         ? {
             container: "min-w-[160px] max-w-[250px]",
-            description: "truncate-5  text-xs",
-            title: "text-base sm:text-lg md:text-xl",
+            description: "truncate-5 text-xs overflow-hidden max-h-[80px]",
+            title:
+              "text-base leading-snug sm:leading-snug md:leading-snug sm:text-lg md:text-xl ",
           }
         : {
             container: "min-w-[200px] max-w-[300px]",
-            description: "truncate-5  text-sm",
-            title: "text-base sm:text-base md:text-xl",
+            description: "truncate-7 text-sm",
+            title: "text-base  sm:text-base md:text-xl",
           };
   return (
     <Link
       href={link || `/posts/${id}`}
       className={cn(
-        `${classname.container} w-1/2 sm:w-1/3 md:w-1/4 singleCard aspect-[0.66] rounded-md shadow-md hover:shadow-lg flex flex-col items-center  bg-hh-50 overflow-hidden`,
+        "textPriorityCard w-1/2 sm:w-1/3 md:w-1/4 textPriorityCard singleCard aspect-[0.66] rounded-md shadow-md hover:shadow-lg flex flex-col items-center  bg-hh-50 overflow-hidden",
+        classname.container,
         cardContainerClassname
       )}
       role="link"
@@ -54,9 +56,9 @@ export default function TextPriorityCard({
           <CardLogo logo="Indoor" color="#ACBAC8" size="3rem" />
         )}
       </div>
-      <div className="cardContent w-full overflow-hidden flex-grow flex flex-col p-2">
+      <div className="cardContent w-full overflow-hidden flex-grow flex flex-col p-2 min-h-[150px]">
         <h2
-          className={`truncate-2 break-words cardTitle font-bold ${classname.title} text-hh-950 break-word max-w-full`}
+          className={`truncate-2 break-words cardTitle font-bold text-hh-950 break-word max-w-full ${classname.title}`}
         >
           {title}
         </h2>
