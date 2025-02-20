@@ -9,6 +9,7 @@ import dynamic from "next/dynamic";
 import { Metadata } from "next";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
 import { iFlohmarkt } from "@app/utils/types";
+import GeneralContainer from "@app/components/GeneralContainer";
 
 const DynamicEventsMap = dynamic(
   () => import("../../components/@Map/DynamicEventsMap"),
@@ -84,7 +85,7 @@ export default async function EventPage() {
   const eventsWithoutLatLon = events.filter(({ lat, lon }) => !lat || !lon);
 
   return (
-    <main className="rounded bg-hh-100 bg-opacity-25 w-full max-w-[1000px] p-4 flex flex-col items-center min-h-[50vh] gap-2">
+    <main className="px-2 text-hh-900 w-full flex flex-col gap-2 items-center">
       <AdminServerComponent>
         {!!eventsWithoutLatLon.length &&
           eventsWithoutLatLon.map(({ id, title }) => (
@@ -93,41 +94,58 @@ export default async function EventPage() {
             </div>
           ))}
       </AdminServerComponent>
-      <h1 className="text-4xl font-bold my-2 p-2 rounded bg-opacity-50 bg-hh-50">
-        Veranstaltungen für Kinder
-      </h1>
-      <BezirkeScrollableEvents
-        title="Diese Woche"
-        events={thisWeekEvents.filter(({ type }) => type !== "weihnachtsmarkt")}
-        type="events"
-      ></BezirkeScrollableEvents>
-      <DynamicEventsMap
-        future={futureEvents}
-        thisWeek={[
-          ...thisWeekEvents,
-          ...(thisWeekFlohmaerkte.map((floh) => ({
-            ...floh,
-            type: "flohmarkt",
-          })) as iFlohmarkt[]),
-        ]}
-        showBezirke={false}
-        today={today}
-      ></DynamicEventsMap>
-      <BezirkableEventsList
-        variant="transparent-light"
-        title="Ab nächster Woche"
-        eventsList={futureEvents}
-        type="events"
-      ></BezirkableEventsList>
-      {!!thisWeekFlohmaerkte.length && (
-        <section className="w-full flex flex-col gap-2 my-4">
-          <h3 className="text-xl font-semibold w-fit">
-            Zusätzlich zu den Veranstaltungen finden in dieser Woche die
-            folgenden Flohmärkte statt
+      <GeneralContainer classname="rounded bg-hh-100 bg-opacity-25 w-full p-4 flex flex-col items-center min-h-[50vh] gap-2 max-w-3xl">
+        <h1 className="text-4xl font-bold my-2 p-2 rounded w-full bg-opacity-50 bg-hh-50 max-w-3xl">
+          Veranstaltungen für Kinder
+        </h1>
+        {events.length === 0 && (
+          <h3 className="text-base w-fit max-w-2xl mb-2 font-semibold italic">
+            Leider haben wir gerade keine Infos zu bevorstehenden
+            Veranstaltungen. Veranstaltungen sind hier nicht so häufig ein
+            Thema, aber bei besonderen Sachen wie zum Beispiel Weihnachtsmärkten
+            halten wir euch gerne auf dem Laufenden.
           </h3>
+        )}
+        <BezirkeScrollableEvents
+          title="Diese Woche"
+          events={thisWeekEvents.filter(
+            ({ type }) => type !== "weihnachtsmarkt"
+          )}
+          type="events"
+        ></BezirkeScrollableEvents>
+        <DynamicEventsMap
+          future={futureEvents}
+          thisWeek={[
+            ...thisWeekEvents,
+            ...(thisWeekFlohmaerkte.map((floh) => ({
+              ...floh,
+              type: "flohmarkt",
+            })) as iFlohmarkt[]),
+          ]}
+          showBezirke={false}
+          today={today}
+          className="max-w-4xl"
+        ></DynamicEventsMap>
+      </GeneralContainer>
+
+      {futureEvents.length > 0 && (
+        <BezirkableEventsList
+          variant="transparent-light"
+          title="Ab nächster Woche"
+          eventsList={futureEvents}
+          type="events"
+        ></BezirkableEventsList>
+      )}
+      {!!thisWeekFlohmaerkte.length && (
+        <section className="w-fit max-w-full lg:min-w-[768px] bg-gradient-to-br from-hh-50 to-hh-200 bg-opacity-50 rounded">
           <BezirkableEventsList
-            variant="dark"
-            title=""
+            withDate
+            variant="transparent-light"
+            title={
+              events.length > 0
+                ? "Zusätzlich zu den Veranstaltungen finden in dieser Woche die folgenden Flohmärkte statt:"
+                : "Diese Woche finden die folgenden Flohmärkte statt:"
+            }
             eventsList={thisWeekFlohmaerkte}
             type="flohmaerkte"
           ></BezirkableEventsList>
