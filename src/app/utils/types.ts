@@ -1,3 +1,4 @@
+import { FullMetadata } from "firebase/storage";
 import { spielgeraeteList } from "./constants";
 
 export interface iPost {
@@ -535,3 +536,13 @@ export interface iHeadline {
   MobileLink: string;
   Link: string;
 }
+
+export type imageDataURLSetter = React.Dispatch<
+  React.SetStateAction<
+    Array<{
+      url: string;
+      fileName: string;
+      metadata?: FullMetadata;
+    }>
+  >
+>;
