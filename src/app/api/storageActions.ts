@@ -11,20 +11,18 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { storage } from "./firebase";
-import { iSessionUser } from "@app/utils/types";
+import { imageDataURLSetter, iSessionUser } from "@app/utils/types";
 
 //POST
 export const uploadPostImage = async (
   userEmail: string,
   id: string,
   file: File,
-  imgUrlsSetter: React.Dispatch<
-    React.SetStateAction<
-      Array<{ url: string; fileName: string; metadata: FullMetadata }>
-    >
-  >,
+  imgUrlsSetter: imageDataURLSetter,
   statusSetter: React.Dispatch<
-    React.SetStateAction<"uploading" | "success" | "error" | "paused" | "await">
+    React.SetStateAction<
+      "uploading" | "success" | "error" | "paused" | "await" | "converting"
+    >
   >
 ) => {
   // Create Metadata
@@ -64,10 +62,12 @@ export const uploadPostImage = async (
       async () => {
         const metadata = await getMetadata(uploadTask.snapshot.ref);
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          imgUrlsSetter((prev) => [
-            ...prev,
-            { url: downloadURL, fileName: file.name, metadata },
-          ]);
+          imgUrlsSetter((prev) => {
+            return [
+              ...prev,
+              { url: downloadURL, fileName: file.name, metadata },
+            ];
+          });
         });
         statusSetter("await");
         res("success");
@@ -78,8 +78,10 @@ export const uploadPostImage = async (
 
 //   GET
 // Get all folders names (postIDs) in the postsImages bucket
-export const getFoldersList = async () => {
-  const listRef = ref(storage, `/postImages`);
+export const getFoldersList = async (
+  firebaseFolder: "postsImages" | "flohmaerkteImages" = "postsImages"
+) => {
+  const listRef = ref(storage, firebaseFolder);
   const imagesList = await listAll(listRef);
   const imgFoldersNames = imagesList.prefixes.map((item) => item.name);
   return imgFoldersNames;
@@ -127,18 +129,18 @@ export const deleteAllImagesFromPost = async (id: string) => {
   );
 };
 
-export const deleteUnusedImages = async (id?: string) => {
+export const deleteUnusedPostsImages = async (id?: string) => {
   const activePosts = await getAllPostsIds(id).then((res) => res || []);
 
   const allImgFolders = await getFoldersList().then((res) => res);
   const deletableFolders = allImgFolders.filter(
-    (folder) => !activePosts.includes(folder)
+    (folder) => !activePosts.includes(parseInt(folder))
   );
   Promise.all(
-    deletableFolders.map(async (folder) => {
-      return listAll(ref(storage, `postsImages/${folder}`)).then((res) => {
+    deletableFolders.map(async (id) => {
+      return listAll(ref(storage, `postsImages/${id}`)).then((res) => {
         res.items.forEach(async (item) => {
-          deleteImage(`postsImages/${folder}`, item.name);
+          await deleteImage(`postsImages/${id}`, item.name);
         });
       });
     })
