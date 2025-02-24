@@ -1,8 +1,7 @@
 import React from "react";
-// import { deleteImage } from "../../utils/firebase";
-import { type FullMetadata } from "firebase/storage";
 import DeleteSVG from "@app/assets/svg/DeleteSVG";
 import { deleteImage } from "@app/api/storageActions";
+import { imageDataURLSetter } from "@app/utils/types";
 export default function DeleteImageButton({
   path,
   imageName,
@@ -12,11 +11,7 @@ export default function DeleteImageButton({
   path: string;
   imageName: string;
   imageIndex: number;
-  setImagesArray?: React.Dispatch<
-    React.SetStateAction<
-      Array<{ url: string; fileName: string; metadata: FullMetadata }>
-    >
-  >;
+  setImagesArray?: imageDataURLSetter;
 }) {
   return (
     <button
