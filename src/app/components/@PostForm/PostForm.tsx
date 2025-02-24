@@ -29,12 +29,18 @@ import {
   categoryNames,
 } from "@app/utils/constants";
 import IgAccountInput from "./IgAccountInput";
-import { deleteUnusedImages } from "@app/api/storageActions";
+import { deleteUnusedPostsImages } from "@app/api/storageActions";
 import AdminClientComponents from "@app/providers/AdminClientComponents";
 import { revalidatePost } from "@app/utils/actions/revalidate";
-import LatLonSetterMap from "@app/components/@Map/LatLonSetterMap";
 import { getLatLong } from "@app/utils/functions";
+import dynamic from "next/dynamic";
 
+const LatLonSetterMap = dynamic(
+  () => import("@app/components/@Map/LatLonSetterMap"),
+  {
+    ssr: false,
+  }
+);
 interface PostFormProps {
   PostForm: Partial<iPost>;
   user: iSessionUser;
@@ -183,7 +189,7 @@ export default function PostForm({
         setSubmitError({ isError: false, errorMessage: "" });
       })
       .then(() => {
-        deleteUnusedImages(newID.current.toString());
+        deleteUnusedPostsImages(newID.current.toString());
       })
       .then(() => {
         revalidatePost();
@@ -231,7 +237,7 @@ export default function PostForm({
         setSubmitError({ isError: false, errorMessage: "" });
       })
       .then(() => {
-        deleteUnusedImages(data.id.toString());
+        deleteUnusedPostsImages(data.id.toString());
       })
       .then(() => {
         revalidatePost();
@@ -278,7 +284,7 @@ export default function PostForm({
         setSubmitError({ isError: false, errorMessage: "" });
       })
       .then(() => {
-        deleteUnusedImages(data.id.toString());
+        deleteUnusedPostsImages(data.id.toString());
       })
       .then(() => {
         updateContributor("post", suggestionPost.addedBy, suggestionPost.id);
@@ -328,7 +334,7 @@ export default function PostForm({
         setSubmitError({ isError: false, errorMessage: "" });
       })
       .then(() => {
-        deleteUnusedImages(data.id.toString());
+        deleteUnusedPostsImages(data.id.toString());
       })
       .then(() => {
         revalidatePost();

@@ -3,12 +3,11 @@ import { redirect } from "next/navigation";
 import React from "react";
 import SpielplatzForm from "../../SpielplatzForm";
 import {
-  getAllImagesURLFromSupabseFolder,
+  getAllImagesURLFromSupabaseFolder,
   getSpielplatzWithID,
 } from "@app/api/spActions";
 import NotFound from "@components/@NotFound/NotFound";
 import AdminRoute from "@app/providers/AdminRoute";
-import { iUserMetadata } from "@app/api/auth/types";
 export default async function NewSpielplatzPage({
   params: { spID },
 }: {
@@ -17,7 +16,10 @@ export default async function NewSpielplatzPage({
   const user = await getServerUser();
   if (!user) redirect("/");
   const spielplatz = await getSpielplatzWithID(spID);
-  const spImages = await getAllImagesURLFromSupabseFolder("spielplaetze", spID);
+  const spImages = await getAllImagesURLFromSupabaseFolder(
+    "spielplaetze",
+    spID
+  );
   if (!spielplatz) return <NotFound type="spielplatz" />;
   if (
     !spielplatz.addedBy.email ||

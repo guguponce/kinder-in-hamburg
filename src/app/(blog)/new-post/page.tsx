@@ -2,7 +2,6 @@ import React from "react";
 import { getServerUser } from "@app/api/auth/supabaseAuth";
 import { redirect } from "next/navigation";
 import AdminRoute from "@app/providers/AdminRoute";
-import { iUserMetadata } from "@app/api/auth/types";
 import dynamic from "next/dynamic";
 const PostForm = dynamic(() => import("@app/components/@PostForm/PostForm"));
 
