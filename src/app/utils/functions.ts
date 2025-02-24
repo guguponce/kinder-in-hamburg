@@ -580,3 +580,189 @@ export function removeCopyrightLine(text: string) {
 export function cn(...classes: ClassValue[]) {
   return twMerge(clsx(classes));
 }
+
+async function reduceQualityUnderSpecificKb(
+  canvas: HTMLCanvasElement,
+  kb: number,
+  minQuality: number = 0.5,
+  fileName: string
+) {
+  let finalFile: File | undefined = undefined;
+  let url: string | undefined = undefined;
+  let quality = 1;
+  while (quality > minQuality && !finalFile) {
+    const dataUrl = canvas.toDataURL("image/webp", quality);
+    const file = new File([dataUrl], fileName + ".webp", {
+      type: "image/webp",
+    });
+    if (file.size < kb * 1000 || quality <= minQuality + 0.05) {
+      finalFile = file;
+      url = dataUrl;
+    }
+    quality -= 0.1;
+  }
+  return { file: finalFile, url };
+}
+
+const createBlob = (dataUrl: string, fileName: string) => {
+  const byteString = atob(dataUrl.split(",")[1]);
+  const mimeString = dataUrl.split(",")[0].split(":")[1].split(";")[0];
+  const ab = new ArrayBuffer(byteString.length);
+  const ia = new Uint8Array(ab);
+  for (let i = 0; i < byteString.length; i++) {
+    ia[i] = byteString.charCodeAt(i);
+  }
+  const blob = new Blob([ab], { type: mimeString });
+  return new File(
+    [blob],
+    fileName.slice(0, fileName.lastIndexOf(".")) + ".webp",
+    {
+      type: "image/webp",
+    }
+  );
+};
+export async function convertToWebp(
+  file: File,
+  maxWidth: number,
+  maxFileKb: number,
+  fileSetter?: React.Dispatch<React.SetStateAction<File[]>>,
+  urlSetter?: React.Dispatch<React.SetStateAction<string[]>>
+) {
+  const url = URL.createObjectURL(file);
+
+  // If file is already smaller than the max size, no need to convert
+  if (file.size < maxFileKb * 1000) {
+    if (fileSetter && urlSetter) {
+      fileSetter([file]);
+      urlSetter([url]);
+    }
+    return { file, url };
+  }
+
+  // Return a Promise to ensure async handling
+  return new Promise<{ file: File | undefined; url: string | undefined }>(
+    (resolve, reject) => {
+      const img = new Image();
+      img.src = url;
+      img.onload = async () => {
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+        if (ctx) {
+          ctx.imageSmoothingEnabled = true;
+          ctx.imageSmoothingQuality = "high";
+          const newWidth = img.width > maxWidth ? maxWidth : img.width;
+          const newHeight = newWidth * (img.height / img.width);
+          canvas.width = newWidth;
+          canvas.height = newHeight;
+          ctx.drawImage(img, 0, 0, newWidth, newHeight);
+          const { url } = await reduceQualityUnderSpecificKb(
+            canvas,
+            maxFileKb,
+            0.5,
+            file.name
+          );
+
+          if (url) {
+            const newFile = createBlob(url, file.name);
+            if (fileSetter && urlSetter) {
+              fileSetter([newFile]);
+              urlSetter([url]);
+            }
+            resolve({ file: newFile, url });
+          } else {
+            reject(new Error("Error generating WebP image"));
+          }
+        } else {
+          reject(new Error("Canvas context not found"));
+        }
+      };
+      img.onerror = reject; // If there's an error loading the image
+    }
+  );
+}
+export async function convertAllFilesToWebp(
+  filesArr: FileList,
+  maxWidth: number,
+  maxFileKb: number
+) {
+  const conversionPromises = Array.from(filesArr).map((file) =>
+    convertToWebp(file, maxWidth, maxFileKb)
+  );
+
+  // Wait for all conversions to finish
+  const convertedFiles = await Promise.all(conversionPromises);
+
+  // Filter out any null or undefined conversions if necessary
+  const { urls, files } = convertedFiles.reduce(
+    (acc, converted) => {
+      if (converted?.file && converted?.url) {
+        acc.urls.push(converted.url);
+        acc.files.push(converted.file);
+      }
+      return acc;
+    },
+    { urls: [], files: [] } as { urls: string[]; files: File[] }
+  );
+
+  // Log after all conversions are done
+  return { urls, files };
+}
+
+// const reduceSizeSpecificKb = (
+//   img: HTMLImageElement,
+//   minWidth: number,
+//   kb: number
+// ) => {
+//   let finalFile: File | undefined = undefined;
+//   let url: string | undefined = undefined;
+//   const canvas = document.createElement("canvas");
+//   const ctx = canvas.getContext("2d");
+//   if (ctx) {
+//     ctx.imageSmoothingEnabled = true;
+//     ctx.imageSmoothingQuality = "high";
+//     let width = img.width;
+//     let height = img.height;
+
+//     while (!finalFile && width > minWidth - 100) {
+//       if (width - 100 < minWidth) {
+//         canvas.width = minWidth;
+//         const newHeight = img.height * (minWidth / img.width);
+//         canvas.height = newHeight;
+//         ctx.drawImage(img, 0, 0, minWidth, newHeight);
+//         const dataUrl = canvas.toDataURL("image/webp", 0.7);
+//         const file = new File([dataUrl], "image.webp", {
+//           type: "image/webp",
+//         });
+//         finalFile = file;
+//         url = dataUrl;
+//         return {
+//           file,
+//           url,
+//         };
+//       } else {
+//         canvas.width = width;
+//         const newHeight = height * (width / img.width);
+//         canvas.height = newHeight;
+//         ctx.drawImage(img, 0, 0, width, newHeight);
+//       }
+//       const dataUrl = canvas.toDataURL("image/webp", 0.7);
+//       const file = new File([dataUrl], "image.webp", {
+//         type: "image/webp",
+//       });
+//       if (file.size < kb * 1000) {
+//         finalFile = file;
+//         url = dataUrl;
+//       }
+//       if (width > 2000) {
+//         width = 2000;
+//       } else {
+//         width = width - 100;
+//       }
+//     }
+
+//     return {
+//       file: finalFile,
+//       url,
+//     };
+//   }
+// };
