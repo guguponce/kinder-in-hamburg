@@ -430,7 +430,7 @@ export async function listFilesInFolder(bucket: string, folderName: string) {
 export const getImageURL = async (bucket: string, path: string) =>
   supabaseAdmin.storage.from(bucket).getPublicUrl(path).data.publicUrl;
 
-export const getAllImagesURLFromSupabseFolder = async (
+export const getAllImagesURLFromSupabaseFolder = async (
   bucket: string,
   id: string
 ) => {
@@ -456,7 +456,7 @@ export const deleteSupabaseFiles = async (
   pathWithFilename: string | string[]
 ) => {
   try {
-    const { error } = await supabaseAdmin.storage
+    const { error, data } = await supabaseAdmin.storage
       .from(bucket)
       .remove(
         typeof pathWithFilename === "string"
