@@ -2,6 +2,7 @@ import React from "react";
 import DeleteSVG from "@app/assets/svg/DeleteSVG";
 import Button from "@app/components/@Buttons/Button";
 import { deleteSupabaseFiles } from "@app/api/spActions";
+
 export default function DeleteSupabaseImageButton({
   bucket,
   imageName,
@@ -26,20 +27,21 @@ export default function DeleteSupabaseImageButton({
       size="small"
       onClick={async (e) => {
         e.preventDefault();
-        deleteSupabaseFiles(bucket, [imageName])
-          .then(() => {
-            if (setImagesArray) {
-              setImagesArray((prev) =>
-                prev.filter((prevImage, i) => {
-                  return !(
-                    i === imageIndex &&
-                    prevImage.fileName === imageName.split("/").pop()
-                  );
-                })
-              );
-            }
-          })
-          .catch((err) => console.error(err));
+        try {
+          await deleteSupabaseFiles(bucket, [imageName]);
+          if (setImagesArray) {
+            setImagesArray((prev) =>
+              prev.filter((prevImage, i) => {
+                return !(
+                  i === imageIndex &&
+                  prevImage.fileName === imageName.split("/").pop()
+                );
+              })
+            );
+          }
+        } catch (err) {
+          console.error(err);
+        }
       }}
     >
       <DeleteSVG />
