@@ -5,15 +5,19 @@ import React from "react";
 import AdminRoute from "@app/providers/AdminRoute";
 import AdminEditButtons from "@app/components/@Buttons/AdminEditButtons";
 import StatusDisplay from "@app/components/StatusDisplay";
+import { getServerUser } from "@app/api/auth/supabaseAuth";
 
 export default async function CurrentPostPage({
   params,
 }: {
   params: { suggestionID: string };
 }) {
+  const user = await getServerUser();
   const { suggestionID } = params;
   const post = await getSuggestedPostWithID(suggestionID);
   if (!post) return <NotFound />;
+  console.log(post.status, user);
+  if (post.status === "approved" && !user) return <PostTemplate post={post} />;
 
   return (
     <AdminRoute>

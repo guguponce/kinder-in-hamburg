@@ -3,8 +3,9 @@ import PostLogo from "../@Icons/@PostLogo/PostLogo";
 import Link from "next/link";
 import { iAddress } from "@app/utils/types";
 import BezirkIcon from "../@Icons/@BezirkIcon/BezirkIcon";
+import { getServerUser } from "@app/api/auth/supabaseAuth";
 
-export default function LocationBox({
+export default async function LocationBox({
   bezirk,
   stadtteil,
   address,
@@ -15,6 +16,7 @@ export default function LocationBox({
   address?: iAddress;
   dark?: boolean;
 }) {
+  const user = await getServerUser();
   const addressQuery = address
     ? Object.values(address)
         .map((part) => part.replace(" ", "+"))
@@ -25,20 +27,24 @@ export default function LocationBox({
   return (
     <div
       id="location"
-      className={`relative flex  max-w-96 min-w-72 w-fit h-fit mx-auto sm:mx-0 rounded p-2 ${dark ? "text-hh-800" : "text-hh-50"}`}
+      className={`relative flex min-w-72 w-fit max-w-full h-fit mx-auto rounded p-2 ${dark ? "text-hh-800" : "text-hh-50"}`}
     >
-      <div className="flex flex-col justify-between flex-grow max-w-[66%]">
+      <div className="flex flex-col justify-between flex-grow max-w-[66%] break-words">
         <h2 className="text-lg font-semibold">Standort:</h2>
         {bezirk && (
           <div className="flex gap-1 items-center">
             <PostLogo logo="hamburg" color={dark ? "#33404d" : "#fefefe"} />
-            <Link
-              href={`/bezirke/${encodeURIComponent(bezirk)}`}
-              id="bezirk"
-              className="block font-semibold italic hover:underline hover:underline-offset-2"
-            >
-              {bezirk}
-            </Link>
+            {!!user ? (
+              <Link
+                href={`/bezirke/${encodeURIComponent(bezirk)}`}
+                id="bezirk"
+                className="block font-semibold italic hover:underline hover:underline-offset-2"
+              >
+                {bezirk}
+              </Link>
+            ) : (
+              <h3 className="block font-semibold italic ">{bezirk}</h3>
+            )}
           </div>
         )}
         {!!stadtteil && (

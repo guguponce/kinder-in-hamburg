@@ -98,13 +98,11 @@ export default function PostTemplate({
         }`}
       >
         {(!!bezirk || !!address) && (
-          <div className="flex w-full flex-col sm:flex-row lg:flex-col xl:flex-row flex-wrap-reverse gap-2 sm:gap-1">
-            <LocationBox
-              address={address}
-              bezirk={bezirk}
-              stadtteil={stadtteil}
-            />
-          </div>
+          <LocationBox
+            address={address}
+            bezirk={bezirk}
+            stadtteil={stadtteil}
+          />
         )}
         <RecommendationsMap
           id={id}
