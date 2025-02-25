@@ -16,7 +16,6 @@ export default async function CurrentPostPage({
   const { suggestionID } = params;
   const post = await getSuggestedPostWithID(suggestionID);
   if (!post) return <NotFound />;
-  console.log(post.status, user);
   if (post.status === "approved" && !user) return <PostTemplate post={post} />;
 
   return (

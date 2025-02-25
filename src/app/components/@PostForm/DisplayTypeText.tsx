@@ -5,7 +5,7 @@ import Link from "next/link";
 const formatText = (text: string) => {
   // Regular expressions to match the formatting tags and their content
   const regex =
-    /<b>(.*?)<\/?b>|<sb>(.*?)<\/?sb>|<i>(.*?)<\/?i>|<u>(.*?)<\/?u>|<upper>(.*?)<\/?upper>|<link>(.*?)<\/?link>|<h3>(.*?)<\/?h3>|<h2>(.*?)<\/?h2>|<attribution>(.*?)<\/?attribution>/g;
+    /<b>(.*?)<\/?b>|<sb>(.*?)<\/?sb>|<i>(.*?)<\/?i>|<u>(.*?)<\/?u>|<upper>(.*?)<\/?upper>|<link>(.*?)<\/?link>|<h3>(.*?)<\/?h3>|<h2>(.*?)<\/?h2>|<attribution>(.*?)<\/?attribution>|<email>(.*?)<\/?email>/g;
 
   let formattedText = [];
   let lastIndex = 0;
@@ -24,6 +24,7 @@ const formatText = (text: string) => {
       h3,
       h2,
       attributionText,
+      email,
       index
     ) => {
       // Push the text before the match
@@ -78,6 +79,18 @@ const formatText = (text: string) => {
             rel="noopener noreferrer"
           >
             {linkText}
+          </a>
+        );
+      } else if (email) {
+        formattedText.push(
+          <a
+            className="italic underline text-hh-500 break-words"
+            key={index}
+            href={`mailto:${email}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {email}
           </a>
         );
       }
