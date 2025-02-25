@@ -72,91 +72,16 @@ export default function WeitereEvents({
           >
             <ExpandableContainer
               type={type}
+              displayButton={flohmaerkteByDate.current[date].length > 2}
               contentHeight={contentHeight}
               initialHeight={
-                flohmaerkteByDate.current[date].length < 2 ? 180 : 128 * 2 + 32
+                flohmaerkteByDate.current[date].length < 2 ? 180 : 128 * 2 + 40
               }
             >
               <h3 className="text-lg font-semibold text-hh-900">
                 {getDate(parseInt(date))}
               </h3>
               <div className="flex flex-wrap justify-center gap-2 items-stretch">
-                {i === 1 &&
-                  flohmaerkteByDate.current[date].map(
-                    (
-                      {
-                        title,
-                        address,
-                        date,
-                        id,
-                        time,
-                        image,
-                        stadtteil,
-                        type,
-                      },
-                      i,
-                      arr
-                    ) => (
-                      <div
-                        key={id}
-                        className={`w-[360px] ${arr.length > 1 ? "md:w-[calc(50%-1rem)]" : "md:w-[calc(50%-1rem)]"}`}
-                      >
-                        <HorizontalCard
-                          type={type || "flohmarkt"}
-                          id={id}
-                          title={title}
-                          link={`/${type ? "events" : "flohmaerkte"}/${id}`}
-                          image={image || ""}
-                        >
-                          <HorizontalCard.FlohmarktInfo
-                            title={title}
-                            address={addressWithoutCity(address)}
-                            stadtteil={stadtteil}
-                            date={date}
-                            time={time}
-                          />
-                        </HorizontalCard>
-                      </div>
-                    )
-                  )}{" "}
-                {i === 1 &&
-                  flohmaerkteByDate.current[date].map(
-                    (
-                      {
-                        title,
-                        address,
-                        date,
-                        id,
-                        time,
-                        image,
-                        stadtteil,
-                        type,
-                      },
-                      i,
-                      arr
-                    ) => (
-                      <div
-                        key={id}
-                        className={`w-[360px] ${arr.length > 1 ? "md:w-[calc(50%-1rem)]" : "md:w-[calc(50%-1rem)]"}`}
-                      >
-                        <HorizontalCard
-                          type={type || "flohmarkt"}
-                          id={id}
-                          title={title}
-                          link={`/${type ? "events" : "flohmaerkte"}/${id}`}
-                          image={image || ""}
-                        >
-                          <HorizontalCard.FlohmarktInfo
-                            title={title}
-                            address={addressWithoutCity(address)}
-                            stadtteil={stadtteil}
-                            date={date}
-                            time={time}
-                          />
-                        </HorizontalCard>
-                      </div>
-                    )
-                  )}
                 {flohmaerkteByDate.current[date].map(
                   (
                     { title, address, date, id, time, image, stadtteil, type },

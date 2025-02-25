@@ -107,6 +107,10 @@ export const updateContributor = async (
       }
     } else if (type === "post") {
       if (contributor.postsSubmitted?.includes(id)) return;
+      console.log("id", contributor.id, [
+        ...(contributor.postsSubmitted || []),
+        id,
+      ]);
       const { error } = await supabaseAdmin
         .from("contributors")
         .update({

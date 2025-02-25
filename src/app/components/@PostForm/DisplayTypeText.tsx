@@ -84,7 +84,7 @@ const formatText = (text: string) => {
       } else if (email) {
         formattedText.push(
           <a
-            className="italic underline text-hh-500 break-words"
+            className="italic underline text-hh-700 break-words"
             key={index}
             href={`mailto:${email}`}
             target="_blank"
