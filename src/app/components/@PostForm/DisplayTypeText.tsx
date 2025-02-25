@@ -70,7 +70,7 @@ const formatText = (text: string) => {
         formattedText.push(<></>);
       } else if (linkText) {
         formattedText.push(
-          <Link
+          <a
             className="italic underline text-hh-500 break-words"
             key={index}
             href={linkText}
@@ -78,7 +78,7 @@ const formatText = (text: string) => {
             rel="noopener noreferrer"
           >
             {linkText}
-          </Link>
+          </a>
         );
       }
 

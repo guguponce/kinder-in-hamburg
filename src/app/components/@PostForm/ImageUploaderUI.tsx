@@ -107,7 +107,7 @@ export const ImageUploaderUI = ({
           onChange={handleImageChange}
           className="flex max-w-[300px] flex-wrap rounded  border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
         />
-        {uploadStatus !== "await" && (
+        {uploadStatus !== "await" && !!imageFiles.length && (
           <div className="font-bold flex items-center justify-center text-yellow-500">
             {statusDisplay.text[uploadStatus]}
           </div>
