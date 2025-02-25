@@ -7,6 +7,7 @@ export default function ExpandableContainer({
   contentHeight,
   initialHeight,
   shadow = true,
+  displayButton,
 }: {
   type?:
     | "Spielplätze"
@@ -20,9 +21,10 @@ export default function ExpandableContainer({
   children: React.ReactNode;
   contentHeight: number;
   initialHeight: number;
+  displayButton?: boolean;
 }) {
   const [open, setOpen] = useState(false);
-  const [showButton, setShowButton] = useState(false);
+  const [showButton, setShowButton] = useState(!!displayButton);
   const containerRef = React.useRef<HTMLDivElement>(null);
   const handleOpen = () => {
     setOpen(true);
@@ -32,7 +34,8 @@ export default function ExpandableContainer({
     if (containerRef.current) {
       // Check if the content height exceeds the initial height
       const containerHeight = containerRef.current.scrollHeight;
-      if (containerHeight > initialHeight) {
+      console.log(displayButton, containerHeight, initialHeight);
+      if (containerHeight > initialHeight && displayButton) {
         setShowButton(true);
       }
     }
@@ -40,7 +43,7 @@ export default function ExpandableContainer({
   return (
     <section
       style={
-        open || contentHeight < initialHeight
+        open || contentHeight < initialHeight || !showButton
           ? { height: "fit-content" }
           : { maxHeight: `${initialHeight}px` }
       }
@@ -52,7 +55,7 @@ export default function ExpandableContainer({
         onClick={handleOpen}
         className={`${
           showButton ? "flex" : "hidden"
-        } absolute bottom-0 backdrop-blur-[1px] w-full h-12 left-0 from-hh-400 to-[#758CA370] bg-gradient-to-t items-center justify-center font-semibold text-hh-50 z-30 rounded`}
+        } absolute bottom-0 backdrop-blur-[1px] w-full h-12 left-0 from-hh-500 to-[#758CA370] bg-gradient-to-t items-center justify-center font-semibold text-hh-50 z-30 rounded`}
       >
         Alle {type || ""} anzeigen
       </button>
