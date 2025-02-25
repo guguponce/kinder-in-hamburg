@@ -81,7 +81,6 @@ export const ImageUploader = ({
       .then(() => {
         setImageFiles([]);
         setLocalImageUrl([]);
-        console.log(fileInputRef.current!.value);
       })
       .catch((error) => {
         throw new Error("Error in HandleUpload", error);
