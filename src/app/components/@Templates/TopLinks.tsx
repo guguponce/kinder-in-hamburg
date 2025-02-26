@@ -1,3 +1,4 @@
+import { cn } from "@app/utils/functions";
 import Link from "next/link";
 import React from "react";
 
@@ -7,15 +8,15 @@ const BackButton = ({ type }: { type: "spielhaus" | "general" }) => {
   return (
     <>
       {type === "spielhaus" ? (
-        <Link href={"/spielhaeuser"} className={"w-28 " + className}>
+        <Link href={"/spielhaeuser"} className={cn("w-28", className)}>
           <span>←</span>{" "}
           <span className="flex-grow flex justify-center">
             Alle Spielhäuser
           </span>
         </Link>
       ) : (
-        <Link href={"/posts"} className={"w-20 " + className}>
-          <span className="arrow absolute -translate-y-1/2 top-1/2 left-0 aspect-square w-3 h-3 flex outline-2 outline outline-transparent justify-center items-center rounded-full transition-all">
+        <Link href={"/posts"} className={cn("w-20", className)}>
+          <span className="arrow absolute -translate-y-1/2 top-1/2 left-0 aspect-square h-[11px] flex outline-2 outline outline-transparent justify-center items-center rounded-full transition-all">
             ←
           </span>{" "}
           <span className="flex-grow flex justify-center">Alle Posts</span>

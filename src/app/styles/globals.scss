@@ -342,6 +342,7 @@ form {
     .backButton:focus,
     .backButton:active {
       .arrow {
+        left: -0.25rem;
         outline: 2px solid $hh-900;
       }
     }
