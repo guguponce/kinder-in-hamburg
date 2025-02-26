@@ -1,10 +1,15 @@
 import React from "react";
 import AdminRoute from "@app/providers/AdminRoute";
-import URLFilteredList from "./URLFilteredList";
 import { getAllApprovedPosts } from "@app/api/dbActions";
 import { unstable_cache } from "next/cache";
+import dynamic from "next/dynamic";
 
 export const revalidate = 20;
+
+const URLFilteredList = dynamic(
+  () => import("@components/Filters/URLFilteredList"),
+  { ssr: false }
+);
 
 const cachedPosts = unstable_cache(getAllApprovedPosts, ["allApprovedPosts"], {
   revalidate: 300,

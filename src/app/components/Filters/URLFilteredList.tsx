@@ -27,9 +27,9 @@ import {
   orderOptions,
   isTypeOrder,
   orderType,
-} from "./filterFunctions";
-import { FilterButton } from "./DeleteFilters";
-import SearchInput from "./SearchInput";
+} from "../../(blog)/posts/filterFunctions";
+import { FilterButton } from "../../(blog)/posts/DeleteFilters";
+import SearchInput from "../../(blog)/posts/SearchInput";
 import CloseIcon2 from "@app/components/@Icons/CloseIcon2";
 import MarkersLists from "@app/components/@Map/PopUpsMarkers/MarkersLists";
 import dynamic from "next/dynamic";
@@ -349,15 +349,16 @@ export default function URLFilteredList({
           {displayList.length < maxDisplayable && (
             <button
               onClick={() => setMaxDisplay((prev) => prev + 12)}
-              className="p-2 bg-hh-500 rounded bg-opacity-25 hover:bg-opacity-50"
+              className="p-2 bg-hh-700 text-hh-50 font-semibold rounded bg-opacity-25 hover:bg-opacity-50 "
             >
-              Load More
+              Mehr anzeigen
             </button>
           )}
         </article>
       </section>
       <div className="w-96 aspect-[3/4]">
         <DynamicGeneralMap>
+          ""
           <MarkersLists lists={{ posts: displayList }} />
         </DynamicGeneralMap>
       </div>

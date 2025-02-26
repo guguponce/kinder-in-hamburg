@@ -18,7 +18,7 @@ const cachedPosts = unstable_cache(
   }
 );
 const URLFilteredList = dynamic(
-  () => import("@app/(blog)/posts/URLFilteredList"),
+  () => import("@app/components/Filters/URLFilteredList"),
   { ssr: false }
 );
 
