@@ -8,12 +8,14 @@ export default function ScrollableContainer({
   color = "500",
   boxStyle,
   containerStyle,
+  paddingForButtons = true,
 }: {
   color?: "300" | "500" | "800";
   vertical?: boolean;
   children: React.ReactNode;
   boxStyle?: string;
   containerStyle?: string;
+  paddingForButtons?: boolean;
 }) {
   const scrollbarThumbColor = `scrollbarThumb${color}`;
 
@@ -22,7 +24,7 @@ export default function ScrollableContainer({
       className={cn(
         `relative flex items-center ${
           vertical ? "w-full" : "w-fit max-w-full"
-        } overflow-hidden h-full scrollable-container `,
+        } overflow-hidden h-full scrollable-container`,
         containerStyle
       )}
     >
@@ -32,7 +34,7 @@ export default function ScrollableContainer({
             vertical
               ? "verticalScrollbar w-full overflow-y-auto h-fit max-h-full flex-col"
               : "horizontalScrollbar overflow-x-auto w-fit max-w-full p-1 pb-4 pt-2 h-full"
-          } ${scrollbarThumbColor} relative flex gap-2 lg:gap-4 items-stretch`,
+          } ${scrollbarThumbColor} ${paddingForButtons ? "px-12" : ""} relative flex gap-2 lg:gap-4 items-stretch`,
           boxStyle
         )}
       >
