@@ -34,12 +34,11 @@ export default function ExpandableContainer({
     if (containerRef.current) {
       // Check if the content height exceeds the initial height
       const containerHeight = containerRef.current.scrollHeight;
-      console.log(displayButton, containerHeight, initialHeight);
       if (containerHeight > initialHeight && displayButton) {
         setShowButton(true);
       }
     }
-  }, [contentHeight, initialHeight]);
+  }, [contentHeight, initialHeight, displayButton]);
   return (
     <section
       style={
