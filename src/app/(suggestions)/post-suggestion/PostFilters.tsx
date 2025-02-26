@@ -193,7 +193,7 @@ export default function PostFilters({
   const decodedParamQuery = queryFromType && decodeURIComponent(queryFromType);
   return (
     <>
-      <div className="absolute left-0 top-0 h-10 py-8 px-2 z-50 flex justify-center items-center">
+      <div className="absolute left-0 top-2 h-10 py-8 px-2 z-50 flex justify-center items-center">
         <button
           tabIndex={0}
           onClick={() => setIsOpen(!isOpen)}

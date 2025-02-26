@@ -33,6 +33,9 @@ import SearchInput from "../../(blog)/posts/SearchInput";
 import CloseIcon2 from "@app/components/@Icons/CloseIcon2";
 import MarkersLists from "@app/components/@Map/PopUpsMarkers/MarkersLists";
 import dynamic from "next/dynamic";
+import Button from "../@Buttons/Button";
+import CardsIcon from "../@Icons/CardsIcon";
+import MapIcon from "../@Icons/MapIcon";
 
 const DynamicGeneralMap = dynamic(
   () => import("@app/components/@Map/GeneralMap"),
@@ -75,6 +78,7 @@ export default function URLFilteredList({
     })
   );
   const [queryAlter, setQueryAlter] = useState(searchParams.get("alter") || "");
+  const [showMap, setShowMap] = useState(false);
   const { current: orderParam } = useRef(
     isTypeOrder(searchParams.get("order"))
       ? (searchParams.get("order") as orderType)
@@ -140,9 +144,13 @@ export default function URLFilteredList({
   }, [bezirkeFilter, postsListRef, searchParams]);
 
   const availableCategories = useMemo(
-    () => getAvailableCategories(filteredByCategories),
+    () =>
+      getAvailableCategories(
+        categoriesFilteringTogether ? filteredByCategories : postsListRef
+      ),
     [filteredByCategories]
   );
+  console.log(postsListRef, filteredByCategories.length, availableCategories);
   const resetFilters = useCallback(() => {
     setCategoriesFilter([]);
     setBezirkeFilter([]);
@@ -220,147 +228,170 @@ export default function URLFilteredList({
             ))}
           </select>
         </aside>
-
-        {anyFilterUsed && (
-          <div className="flex flex-col gap-1 rounded bg-hh-300 border-hh-900 border-2 p-1 h-fit mx-2">
-            <div className="px-1 flex flex-wrap-reverse gap-2 items-center">
-              <h4 className="font-semibold">Angewendete Filter:</h4>
-              <button
-                onClick={resetFilters}
-                className="deleteFilterButton p-[2px] pl-2 ml-auto bg-negative-500 text-hh-50  font-semibold hover:bg-negative-500 hover:bg-opacity-25 hover:border-negative-800 hover:text-negative-800 focus:-outline-offset-1 focus-within:-outline-offset-1 focus-visible:-outline-offset-1 active:outline-offset-1 -800 focus:outline-negative-600 focus-within:outline-negative-600 focus-visible:outline-negative-600 rounded-full text-xs flex gap items-center focus:border-transparent focus-within:border-transparent focus-visible:border-transparent transition-all"
-              >
-                <span className="hidden xs:inline pr-1">Alle</span>
-                <span>Filter zurücksetzen</span>
-                <CloseIcon2
-                  color="#f0f1f2 "
-                  size="20"
-                  className="transition-all"
-                />
-              </button>
+        <div className="flex flex-col md:flex-row items-center justify-end px-2 gap-2 w-full">
+          {anyFilterUsed && (
+            <div className="flex-grow self-stretch flex flex-col gap-1 rounded bg-hh-300 bg-opacity-75 p-1  mx-2">
+              <div className="px-1 flex flex-wrap-reverse gap-2 items-center">
+                <h4 className="font-semibold">Angewendete Filter:</h4>
+                <button
+                  onClick={resetFilters}
+                  className="deleteFilterButton p-[2px] pl-2 ml-auto bg-negative-500 text-hh-50  font-semibold hover:bg-negative-500 hover:bg-opacity-25 hover:border-negative-800 hover:text-negative-800 focus:-outline-offset-1 focus-within:-outline-offset-1 focus-visible:-outline-offset-1 active:outline-offset-1 -800 focus:outline-negative-600 focus-within:outline-negative-600 focus-visible:outline-negative-600 rounded-full text-xs flex gap items-center focus:border-transparent focus-within:border-transparent focus-visible:border-transparent transition-all"
+                >
+                  <span className="hidden xs:inline pr-1">Alle</span>
+                  <span>zurücksetzen</span>
+                  <CloseIcon2
+                    color="#f0f1f2 "
+                    size="20"
+                    className="transition-all"
+                  />
+                </button>
+              </div>
+              <div className="flex flex-wrap gap-2 items-center">
+                {queryAlter && (
+                  <FilterButton
+                    filterType="Alter"
+                    filterValue={queryAlter}
+                    typeOnClick={() => {
+                      removeFilter({
+                        state: queryAlter,
+                        stringStateSetter: setQueryAlter,
+                        filterType: "alter",
+                        value: "",
+                        router,
+                        params,
+                        searchParams,
+                      });
+                    }}
+                  />
+                )}
+                {!!searchQuery && (
+                  <FilterButton
+                    filterType="Suche"
+                    filterValue={searchQuery}
+                    typeOnClick={() => {
+                      removeFilter({
+                        state: searchQuery,
+                        stringStateSetter: setSearchQuery,
+                        filterType: "searchQuery",
+                        value: "",
+                        router,
+                        params,
+                        searchParams,
+                      });
+                    }}
+                  />
+                )}
+                {!!bezirkeFilter.length &&
+                  bezirkeFilter.map((bezirk) => (
+                    <React.Fragment key={bezirk}>
+                      <FilterButton
+                        filterType="Bezirk"
+                        filterValue={bezirk}
+                        typeOnClick={() => {
+                          removeFilter({
+                            state: bezirkeFilter,
+                            arrayStateSetter: setBezirkeFilter,
+                            filterType: "bezirke",
+                            value: bezirk,
+                            router,
+                            params,
+                            searchParams,
+                          });
+                        }}
+                      />
+                    </React.Fragment>
+                  ))}
+                {!!stadtteileFilter.length &&
+                  stadtteileFilter.map((st) => (
+                    <React.Fragment key={st}>
+                      <FilterButton
+                        filterType="Stadtteil"
+                        filterValue={st}
+                        typeOnClick={() => {
+                          removeFilter({
+                            state: stadtteileFilter,
+                            arrayStateSetter: setStadtteileFilter,
+                            filterType: "stadtteile",
+                            value: st,
+                            router,
+                            params,
+                            searchParams,
+                          });
+                        }}
+                      />
+                    </React.Fragment>
+                  ))}
+                {!!categoriesFilter.length &&
+                  categoriesFilter.map((bz) => (
+                    <React.Fragment key={bz}>
+                      <FilterButton
+                        filterType="Kategorie"
+                        filterValue={bz}
+                        typeOnClick={() => {
+                          removeFilter({
+                            state: categoriesFilter,
+                            arrayStateSetter: setCategoriesFilter,
+                            filterType: "categories",
+                            value: bz,
+                            router,
+                            params,
+                            searchParams,
+                          });
+                        }}
+                      />
+                    </React.Fragment>
+                  ))}
+              </div>
             </div>
-            <div className="flex flex-wrap gap-2 items-center">
-              {queryAlter && (
-                <FilterButton
-                  filterType="Alter"
-                  filterValue={queryAlter}
-                  typeOnClick={() => {
-                    removeFilter({
-                      state: queryAlter,
-                      stringStateSetter: setQueryAlter,
-                      filterType: "alter",
-                      value: "",
-                      router,
-                      params,
-                      searchParams,
-                    });
-                  }}
-                />
-              )}
-              {!!searchQuery && (
-                <FilterButton
-                  filterType="Suche"
-                  filterValue={searchQuery}
-                  typeOnClick={() => {
-                    removeFilter({
-                      state: searchQuery,
-                      stringStateSetter: setSearchQuery,
-                      filterType: "searchQuery",
-                      value: "",
-                      router,
-                      params,
-                      searchParams,
-                    });
-                  }}
-                />
-              )}
-              {!!bezirkeFilter.length &&
-                bezirkeFilter.map((bezirk) => (
-                  <React.Fragment key={bezirk}>
-                    <FilterButton
-                      filterType="Bezirk"
-                      filterValue={bezirk}
-                      typeOnClick={() => {
-                        removeFilter({
-                          state: bezirkeFilter,
-                          arrayStateSetter: setBezirkeFilter,
-                          filterType: "bezirke",
-                          value: bezirk,
-                          router,
-                          params,
-                          searchParams,
-                        });
-                      }}
-                    />
-                  </React.Fragment>
-                ))}
-              {!!stadtteileFilter.length &&
-                stadtteileFilter.map((st) => (
-                  <React.Fragment key={st}>
-                    <FilterButton
-                      filterType="Stadtteil"
-                      filterValue={st}
-                      typeOnClick={() => {
-                        removeFilter({
-                          state: stadtteileFilter,
-                          arrayStateSetter: setStadtteileFilter,
-                          filterType: "stadtteile",
-                          value: st,
-                          router,
-                          params,
-                          searchParams,
-                        });
-                      }}
-                    />
-                  </React.Fragment>
-                ))}
-              {!!categoriesFilter.length &&
-                categoriesFilter.map((bz) => (
-                  <React.Fragment key={bz}>
-                    <FilterButton
-                      filterType="Kategorie"
-                      filterValue={bz}
-                      typeOnClick={() => {
-                        removeFilter({
-                          state: categoriesFilter,
-                          arrayStateSetter: setCategoriesFilter,
-                          filterType: "categories",
-                          value: bz,
-                          router,
-                          params,
-                          searchParams,
-                        });
-                      }}
-                    />
-                  </React.Fragment>
-                ))}
-            </div>
+          )}
+          <div
+            className={`flex items-center justify-center gap-2 w-full md:w-fit px-2 ${anyFilterUsed ? "md:flex-col" : "md:flex-row"}`}
+          >
+            <Button
+              onClick={() => setShowMap(false)}
+              className={`${showMap ? "bg-opacity-10 -outline-offset-2 text-hh-900 active:bg-opacity-29 hover:bg-opacity-40 focus:bg-opacity-40 focus-visible:bg-opacity-40 focus:outline-hh-50 focus-visible:outline-hh-50 outline-2 outline outline-hh-900" : "text-hh-50 bg-opacity-75 active:bg-opacity-70 hover:bg-opacity-90 focus:bg-opacity-90 focus-visible:bg-opacity-90 focus:outline-hh-50 focus-visible:outline-hh-50"} flex-grow h-10 w-fit max-w-full p-2 bg-hh-800 hover:bg-hh-800 active:bg-hh-800 font-semibold rounded flex items-center justify-center gap-2`}
+            >
+              <CardsIcon color="#e1e4e5" size="1.5rem" /> Liste
+            </Button>
+            <Button
+              onClick={() => setShowMap(true)}
+              className={`${!showMap ? "bg-opacity-10 -outline-offset-2 text-hh-900 active:bg-opacity-20 hover:bg-opacity-40 focus:bg-opacity-40 focus-visible:bg-opacity-40 focus:outline-hh-50 focus-visible:outline-hh-50 outline-2 outline outline-hh-900" : "text-hh-50 bg-opacity-75 active:bg-opacity-70 hover:bg-opacity-90 focus:bg-opacity-90 focus-visible:bg-opacity-90 focus:outline-hh-50 focus-visible:outline-hh-50"} flex-grow h-10 w-fit max-w-full p-2 bg-hh-800 hover:bg-hh-800 active:bg-hh-800 font-semibold rounded flex items-center justify-center gap-2`}
+            >
+              <MapIcon color={showMap ? "#e1e4e5" : undefined} size="1.5rem" />{" "}
+              Karte
+            </Button>
           </div>
-        )}
+        </div>
         <article className="flex flex-col w-full flex-grow p-2 pt-0">
-          <CardsListDisplayMemo cardPosts={displayList}>
-            <button
-              onClick={resetFilters}
-              className="p-2 bg-negative-500 text-hh-50 rounded bg-opacity-50 hover:bg-opacity-75 m-1"
-            >
-              Alle Filter zurücksetzen
-            </button>
-          </CardsListDisplayMemo>
+          {showMap ? (
+            <div className="w-full aspect-[3/4] max-h-[75dvh]">
+              <DynamicGeneralMap>
+                <MarkersLists lists={{ posts: displayList }} />
+              </DynamicGeneralMap>
+            </div>
+          ) : (
+            <>
+              <CardsListDisplayMemo cardPosts={displayList}>
+                <button
+                  onClick={resetFilters}
+                  className="p-2 bg-negative-500 text-hh-50 rounded bg-opacity-50 hover:bg-opacity-75 m-1"
+                >
+                  Alle zurücksetzen
+                </button>
+              </CardsListDisplayMemo>
 
-          {displayList.length < maxDisplayable && (
-            <button
-              onClick={() => setMaxDisplay((prev) => prev + 12)}
-              className="p-2 bg-hh-700 text-hh-50 font-semibold rounded bg-opacity-25 hover:bg-opacity-50 "
-            >
-              Mehr anzeigen
-            </button>
+              {displayList.length < maxDisplayable && (
+                <button
+                  onClick={() => setMaxDisplay((prev) => prev + 12)}
+                  className="p-2 bg-hh-700 text-hh-50 font-semibold rounded bg-opacity-25 hover:bg-opacity-50 "
+                >
+                  Mehr anzeigen
+                </button>
+              )}
+            </>
           )}
         </article>
       </section>
-      <div className="w-96 aspect-[3/4]">
-        <DynamicGeneralMap>
-          <MarkersLists lists={{ posts: displayList }} />
-        </DynamicGeneralMap>
-      </div>
     </div>
   );
 }
