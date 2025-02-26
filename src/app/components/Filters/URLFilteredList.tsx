@@ -358,7 +358,6 @@ export default function URLFilteredList({
       </section>
       <div className="w-96 aspect-[3/4]">
         <DynamicGeneralMap>
-          ""
           <MarkersLists lists={{ posts: displayList }} />
         </DynamicGeneralMap>
       </div>
