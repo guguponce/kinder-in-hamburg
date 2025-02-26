@@ -117,7 +117,7 @@ export default async function FlohmarktPage() {
       </AdminServerComponent>
       <MainIntroductionText
         title="Flohmärkte"
-        text="Die Flohmärkte in Hamburg bieten eine schöne, familienfreundliche Erfahrung, bei der Eltern gebrauchte Schätze für ihre Kinder finden können. Von Spielzeug und Kleidung bis hin zu Büchern und Mobilitätsartikeln wie Fahrrädern oder Kinderwagen – diese Märkte ermöglichen es, günstige und umweltfreundliche Optionen für die ganze Familie zu entdecken. Wir glauben, dass sie den Kindern die Chance bieten, den Wert von Wiederverwendung und Recycling auf eine praktische Weise zu lernen."
+        text="Von Spielzeug und Kleidung bis hin zu Büchern und Mobilitätsartikeln wie Fahrrädern oder Kinderwagen – diese Märkte ermöglichen es, günstige und umweltfreundliche Optionen für die ganze Familie zu entdecken. Sie bieten den Kindern die Chance, den Wert von Wiederverwendung und Recycling auf eine praktische Weise zu lernen."
       >
         <h2 className="text-xl font-bold my-4 p-2 md:p-4 rounded-xl border-4 border-hh-800 max-w-[600px] text-center">
           Die Hochsaison der Flohmärkte hat noch nicht begonnen, aber im
