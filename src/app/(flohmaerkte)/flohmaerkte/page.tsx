@@ -131,7 +131,7 @@ export default async function FlohmarktPage() {
           type="flohmaerkte"
         ></BezirkeScrollableEvents>
         <section className="flex flex-col h-fit max-w-[1200px] p-2 bg-gradient-to-b from-hh-100 to-50 shadow-md md:shadow-xl my-4 md:my-8 rounded">
-          <div className="w-full pb-2 flex flex-wrap gap-2 justify-end items-center">
+          <div className="w-full flex flex-wrap gap-2 justify-end items-center">
             {!!futureFlohmaerkte.length && (
               <div className="font-semibold flex gap-1 text-hh-800">
                 <StandortIcon color="#7B3E5E" />

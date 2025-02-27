@@ -13,7 +13,7 @@ const LazyInstagramIcon = lazy(() => import("./InstagramIcon"));
 export default function PostLogo({
   size = "24px",
   color = "#000",
-  color2 = "#fefefe",
+  color2 = "#f0f1f2",
   logo,
   lazy = false,
 }: {
