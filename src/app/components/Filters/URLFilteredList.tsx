@@ -148,7 +148,7 @@ export default function URLFilteredList({
       getAvailableCategories(
         categoriesFilteringTogether ? filteredByCategories : postsListRef
       ),
-    [filteredByCategories]
+    [filteredByCategories, categoriesFilteringTogether, postsListRef]
   );
   console.log(postsListRef, filteredByCategories.length, availableCategories);
   const resetFilters = useCallback(() => {
@@ -195,9 +195,9 @@ export default function URLFilteredList({
           categoriesFilteringTogether={categoriesFilteringTogether}
           setCategoriesFilteringTogether={setCategoriesFilteringTogether}
         />
-        <aside className="relative flex flex-col-reverse gap-2 items-end sm:flex-row sm:justify-end sm:items-center  px-2 h-fit py-2">
+        <aside className="relative self-end flex flex-col gap-2 items-end sm:flex-row sm:justify-end sm:items-center px-2 sm:pb-2 pt-16 xs:pt-3 sm:pt-2 h-fit">
           <SearchInput
-            className="max-w-[600px] sm:max-w-[300px] sm:h-10  shadow focus-within:outline-hh-200 focus-within:outline-2 focus-within:outline"
+            className="max-w-[600px] sm:max-w-[300px] h-10  shadow focus-within:outline-hh-200 focus-within:outline-2 focus-within:outline"
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
           />
@@ -205,7 +205,7 @@ export default function URLFilteredList({
             name="order"
             id="order-select"
             value={order}
-            className="px-2 py-1 ml-2 rounded-md font-semibold w-fit h-10 my-1  shadow"
+            className="px-2 py-1 ml-2 rounded-md font-semibold min-w-fit h-10 my-1 shadow"
             onChange={(e) => {
               const val = e.target.value as orderType;
               setOrder(val);
@@ -345,7 +345,7 @@ export default function URLFilteredList({
             </div>
           )}
           <div
-            className={`flex items-center justify-center gap-2 w-full md:w-fit px-2 ${anyFilterUsed ? "md:flex-col" : "md:flex-row"}`}
+            className={`flex items-center justify-center gap-2 w-full md:w-fit ${anyFilterUsed ? "md:flex-col" : "md:flex-row"}`}
           >
             <Button
               onClick={() => setShowMap(false)}
@@ -364,10 +364,18 @@ export default function URLFilteredList({
         </div>
         <article className="flex flex-col w-full flex-grow p-2 pt-0">
           {showMap ? (
-            <div className="w-full aspect-[3/4] max-h-[75dvh]">
-              <DynamicGeneralMap>
-                <MarkersLists lists={{ posts: displayList }} />
-              </DynamicGeneralMap>
+            <div
+              className="w-full aspect-[3/4] max-h-[75dvh] rounded-lg bg-hh-100 gap-2 lg:gap-8 min-h-[350px] overflow-auto p-2 grid grid-cols-[repeat(auto-fit,minmax(160px,1fr))] justify-items-center"
+              style={{
+                boxShadow:
+                  "inset 4px 4px 8px #bfc2c3, inset -4px -4px 8px #ffffff",
+              }}
+            >
+              <div className="w-full h-full rounded-md shadow-2xl overflow-hidden">
+                <DynamicGeneralMap>
+                  <MarkersLists lists={{ posts: displayList }} />
+                </DynamicGeneralMap>
+              </div>
             </div>
           ) : (
             <>
