@@ -89,7 +89,7 @@ export default function BurgerMenu({}) {
         <nav
           ref={menuList}
           id="menu-list"
-          className="absolute top-[calc(100%+20px)] left-0 shadow-lg z-[300] flex flex-col gap-0 bg-gradient-to-b from-hh-200 rounded-[0_0_4px_0] to-hh-100"
+          className="absolute top-[calc(100%+20px)] left-0 shadow-lg shadow-[#00010250] z-[300] flex flex-col gap-0 bg-gradient-to-b from-hh-200 rounded-[0_0_4px_0] to-hh-100"
         >
           {[
             { href: "/", name: "Home", auth: true },

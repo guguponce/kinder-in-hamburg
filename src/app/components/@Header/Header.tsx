@@ -4,7 +4,6 @@ import Link from "next/link";
 import BurgerMenu from "./BurgerMenu";
 import UserButtons from "./UserButtons";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
-import PostLogo from "../@Icons/@PostLogo/PostLogo";
 import NavLinks from "./NavLinks";
 import Image from "next/image";
 
@@ -22,24 +21,35 @@ export default async function Header() {
         className="h-full overflow-hidden px-4 flex-grow rounded-sm flex items-center justify-center lg:justify-start gap-4"
         id="main-logo-link"
       >
-        {/* <div className="flex items-center justify-center focus:outline" id="logo"> */}
-        {/* <PostLogo logo="logo" size="6.5rem" color="#f0f1f2" color2="#f0f1f2" /> */}
         <Image
+          src="/assets/logo/WhiteLogo-NoText.png"
+          alt="Kinder in Hamburg"
+          width={108}
+          height={75}
+          priority
+          layout="intrinsic"
+          className="hidden lg:flex object-contain text-sm brightness-105"
+        />
+        <Image
+          layout="intrinsic"
           src="/assets/logo/WhiteLogo-Transparent.png"
           alt="Kinder in Hamburg"
           width={108}
           height={75}
-          className="object-contain text-sm brightness-105"
+          priority
+          className="lg:hidden object-contain text-sm brightness-105"
         />
-        {/* </div> */}
 
         <h1
-          className={`showing-slow ${logoFont.className} text-3xl text-white hidden sm:flex sm:text-4xl pt-1 align-top tracking-wide sm:tracking-widest text-end lg:text-center font-bold items-end gap-4`}
+          className={`showing-slow ${logoFont.className} text-3xl text-white hidden lg:flex flex-col sm:text-4xl items-start pt-1 align-top tracking-wide sm:tracking-widest gap-0 text-end sm:leading-none font-bold `}
         >
-          Kinder in Hamburg
+          <span>Kinder</span>
+          <span>in Hamburg</span>
         </h1>
       </Link>
-      <NavLinks />
+      <div className="hidden lg:flex">
+        <NavLinks />
+      </div>
       <AdminServerComponent>
         <UserButtons />
       </AdminServerComponent>

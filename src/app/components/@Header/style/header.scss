@@ -60,7 +60,7 @@
 }
 
 /* Hidden state for icons not currently animating */
-.hidden {
+.hiddenBlurred {
   opacity: 0;
   filter: blur(10px);
 }
