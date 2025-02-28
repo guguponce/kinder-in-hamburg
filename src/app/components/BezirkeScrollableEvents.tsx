@@ -100,7 +100,11 @@ export default async function BezirkeScrollableEvents({
                   {currentBezirk}
                 </h3>
               )}
-              <ScrollableContainer color="800">
+              <ScrollableContainer
+                color="800"
+                paddingForButtons={false}
+                showButtons={eventsByBezirke[currentBezirk].length > 2}
+              >
                 {eventsByBezirke[currentBezirk].map(
                   (
                     {

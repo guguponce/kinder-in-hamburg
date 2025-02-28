@@ -34,7 +34,10 @@ export default async function EventsSameLocation({
   return (
     <section className={cn("w-full flex flex-col items-center", className)}>
       {title && <h2 className="text-2xl font-semibold">{title}</h2>}
-      <ScrollableContainer boxStyle="items-end lg:gap-2">
+      <ScrollableContainer
+        boxStyle="items-end lg:gap-2"
+        paddingForButtons={false}
+      >
         {separatedEvents.map((ev) => (
           <article
             key={ev.id}

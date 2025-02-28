@@ -8,8 +8,10 @@ export default function ScrollableContainer({
   color = "500",
   boxStyle,
   containerStyle,
+  showButtons = true,
   paddingForButtons = true,
 }: {
+  showButtons?: boolean;
   color?: "300" | "500" | "800";
   vertical?: boolean;
   children: React.ReactNode;
@@ -40,7 +42,9 @@ export default function ScrollableContainer({
       >
         {children}
       </div>
-      <ScrollableContainerButtons vertical={vertical} color={color} />
+      {showButtons && (
+        <ScrollableContainerButtons vertical={vertical} color={color} />
+      )}
     </div>
   );
 }

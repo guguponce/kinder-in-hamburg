@@ -14,7 +14,11 @@ export default function TodaysFlohmaerkte({
         Heute
       </h2>
 
-      <ScrollableContainer containerStyle=" self-center h-fit" color="800">
+      <ScrollableContainer
+        containerStyle=" self-center h-fit"
+        color="800"
+        paddingForButtons={todayFlohmaerkte.length > 3}
+      >
         {todayFlohmaerkte.map((floh) => (
           <article
             key={floh.id}
