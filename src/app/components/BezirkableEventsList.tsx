@@ -84,7 +84,7 @@ export default function BezirkableEventsList({
           </option>
         ))}
       </select>
-      <div className="min-h-[280px]">
+      <div className="min-h-[280px] max-w-full">
         <ScrollableContainer
           color={
             variant === "dark"
