@@ -25,7 +25,7 @@ export default async function FlohmarktPageMapContainer({
         currentType="flohmarkt"
         stadtteil={currentTarget.stadtteil}
         id={currentTarget.id}
-        maxDistance={2000}
+        maxDistance={1000}
         recommendationsList={{
           flohmaerkte: thisWeekFlohmaerkte,
           spielplaetze: spielplaetzeAround,

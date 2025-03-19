@@ -58,7 +58,7 @@ export default function URLFilteredListSuspense() {
             id="order-select"
             defaultValue="Neueste"
             disabled
-            className="px-2 py-1 ml-2 rounded-md font-semibold min-w-fit h-10 my-1 shadow"
+            className="px-2 py-1 ml-2 rounded-md font-semibold min-w-32 h-10 my-1 shadow"
           >
             <option value={"Neueste"}>Neueste</option>
           </select>
