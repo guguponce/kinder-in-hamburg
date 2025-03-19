@@ -24,18 +24,16 @@ export default async function Header() {
         <Image
           src="/assets/logo/WhiteLogo-NoText.png"
           alt="Kinder in Hamburg"
-          width={108}
-          height={75}
+          width={120}
+          height={85}
           priority
-          layout="intrinsic"
           className="hidden lg:flex object-contain text-sm brightness-105"
         />
         <Image
-          layout="intrinsic"
           src="/assets/logo/WhiteLogo-Transparent.png"
           alt="Kinder in Hamburg"
-          width={108}
-          height={75}
+          width={120}
+          height={85}
           priority
           className="lg:hidden object-contain text-sm brightness-105"
         />
