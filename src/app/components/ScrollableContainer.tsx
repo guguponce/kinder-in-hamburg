@@ -9,7 +9,7 @@ export default function ScrollableContainer({
   boxStyle,
   containerStyle,
   showButtons = true,
-  paddingForButtons = true,
+  paddingForButtons = false,
 }: {
   showButtons?: boolean;
   color?: "300" | "500" | "800";
@@ -36,7 +36,7 @@ export default function ScrollableContainer({
             vertical
               ? "verticalScrollbar w-full overflow-y-auto h-fit max-h-full flex-col"
               : "horizontalScrollbar overflow-x-auto w-fit max-w-full p-1 pb-4 pt-2 h-full"
-          } ${scrollbarThumbColor} ${paddingForButtons ? "px-12" : ""} relative flex gap-2 lg:gap-4 items-stretch`,
+          } ${scrollbarThumbColor} ${paddingForButtons && showButtons ? "px-12" : ""} relative flex gap-2 lg:gap-4 items-stretch`,
           boxStyle
         )}
       >
