@@ -182,7 +182,6 @@ export default function FlohForm({
         .then(() => {
           revalidatePost();
           revalidateFlohmarkt();
-
           setSubmitError({ isError: false, errorMessage: "" });
           setSuccessfulSubmit(true);
         })

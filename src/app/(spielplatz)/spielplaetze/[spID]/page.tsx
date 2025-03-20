@@ -9,6 +9,7 @@ import ImagesModalGallery from "@app/components/ImagesModalGallery";
 import { Metadata } from "next";
 import AdminEditButtons from "@app/components/@Buttons/AdminEditButtons";
 import LocationBox from "@app/components/@Templates/LocationBox";
+import DisplayTypeText from "@app/components/@PostForm/DisplayTypeText";
 
 interface SpielplatzPageProps {
   params: { spID: string };
@@ -160,15 +161,7 @@ export default async function SpielplatzPage({
                 id="description-container"
                 className="w-full h-fit rounded-md p-4 z-10"
               >
-                <p
-                  style={{
-                    whiteSpace: "pre-wrap",
-                    wordWrap: "break-word",
-                  }}
-                  className="block max-w-full font-sans text-hh-950 italic font-semibold"
-                >
-                  {text}
-                </p>
+                <DisplayTypeText text={text} type="paragraph" />
               </section>
             )}
           </div>
