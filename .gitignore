@@ -41,5 +41,6 @@ next-env.d.ts
 /db_csv
 /spielplaetze
 /test
+/public/assets/bezirke/hidden
 /src/app/(spielplatz)/add-sp
 /src/app/admin
