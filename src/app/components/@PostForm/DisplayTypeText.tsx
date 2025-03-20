@@ -72,7 +72,7 @@ const formatText = (text: string) => {
       } else if (linkText) {
         formattedText.push(
           <a
-            className="italic underline text-hh-500 break-words"
+            className="italic underline text-hh-800 break-words"
             key={index}
             href={linkText}
             target="_blank"
@@ -210,7 +210,7 @@ export default function DisplayTypeText({
             whiteSpace: "pre-wrap",
             wordWrap: "break-word",
           }}
-          className="break-words block w-full text-hh-500 underline outline-offset-2 hover:text-hh-600 focus:border-0 focus:outline-2 focus:outline-hh-600 active:text-hh-400"
+          className="break-words block w-full text-hh-800 underline outline-offset-2 hover:text-hh-600 focus:border-0 focus:outline-2 focus:outline-hh-600 active:text-hh-700"
           target="_blank"
         >
           {text}
