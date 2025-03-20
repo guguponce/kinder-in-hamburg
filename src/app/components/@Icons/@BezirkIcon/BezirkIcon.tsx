@@ -1,7 +1,7 @@
 import React, { lazy } from "react";
 
 const AltonaIcon = lazy(() => import("./AltonaIcon"));
-const HarburgIcon = lazy(() => import("./harburgIcon"));
+const HarburgIcon = lazy(() => import("./HarburgIcon"));
 const WandsbekIcon = lazy(() => import("./WandsbekIcon"));
 const EimsbuettelIcon = lazy(() => import("./EimsbuettelIcon"));
 const NordIcon = lazy(() => import("./NordIcon"));
