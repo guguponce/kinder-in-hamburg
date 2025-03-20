@@ -150,7 +150,6 @@ export default function URLFilteredList({
       ),
     [filteredByCategories, categoriesFilteringTogether, postsListRef]
   );
-  console.log(postsListRef, filteredByCategories.length, availableCategories);
   const resetFilters = useCallback(() => {
     setCategoriesFilter([]);
     setBezirkeFilter([]);

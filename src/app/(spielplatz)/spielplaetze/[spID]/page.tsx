@@ -131,7 +131,7 @@ export default async function SpielplatzPage({
               address={address}
               bezirk={bezirk}
               stadtteil={stadtteil}
-              dark
+              className="lg:w-full lg:mx-4"
             />
           </div>
           <SPBezirkMap currentSP={id} bezirk={bezirk} stadtteil={stadtteil} />

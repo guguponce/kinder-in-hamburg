@@ -99,6 +99,7 @@ export default function PostTemplate({
       >
         {(!!bezirk || !!address) && (
           <LocationBox
+            dark
             address={address}
             bezirk={bezirk}
             stadtteil={stadtteil}
