@@ -49,17 +49,17 @@ export default async function FlohmaerkteNearby({
           <ArrowGalleryContainer list={list} />
         </div>
       </div>
-      <div className="hidden lg:flex w-full justify-center bg-hh-800 bg-opacity-75 p-2 mt-auto mb-2">
+      <div className="hidden lg:flex min-w-[50%] max-w-full mx-auto text-center justify-center bg-hh-600 bg-opacity-100 p-2 mt-auto mb-2 rounded shadow-lg">
         <h2
-          className="text-xl overflow-hidden max-w-full mr-2 rotate-180  flex flex-col font-bold  text-hh-50"
+          className="text-xl overflow-hidden max-w-full rotate-180  flex flex-col font-bold  text-hh-50"
           style={{ writingMode: "vertical-rl", textOrientation: "revert" }}
         >
-          Flohmärkte dieser Woche
+          Flohmärkte in der Nähe
         </h2>
         <div className="w-fit flex flex-col items-center">
-          <span className="text-sm block font-bold  text-hh-50">
+          {/* <span className="text-sm block font-bold  text-hh-50">
             Innerhalb 2 km von diesem Spielplatz:
-          </span>
+          </span> */}
           <ScrollableContainer>
             {list.map(
               (
@@ -84,11 +84,15 @@ export default async function FlohmaerkteNearby({
                   </div>
                   <h3 className="text-white text-center h-[20px] w-full font-semibold text-sm truncate-1">
                     <span>
-                      {new Date(date)
-                        .toLocaleDateString("de-DE")
-                        .replace(".2024", " - ")}
+                      {new Date(date).toLocaleDateString("de-DE", {
+                        day: "numeric",
+                        month: "numeric",
+                      })}
                     </span>
-                    <span> {stadtteil}</span>{" "}
+                    <span>
+                      {" - "}
+                      {stadtteil}
+                    </span>{" "}
                   </h3>
                 </article>
               )
