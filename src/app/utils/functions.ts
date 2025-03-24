@@ -650,20 +650,35 @@ export async function convertToWebp(
         if (ctx) {
           ctx.imageSmoothingEnabled = true;
           ctx.imageSmoothingQuality = "high";
-          const newWidth = img.width > maxWidth ? maxWidth : img.width;
-          const newHeight = newWidth * (img.height / img.width);
+          let newWidth: number;
+          let newHeight: number;
+          const horizontal = img.width > img.height;
+          console.log(img.width, img.height);
+
+          console.log(horizontal);
+          if (horizontal) {
+            newWidth = img.width > maxWidth ? maxWidth : img.width;
+            newHeight = newWidth * (img.height / img.width);
+            console.log(newWidth, newHeight);
+          } else {
+            newHeight = img.height > maxWidth ? maxWidth : img.height;
+            newWidth = newHeight * (img.width / img.height);
+          }
+          // const newWidth = img.width > maxWidth ? maxWidth : img.width;
+          // const newHeight = newWidth * (img.height / img.width);
           canvas.width = newWidth;
           canvas.height = newHeight;
           ctx.drawImage(img, 0, 0, newWidth, newHeight);
+          const newName = file.name.replace(/\s+/g, "_");
           const { url } = await reduceQualityUnderSpecificKb(
             canvas,
             maxFileKb,
             0.5,
-            file.name
+            newName
           );
 
           if (url) {
-            const newFile = createBlob(url, file.name);
+            const newFile = createBlob(url, newName);
             if (fileSetter && urlSetter) {
               fileSetter([newFile]);
               urlSetter([url]);
@@ -685,9 +700,9 @@ export async function convertAllFilesToWebp(
   maxWidth: number,
   maxFileKb: number
 ) {
-  const conversionPromises = Array.from(filesArr).map((file) =>
-    convertToWebp(file, maxWidth, maxFileKb)
-  );
+  const conversionPromises = Array.from(filesArr).map((file) => {
+    return convertToWebp(file, maxWidth, maxFileKb);
+  });
 
   // Wait for all conversions to finish
   const convertedFiles = await Promise.all(conversionPromises);
