@@ -10,6 +10,8 @@ import { Metadata } from "next";
 import AdminEditButtons from "@app/components/@Buttons/AdminEditButtons";
 import LocationBox from "@app/components/@Templates/LocationBox";
 import DisplayTypeText from "@app/components/@PostForm/DisplayTypeText";
+import PageTitle from "@app/components/PageTitle";
+import { unstable_cache } from "next/cache";
 
 interface SpielplatzPageProps {
   params: { spID: string };
@@ -22,18 +24,22 @@ const SpielplatzgeraeteBackground = dynamic(
   }
 );
 
+const getSpielplatzData = unstable_cache(getSpielplatzWithID, ["spielplatz"], {
+  revalidate: 600,
+});
+
 export async function generateMetadata({
   params,
 }: SpielplatzPageProps): Promise<Metadata> {
-  const flohInfo = await getSpielplatzMetadata(params.spID);
-  if (!flohInfo)
+  const spInfo = await getSpielplatzMetadata(params.spID);
+  if (!spInfo)
     return {
-      title: "Flohmarkt nicht gefunden",
-      description: "Der Flohmarkt wurde nicht gefunden.",
+      title: "Spielplatz nicht gefunden",
+      description: "Der Spielplatz wurde nicht gefunden.",
     };
   return {
-    title: flohInfo.title,
-    description: "Flohmarkt in " + flohInfo.bezirk + " " + flohInfo.text,
+    title: spInfo.title,
+    description: "Spielplatz in " + spInfo.bezirk + " " + spInfo.text,
   };
 }
 
@@ -42,7 +48,7 @@ export default async function SpielplatzPage({
 }: {
   params: { spID: string };
 }) {
-  const spielplatz = await getSpielplatzWithID(spID);
+  const spielplatz = await getSpielplatzData(spID);
   if (!spielplatz) return <NotFound type="spielplatz" />;
   const {
     id,
@@ -67,7 +73,7 @@ export default async function SpielplatzPage({
   return (
     <main
       id="spielplatz-page"
-      className="w-full items-center gap-4 p-2 flex flex-col"
+      className="w-full items-center gap-2 p-2 flex flex-col"
     >
       <AdminEditButtons
         updateButton={{
@@ -98,21 +104,25 @@ export default async function SpielplatzPage({
       />
       <div
         id="spielplatz-header"
-        className="text-4xl min-h-16 font-bold text-center text-hh-50 flex flex-col justify-center items-center gap-4 lg:p-4 lg:pb-0"
+        className="text-4xl min-h-16 font-bold text-center text-hh-50 flex flex-col justify-center items-center gap-2 lg:p-4 lg:pb-0"
       >
-        <h1 className="flex justify-center items-center flex-wrap">
-          {!title.toLowerCase().includes("spielplatz") && "Spielplatz "}
-          {title}
-        </h1>
+        <PageTitle
+          className="m-0"
+          title={
+            title.toLowerCase().includes("spielplatz")
+              ? title
+              : "Spielplatz " + title
+          }
+        />
         {!!types.length && (
-          <div className="flex justify-center items-center flex-wrap gap-2 text-base text-hh-950 p-2">
+          <div className="flex justify-center items-center flex-wrap gap-2 text-base text-hh-950 px-2 pb-2">
             {types
               .filter((t) => t !== "outdoor")
               .map((t) => (
                 <h3
                   // href={"/spielplaetze/type/" + t}
                   key={t}
-                  className="capitalize rounded-xl bg-hh-50 px-2 hover:bg-hh-100 transition-colors"
+                  className="capitalize rounded-xl bg-hh-50 bg-opacity-90 text-hh-950 px-2 hover:bg-hh-100 transition-colors"
                 >
                   {t}
                 </h3>
@@ -124,7 +134,7 @@ export default async function SpielplatzPage({
         {/* {spielgeraete && <Spielgeraete spielgeraete={spielgeraete} />} */}
         <section
           id="spielplatz-map-container"
-          className="flex flex-col gap-2 p-2 bg-hh-200 bg-opacity-25 rounded-md w-full lg:h-fit lg:max-w-[400px] mb-2"
+          className="flex flex-col gap-2 p-2 bg-hh-50 bg-opacity-50 rounded-md w-full lg:h-fit lg:max-w-[400px] mb-2"
         >
           <div className="flex justify-center gap-2 w-full max-w-[800px] mx-auto min-h-32 rounded">
             <LocationBox
@@ -138,7 +148,7 @@ export default async function SpielplatzPage({
         </section>
         <section
           id="spielplatz-data"
-          className="flex flex-col justify-start items-center gap-4 w-full h-fit lg:h-full overflow-hidden flex-grow mb-2"
+          className="flex flex-col justify-start items-center gap-2 w-full h-fit lg:h-full overflow-hidden flex-grow mb-2"
         >
           <SpielplatzgeraeteBackground
             small={false}
@@ -146,7 +156,7 @@ export default async function SpielplatzPage({
             spList={spielgeraete}
             size="5rem"
           />
-          <div className="flex flex-col justify-start w-full h-fit relative overflow-hidden rounded-md bg-hh-50 bg-opacity-25">
+          <div className="flex flex-col justify-start w-full h-fit relative overflow-hidden rounded-md bg-hh-50 bg-opacity-50">
             {!!image?.length && (
               <section
                 id="image-container"

@@ -74,6 +74,7 @@ export default async function SpielplaeztePage() {
                               image={sp.image ? sp.image[0] : ""}
                               type="spielplatz"
                               id={sp.id}
+                              imgSize="object-cover"
                               link={`/spielplaetze/${sp.id}`}
                             >
                               <HorizontalCard.PostInfo
