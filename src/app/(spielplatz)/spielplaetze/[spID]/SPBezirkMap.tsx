@@ -68,8 +68,8 @@ export default function SPBezirkMap({
       className={`w-full max-w-[400px] sm:max-w-full ${
         !!otherSpielplaetzeList.length
           ? "sm:max-h-[300px] lg:max-h-none h-fit max-h-fit sm:aspect-[0.5] bg-hh-700 shadow-md p-2 "
-          : "sm:h-[300px] justify-center bg-transparent"
-      } bg-opacity-90  flex flex-col sm:flex-row lg:flex-col items-stretch lg:items-center gap-2 rounded mx-auto`}
+          : "sm:h-[300px] lg:h-fit justify-center bg-transparent"
+      } bg-opacity-90 flex flex-col sm:flex-row lg:flex-col items-stretch lg:items-center gap-2 rounded mx-auto`}
     >
       <article
         className={`w-full p-2 ${otherSpielplaetzeList.length ? "sm:w-1/2" : "sm:max-w-[600px]"} lg:w-full aspect-[4/3] sm:aspect-auto lg:aspect-square sm:h-full lg:h-auto flex flex-col items-center rounded bg-hh-800`}

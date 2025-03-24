@@ -65,7 +65,7 @@ export default async function SPBezirkMapContainer({
     <section id="sp-map-container" className="w-full">
       <DynamicBezirkSPMap
         selector={true}
-        maxDistance={2000}
+        maxDistance={1500}
         currentSP={currentSP}
         spList={[...BezirkSPList, ...(OtherBezirkSPList || [])]}
       />
