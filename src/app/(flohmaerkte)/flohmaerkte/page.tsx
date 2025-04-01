@@ -117,14 +117,15 @@ export default async function FlohmarktPage() {
       </AdminServerComponent>
       <MainIntroductionText
         title="Flohmärkte"
+        variant="light"
         text="Von Spielzeug und Kleidung bis hin zu Büchern und Mobilitätsartikeln wie Fahrrädern oder Kinderwagen – diese Märkte ermöglichen es, günstige und umweltfreundliche Optionen für die ganze Familie zu entdecken. Sie bieten den Kindern die Chance, den Wert von Wiederverwendung und Recycling auf eine praktische Weise zu lernen."
       >
-        <h2 className="text-xl font-bold my-4 p-2 md:p-4 rounded-xl border-4 border-hh-800 max-w-[600px] text-center">
+        {/* <h2 className="text-xl font-bold my-4 p-2 md:p-4 rounded-xl border-4 border-hh-800 max-w-[600px] text-center">
           Die Hochsaison der Flohmärkte hat noch nicht begonnen, aber im
           Frühjahr geht es endlich los.
-        </h2>
+        </h2>  */}
       </MainIntroductionText>
-      <section className="rounded bg-hh-100 bg-opacity-25 w-full max-w-[1000px] p-2 md:p-4 flex flex-col items-center gap-2">
+      <section className="rounded bg-hh-100 bg-opacity-25 w-full max-w-[1400px] p-2 md:p-4 flex flex-col items-center gap-2">
         <BezirkeScrollableEvents
           title="Diese Woche"
           events={thisWeekFlohmaerkte}
