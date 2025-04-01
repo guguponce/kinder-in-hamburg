@@ -12,6 +12,7 @@ import {
 } from "@app/utils/functions";
 import ScrollableContainer from "../ScrollableContainer";
 import FlohmarktPoster from "./FlohmarktPoster";
+import HorizontalCard from "./HorizontalCard";
 
 export default function ScrollableCardList({
   posts,
@@ -26,7 +27,7 @@ export default function ScrollableCardList({
   key?: string;
   size: "small" | "medium" | "large";
   posts: iPost[] | iFlohmarkt[];
-  cardType: "image" | "img-priority" | "text-priority";
+  cardType: "image" | "img-priority" | "text-priority" | "horizontal";
   descriptions?: boolean;
   linkPrefix?: string;
   withDate?: boolean;
@@ -40,18 +41,35 @@ export default function ScrollableCardList({
   return (
     <ScrollableContainer>
       {isTypePost(posts[0])
-        ? (posts as iPost[]).map(({ id, image, title, text }) => (
+        ? (posts as iPost[]).map(({ id, image, title, text, stadtteil }) => (
             <React.Fragment key={id + title + (key || "")}>
-              {Card({
-                id: id,
-                image: image ? image[0] : "",
-                title: title,
-                aspectRatio: 0.66,
-                link: linkPrefix ? `${linkPrefix}${id}` : `/posts/${id}`,
-                size: size,
-                cardContainerClassname: cardClassname,
-                description: parseDescriptionWithTags(getPlainText(text)),
-              })}
+              {cardType === "horizontal" ? (
+                <HorizontalCard
+                  id={id}
+                  image={image ? image[0] : ""}
+                  title={title}
+                  link={linkPrefix ? `${linkPrefix}${id}` : `/posts/${id}`}
+                  imgSize="object-cover"
+                  className="min-w-96"
+                >
+                  <HorizontalCard.PostInfo
+                    title={title}
+                    stadtteil={stadtteil}
+                    description={parseDescriptionWithTags(getPlainText(text))}
+                  />
+                </HorizontalCard>
+              ) : (
+                Card({
+                  id: id,
+                  image: image ? image[0] : "",
+                  title: title,
+                  aspectRatio: 0.66,
+                  link: linkPrefix ? `${linkPrefix}${id}` : `/posts/${id}`,
+                  size: size,
+                  cardContainerClassname: cardClassname,
+                  description: parseDescriptionWithTags(getPlainText(text)),
+                })
+              )}
             </React.Fragment>
           ))
         : isTypeFlohmarkt(posts[0])

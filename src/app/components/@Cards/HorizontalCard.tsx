@@ -2,7 +2,7 @@ import Link from "next/link";
 import React from "react";
 import CardLogo from "../@Icons/CardLogo";
 import dynamic from "next/dynamic";
-import { addressWithoutCity, getDate } from "@app/utils/functions";
+import { addressWithoutCity, cn, getDate } from "@app/utils/functions";
 import { iEventType } from "@app/utils/types";
 import LaterneImage from "../@Index/laternenumzug/LaterneImage";
 
@@ -20,6 +20,7 @@ interface iHorizontalCard {
   imgSize?: string;
   spielgeraete?: string[];
   children: React.ReactNode;
+  className?: string;
 }
 
 export default function HorizontalCard({
@@ -31,46 +32,48 @@ export default function HorizontalCard({
   spielgeraete,
   imgSize,
   children,
+  className,
 }: iHorizontalCard) {
   return (
     <Link
       aria-label={`Explore ${title}`}
       href={link || `/flohmaerkte/${id}`}
-      className="HorizontalCard w-full h-32 sm:flex-grow justify-center flex gap-2 items-center bg-white text-hh-900 rounded-md overflow-hidden hover:shadow-md"
+      className={cn(
+        "HorizontalCard w-full h-32 sm:flex-grow justify-center flex gap-2 items-center bg-white text-hh-900 rounded-md overflow-hidden hover:shadow-md",
+        className
+      )}
     >
-      <>
-        <div
-          className={`cardImage h-full aspect-square min-w-1/3 w-1/3 bg-hh-50 overflow-hidden flex justify-center items-center ${
-            spielgeraete && "bg-opacity-5"
-          } ${!image && "p-2"}  ${["laternewerkstatt", "laterne"].includes(type) && !image && "bg-hh-800"}`}
-        >
-          {!!image || type === "flohmarkt" ? (
-            <img
-              loading="lazy"
-              src={image || "/assets/icons/market.svg"}
-              alt={title}
-              className={`w-full h-full ${imgSize || "object-contain"}`}
-            />
-          ) : ["laternewerkstatt", "laterne"].includes(type) ? (
-            <div className="h-full aspect-square relative">
-              <LaterneImage />
-            </div>
-          ) : (
-            <>
-              {spielgeraete ? (
-                <SpielplatzgeraeteBackground
-                  spList={spielgeraete}
-                  color="#343b3e"
-                  size="2rem"
-                />
-              ) : (
-                <CardLogo logo="Indoor" color="#ACBAC8" size="3rem" />
-              )}
-            </>
-          )}
-        </div>
-        {children}
-      </>
+      <div
+        className={`cardImage h-full aspect-square min-w-1/3 w-1/3 bg-hh-50 overflow-hidden flex justify-center items-center ${
+          spielgeraete && "bg-opacity-5"
+        } ${!image && "p-2"}  ${["laternewerkstatt", "laterne"].includes(type) && !image && "bg-hh-800"}`}
+      >
+        {!!image || type === "flohmarkt" ? (
+          <img
+            loading="lazy"
+            src={image || "/assets/icons/market.svg"}
+            alt={title}
+            className={`w-full h-full ${imgSize || "object-contain"}`}
+          />
+        ) : ["laternewerkstatt", "laterne"].includes(type) ? (
+          <div className="h-full aspect-square relative">
+            <LaterneImage />
+          </div>
+        ) : (
+          <>
+            {spielgeraete ? (
+              <SpielplatzgeraeteBackground
+                spList={spielgeraete}
+                color="#343b3e"
+                size="2rem"
+              />
+            ) : (
+              <CardLogo logo="Indoor" color="#ACBAC8" size="3rem" />
+            )}
+          </>
+        )}
+      </div>
+      {children}
     </Link>
   );
 }
