@@ -4,7 +4,7 @@ import { iBezirk, iFlohmarkt } from "@app/utils/types";
 import FlohmarktPoster from "./@Cards/FlohmarktPoster";
 import PaperPlane from "./@Icons/PaperPlane";
 import { bezirke } from "@app/utils/constants";
-import { getDate, separateInBezirke } from "@app/utils/functions";
+import { cn, getDate, separateInBezirke } from "@app/utils/functions";
 
 export default async function BezirkeScrollableEvents({
   events,
@@ -13,6 +13,7 @@ export default async function BezirkeScrollableEvents({
   type = "flohmaerkte",
   verticalTitle,
   titleShadow,
+  className,
 }: {
   type?: "flohmaerkte" | "events";
   events: iFlohmarkt[];
@@ -20,6 +21,7 @@ export default async function BezirkeScrollableEvents({
   title?: string;
   titleShadow?: boolean;
   verticalTitle?: boolean;
+  className?: string;
 }) {
   if (events.length === 0) return null;
   const eventsByBezirke = separateInBezirke(
@@ -40,7 +42,11 @@ export default async function BezirkeScrollableEvents({
   return (
     <div
       id="bezirke-scrollable-events"
-      className={`w-fit max-w-full rounded ${verticalTitle ? " flex items-stretch" : ""}`}
+      className={cn(
+        "w-fit max-w-full rounded",
+        verticalTitle ? " flex items-stretch" : "",
+        className
+      )}
     >
       {title &&
         (!!filteredList.length ? (
@@ -82,12 +88,13 @@ export default async function BezirkeScrollableEvents({
           {displayBezirke.map((currentBezirk) => (
             <div
               key={currentBezirk}
-              className={`min-w-[248px] max-w-full flex items-center flex-col rounded bg-hh-600 bg-opacity-50 p-2 ${
+              className={cn(
+                "min-w-[248px] max-w-full flex items-center flex-col rounded bg-hh-600 bg-opacity-50 p-2 shadow-md",
                 eventsByBezirke[currentBezirk].length > 4 ||
-                displayBezirke.length === 1
+                  displayBezirke.length === 1
                   ? "w-fit"
-                  : "xl:w-[calc(33%-0.5rem)] lg:w-[calc(50%-1rem)]"
-              } max-w-full shadow-md`}
+                  : "lg:w-[calc(50%-1rem)]"
+              )}
             >
               {!bezirk && (
                 <h3
