@@ -74,7 +74,7 @@ const formatText = (text: string) => {
           <a
             className="italic underline text-hh-800 break-words"
             key={index}
-            href={linkText}
+            href={linkText.includes("http") ? linkText : `https://${linkText}`}
             target="_blank"
             rel="noopener noreferrer"
           >
