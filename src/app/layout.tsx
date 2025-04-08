@@ -8,6 +8,7 @@ import Header from "@components/@Header/Header";
 import Footer from "./components/@Footer/Footer";
 import GetAnalytics from "./GetAnalytics";
 import { SessionProvider } from "./providers/SessionContext";
+import UserLocationProvider from "@auth/context/UserLocationContext";
 const fixelFont = localFont({
   src: "./styles/fonts/FixelVariable.ttf",
   display: "swap",
@@ -83,9 +84,11 @@ export default async function RootLayout({
          flex flex-col items-center bg-hh-600 max-w-[1400px] mx-auto gap-2`}
       >
         <SessionProvider>
-          <Header />
-          {children}
-          <Footer />
+          <UserLocationProvider>
+            <Header />
+            {children}
+            <Footer />
+          </UserLocationProvider>
         </SessionProvider>
         <GetAnalytics />
       </body>
