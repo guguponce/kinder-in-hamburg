@@ -1,5 +1,11 @@
 "use client";
-import React, { useState, createContext, useContext } from "react";
+import React, {
+  useState,
+  createContext,
+  useContext,
+  useCallback,
+  useEffect,
+} from "react";
 
 const locations: { [key: string]: { lat: number; lon: number } } = {
   "Hamburg-Altstadt": {
@@ -426,48 +432,49 @@ export default function UserLocationProvider({
 }: {
   children: React.ReactNode;
 }) {
-  // const variable array to save the users location
   const [userLocation, setUserLocation] = useState<{
     lat: number;
     lon: number;
-  } | null>(
-    localStorage.getItem("userLocation")
-      ? JSON.parse(localStorage.getItem("userLocation") || "")
-      : null
-  );
-
-  const handleUserLocation = (
-    pos: { lat: number; lon: number } | null,
-    stadtteil?: string
-  ) => {
-    setUserLocation(() => {
-      if (pos) {
-        localStorage.setItem("locationTimestamp", Date.now().toString());
-        localStorage.setItem("userLocation", JSON.stringify(pos));
-        return pos;
-      }
-      if (stadtteil && locations[stadtteil]) {
+  } | null>(null);
+  useEffect(() => {
+    const storedLocation = localStorage.getItem("userLocation");
+    if (storedLocation) {
+      setUserLocation(JSON.parse(storedLocation));
+    }
+  }, []);
+  const handleUserLocation = useCallback(
+    (pos: { lat: number; lon: number } | null, stadtteil?: string) => {
+      setUserLocation(() => {
+        if (pos) {
+          localStorage.setItem("locationTimestamp", Date.now().toString());
+          localStorage.setItem("userLocation", JSON.stringify(pos));
+          return pos;
+        }
+        if (stadtteil && locations[stadtteil]) {
+          localStorage.setItem("locationTimestamp", Date.now().toString());
+          localStorage.setItem(
+            "userLocation",
+            JSON.stringify(locations[stadtteil])
+          );
+          return locations[stadtteil];
+        }
         localStorage.setItem("locationTimestamp", Date.now().toString());
         localStorage.setItem(
           "userLocation",
-          JSON.stringify(locations[stadtteil])
+          JSON.stringify(locations["Hamburg-Altstadt"])
         );
-        return locations[stadtteil];
-      }
-      localStorage.setItem("locationTimestamp", Date.now().toString());
-      localStorage.setItem(
-        "userLocation",
-        JSON.stringify(locations["Hamburg-Altstadt"])
+        return locations["Hamburg-Altstadt"];
+      });
+      return (
+        pos ||
+        (stadtteil && locations[stadtteil]) ||
+        locations["Hamburg-Altstadt"]
       );
-      return locations["Hamburg-Altstadt"];
-    });
-    return (
-      pos ||
-      (stadtteil && locations[stadtteil]) ||
-      locations["Hamburg-Altstadt"]
-    );
-  };
-  const getUserLocation = () => {
+    },
+    []
+  );
+
+  const getUserLocation = useCallback(() => {
     return new Promise<{ lat: number; lon: number } | null>(
       (resolve, reject) => {
         if (navigator.geolocation) {
@@ -496,12 +503,12 @@ export default function UserLocationProvider({
         }
       }
     );
-  };
-  const removeUserLocation = () => {
+  }, [handleUserLocation]);
+  const removeUserLocation = useCallback(() => {
     localStorage.removeItem("locationTimestamp");
     localStorage.removeItem("userLocation");
     setUserLocation(null);
-  };
+  }, []);
   // return an HTML page for the user to check their location
   return (
     <UserLocationContext.Provider

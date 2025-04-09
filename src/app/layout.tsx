@@ -8,7 +8,7 @@ import Header from "@components/@Header/Header";
 import Footer from "./components/@Footer/Footer";
 import GetAnalytics from "./GetAnalytics";
 import { SessionProvider } from "./providers/SessionContext";
-import UserLocationProvider from "@auth/context/UserLocationContext";
+import UserLocationProvider from "@app/utils/context/UserLocationContext";
 const fixelFont = localFont({
   src: "./styles/fonts/FixelVariable.ttf",
   display: "swap",
