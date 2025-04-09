@@ -121,21 +121,24 @@ export default async function WeihnachtszeitPage() {
   );
   const date = new Date();
   //if not from 1st november and 15th of january
-  if (
-    date.getDate() < 1 ||
-    date.getDate() > 15 ||
-    (date.getMonth() !== 10 && date.getMonth() !== 0)
-  ) {
+  if (date.getMonth() !== 10 && date.getMonth() !== 0) {
     return (
       <Banner childrenClassName="flex flex-col sm:flex-col gap-2 items-center">
         <Banner.Title href="/">
           Huch! Wir sind noch nicht bereit für die Weihnachtszeit!
         </Banner.Title>
         <Banner.Text>
-          Komm zurück, zwischen November und Silvester! Aber keine Angst, auf
-          der Homepage findest du viele weitere spannende Inhalte und
-          Aktivitäten für Kinder in Hamburg!
+          Komm zurück, zwischen November und Silvester!
+          <br />
+          Aber keine Angst, auf der Homepage findest du viele weitere spannende
+          Inhalte und Aktivitäten für Kinder in Hamburg!
         </Banner.Text>
+        <Link
+          href="/"
+          className="p-2 rounded-md bg-hh-400 hover:bg-hh-300 active:bg-hh-200 font-semibold text-hh-800"
+        >
+          Homepage
+        </Link>
       </Banner>
     );
   }

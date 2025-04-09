@@ -1,6 +1,6 @@
 import { getFutureApprovedEventsFromType } from "@app/api/dbActions";
 import NotFound from "@components/@NotFound/NotFound";
-import BezirkableEventsList from "@components/BezirkableEventsList";
+import BezirkableList from "@app/components/BezirkableList";
 import React from "react";
 import {
   addressWithoutCity,
@@ -14,6 +14,8 @@ import AddLatLon from "@app/components/@Buttons/AddLatLon";
 import ClientLaterneGallery from "@app/components/@Index/laternenumzug/ClientEventsGallery";
 import HorizontalCard from "@app/components/@Cards/HorizontalCard";
 import ScrollableContainer from "@app/components/ScrollableContainer";
+import { redirect } from "next/navigation";
+import Banner from "@app/components/Banner";
 
 export const metadata = {
   title: "Laternenumzüge",
@@ -84,7 +86,47 @@ export default async function LaternenumzuegePage() {
   const laterneBastelnEvents =
     (await getFutureApprovedEventsFromType("laternewerkstatt")) || [];
   if (!laternenEvents) return <NotFound multiples type="event" />;
-  if (!laternenEvents.length) return;
+  const date = new Date();
+  //if not from 1st november and 15th of january
+  if (date.getMonth() !== 8 && date.getMonth() !== 11) {
+    return (
+      <Banner childrenClassName="flex flex-col sm:flex-col gap-2 items-center">
+        <Banner.Title href="/">
+          Huch! Wir sind noch nicht bereit für die Laternenumzugszeit!
+        </Banner.Title>
+        <Banner.Text>
+          Komm zurück, zwischen September und Dezember!
+          <br />
+          Aber keine Angst, auf der Homepage findest du viele weitere spannende
+          Inhalte und Aktivitäten für Kinder in Hamburg!
+        </Banner.Text>
+        <Link
+          href="/"
+          className="p-2 rounded-md bg-hh-400 hover:bg-hh-300 active:bg-hh-200 font-semibold text-hh-800"
+        >
+          Homepage
+        </Link>
+      </Banner>
+    );
+  }
+  if (!laternenEvents.length && !laterneBastelnEvents.length) {
+    return (
+      <Banner childrenClassName="flex flex-col sm:flex-col gap-2 items-center">
+        <Banner.Title href="/">
+          Huch! Wir haben keine Laternenumzüge oder Events gefunden! Aber keine
+          Angst, auf der Homepage findest du viele weitere spannende Inhalte und
+          Aktivitäten für Kinder in Hamburg!
+        </Banner.Title>
+        <Link
+          href="/"
+          className="p-2 rounded-md bg-hh-400 hover:bg-hh-300 active:bg-hh-200 font-semibold text-hh-800"
+        >
+          Homepage
+        </Link>
+      </Banner>
+    );
+  }
+  if (!laternenEvents.length) redirect("/");
   const { today, nextMonday } = getTodayNexMonday();
   const lastMidnight = new Date(today).setHours(0, 0, 0, 0);
   const todayLaternenumzuege = [
@@ -157,12 +199,10 @@ export default async function LaternenumzuegePage() {
           <div
             className={`flex-grow ${!!todayLaternenumzuege.length && "md:max-w-[calc(100%-332px)]"}`}
           >
-            <BezirkableEventsList
+            <BezirkableList
               type="events"
               variant="transparent-light"
-              eventsList={orderedEvents.filter(
-                ({ date }) => date >= lastMidnight
-              )}
+              list={orderedEvents.filter(({ date }) => date >= lastMidnight)}
             />
           </div>
         </section>
