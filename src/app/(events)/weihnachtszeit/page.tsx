@@ -2,7 +2,6 @@ import { getFutureApprovedEventsFromType } from "@app/api/dbActions";
 import NotFound from "@components/@NotFound/NotFound";
 import React from "react";
 import { getTodayNexMonday, separateByDate } from "@app/utils/functions";
-import dynamic from "next/dynamic";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
 import Link from "next/link";
 import AddLatLon from "@app/components/@Buttons/AddLatLon";
@@ -12,6 +11,8 @@ import Attraktionen from "./Attraktionen";
 import AdventsEvents from "./AdventsEvents";
 import WeihnachtsmaerkteHero from "./WeihnachtsmaerkteHero";
 import WeihMapContainer from "./WeihMapContainer";
+import { unstable_cache } from "next/cache";
+import Banner from "@app/components/Banner";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -62,14 +63,27 @@ export async function generateMetadata(): Promise<Metadata> {
     },
   };
 }
+const cachedWeihnachtsmaerkte = unstable_cache(
+  getFutureApprovedEventsFromType,
+  ["flohmaerkte", "events"],
+  {
+    revalidate: 600,
+  }
+);
+
+const cachedFutureApprovedEventsFromType = unstable_cache(
+  getFutureApprovedEventsFromType,
+  ["flohmaerkte", "events"],
+  {
+    revalidate: 600,
+  }
+);
 
 export default async function WeihnachtszeitPage() {
-  const weihnachtsmaerkte =
-    await getFutureApprovedEventsFromType("weihnachtsmarkt");
+  const weihnachtsmaerkte = await cachedWeihnachtsmaerkte("weihnachtsmarkt");
   const adventsEvents: iFlohmarkt[] =
-    (await getFutureApprovedEventsFromType("adventsevent")) || [];
+    (await cachedFutureApprovedEventsFromType("adventsevent")) || [];
   if (!weihnachtsmaerkte) return <NotFound multiples type="event" />;
-  if (!weihnachtsmaerkte.length) return;
   const { today } = getTodayNexMonday();
 
   const orderedEvents = [...weihnachtsmaerkte, ...adventsEvents].sort(
@@ -105,7 +119,45 @@ export default async function WeihnachtszeitPage() {
     ({ optionalComment }) =>
       optionalComment && /weihnachtsmann/gi.test(optionalComment)
   );
-
+  const date = new Date();
+  //if not from 1st november and 15th of january
+  if (
+    date.getDate() < 1 ||
+    date.getDate() > 15 ||
+    (date.getMonth() !== 10 && date.getMonth() !== 0)
+  ) {
+    return (
+      <Banner childrenClassName="flex flex-col sm:flex-col gap-2 items-center">
+        <Banner.Title href="/">
+          Huch! Wir sind noch nicht bereit für die Weihnachtszeit!
+        </Banner.Title>
+        <Banner.Text>
+          Komm zurück, zwischen November und Silvester! Aber keine Angst, auf
+          der Homepage findest du viele weitere spannende Inhalte und
+          Aktivitäten für Kinder in Hamburg!
+        </Banner.Text>
+      </Banner>
+    );
+  }
+  if (!weihnachtsmaerkte.length && !adventsEvents.length) {
+    return (
+      <Banner childrenClassName="flex flex-col sm:flex-col gap-2 items-center">
+        <Banner.Title href="/">
+          Huch! Wir haben keine Weihnachtsmärkte oder Adventsevents gefunden!
+        </Banner.Title>
+        <Banner.Text>
+          Aber keine Angst, auf der Homepage findest du viele weitere spannende
+          Inhalte und Aktivitäten für Kinder in Hamburg!
+        </Banner.Text>
+        <Link
+          href="/"
+          className="p-2 rounded-md bg-hh-400 hover:bg-hh-300 active:bg-hh-200 font-semibold text-hh-800"
+        >
+          Homepage
+        </Link>
+      </Banner>
+    );
+  }
   return (
     <main
       className={`flex flex-col gap-4 items-center w-full  ${!!todayLaternenumzuege.length ? "sm:max-w-[1000px]" : "sm:max-w-[800px]"} p-1 mb-4`}

@@ -1,6 +1,5 @@
 import { iFlohmarkt } from "@app/utils/types";
-import ClientLaterneGallery from "@components/@Index/laternenumzug/ClientEventsGallery";
-import BezirkableEventsList from "@components/BezirkableEventsList";
+import BezirkableList from "@app/components/BezirkableList";
 import React from "react";
 
 export default function WeihnachtsmaerkteHero({
@@ -35,10 +34,10 @@ export default function WeihnachtsmaerkteHero({
           </div>
         )} */}
 
-        <BezirkableEventsList
+        <BezirkableList
           type="events"
           variant="transparent-dark"
-          eventsList={orderedEvents}
+          list={orderedEvents}
         />
       </section>
     </section>

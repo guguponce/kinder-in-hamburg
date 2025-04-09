@@ -8,11 +8,13 @@ export default function Banner({
   linkText = "Mehr entdecken",
   className,
   textSide = "left",
+  childrenClassName,
 }: {
   children: React.ReactNode;
   href?: string;
   linkText?: string;
   className?: string;
+  childrenClassName?: string;
   textSide?: "left" | "right";
 }) {
   return (
@@ -23,7 +25,11 @@ export default function Banner({
       )}
     >
       <div
-        className={`sm:gap-2 flex flex-grow sm:flex-row w-full items-center ${textSide === "left" ? "flex-col" : "flex-col-reverse"}`}
+        className={cn(
+          "sm:gap-2 flex flex-grow sm:flex-row w-full items-center",
+          textSide === "left" ? "flex-col" : "flex-col-reverse",
+          childrenClassName
+        )}
       >
         {children}
       </div>
