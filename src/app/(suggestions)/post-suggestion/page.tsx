@@ -8,6 +8,7 @@ import PinnedPosts from "@app/components/PinnedPosts";
 import BookmarkIcon from "@components/@Icons/BookmarkIcon";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import URLFilteredListSuspense from "@app/components/Filters/URLFilteredListSuspense";
 
 const cachedPosts = unstable_cache(
   getAllSuggestedPosts,
@@ -18,10 +19,9 @@ const cachedPosts = unstable_cache(
   }
 );
 const URLFilteredList = dynamic(
-  () => import("@app/components/Filters/URLFilteredList"),
-  { ssr: false }
+  () => import("@components/Filters/URLFilteredList"),
+  { ssr: false, loading: () => <URLFilteredListSuspense /> }
 );
-
 export default async function PostsPage() {
   const postsList = ((await cachedPosts()) || []).filter(
     ({ status }) => status !== "rejected"
@@ -39,9 +39,8 @@ export default async function PostsPage() {
               </React.Fragment>
             ))}
         </div>
-        <section className="flex justify-center items-stretch flex-wrap gap-4 mb-4">
-          <IndoorOutdoorTabsList posts={postsList} />
-          <article className="w-64 max-w-full p-4 bg-gradient-to-bl from-hh-700 to-hh-900 shadow-lg rounded relative overflow-hidden text-hh-50 italic">
+        <section className="w-full flex justify-center lg:justify-between items-stretch flex-wrap sm:flex-nowrap gap-4 mb-4">
+          <article className="min-w-64 w-64 max-w-full p-4 bg-gradient-to-bl from-hh-700 to-hh-900 shadow-lg rounded relative overflow-hidden text-hh-50 italic">
             <h2 className="px-2 text-2xl font-bold">Highlights</h2>
             <div className="absolute flex self-start w-12 min-w-12 h-full border-0 m-0 top-0 right-2">
               <BookmarkIcon className="w-full h-10 sm:h-12" color="#fbb0a6" />
@@ -50,7 +49,11 @@ export default async function PostsPage() {
               scroll={false}
               className="w-full aspect-[3/4] p-0 bg-transparent"
             />
-          </article>
+          </article>{" "}
+          <IndoorOutdoorTabsList
+            posts={postsList}
+            className="flex-grow min-w-[50%]"
+          />
         </section>
         <URLFilteredList postsList={postsList}>
           <h1 className="font-bold min-w-fit text-center   text-3xl ">
