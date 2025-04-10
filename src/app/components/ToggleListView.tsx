@@ -21,7 +21,7 @@ export default function ToggleListView({
   );
   const { current: availableCategories } = useRef(Object.keys(postsList));
   return (
-    <GeneralContainer type="section" classname={classname}>
+    <>
       <aside className="self-start ml-2 flex justify-center items-center flex-wrap gap-4 md:py-2">
         {availableCategories.map((category) => (
           <React.Fragment key={category}>
@@ -57,6 +57,6 @@ export default function ToggleListView({
         size="medium"
         posts={postsList[selectedCategory]}
       />
-    </GeneralContainer>
+    </>
   );
 }

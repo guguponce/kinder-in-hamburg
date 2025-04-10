@@ -16,10 +16,10 @@ interface iHorizontalCard {
   id: string | number;
   title: string;
   image?: string;
-  link?: string;
+  link: string;
   imgSize?: string;
   spielgeraete?: string[];
-  children: React.ReactNode;
+  children?: React.ReactNode;
   className?: string;
 }
 
@@ -37,7 +37,7 @@ export default function HorizontalCard({
   return (
     <Link
       aria-label={`Explore ${title}`}
-      href={link || `/flohmaerkte/${id}`}
+      href={link}
       className={cn(
         "HorizontalCard w-full h-32 sm:flex-grow justify-center flex gap-2 items-center bg-white text-hh-900 rounded-md overflow-hidden hover:shadow-md",
         className
