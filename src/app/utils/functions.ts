@@ -653,13 +653,9 @@ export async function convertToWebp(
           let newWidth: number;
           let newHeight: number;
           const horizontal = img.width > img.height;
-          console.log(img.width, img.height);
-
-          console.log(horizontal);
           if (horizontal) {
             newWidth = img.width > maxWidth ? maxWidth : img.width;
             newHeight = newWidth * (img.height / img.width);
-            console.log(newWidth, newHeight);
           } else {
             newHeight = img.height > maxWidth ? maxWidth : img.height;
             newWidth = newHeight * (img.width / img.height);
