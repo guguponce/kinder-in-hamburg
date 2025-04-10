@@ -4,7 +4,7 @@ import BezirkeScrollableEvents from "@components/BezirkeScrollableEvents";
 import { getTodayNexMonday } from "@app/utils/functions";
 import Link from "next/link";
 import React from "react";
-import BezirkableEventsList from "@app/components/BezirkableEventsList";
+import BezirkableList from "@app/components/BezirkableList";
 import dynamic from "next/dynamic";
 import { Metadata } from "next";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
@@ -153,11 +153,12 @@ export default async function FlohmarktPage() {
             square={false}
           />
         </section>
-        <BezirkableEventsList
+        <BezirkableList
           title="Ab nächster Woche"
-          eventsList={futureFlohmaerkte}
+          list={futureFlohmaerkte}
+          cardClassname="relative flex flex-col items-center gap-[2px] overflow-hidden h-[250px] min-w-[180px] shadow-lg mr-4"
           withDate
-        ></BezirkableEventsList>
+        ></BezirkableList>
         <OtherEventsHorizontalCards variant="dark" />
       </section>
     </main>

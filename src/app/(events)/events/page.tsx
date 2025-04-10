@@ -4,7 +4,7 @@ import BezirkeScrollableEvents from "@app/components/BezirkeScrollableEvents";
 import { getTodayNexMonday } from "@app/utils/functions";
 import Link from "next/link";
 import React from "react";
-import BezirkableEventsList from "@components/BezirkableEventsList";
+import BezirkableList from "@app/components/BezirkableList";
 import dynamic from "next/dynamic";
 import { Metadata } from "next";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
@@ -100,10 +100,10 @@ export default async function EventPage() {
         </h1>
         {events.length === 0 && (
           <h3 className="text-base w-fit max-w-2xl mb-2 font-semibold italic">
-            Leider haben wir gerade keine Infos zu bevorstehenden
-            Veranstaltungen. Veranstaltungen sind hier nicht so häufig ein
-            Thema, aber bei besonderen Sachen wie zum Beispiel Weihnachtsmärkten
-            halten wir euch gerne auf dem Laufenden.
+            Leider haben wir gerade keine Infos zu bevorstehenden Events.
+            Veranstaltungen sind hier nicht so häufig ein Thema, aber bei
+            besonderen Sachen wie zum Beispiel Weihnachtsmärkten und
+            Laternenumzügen halten wir euch gerne auf dem Laufenden.
           </h3>
         )}
         <BezirkeScrollableEvents
@@ -129,16 +129,16 @@ export default async function EventPage() {
       </GeneralContainer>
 
       {futureEvents.length > 0 && (
-        <BezirkableEventsList
+        <BezirkableList
           variant="transparent-light"
           title="Ab nächster Woche"
-          eventsList={futureEvents}
+          list={futureEvents}
           type="events"
-        ></BezirkableEventsList>
+        ></BezirkableList>
       )}
       {!!thisWeekFlohmaerkte.length && (
         <section className="w-fit max-w-full lg:min-w-[768px] bg-gradient-to-br from-hh-50 to-hh-200 bg-opacity-50 rounded">
-          <BezirkableEventsList
+          <BezirkableList
             withDate
             variant="transparent-light"
             title={
@@ -146,9 +146,9 @@ export default async function EventPage() {
                 ? "Zusätzlich zu den Veranstaltungen finden in dieser Woche die folgenden Flohmärkte statt:"
                 : "Diese Woche finden die folgenden Flohmärkte statt:"
             }
-            eventsList={thisWeekFlohmaerkte}
+            list={thisWeekFlohmaerkte}
             type="flohmaerkte"
-          ></BezirkableEventsList>
+          ></BezirkableList>
         </section>
       )}
     </main>
