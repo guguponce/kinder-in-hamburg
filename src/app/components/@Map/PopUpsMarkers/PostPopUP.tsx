@@ -13,7 +13,9 @@ export default function PostPopUP({
   address,
   image,
   distance,
+  icon,
 }: {
+  icon?: React.JSX.Element;
   image?: string;
   distance?: number;
   id: number;
@@ -42,7 +44,7 @@ export default function PostPopUP({
           </small>
           {address && (
             <div className="mt-auto flex items-center gap-1">
-              <StandortIcon color="#0078A8" />
+              {icon || <StandortIcon color="#0078A8" />}
               <p className="text-xs m-0 font-sans">{joinAddress(address)}</p>
               {distance && (
                 <h4 className="text-sm font-semibold flex flex-col items-center px-1 border-2 border-[#0078A8] rounded-sm min-w-fit">

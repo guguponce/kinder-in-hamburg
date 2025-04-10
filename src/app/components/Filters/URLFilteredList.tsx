@@ -36,6 +36,7 @@ import dynamic from "next/dynamic";
 import Button from "../@Buttons/Button";
 import CardsIcon from "../@Icons/CardsIcon";
 import MapIcon from "../@Icons/MapIcon";
+import { buecherhalleDivIcon } from "../@Map/mapUtils/constants";
 
 const DynamicGeneralMap = dynamic(
   () => import("@app/components/@Map/GeneralMap"),
@@ -167,6 +168,18 @@ export default function URLFilteredList({
       !!queryAlter,
     [searchQuery, bezirkeFilter, categoriesFilter, queryAlter]
   );
+  const { mapPosts, buecherhallenPosts } = useMemo(() => {
+    let mapPosts: iPost[] = [];
+    let buecherhallenPosts: iPost[] = [];
+    for (const post of filteredByCategories) {
+      if (post.tags?.includes("buecherhalle")) {
+        buecherhallenPosts.push(post);
+      } else {
+        mapPosts.push(post);
+      }
+    }
+    return { mapPosts, buecherhallenPosts };
+  }, [filteredByCategories]);
   if (!postsListRef) return <div>There was a problem retrieving posts</div>;
   return (
     <div className="flex gap-2 flex-wrap justify-center items-start w-full">
@@ -372,7 +385,11 @@ export default function URLFilteredList({
             >
               <div className="w-full h-full rounded-md shadow-2xl overflow-hidden">
                 <DynamicGeneralMap>
-                  <MarkersLists lists={{ posts: displayList }} />
+                  <MarkersLists lists={{ posts: mapPosts }} />
+                  <MarkersLists
+                    lists={{ posts: buecherhallenPosts }}
+                    customIcon={buecherhalleDivIcon}
+                  />
                 </DynamicGeneralMap>
               </div>
             </div>
