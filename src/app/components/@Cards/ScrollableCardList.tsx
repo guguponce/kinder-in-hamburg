@@ -1,13 +1,16 @@
-import { iFlohmarkt, iPost } from "@app/utils/types";
+import { iFlohmarkt, iPost, iSpielplatz } from "@app/utils/types";
 import React from "react";
 import ImageCard from "./ImageCard";
 import ImgPriorityCard from "./ImgPriorityCard";
 import TextPriorityCard from "./TextPriorityCard";
 import {
+  addressWithoutCity,
+  cn,
   getDate,
   getPlainText,
   isTypeFlohmarkt,
   isTypePost,
+  isTypeSpielplatz,
   parseDescriptionWithTags,
 } from "@app/utils/functions";
 import ScrollableContainer from "../ScrollableContainer";
@@ -26,8 +29,8 @@ export default function ScrollableCardList({
   cardClassname?: string;
   key?: string;
   size: "small" | "medium" | "large";
-  posts: iPost[] | iFlohmarkt[];
-  cardType: "image" | "img-priority" | "text-priority" | "horizontal";
+  posts: iPost[] | iFlohmarkt[] | iSpielplatz[];
+  cardType?: "image" | "img-priority" | "text-priority" | "horizontal";
   descriptions?: boolean;
   linkPrefix?: string;
   withDate?: boolean;
@@ -37,10 +40,12 @@ export default function ScrollableCardList({
       ? ImageCard
       : cardType === "img-priority"
         ? ImgPriorityCard
-        : TextPriorityCard;
+        : cardType === "horizontal"
+          ? HorizontalCard
+          : TextPriorityCard;
   return (
     <ScrollableContainer>
-      {isTypePost(posts[0])
+      {isTypePost(posts[0]) || isTypeSpielplatz(posts[0])
         ? (posts as iPost[]).map(({ id, image, title, text, stadtteil }) => (
             <React.Fragment key={id + title + (key || "")}>
               {cardType === "horizontal" ? (
@@ -78,27 +83,38 @@ export default function ScrollableCardList({
                 id,
                 image,
                 title,
-                optionalComment,
+                address,
                 date,
                 bezirk,
                 stadtteil,
                 endDate,
                 type,
               }) => (
-                <div
-                  className="flex flex-col items-center min-w-[160px]"
+                <article
+                  className={cn(
+                    "flex flex-col items-center min-w-[180px] mr-4",
+                    cardClassname
+                  )}
                   key={id + title + (key || "")}
                 >
-                  {image ? (
-                    Card({
-                      id: id,
-                      image: image || "",
-                      title: title,
-                      aspectRatio: 0.66,
-                      link: linkPrefix ? `${linkPrefix}${id}` : `/posts/${id}`,
-                      size: size,
-                      description: parseDescriptionWithTags(optionalComment),
-                    })
+                  {cardType === "horizontal" ? (
+                    <div key={id} className="w-[360px] min-w-[300px]">
+                      <HorizontalCard
+                        key={id}
+                        type={type}
+                        title={title}
+                        id={id}
+                        link={`/events/${id}`}
+                        image={image}
+                      >
+                        <HorizontalCard.FlohmarktInfo
+                          title={title}
+                          address={addressWithoutCity(address)}
+                          stadtteil={stadtteil}
+                          date={date}
+                        />
+                      </HorizontalCard>
+                    </div>
                   ) : (
                     <FlohmarktPoster
                       id={id}
@@ -115,13 +131,13 @@ export default function ScrollableCardList({
                     />
                   )}
                   {withDate && (
-                    <p className="text-sm bg-black bg-opacity-25 text-hh-50 font-semibold w-[calc(100%-1rem)] text-center rounded-[0_0_2px_2px]">
+                    <div className="absolute z-50 -translate-x-1/2 bottom-0 left-1/2 rounded-[4px_4px_0_0] flex justify-center w-3/4  p-1 text-xs bg-hh-800 backdrop-blur-sm bg-opacity-50 text-white">
                       {getDate(date, true).replace(/(\w+)/, (_, p1) => {
                         return p1.slice(0, 2) + ".";
                       })}
-                    </p>
+                    </div>
                   )}
-                </div>
+                </article>
               )
             )
           : null}
