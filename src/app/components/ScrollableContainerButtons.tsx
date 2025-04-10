@@ -20,7 +20,8 @@ export default function ScrollableContainerButtons({
 
       // Determine if the content overflows in either direction
       const isScrollableHorizontally =
-        (parent?.scrollWidth || 0) > (parent?.clientWidth || 0);
+        (parent?.scrollWidth || 0) >
+        (parent?.clientWidth ? parent.clientWidth + 32 : 0);
       const isScrollableVertically =
         (parent?.scrollHeight || 0) > (parent?.clientHeight || 0);
 
@@ -68,7 +69,7 @@ export default function ScrollableContainerButtons({
                   });
               }
             }}
-            className={`scrollButton scrollButtonLeftUp ${vertical ? "rotate-90 top-0 -translate-x-1/2 left-1/2" : "-translate-y-1/2 top-1/2 left-2"} p-[1px] absolute rounded-[4px_0_0_4px] bg-hh-${color} bg-opacity-75 hover:bg-opacity-60 flex justify-start items-center text-hh-50 transition-all backdrop-invert overflow-hidden`}
+            className={`scrollButton scrollButtonLeftUp ${vertical ? "rotate-90 top-0 -translate-x-1/2 left-1/2" : "-translate-y-1/2 top-1/2 left-2"} p-[1px] absolute rounded-[4px_0_0_4px] bg-hh-${color} bg-opacity-75 hover:bg-opacity-60 flex justify-start items-center text-hh-50 transition-all overflow-hidden`}
           >
             <span className="w-6 sm:w-8 aspect-square flex items-center justify-center">
               <TriangleIcon color={"#fefefe"} rotate={270} size="100%" />
@@ -93,7 +94,7 @@ export default function ScrollableContainerButtons({
                   });
               }
             }}
-            className={`scrollButton scrollButtonRightDown ${vertical ? "rotate-90 bottom-0 -translate-x-1/2 left-1/2" : "-translate-y-1/2 top-1/2 right-2"} p-[1px] absolute rounded-[0_4px_4px_0] bg-hh-${color} bg-opacity-75 hover:bg-opacity-60 flex justify-start items-center text-hh-50 transition-all backdrop-invert overflow-hidden`}
+            className={`scrollButton scrollButtonRightDown ${vertical ? "rotate-90 bottom-0 -translate-x-1/2 left-1/2" : "-translate-y-1/2 top-1/2 right-2"} p-[1px] absolute rounded-[0_4px_4px_0] bg-hh-${color} bg-opacity-75 hover:bg-opacity-60 flex justify-start items-center text-hh-50 transition-all overflow-hidden`}
           >
             <span className="w-6 sm:w-8 aspect-square flex items-center justify-center">
               <TriangleIcon color={"#fefefe"} rotate={90} size="100%" />
