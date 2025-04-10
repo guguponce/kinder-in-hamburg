@@ -56,8 +56,8 @@ export default async function BezirkeScrollableEvents({
             <h2
               className={
                 verticalTitle
-                  ? "-rotate-90 w-full tracking-wide text-2xl sm:text-4xl font-semibold text-white p-2 lg:p-4"
-                  : "text-xl sm:text-2xl font-semibold text-white text-start md:text-center self-start p-2 lg:p-4"
+                  ? "-rotate-90 w-full tracking-wide text-2xl sm:text-4xl font-semibold text-white p-2 lg:py-4"
+                  : "text-xl sm:text-2xl font-semibold text-white text-start md:text-center self-start p-2 lg:pb-4"
               }
               style={titleShadow ? { textShadow: "#33404D 3px 3px 6px" } : {}}
             >

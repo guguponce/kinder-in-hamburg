@@ -201,6 +201,7 @@ export default async function LaternenumzuegePage() {
           >
             <BezirkableList
               type="events"
+              cardType="horizontal"
               variant="transparent-light"
               list={orderedEvents.filter(({ date }) => date >= lastMidnight)}
             />

@@ -391,6 +391,30 @@ export const updatePostStatus = async <
 };
 
 // APPROVED BLOGPOSTS
+
+export const getPostsWithTag = async (
+  tags: string[],
+  db: "kih-approved-blogposts" | "kih-suggestions" = "kih-approved-blogposts",
+  pinnedPosts?: boolean
+) => {
+  const pinnedQuery = pinnedPosts ? "pinnedPost.eq.true" : "";
+  try {
+    const tagquery = tags.map((tag) => `tags.ilike.%${tag}%`).join(",");
+    const { data, error } = await supabaseAdmin
+      .from(db)
+      .select("*")
+      .or(tagquery + pinnedQuery);
+    if (error) {
+      console.error("Error fetching posts:", error);
+      return [];
+    }
+
+    return parseAllPosts(data);
+  } catch (error) {
+    return false;
+  }
+};
+
 export const getPostsWithCat = async (
   categories: categoryName[],
   pinnedPosts?: boolean,

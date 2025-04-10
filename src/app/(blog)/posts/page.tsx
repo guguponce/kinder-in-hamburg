@@ -13,7 +13,7 @@ const URLFilteredList = dynamic(
   { ssr: false, loading: () => <URLFilteredListSuspense /> }
 );
 
-const cachedPosts = unstable_cache(getAllApprovedPosts, ["allApprovedPosts"], {
+const cachedPosts = unstable_cache(getAllApprovedPosts, ["posts"], {
   revalidate: 300,
 });
 export default async function PostsPage() {

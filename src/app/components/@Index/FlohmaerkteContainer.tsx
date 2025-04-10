@@ -136,14 +136,14 @@ export default async function FlohmaerkteContainer() {
           </section>
         )}
         {/* {!!futureFlohmaerkte.length && (
-          <BezirkableEventsList
+          <BezirkableList
             title={
               !!thisWeekFlohmaerkteLength
                 ? "Ab nächster Woche"
                 : "Zukünftige Flohmärkte"
             }
-            eventsList={futureFlohmaerkte}
-          ></BezirkableEventsList>
+            list={futureFlohmaerkte}
+          ></BezirkableList>
         )} */}
         <Link
           href="/flohmaerkte"

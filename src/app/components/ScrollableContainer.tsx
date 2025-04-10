@@ -20,7 +20,6 @@ export default function ScrollableContainer({
   paddingForButtons?: boolean;
 }) {
   const scrollbarThumbColor = `scrollbarThumb${color}`;
-
   return (
     <div
       className={cn(
