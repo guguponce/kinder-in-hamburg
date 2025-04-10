@@ -115,7 +115,6 @@ export default function PostForm({
 
   const newID = useRef(Date.now());
   const postTextAreaRef = React.useRef<HTMLTextAreaElement>(null);
-
   const {
     register,
     setValue,
@@ -177,7 +176,7 @@ export default function PostForm({
           ? addressInput
           : undefined,
       lastUpdate: newID.current,
-      pinnedPost: data.pinnedPost === "true" ? true : false,
+      pinnedPost: data.pinnedPost === "true" || data.pinnedPost === true,
       user_id: userInput.email,
       addedBy: userInput,
       status: data.status || "pending",
@@ -223,7 +222,7 @@ export default function PostForm({
       link: data.link,
       maxAge: data.maxAge ? parseInt(data.maxAge) : undefined,
       minAge: data.minAge ? parseInt(data.minAge) : 0,
-      pinnedPost: data.pinnedPost === "true" ? true : false,
+      pinnedPost: data.pinnedPost === "true" || data.pinnedPost === true,
       tags: data.tags ? data.tags.split("-").filter(Boolean) : [],
       text: savedPostText,
       title: data.title,
@@ -271,7 +270,7 @@ export default function PostForm({
       link: data.link,
       maxAge: data.maxAge ? parseInt(data.maxAge) : undefined,
       minAge: data.minAge ? parseInt(data.minAge) : 0,
-      pinnedPost: data.pinnedPost === "true" ? true : false,
+      pinnedPost: data.pinnedPost === "true" || data.pinnedPost === true,
       tags: data.tags ? data.tags.split("-").filter(Boolean) : [],
       text: savedPostText,
       title: data.title,
@@ -320,7 +319,7 @@ export default function PostForm({
       link: data.link,
       maxAge: data.maxAge ? parseInt(data.maxAge) : undefined,
       minAge: data.minAge ? parseInt(data.minAge) : 0,
-      pinnedPost: data.pinnedPost === "true" ? true : false,
+      pinnedPost: data.pinnedPost === "true" || data.pinnedPost === true,
       tags: data.tags ? data.tags.split("-").filter(Boolean) : [],
       text: savedPostText,
       title: data.title,
@@ -702,7 +701,7 @@ export default function PostForm({
           <select
             {...register("pinnedPost")}
             defaultValue={pinnedPost ? "true" : "false"}
-            defaultChecked={pinnedPost}
+            // defaultChecked={pinnedPost}
             className="mx-4  rounded border border-gray-300 bg-gray-100 bg-opacity-95 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
           >
             <option value="false">False</option>
