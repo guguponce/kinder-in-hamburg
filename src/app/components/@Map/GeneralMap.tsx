@@ -15,6 +15,7 @@ import FlohmarktPopUP from "./PopUpsMarkers/FlohmarktPopUP";
 import PostPopUP from "./PopUpsMarkers/PostPopUP";
 import { createStandortMapIcon } from "./functions";
 import { UserLocationIcon } from "./MarkerIcons";
+import { useUserLocation } from "@app/utils/context/UserLocationContext";
 
 const MainLocationIcon = divIcon({
   html: createStandortMapIcon("#b72f1e", 35),
@@ -27,15 +28,16 @@ const GeneralMap = ({
   currentTarget,
   children,
   zoom = 10,
-  userLocation,
+  showUserLocation,
   centerUserLocation = false,
 }: {
   zoom?: number;
   children?: React.ReactNode;
   currentTarget?: iPost | iFlohmarkt | iSpielplatz;
-  userLocation?: { lat: number; lon: number } | null;
+  showUserLocation?: { lat: number; lon: number } | null;
   centerUserLocation?: boolean;
 }) => {
+  const { userLocation } = useUserLocation();
   return (
     <MapContainer
       style={{ height: "100%", width: "100%", zIndex: 10 }}
@@ -55,7 +57,7 @@ const GeneralMap = ({
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      {userLocation && (
+      {showUserLocation && userLocation && (
         <Marker
           position={[userLocation.lat, userLocation.lon]}
           icon={UserLocationIcon}

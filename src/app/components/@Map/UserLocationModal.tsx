@@ -160,7 +160,7 @@ const LocationModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
         {currentLocation && (
           <div className="w-full aspect-square max-h-[60vh] bg-hh-800 rounded-lg p-1 sm:py-2 my-2 flex flex-col gap-2 overflow-hidden">
-            <MemoGeneralMap centerUserLocation userLocation={currentLocation}>
+            <MemoGeneralMap centerUserLocation>
               {currentLocation && (
                 <DraggableMarker
                   pos={currentLocation}
