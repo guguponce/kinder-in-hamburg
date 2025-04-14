@@ -1,5 +1,5 @@
 import { getPostsWithCat } from "@app/api/dbActions";
-import PointsGallery from "@app/components/@PostForm/PointsGallery";
+import PointsGallery from "@components/@PostForm/PointsGallery";
 import AdminRoute from "@app/providers/AdminRoute";
 import {
   categoryNames,
@@ -8,9 +8,9 @@ import {
 } from "@app/utils/constants";
 import { parseParams, sortPostsByDate } from "@app/utils/functions";
 import { categoryName } from "@app/utils/types";
-import NotFound from "@app/components/@NotFound/NotFound";
+import NotFound from "@components/@NotFound/NotFound";
 import React from "react";
-import ShuffleGallery from "@app/components/@Cards/ShuffleGallery";
+import ShuffleGallery from "@components/@Cards/ShuffleGallery";
 import { unstable_cache } from "next/cache";
 import dynamic from "next/dynamic";
 
@@ -24,7 +24,7 @@ const cachedCategoryPosts = unstable_cache(
 );
 
 const DynamicURLFilteredList = dynamic(
-  () => import("@app/components/Filters/URLFilteredList"),
+  () => import("@components/Filters/URLFilteredList"),
   { ssr: false }
 );
 

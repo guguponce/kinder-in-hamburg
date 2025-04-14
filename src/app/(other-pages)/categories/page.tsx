@@ -1,9 +1,9 @@
 import { getAllApprovedPosts } from "@app/api/dbActions";
-import StackedCards from "@app/components/@Cards/StackedCards";
+import StackedCards from "@components/@Cards/StackedCards";
 import AdminRoute from "@app/providers/AdminRoute";
 import { categoryNames } from "@app/utils/constants";
 import { iPost } from "@app/utils/types";
-import NotFound from "@app/components/@NotFound/NotFound";
+import NotFound from "@components/@NotFound/NotFound";
 import React from "react";
 
 export default async function CategoriesPage() {
@@ -11,14 +11,17 @@ export default async function CategoriesPage() {
   if (!allPosts) return <NotFound type="categories" multiples={true} />;
   const categoriesPosts = [...allPosts]
     .sort(() => 0.5 - Math.random())
-    .reduce((acc, post) => {
-      if (!post.image) return acc;
-      post.categories.forEach((cat) => {
-        if (!acc[cat]) acc[cat] = [];
-        acc[cat].push(post);
-      });
-      return acc;
-    }, {} as { [key: string]: iPost[] });
+    .reduce(
+      (acc, post) => {
+        if (!post.image) return acc;
+        post.categories.forEach((cat) => {
+          if (!acc[cat]) acc[cat] = [];
+          acc[cat].push(post);
+        });
+        return acc;
+      },
+      {} as { [key: string]: iPost[] }
+    );
 
   return (
     <AdminRoute>

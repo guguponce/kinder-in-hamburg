@@ -1,4 +1,4 @@
-import PaperPlane from "@app/components/@Icons/PaperPlane";
+import PaperPlane from "@components/@Icons/PaperPlane";
 import React from "react";
 
 export default function ContactPage() {

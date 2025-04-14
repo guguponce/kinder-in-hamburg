@@ -4,7 +4,7 @@ import React from "react";
 import DisplayTypeText from "./@PostForm/DisplayTypeText";
 import PostLogo from "./@Icons/@PostLogo/PostLogo";
 import ImagesModalGallery from "./ImagesModalGallery";
-import RecommendationsMap from "@app/components/@Map/RecommendationsMap";
+import RecommendationsMap from "@components/@Map/RecommendationsMap";
 import TopLinks from "./@Templates/TopLinks";
 import LocationBox from "./@Templates/LocationBox";
 import LinksBox from "./@Templates/LinksBox";

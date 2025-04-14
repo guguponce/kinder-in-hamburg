@@ -9,11 +9,11 @@ import {
 } from "@app/utils/functions";
 import { iBezirk } from "@app/utils/types";
 import React from "react";
-import FilterablePostList from "@app/components/FilterablePostList";
+import FilterablePostList from "@components/FilterablePostList";
 import NotFound from "@components/@NotFound/NotFound";
-import WeatherBox from "@app/components/@Weather/WeatherBox";
-import BezirkeScrollableEvents from "@app/components/BezirkeScrollableEvents";
-import PointsGallery from "@app/components/@PostForm/PointsGallery";
+import WeatherBox from "@components/@Weather/WeatherBox";
+import BezirkeScrollableEvents from "@components/BezirkeScrollableEvents";
+import PointsGallery from "@components/@PostForm/PointsGallery";
 import AdminRoute from "@app/providers/AdminRoute";
 
 export default async function BezirkPage({
