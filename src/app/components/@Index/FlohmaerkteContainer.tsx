@@ -1,4 +1,4 @@
-import BezirkeScrollableEvents from "@app/components/BezirkeScrollableEvents";
+import BezirkeScrollableEvents from "@components/BezirkeScrollableEvents";
 import React from "react";
 import { getTodayNexMonday } from "@app/utils/functions";
 import { getThisWeekEvents } from "@app/api/dbActions";
@@ -59,12 +59,12 @@ export default async function FlohmaerkteContainer() {
     sortByFlohmaerkteDate(flohmaerkte, today - 1000 * 60 * 60);
   const todayFlohmaerkteLength = todayFlohmaerkte.length;
   const thisWeekFlohmaerkteLength = thisWeekFlohmaerkte.length;
-  const isSunday = new Date().getDay() === 0;
+  const weekday = new Date().getDay();
+  const isSunday = weekday === 0;
   const onlyToday = todayFlohmaerkteLength === thisWeekFlohmaerkteLength;
-
   return (
     <section
-      className={`rounded-lg bg-gradient-to-b from-[#d0d7da50] via-[#d0d7da50] to-hh-50 bg-opacity-25 w-[calc(100%-2rem)] p-1 sm:p-4 flex flex-col items-center min-h-[50vh] ${thisWeekFlohmaerkteLength ? "max-w-[1200px]" : "max-w-[800px]"} text-hh-50"`}
+      className={`rounded-lg bg-gradient-to-b from-[#d0d7da50] via-[#d0d7da50] to-hh-50 bg-opacity-25 w-[calc(100%-2rem)] p-1 sm:p-4 flex flex-col items-center ${thisWeekFlohmaerkteLength ? "min-h-[50vh] max-w-[1200px]" : "max-w-[800px]"} text-hh-50"`}
     >
       <h1 className=" text-4xl font-bold p-2 lg:pb-4 rounded text-hh-950">
         Flohmärkte
@@ -117,7 +117,7 @@ export default async function FlohmaerkteContainer() {
           >
             <div className="max-w-full flex flex-col items-center">
               <h2 className="text-2xl font-semibold text-hh-800 text-center p-1 lg:p-2">
-                {flohmaerkte.length
+                {weekday !== 6 && !isSunday
                   ? "Diese Woche finden keine Flohmärkte statt"
                   : "Für den Rest der Woche finden keine Flohmärkte statt"}
               </h2>
