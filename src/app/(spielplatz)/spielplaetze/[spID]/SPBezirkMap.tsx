@@ -6,12 +6,12 @@ import "leaflet/dist/leaflet.css";
 import { Marker } from "react-leaflet";
 import { divIcon } from "leaflet";
 import TriangleIcon from "@components/@Icons/TriangleIcon";
-import ShuffleGallery from "@app/components/@Cards/ShuffleGallery";
-import GeneralMap from "@app/components/@Map/GeneralMap";
-import MarkersLists from "@app/components/@Map/PopUpsMarkers/MarkersLists";
-import { createStandortMapIcon } from "@app/components/@Map/functions";
+import ShuffleGallery from "@components/@Cards/ShuffleGallery";
+import GeneralMap from "@components/@Map/GeneralMap";
+import MarkersLists from "@components/@Map/PopUpsMarkers/MarkersLists";
+import { createStandortMapIcon } from "@components/@Map/functions";
 import { distanceFilter } from "@app/utils/functions";
-import SpielplatzPopUP from "@app/components/@Map/PopUpsMarkers/SpielplatzPopUP";
+import SpielplatzPopUP from "@components/@Map/PopUpsMarkers/SpielplatzPopUP";
 
 const CurrentSelectedSpielplatzIcon = divIcon({
   html: createStandortMapIcon("#F6AA1C", 30),
@@ -25,7 +25,9 @@ export default function SPBezirkMap({
   currentSP,
   selector = false,
   maxDistance = 2000,
+  children,
 }: {
+  children?: React.ReactNode;
   selector?: boolean;
   spList: iSpielplatz[];
   currentSP?: number;
@@ -124,6 +126,7 @@ export default function SPBezirkMap({
                 />
               </Marker>
             )}
+            {children}
           </GeneralMap>
         </div>
       </article>
