@@ -30,20 +30,19 @@ import {
 } from "../../(blog)/posts/filterFunctions";
 import { FilterButton } from "../../(blog)/posts/DeleteFilters";
 import SearchInput from "../../(blog)/posts/SearchInput";
-import CloseIcon2 from "@app/components/@Icons/CloseIcon2";
-import MarkersLists from "@app/components/@Map/PopUpsMarkers/MarkersLists";
+import CloseIcon2 from "@components/@Icons/CloseIcon2";
+import MarkersLists from "@components/@Map/PopUpsMarkers/MarkersLists";
 import dynamic from "next/dynamic";
 import Button from "../@Buttons/Button";
 import CardsIcon from "../@Icons/CardsIcon";
 import MapIcon from "../@Icons/MapIcon";
-import { buecherhalleDivIcon } from "../@Map/mapUtils/constants";
+import { createBuecherhalleIcon } from "../@Map/mapUtils/constants";
 
-const DynamicGeneralMap = dynamic(
-  () => import("@app/components/@Map/GeneralMap"),
-  {
-    ssr: false,
-  }
-);
+const buecherhalleDivIcon = createBuecherhalleIcon();
+
+const DynamicGeneralMap = dynamic(() => import("@components/@Map/GeneralMap"), {
+  ssr: false,
+});
 const CardsListDisplayMemo = React.memo(CardsListDisplay);
 
 export default function URLFilteredList({
