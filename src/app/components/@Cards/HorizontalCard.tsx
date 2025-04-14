@@ -44,17 +44,25 @@ export default function HorizontalCard({
       )}
     >
       <div
-        className={`cardImage h-full aspect-square min-w-1/3 w-1/3 bg-hh-50 overflow-hidden flex justify-center items-center ${
+        className={`relative cardImage h-full aspect-square min-w-1/3 w-1/3 bg-hh-50 overflow-hidden flex justify-center items-center ${
           spielgeraete && "bg-opacity-5"
         } ${!image && "p-2"}  ${["laternewerkstatt", "laterne"].includes(type) && !image && "bg-hh-800"}`}
       >
         {!!image || type === "flohmarkt" ? (
-          <img
-            loading="lazy"
-            src={image || "/assets/icons/market.svg"}
-            alt={title}
-            className={`w-full h-full ${imgSize || "object-contain"}`}
-          />
+          <>
+            <img
+              loading="lazy"
+              src={image || "/assets/icons/market.svg"}
+              alt={title}
+              className="absolute left-0 top-0 object-cover blur-sm w-full h-full"
+            />
+            <img
+              loading="lazy"
+              src={image || "/assets/icons/market.svg"}
+              alt={title}
+              className={`w-full h-full ${imgSize || "object-contain"}`}
+            />
+          </>
         ) : ["laternewerkstatt", "laterne"].includes(type) ? (
           <div className="h-full aspect-square relative">
             <LaterneImage />
