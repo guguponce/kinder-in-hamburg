@@ -10,7 +10,7 @@ import {
   isTypeSpielplatz,
   joinAddress,
 } from "@app/utils/functions";
-import SpielplatzPopUP from "@app/components/@Map/PopUpsMarkers/SpielplatzPopUP";
+import SpielplatzPopUP from "@components/@Map/PopUpsMarkers/SpielplatzPopUP";
 import FlohmarktPopUP from "./PopUpsMarkers/FlohmarktPopUP";
 import PostPopUP from "./PopUpsMarkers/PostPopUP";
 import { createStandortMapIcon } from "./functions";

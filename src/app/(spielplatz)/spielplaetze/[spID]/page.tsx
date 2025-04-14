@@ -5,12 +5,12 @@ import React from "react";
 import SPBezirkMap from "./SPBezirkMapContainer";
 import FlohmaerkteNearby from "../FlohmaerkteNearby";
 import dynamic from "next/dynamic";
-import ImagesModalGallery from "@app/components/ImagesModalGallery";
+import ImagesModalGallery from "@components/ImagesModalGallery";
 import { Metadata } from "next";
-import AdminEditButtons from "@app/components/@Buttons/AdminEditButtons";
-import LocationBox from "@app/components/@Templates/LocationBox";
-import DisplayTypeText from "@app/components/@PostForm/DisplayTypeText";
-import PageTitle from "@app/components/PageTitle";
+import AdminEditButtons from "@components/@Buttons/AdminEditButtons";
+import LocationBox from "@components/@Templates/LocationBox";
+import DisplayTypeText from "@components/@PostForm/DisplayTypeText";
+import PageTitle from "@components/PageTitle";
 import { unstable_cache } from "next/cache";
 
 interface SpielplatzPageProps {
@@ -18,7 +18,7 @@ interface SpielplatzPageProps {
 }
 
 const SpielplatzgeraeteBackground = dynamic(
-  () => import("@app/components/@Cards/SpielplatzgeraeteBackground"),
+  () => import("@components/@Cards/SpielplatzgeraeteBackground"),
   {
     ssr: false,
   }

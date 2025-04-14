@@ -9,6 +9,7 @@ import React from "react";
 import { Marker } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import { createNormalSizeIcon, createWeihnachtsmarktIcon } from "../functions";
+import { createBuecherhalleIcon, createMarktIcon } from "../mapUtils/constants";
 
 const createClusterGroupIcon =
   (type: "spielplatz" | "flohmarkt" | "post" | "event") => (cluster: any) =>
@@ -89,7 +90,7 @@ export default function MarkersLists({
     bezirk?: string;
   }) => React.JSX.Element;
   cluster?: boolean;
-  customIcon?: DivIcon;
+  customIcon?: DivIcon | "flohmarkt" | "buecherhalle";
   popUpIcon?: React.JSX.Element;
   currentLocation?: { lat?: number; lon?: number };
 }) {
@@ -99,6 +100,17 @@ export default function MarkersLists({
   const events = lists.events || [];
   const today = Date.now();
   const memoPopUpIcon = React.useMemo(() => popUpIcon, [popUpIcon]);
+  const memoCustomIcon = React.useMemo(
+    () =>
+      typeof customIcon !== "string"
+        ? customIcon
+        : customIcon === "buecherhalle"
+          ? createBuecherhalleIcon()
+          : customIcon === "flohmarkt"
+            ? createMarktIcon()
+            : undefined,
+    [customIcon]
+  );
   return (
     <>
       {showFlohmaerkte && (
@@ -107,7 +119,7 @@ export default function MarkersLists({
             .filter(({ lat, lon }) => !!lat && !!lon)
             .map(({ lon, lat, image, address, id, title, date, type }) => (
               <Marker
-                icon={customIcon || flohmarktIcon}
+                icon={memoCustomIcon || flohmarktIcon}
                 key={"marker" + id}
                 position={[lat!, lon!]}
               >
@@ -151,7 +163,7 @@ export default function MarkersLists({
               }) => (
                 <Marker
                   icon={
-                    customIcon || type === "weihnachtsmarkt"
+                    memoCustomIcon || type === "weihnachtsmarkt"
                       ? date < today
                         ? weihnachtsmarktIcon
                         : desaturatedWeihnachtsmarktIcon
@@ -222,7 +234,7 @@ export default function MarkersLists({
                     </>
                   ) : (
                     <Marker
-                      icon={customIcon || postIcon}
+                      icon={memoCustomIcon || postIcon}
                       key={"marker" + id + i}
                       position={[lat!, lon!]}
                     >
@@ -260,7 +272,7 @@ export default function MarkersLists({
               <Marker
                 key={"marker" + id}
                 position={[lat!, lon!]}
-                icon={customIcon || spielplatzIcon}
+                icon={memoCustomIcon || spielplatzIcon}
               >
                 <SpielplatzPopUP
                   distance={

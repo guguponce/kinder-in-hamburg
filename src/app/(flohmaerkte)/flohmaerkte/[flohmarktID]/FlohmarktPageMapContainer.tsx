@@ -1,7 +1,7 @@
 import { getThisWeekEvents } from "@app/api/dbActions";
 import { iFlohmarkt, iPost, iSpielplatz } from "@app/utils/types";
-import WeitereFlohmaerkte from "@app/components/WeitereEvents";
-import RecommendationsMap from "@app/components/@Map/RecommendationsMap";
+import WeitereFlohmaerkte from "@components/WeitereEvents";
+import RecommendationsMap from "@components/@Map/RecommendationsMap";
 
 export default async function FlohmarktPageMapContainer({
   currentTarget,

@@ -4,7 +4,7 @@ import {
   getEventWithID,
 } from "@app/api/dbActions";
 import NotFound from "@components/@NotFound/NotFound";
-import FlohmarktTemplate from "@app/components/FlohmarktTemplate";
+import FlohmarktTemplate from "@components/FlohmarktTemplate";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
 import { Metadata } from "next";
 import React from "react";
@@ -12,7 +12,7 @@ import FlohmarktPageMapContainer from "./FlohmarktPageMapContainer";
 import { getSpielplatzFromBezirkStadtteil } from "@app/api/spActions";
 import { PROXIMATE_STADTTEILE_FROM_OTHER_BEZIRK } from "@app/utils/constants";
 import SpielplaetzeNearby from "./SpielplaetzeNearby";
-import AdminEditButtons from "@app/components/@Buttons/AdminEditButtons";
+import AdminEditButtons from "@components/@Buttons/AdminEditButtons";
 import OldFlohmarktSign from "./OldFlohmarktSign";
 import { parseDescriptionWithTags } from "@app/utils/functions";
 import { redirect } from "next/navigation";
