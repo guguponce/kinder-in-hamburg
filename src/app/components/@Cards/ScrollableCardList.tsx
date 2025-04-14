@@ -54,7 +54,7 @@ export default function ScrollableCardList({
                   image={image ? image[0] : ""}
                   title={title}
                   link={linkPrefix ? `${linkPrefix}${id}` : `/posts/${id}`}
-                  imgSize="object-cover"
+                  imgSize="object-contain"
                   className="min-w-96"
                 >
                   <HorizontalCard.PostInfo
