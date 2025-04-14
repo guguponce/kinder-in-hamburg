@@ -8,7 +8,33 @@ import { iBezirk } from "@app/utils/types";
 import React from "react";
 import { PROXIMATE_STADTTEILE_FROM_OTHER_BEZIRK } from "@app/utils/constants";
 import dynamic from "next/dynamic";
-import TriangleIcon from "@app/components/@Icons/TriangleIcon";
+import TriangleIcon from "@components/@Icons/TriangleIcon";
+import { getThisWeekEvents } from "@app/api/dbActions";
+import { unstable_cache } from "next/cache";
+
+const cached_getThisWeekEvents = unstable_cache(
+  getThisWeekEvents,
+  ["flohmaerkte"],
+  {
+    revalidate: 300,
+  }
+);
+
+const cached_getSpielplaetzeFromBezirk = unstable_cache(
+  getSpielplaetzeFromBezirk,
+  ["spielplaetze"],
+  {
+    revalidate: 600,
+  }
+);
+
+const cached_getSpielplaetzeFromStadtteile = unstable_cache(
+  getSpielplaetzeFromStadtteile,
+  ["spielplaetze"],
+  {
+    revalidate: 600,
+  }
+);
 
 const DynamicBezirkSPMap = dynamic(() => import("./SPBezirkMap"), {
   ssr: false,
@@ -41,6 +67,13 @@ const DynamicBezirkSPMap = dynamic(() => import("./SPBezirkMap"), {
   ),
 });
 
+const MarkersLists = dynamic(
+  () => import("@components/@Map/PopUpsMarkers/MarkersLists"),
+  {
+    ssr: false,
+  }
+);
+
 export default async function SPBezirkMapContainer({
   bezirk: bez,
   stadtteil,
@@ -53,14 +86,21 @@ export default async function SPBezirkMapContainer({
   const bezirk = parseParams(bez);
   if (!checkBezirk(bezirk)) return null;
 
-  const BezirkSPList = await getSpielplaetzeFromBezirk(bezirk as iBezirk);
+  const BezirkSPList = await cached_getSpielplaetzeFromBezirk(
+    bezirk as iBezirk
+  );
   if (!BezirkSPList) return null;
   const OtherBezirkSPList =
     stadtteil && PROXIMATE_STADTTEILE_FROM_OTHER_BEZIRK[stadtteil]
-      ? await getSpielplaetzeFromStadtteile(
+      ? await cached_getSpielplaetzeFromStadtteile(
           PROXIMATE_STADTTEILE_FROM_OTHER_BEZIRK[stadtteil]
         )
       : [];
+  const flohmaerkte = ((await cached_getThisWeekEvents()) || []).filter(
+    (f) =>
+      stadtteil &&
+      PROXIMATE_STADTTEILE_FROM_OTHER_BEZIRK[stadtteil]?.includes(f.stadtteil)
+  );
   return (
     <section id="sp-map-container" className="w-full">
       <DynamicBezirkSPMap
@@ -68,7 +108,11 @@ export default async function SPBezirkMapContainer({
         maxDistance={1500}
         currentSP={currentSP}
         spList={[...BezirkSPList, ...(OtherBezirkSPList || [])]}
-      />
+      >
+        {flohmaerkte && (
+          <MarkersLists lists={{ flohmaerkte }} customIcon={"flohmarkt"} />
+        )}
+      </DynamicBezirkSPMap>
     </section>
   );
 }

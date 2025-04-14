@@ -3,8 +3,8 @@ import AdminRoute from "@app/providers/AdminRoute";
 import { getAllApprovedPosts } from "@app/api/dbActions";
 import { unstable_cache } from "next/cache";
 import dynamic from "next/dynamic";
-import URLFilteredListSuspense from "@app/components/Filters/URLFilteredListSuspense";
-import PageTitle from "@app/components/PageTitle";
+import URLFilteredListSuspense from "@components/Filters/URLFilteredListSuspense";
+import PageTitle from "@components/PageTitle";
 
 export const revalidate = 20;
 
