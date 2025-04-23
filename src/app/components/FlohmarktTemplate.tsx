@@ -13,6 +13,7 @@ import {
 import AdminServerComponent from "@app/providers/AdminServerComponents";
 import FlohmarktBackground from "./@Icons/@Flohmarkt/FlohmarktBackground";
 import Image from "next/image";
+import PageTitle from "./PageTitle";
 
 export default function FlohmarktTemplate({
   flohmarkt: {
@@ -144,9 +145,11 @@ export default function FlohmarktTemplate({
                 />
               </div>
             )}
-            <h1 className="text-3xl md:text-4xl text-center font-bold break-words mt-2">
-              {title}
-            </h1>
+            <PageTitle
+              title={title}
+              className="text-hh-50 lg:mb-2"
+              textShadow="0 0 16px #60788480, 0px 0px 16px #607884db, 2px 2px 8px #607884db, 2px 2px 4px #607884db"
+            />
             {optionalComment && (
               <div className="h-[calc(100%-4rem)] relative">
                 {!type && (
