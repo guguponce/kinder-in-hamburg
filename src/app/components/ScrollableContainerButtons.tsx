@@ -43,7 +43,6 @@ export default function ScrollableContainerButtons({
       window.removeEventListener("resize", handleResize);
     };
   }, [checkIfScrollable]);
-
   return (
     <>
       <div

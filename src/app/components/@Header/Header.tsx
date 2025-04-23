@@ -29,15 +29,17 @@ export default async function Header() {
           width={120}
           height={80}
           priority
-          className="w-auto h-auto max-h-full hidden lg:flex object-contain text-sm brightness-105"
+          quality={100}
+          className="hidden lg:flex object-contain text-sm brightness-105"
         />
         <Image
           src="/assets/logo/WhiteLogo-Transparent.png"
           alt="Kinder in Hamburg"
           width={120}
           height={80}
+          quality={100}
           priority
-          className="w-auto h-auto max-h-full lg:hidden object-contain text-sm brightness-105"
+          className="max-h-full lg:hidden object-contain text-sm brightness-105"
         />
 
         <h1
