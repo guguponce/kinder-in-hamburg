@@ -1,11 +1,12 @@
 import React from "react";
 import { TextType } from "../../utils/types";
 import Link from "next/link";
+import { descriptionFont } from "@app/styles/fonts/localfonts";
 
 const formatText = (text: string) => {
   // Regular expressions to match the formatting tags and their content
   const regex =
-    /<b>(.*?)<\/?b>|<sb>(.*?)<\/?sb>|<i>(.*?)<\/?i>|<u>(.*?)<\/?u>|<upper>(.*?)<\/?upper>|<link>(.*?)<\/?link>|<h3>(.*?)<\/?h3>|<h2>(.*?)<\/?h2>|<attribution>(.*?)<\/?attribution>|<email>(.*?)<\/?email>/g;
+    /<b>(.*?)<\/?b>|<sb>(.*?)<\/?sb>|<bi>(.*?)<\/?bi>|<i>(.*?)<\/?i>|<u>(.*?)<\/?u>|<upper>(.*?)<\/?upper>|<link>(.*?)<\/?link>|<h3>(.*?)<\/?h3>|<h2>(.*?)<\/?h2>|<attribution>(.*?)<\/?attribution>|<email>(.*?)<\/?email>/g;
 
   let formattedText = [];
   let lastIndex = 0;
@@ -17,6 +18,7 @@ const formatText = (text: string) => {
       match,
       boldText,
       semiboldText,
+      boldItalicText,
       italicText,
       underlinedText,
       upperText,
@@ -44,6 +46,12 @@ const formatText = (text: string) => {
           <span className="font-semibold" key={index}>
             {semiboldText}
           </span>
+        );
+      } else if (boldItalicText) {
+        formattedText.push(
+          <strong className="font-extrabold italic" key={index}>
+            {boldItalicText}
+          </strong>
         );
       } else if (italicText) {
         formattedText.push(<em key={index}>{italicText}</em>);
@@ -117,7 +125,7 @@ const CustomPre = ({ text }: { text: string }) => {
         wordWrap: "break-word",
       }}
       key={text}
-      className="text-wrap py-1 max-w-full w-full"
+      className={`text-wrap py-1 max-w-full w-full ${descriptionFont.className}`}
     >
       {formatText(text)}
     </pre>
