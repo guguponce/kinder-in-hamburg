@@ -3,7 +3,7 @@ import { getServerUser } from "@app/api/auth/supabaseAuth";
 import { redirect } from "next/navigation";
 import AdminRoute from "@app/providers/AdminRoute";
 import dynamic from "next/dynamic";
-const PostForm = dynamic(() => import("@app/components/@PostForm/PostForm"));
+const PostForm = dynamic(() => import("@components/@PostForm/PostForm"));
 
 export default async function AddPostPage() {
   const user = await getServerUser();

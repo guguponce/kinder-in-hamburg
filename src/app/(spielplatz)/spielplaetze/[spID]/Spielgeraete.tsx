@@ -1,5 +1,5 @@
 "use client";
-import SpielgeraeteIcon from "@app/components/@Icons/@Spielplatz/SpielgeraeteIcon";
+import SpielgeraeteIcon from "@components/@Icons/@Spielplatz/SpielgeraeteIcon";
 import { spielgeraeteList } from "@app/utils/constants";
 import React, { useLayoutEffect, useState } from "react";
 

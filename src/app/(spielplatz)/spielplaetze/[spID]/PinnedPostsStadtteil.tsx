@@ -1,7 +1,7 @@
 import { getPostsByCategoryBezirkStadtteile } from "@app/api/dbActions";
 import { getSpielplatzFromBezirkStadtteil } from "@app/api/spActions";
-import HorizontalCard from "@app/components/@Cards/HorizontalCard";
-import ScrollableContainer from "@app/components/ScrollableContainer";
+import HorizontalCard from "@components/@Cards/HorizontalCard";
+import ScrollableContainer from "@components/ScrollableContainer";
 import {
   getPlainText,
   haversineDistance,

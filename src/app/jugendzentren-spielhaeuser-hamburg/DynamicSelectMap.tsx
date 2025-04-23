@@ -1,6 +1,6 @@
 "use client";
-import GeneralMap from "@app/components/@Map/GeneralMap";
-import MarkersLists from "@app/components/@Map/PopUpsMarkers/MarkersLists";
+import GeneralMap from "@components/@Map/GeneralMap";
+import MarkersLists from "@components/@Map/PopUpsMarkers/MarkersLists";
 import { BEZIRK_TO_STADTTEILE } from "@app/utils/constants";
 import { iBezirk, iPost, iSpielplatz } from "@app/utils/types";
 import React, { useMemo, useRef } from "react";

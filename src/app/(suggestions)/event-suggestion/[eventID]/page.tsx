@@ -1,18 +1,15 @@
 import { getEventWithID } from "@app/api/dbActions";
-import FlohmarktTemplate from "@app/components/FlohmarktTemplate";
+import FlohmarktTemplate from "@components/FlohmarktTemplate";
 import React from "react";
 import dynamic from "next/dynamic";
-import NotFound from "@app/components/@NotFound/NotFound";
-import AdminEditButtons from "@app/components/@Buttons/AdminEditButtons";
+import NotFound from "@components/@NotFound/NotFound";
+import AdminEditButtons from "@components/@Buttons/AdminEditButtons";
 import AdminRoute from "@app/providers/AdminRoute";
-import StatusDisplay from "@app/components/StatusDisplay";
+import StatusDisplay from "@components/StatusDisplay";
 
-const SuggestedEventMap = dynamic(
-  () => import("@app/components/@Map/GeneralMap"),
-  {
-    ssr: false,
-  }
-);
+const SuggestedEventMap = dynamic(() => import("@components/@Map/GeneralMap"), {
+  ssr: false,
+});
 
 export default async function EventSuggestionPage({
   params: { eventID },

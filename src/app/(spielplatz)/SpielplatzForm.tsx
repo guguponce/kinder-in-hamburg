@@ -4,8 +4,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { FieldValues, useForm } from "react-hook-form";
 import AdminClientComponents from "@app/providers/AdminClientComponents";
-import UserInputBox from "@app/components/@FlohForm/UserInputBox";
-import PostFormInput from "@app/components/@PostForm/PostFormInput";
+import UserInputBox from "@components/@FlohForm/UserInputBox";
+import PostFormInput from "@components/@PostForm/PostFormInput";
 
 const LatLonSetterMap = dynamic(
   () => import("../components/@Map/LatLonSetterMap"),

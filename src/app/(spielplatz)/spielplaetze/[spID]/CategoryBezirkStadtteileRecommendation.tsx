@@ -1,5 +1,5 @@
 import { getPostsByCategoryBezirkStadtteile } from "@app/api/dbActions";
-import ScrollableCardList from "@app/components/@Cards/ScrollableCardList";
+import ScrollableCardList from "@components/@Cards/ScrollableCardList";
 import { categoryName, iBezirk } from "@app/utils/types";
 import React from "react";
 import PinnedPostsSpielplaetzeNearby from "./PinnedPostsStadtteil";

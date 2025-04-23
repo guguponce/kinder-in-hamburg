@@ -1,10 +1,10 @@
 "use client";
-import Button from "@app/components/@Buttons/Button";
-import TextPriorityCard from "@app/components/@Cards/TextPriorityCard";
-import BoyGirlIcon from "@app/components/@Icons/@Events/BoyGirlIcon";
-import KarussellBigIcon from "@app/components/@Icons/@Events/KarusselBigIcon";
-import WeihnachtsmannIcon from "@app/components/@Icons/@Events/WeihnachtsmannIcon";
-import ScrollableContainer from "@app/components/ScrollableContainer";
+import Button from "@components/@Buttons/Button";
+import TextPriorityCard from "@components/@Cards/TextPriorityCard";
+import BoyGirlIcon from "@components/@Icons/@Events/BoyGirlIcon";
+import KarussellBigIcon from "@components/@Icons/@Events/KarusselBigIcon";
+import WeihnachtsmannIcon from "@components/@Icons/@Events/WeihnachtsmannIcon";
+import ScrollableContainer from "@components/ScrollableContainer";
 import { parseDescriptionWithTags } from "@app/utils/functions";
 import { iBezirk, iFlohmarkt } from "@app/utils/types";
 import React, { useMemo, useState } from "react";

@@ -2,7 +2,7 @@
 import { iBezirk, iSpielplatz } from "@app/utils/types";
 import React, { useMemo, useRef } from "react";
 import GeneralMap from "../../components/@Map/GeneralMap";
-import MarkersLists from "@app/components/@Map/PopUpsMarkers/MarkersLists";
+import MarkersLists from "@components/@Map/PopUpsMarkers/MarkersLists";
 
 export default function DynamicSielplaetzeMap({
   spielplaetze,

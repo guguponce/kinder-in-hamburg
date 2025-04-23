@@ -36,7 +36,7 @@ import { getLatLong } from "@app/utils/functions";
 import dynamic from "next/dynamic";
 
 const LatLonSetterMap = dynamic(
-  () => import("@app/components/@Map/LatLonSetterMap"),
+  () => import("@components/@Map/LatLonSetterMap"),
   {
     ssr: false,
   }

@@ -3,12 +3,12 @@ import AdminRoute from "@app/providers/AdminRoute";
 
 import { getAllSuggestedPosts } from "@app/api/dbActions";
 import { unstable_cache } from "next/cache";
-import IndoorOutdoorTabsList from "@app/components/IndoorOutdoorTabsList";
-import PinnedPosts from "@app/components/PinnedPosts";
+import IndoorOutdoorTabsList from "@components/IndoorOutdoorTabsList";
+import PinnedPosts from "@components/PinnedPosts";
 import BookmarkIcon from "@components/@Icons/BookmarkIcon";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import URLFilteredListSuspense from "@app/components/Filters/URLFilteredListSuspense";
+import URLFilteredListSuspense from "@components/Filters/URLFilteredListSuspense";
 
 const cachedPosts = unstable_cache(
   getAllSuggestedPosts,

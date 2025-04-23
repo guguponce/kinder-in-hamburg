@@ -5,7 +5,7 @@ import BadenGallery from "./BadenGallery";
 import Link from "next/link";
 import { getWeatherData } from "@app/api/weatherAPI";
 import WeatherDisplay from "../../@Weather/WeatherDisplay";
-import Banner from "@app/components/Banner";
+import Banner from "@components/Banner";
 
 export default async function SommerInHamburgBanner() {
   const weather = await getWeatherData();

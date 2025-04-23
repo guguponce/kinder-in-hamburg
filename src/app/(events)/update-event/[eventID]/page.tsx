@@ -1,5 +1,5 @@
 import { getEventWithID } from "@app/api/dbActions";
-import ClearLatLonButton from "@app/components/@Icons/@Flohmarkt/ClearLatLonButton";
+import ClearLatLonButton from "@components/@Icons/@Flohmarkt/ClearLatLonButton";
 import AdminRoute from "@app/providers/AdminRoute";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
 import FlohForm from "@components/@FlohForm/FlohForm";
@@ -8,7 +8,7 @@ import { getServerUser } from "@app/api/auth/supabaseAuth";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import React from "react";
-import AdminEditButtons from "@app/components/@Buttons/AdminEditButtons";
+import AdminEditButtons from "@components/@Buttons/AdminEditButtons";
 
 export default async function UpdateEventPage({
   params: { eventID },

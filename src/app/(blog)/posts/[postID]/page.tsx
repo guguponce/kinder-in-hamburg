@@ -3,7 +3,7 @@ import NotFound from "@components/@NotFound/NotFound";
 import PostTemplate from "@components/PostTemplate";
 import React from "react";
 import AdminRoute from "@app/providers/AdminRoute";
-import AdminEditButtons from "@app/components/@Buttons/AdminEditButtons";
+import AdminEditButtons from "@components/@Buttons/AdminEditButtons";
 import { redirect } from "next/navigation";
 import { getServerUser } from "@app/api/auth/supabaseAuth";
 export default async function CurrentPostPage({

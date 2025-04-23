@@ -1,5 +1,5 @@
 "use client";
-import ShuffleGallery from "@app/components/@Cards/ShuffleGallery";
+import ShuffleGallery from "@components/@Cards/ShuffleGallery";
 import { iPost, iSpielplatz } from "@app/utils/types";
 import React, { useMemo } from "react";
 

@@ -1,13 +1,13 @@
 "use client";
-import GeneralMap from "@app/components/@Map/GeneralMap";
-import PostPopUP from "@app/components/@Map/PopUpsMarkers/PostPopUP";
+import GeneralMap from "@components/@Map/GeneralMap";
+import PostPopUP from "@components/@Map/PopUpsMarkers/PostPopUP";
 import { joinAddress } from "@app/utils/functions";
 import { iPost, iSpielplatz } from "@app/utils/types";
 import { Marker } from "react-leaflet";
 import React, { memo } from "react";
-import SpielplatzPopUP from "@app/components/@Map/PopUpsMarkers/SpielplatzPopUP";
+import SpielplatzPopUP from "@components/@Map/PopUpsMarkers/SpielplatzPopUP";
 import { divIcon } from "leaflet";
-import { createStandortMapIcon } from "@app/components/@Map/functions";
+import { createStandortMapIcon } from "@components/@Map/functions";
 
 const badeseenColor = "#4b6ebe";
 const freibaederColor = "#4b98be";

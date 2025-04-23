@@ -7,7 +7,7 @@ import Link from "next/link";
 import NotFound from "@components/@NotFound/NotFound";
 import { iUserMetadata } from "@app/api/auth/types";
 import dynamic from "next/dynamic";
-const PostForm = dynamic(() => import("@app/components/@PostForm/PostForm"));
+const PostForm = dynamic(() => import("@components/@PostForm/PostForm"));
 
 export default async function ApproveSuggestedPostPage({
   params,

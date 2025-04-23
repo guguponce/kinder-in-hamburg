@@ -1,5 +1,5 @@
 "use client";
-import Button from "@app/components/@Buttons/Button";
+import Button from "@components/@Buttons/Button";
 import {
   revalidateFlohmarkt,
   revalidatePost,

@@ -1,7 +1,7 @@
 "use client";
-import ImgPriorityCard from "@app/components/@Cards/ImgPriorityCard";
-import ArrowGallery from "@app/components/ArrowGallery";
-import ScrollableContainer from "@app/components/ScrollableContainer";
+import ImgPriorityCard from "@components/@Cards/ImgPriorityCard";
+import ArrowGallery from "@components/ArrowGallery";
+import ScrollableContainer from "@components/ScrollableContainer";
 import { haversineDistance } from "@app/utils/functions";
 import { iSpielplatz } from "@app/utils/types";
 import React, { useCallback, useMemo, useRef } from "react";

@@ -8,7 +8,7 @@ import {
 } from "@app/api/dbActions";
 import { iUserMetadata } from "@app/api/auth/types";
 import dynamic from "next/dynamic";
-const PostForm = dynamic(() => import("@app/components/@PostForm/PostForm"));
+const PostForm = dynamic(() => import("@components/@PostForm/PostForm"));
 export default async function AddCopiedFlohmarkt({
   params,
 }: {

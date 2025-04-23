@@ -4,7 +4,7 @@ import React from "react";
 import { getTodayNexMonday, separateByDate } from "@app/utils/functions";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
 import Link from "next/link";
-import AddLatLon from "@app/components/@Buttons/AddLatLon";
+import AddLatLon from "@components/@Buttons/AddLatLon";
 import { iFlohmarkt } from "@app/utils/types";
 import { Metadata } from "next";
 import Attraktionen from "./Attraktionen";
@@ -12,7 +12,7 @@ import AdventsEvents from "./AdventsEvents";
 import WeihnachtsmaerkteHero from "./WeihnachtsmaerkteHero";
 import WeihMapContainer from "./WeihMapContainer";
 import { unstable_cache } from "next/cache";
-import Banner from "@app/components/Banner";
+import Banner from "@components/Banner";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {

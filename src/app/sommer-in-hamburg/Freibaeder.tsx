@@ -1,4 +1,4 @@
-import ScrollableCardList from "@app/components/@Cards/ScrollableCardList";
+import ScrollableCardList from "@components/@Cards/ScrollableCardList";
 import { iPost } from "@app/utils/types";
 import { removeCopyrightLine } from "@app/utils/functions";
 import React from "react";

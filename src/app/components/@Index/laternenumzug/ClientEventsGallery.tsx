@@ -1,6 +1,6 @@
 "use client";
-import TriangleIcon from "@app/components/@Icons/TriangleIcon";
-import FlohmarktPoster from "@app/components/@Cards/FlohmarktPoster";
+import TriangleIcon from "@components/@Icons/TriangleIcon";
+import FlohmarktPoster from "@components/@Cards/FlohmarktPoster";
 import { getDate } from "@app/utils/functions";
 import { iFlohmarkt } from "@app/utils/types";
 import Link from "next/link";

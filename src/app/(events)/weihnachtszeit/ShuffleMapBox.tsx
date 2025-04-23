@@ -2,7 +2,7 @@
 import { iFlohmarkt } from "@app/utils/types";
 import React, { useMemo } from "react";
 import Link from "next/link";
-import ShuffleGallery from "@app/components/@Cards/ShuffleGallery";
+import ShuffleGallery from "@components/@Cards/ShuffleGallery";
 import { cn } from "@app/utils/functions";
 import DynamicWeihMap from "./DynamicWeihMap";
 

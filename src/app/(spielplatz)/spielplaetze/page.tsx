@@ -1,12 +1,12 @@
 import React from "react";
 import { getAllSpielplaetze } from "@app/api/spActions";
 import AdminRoute from "@app/providers/AdminRoute";
-import HorizontalCard from "@app/components/@Cards/HorizontalCard";
+import HorizontalCard from "@components/@Cards/HorizontalCard";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { separateInBezirke } from "@app/utils/functions";
-import ExpandableContainer from "@app/components/ExpandableContainer";
-import ApproveButton from "@app/components/@Buttons/ApproveButton";
+import ExpandableContainer from "@components/ExpandableContainer";
+import ApproveButton from "@components/@Buttons/ApproveButton";
 
 const DynamicSielplaetzeMap = dynamic(() => import("./DynamicSielplaetzeMap"), {
   ssr: false,

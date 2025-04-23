@@ -3,9 +3,9 @@ import {
   createArrayQueryString,
   createQueryString,
 } from "@app/(blog)/posts/filterFunctions";
-import CloseIcon from "@app/components/@Icons/CloseIcon";
-import FilterIcon from "@app/components/@Icons/FilterIcon";
-import ScrollableContainer from "@app/components/ScrollableContainer";
+import CloseIcon from "@components/@Icons/CloseIcon";
+import FilterIcon from "@components/@Icons/FilterIcon";
+import ScrollableContainer from "@components/ScrollableContainer";
 import { cn } from "@app/utils/functions";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useCallback, useEffect, useState } from "react";

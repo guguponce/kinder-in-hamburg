@@ -1,5 +1,5 @@
 "use client";
-import CloseIcon2 from "@app/components/@Icons/CloseIcon2";
+import CloseIcon2 from "@components/@Icons/CloseIcon2";
 import React from "react";
 
 export const FilterButton = ({

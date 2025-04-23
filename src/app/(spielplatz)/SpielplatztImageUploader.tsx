@@ -5,7 +5,7 @@ import { convertAllFilesToWebp } from "@app/utils/functions";
 import { iSessionUser } from "@app/utils/types";
 import { handleUploadToSupabaseStorage } from "@app/api/storageActions";
 import { getAllImagesURLFromSupabaseFolder } from "@app/api/spActions";
-import ImageUploaderUI from "@app/components/@PostForm/ImageUploaderUI";
+import ImageUploaderUI from "@components/@PostForm/ImageUploaderUI";
 
 interface ImageUploaderProps {
   setImagesUrlsReady: React.Dispatch<

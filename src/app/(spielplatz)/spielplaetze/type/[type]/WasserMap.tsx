@@ -1,4 +1,4 @@
-import MarkersLists from "@app/components/@Map/PopUpsMarkers/MarkersLists";
+import MarkersLists from "@components/@Map/PopUpsMarkers/MarkersLists";
 import { joinAddress } from "@app/utils/functions";
 import { iListsFPS, iPost, iSpielplatz } from "@app/utils/types";
 import dynamic from "next/dynamic";

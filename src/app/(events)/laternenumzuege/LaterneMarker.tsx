@@ -1,7 +1,7 @@
 "use client";
 import { Marker } from "react-leaflet";
 import { divIcon } from "leaflet";
-import FlohmarktPopUP from "@app/components/@Map/PopUpsMarkers/FlohmarktPopUP";
+import FlohmarktPopUP from "@components/@Map/PopUpsMarkers/FlohmarktPopUP";
 
 export const laterneIcon = divIcon({
   iconSize: [35, 35],

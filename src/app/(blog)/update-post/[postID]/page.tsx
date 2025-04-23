@@ -6,8 +6,8 @@ import { redirect } from "next/navigation";
 import NotFound from "@components/@NotFound/NotFound";
 import AdminRoute from "@app/providers/AdminRoute";
 import dynamic from "next/dynamic";
-import AdminEditButtons from "@app/components/@Buttons/AdminEditButtons";
-const PostForm = dynamic(() => import("@app/components/@PostForm/PostForm"));
+import AdminEditButtons from "@components/@Buttons/AdminEditButtons";
+const PostForm = dynamic(() => import("@components/@PostForm/PostForm"));
 
 export default async function updateApprovedPostPage({
   params,

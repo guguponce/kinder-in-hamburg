@@ -1,5 +1,5 @@
 import { iFlohmarkt } from "@app/utils/types";
-import BezirkableList from "@app/components/BezirkableList";
+import BezirkableList from "@components/BezirkableList";
 import React from "react";
 
 export default function WeihnachtsmaerkteHero({

@@ -1,6 +1,6 @@
-import FlohmarktPoster from "@app/components/@Cards/FlohmarktPoster";
-import HorizontalCard from "@app/components/@Cards/HorizontalCard";
-import ScrollableContainer from "@app/components/ScrollableContainer";
+import FlohmarktPoster from "@components/@Cards/FlohmarktPoster";
+import HorizontalCard from "@components/@Cards/HorizontalCard";
+import ScrollableContainer from "@components/ScrollableContainer";
 import { addressWithoutCity, getDate } from "@app/utils/functions";
 import { iFlohmarkt } from "@app/utils/types";
 import React from "react";

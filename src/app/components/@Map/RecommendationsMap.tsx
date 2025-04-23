@@ -8,8 +8,8 @@ import {
   getSpielplatzFromBezirkStadtteil,
   getSpielplatzWithID,
 } from "@app/api/spActions";
-import StandortIcon from "@app/components/@Icons/StandortIcon";
-import MarkersLists from "@app/components/@Map/PopUpsMarkers/MarkersLists";
+import StandortIcon from "@components/@Icons/StandortIcon";
+import MarkersLists from "@components/@Map/PopUpsMarkers/MarkersLists";
 import { PROXIMATE_STADTTEILE_FROM_OTHER_BEZIRK } from "@app/utils/constants";
 import { cn, filterByDistance, getTodayNexMonday } from "@app/utils/functions";
 import {

@@ -1,4 +1,4 @@
-import ScrollableCardList from "@app/components/@Cards/ScrollableCardList";
+import ScrollableCardList from "@components/@Cards/ScrollableCardList";
 import { iPost } from "@app/utils/types";
 import React from "react";
 import WasserSectionTemplate from "./WasserSectionTemplate";

@@ -4,12 +4,12 @@ import BezirkeScrollableEvents from "@components/BezirkeScrollableEvents";
 import { getTodayNexMonday } from "@app/utils/functions";
 import Link from "next/link";
 import React from "react";
-import BezirkableList from "@app/components/BezirkableList";
+import BezirkableList from "@components/BezirkableList";
 import dynamic from "next/dynamic";
 import { Metadata } from "next";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
-import MainIntroductionText from "@app/components/@PostForm/MainIntroductionText";
-import StandortIcon from "@app/components/@Icons/StandortIcon";
+import MainIntroductionText from "@components/@PostForm/MainIntroductionText";
+import StandortIcon from "@components/@Icons/StandortIcon";
 import OtherEventsHorizontalCards from "./OtherEventsHorizontalCards";
 
 const DynamicFlohmarktMap = dynamic(

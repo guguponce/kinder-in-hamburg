@@ -1,5 +1,5 @@
 "use client";
-import MarkersLists from "@app/components/@Map/PopUpsMarkers/MarkersLists";
+import MarkersLists from "@components/@Map/PopUpsMarkers/MarkersLists";
 import { iAddress, iPost } from "@app/utils/types";
 import React, { useMemo, useRef, useState } from "react";
 import GeneralMap from "@components/@Map/GeneralMap";
@@ -7,10 +7,10 @@ import { Marker, Popup } from "react-leaflet";
 import { getPlainText, joinAddress } from "@app/utils/functions";
 import { divIcon } from "leaflet";
 import Link from "next/link";
-import HorizontalCard from "@app/components/@Cards/HorizontalCard";
-import ExpandableContainer from "@app/components/ExpandableContainer";
-import { createStandortMapIcon } from "@app/components/@Map/functions";
-import StandortIcon from "@app/components/@Icons/StandortIcon";
+import HorizontalCard from "@components/@Cards/HorizontalCard";
+import ExpandableContainer from "@components/ExpandableContainer";
+import { createStandortMapIcon } from "@components/@Map/functions";
+import StandortIcon from "@components/@Icons/StandortIcon";
 
 const ExpandableContainerMemo = React.memo(ExpandableContainer);
 const OptionalExpandableContainer = ({

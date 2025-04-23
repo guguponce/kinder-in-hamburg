@@ -1,10 +1,10 @@
 import React from "react";
 import StatusSetter from "./StatusSetter";
 import AdminRoute from "@app/providers/AdminRoute";
-import AddLatLon from "@app/components/@Buttons/AddLatLon";
+import AddLatLon from "@components/@Buttons/AddLatLon";
 import OldButtonSetter from "./OldButtonSetter";
 import ErrorFetchingData from "@components/@NotFound/ErrorFetchingData";
-import HorizontalCard from "@app/components/@Cards/HorizontalCard";
+import HorizontalCard from "@components/@Cards/HorizontalCard";
 import { addressWithoutCity, isTypeFlohmarkt } from "@app/utils/functions";
 import { getAllFlohmaerteSeparatedByStatus } from "@app/api/dbActions";
 import { unstable_cache } from "next/cache";

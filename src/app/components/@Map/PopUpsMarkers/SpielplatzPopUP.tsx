@@ -1,5 +1,5 @@
 "use client";
-import StandortIcon from "@app/components/@Icons/StandortIcon";
+import StandortIcon from "@components/@Icons/StandortIcon";
 import Link from "next/link";
 import React from "react";
 import { Popup } from "react-leaflet";

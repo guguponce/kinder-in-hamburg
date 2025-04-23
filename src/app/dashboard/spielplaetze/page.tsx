@@ -1,4 +1,4 @@
-import HorizontalCard from "@app/components/@Cards/HorizontalCard";
+import HorizontalCard from "@components/@Cards/HorizontalCard";
 import NotFound from "@components/@NotFound/NotFound";
 import React from "react";
 import StatusSetter from "../StatusSetter";

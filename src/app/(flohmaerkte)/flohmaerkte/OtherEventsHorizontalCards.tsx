@@ -1,6 +1,6 @@
-import { getAllEventsFromType, getAllEventsThisWeek } from "@app/api/dbActions";
-import HorizontalCard from "@app/components/@Cards/HorizontalCard";
-import ScrollableContainer from "@app/components/ScrollableContainer";
+import { getAllEventsThisWeek } from "@app/api/dbActions";
+import HorizontalCard from "@components/@Cards/HorizontalCard";
+import ScrollableContainer from "@components/ScrollableContainer";
 import {
   addressWithoutCity,
   getDate,

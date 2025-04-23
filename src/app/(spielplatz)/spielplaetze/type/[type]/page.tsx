@@ -1,6 +1,6 @@
 import { iSPType } from "@app/utils/types";
 import { getTypeSpielplaetze } from "@app/api/spActions";
-import NotFound from "@app/components/@NotFound/NotFound";
+import NotFound from "@components/@NotFound/NotFound";
 import { joinAddress } from "@app/utils/functions";
 import dynamic from "next/dynamic";
 import React from "react";

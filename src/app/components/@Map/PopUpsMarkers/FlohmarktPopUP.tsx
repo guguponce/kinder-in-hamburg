@@ -1,5 +1,5 @@
 "use client";
-import StandortIcon from "@app/components/@Icons/StandortIcon";
+import StandortIcon from "@components/@Icons/StandortIcon";
 import { getDate } from "@app/utils/functions";
 import Link from "next/link";
 import React from "react";

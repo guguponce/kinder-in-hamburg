@@ -1,5 +1,5 @@
 "use client";
-import StandortIcon from "@app/components/@Icons/StandortIcon";
+import StandortIcon from "@components/@Icons/StandortIcon";
 import { joinAddress } from "@app/utils/functions";
 import { iAddress } from "@app/utils/types";
 import Link from "next/link";

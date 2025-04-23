@@ -11,9 +11,9 @@ import {
   createWeihnachtsmarktIcon,
   createNormalSizeIcon,
 } from "@components/@Map/functions";
-import Button from "@app/components/@Buttons/Button";
+import Button from "@components/@Buttons/Button";
 import WeihnachtsmarktIcon from "@components/@Icons/@Events/WeihnachtsmarktIcon";
-import BoyGirlIcon from "@app/components/@Icons/@Events/BoyGirlIcon";
+import BoyGirlIcon from "@components/@Icons/@Events/BoyGirlIcon";
 
 const weihnachtsmarktIcon = createWeihnachtsmarktIcon(24);
 const smallWeihnachtsmarktIcon = createWeihnachtsmarktIcon(20);

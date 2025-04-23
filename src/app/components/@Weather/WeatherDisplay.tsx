@@ -1,4 +1,4 @@
-import WIcon from "@app/components/@Icons/@WeatherIcon/WeatherIcon";
+import WIcon from "@components/@Icons/@WeatherIcon/WeatherIcon";
 import { WEATHER_CODES } from "@app/utils/constants";
 import { whenWillRainLater } from "@app/utils/functions";
 import { iWeatherData } from "@app/utils/types";

@@ -2,8 +2,8 @@ import { getThisWeekEvents } from "@app/api/dbActions";
 import React from "react";
 import ArrowGalleryContainer from "./ArrowGalleryContainer";
 import { PROXIMATE_STADTTEILE_FROM_OTHER_BEZIRK } from "@app/utils/constants";
-import FlohmarktPoster from "@app/components/@Cards/FlohmarktPoster";
-import ScrollableContainer from "@app/components/ScrollableContainer";
+import FlohmarktPoster from "@components/@Cards/FlohmarktPoster";
+import ScrollableContainer from "@components/ScrollableContainer";
 import { haversineDistance } from "@app/utils/functions";
 
 export default async function FlohmaerkteNearby({

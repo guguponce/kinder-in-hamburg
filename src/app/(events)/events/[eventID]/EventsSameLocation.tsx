@@ -1,6 +1,6 @@
 import { getEventsFromSameLocation } from "@app/api/dbActions";
-import TextPriorityCard from "@app/components/@Cards/TextPriorityCard";
-import ScrollableContainer from "@app/components/ScrollableContainer";
+import TextPriorityCard from "@components/@Cards/TextPriorityCard";
+import ScrollableContainer from "@components/ScrollableContainer";
 import { cn, getDate, parseDescriptionWithTags } from "@app/utils/functions";
 import { iFlohmarkt } from "@app/utils/types";
 import React from "react";

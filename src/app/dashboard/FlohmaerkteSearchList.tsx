@@ -1,6 +1,6 @@
 "use client";
-import FlohPostersList from "@app/components/FlohPostersList";
-import ScrollableContainer from "@app/components/ScrollableContainer";
+import FlohPostersList from "@components/FlohPostersList";
+import ScrollableContainer from "@components/ScrollableContainer";
 import { iFlohmarkt } from "@app/utils/types";
 import React from "react";
 

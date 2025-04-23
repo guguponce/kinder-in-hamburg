@@ -1,15 +1,15 @@
 import { getApprovedEventsAndFlohmaerkte } from "@app/api/dbActions";
 import NotFound from "@components/@NotFound/NotFound";
-import BezirkeScrollableEvents from "@app/components/BezirkeScrollableEvents";
+import BezirkeScrollableEvents from "@components/BezirkeScrollableEvents";
 import { getTodayNexMonday } from "@app/utils/functions";
 import Link from "next/link";
 import React from "react";
-import BezirkableList from "@app/components/BezirkableList";
+import BezirkableList from "@components/BezirkableList";
 import dynamic from "next/dynamic";
 import { Metadata } from "next";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
 import { iFlohmarkt } from "@app/utils/types";
-import GeneralContainer from "@app/components/GeneralContainer";
+import GeneralContainer from "@components/GeneralContainer";
 
 const DynamicEventsMap = dynamic(
   () => import("../../components/@Map/DynamicEventsMap"),

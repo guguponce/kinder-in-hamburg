@@ -1,6 +1,6 @@
 import { getFutureApprovedEventsFromType } from "@app/api/dbActions";
 import NotFound from "@components/@NotFound/NotFound";
-import BezirkableList from "@app/components/BezirkableList";
+import BezirkableList from "@components/BezirkableList";
 import React from "react";
 import {
   addressWithoutCity,
@@ -10,12 +10,12 @@ import {
 import dynamic from "next/dynamic";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
 import Link from "next/link";
-import AddLatLon from "@app/components/@Buttons/AddLatLon";
-import ClientLaterneGallery from "@app/components/@Index/laternenumzug/ClientEventsGallery";
-import HorizontalCard from "@app/components/@Cards/HorizontalCard";
-import ScrollableContainer from "@app/components/ScrollableContainer";
+import AddLatLon from "@components/@Buttons/AddLatLon";
+import ClientLaterneGallery from "@components/@Index/laternenumzug/ClientEventsGallery";
+import HorizontalCard from "@components/@Cards/HorizontalCard";
+import ScrollableContainer from "@components/ScrollableContainer";
 import { redirect } from "next/navigation";
-import Banner from "@app/components/Banner";
+import Banner from "@components/Banner";
 
 export const metadata = {
   title: "Laternenumzüge",
