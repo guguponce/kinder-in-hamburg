@@ -125,7 +125,7 @@ const CustomPre = ({ text }: { text: string }) => {
         wordWrap: "break-word",
       }}
       key={text}
-      className={`text-wrap py-1 max-w-full w-full ${descriptionFont.className}`}
+      className={`text-wrap py-1 max-w-full w-full ${descriptionFont.className} font-[500]`}
     >
       {formatText(text)}
     </pre>
