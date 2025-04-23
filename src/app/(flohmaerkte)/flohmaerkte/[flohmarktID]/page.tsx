@@ -108,7 +108,7 @@ export default async function FlohmarktPage({
           />
         </AdminServerComponent>
       </FlohmarktTemplate>
-      <section className="w-full flex flex-wrap-reverse xl:flex-wrap justify-center gap-2">
+      <section className="w-full flex flex-wrap-reverse lg:flex-wrap justify-center gap-2 px-2">
         <FlohmarktPageMapContainer
           spielplaetzeAround={spielplaetzeNearby}
           currentTarget={flohmarkt}
