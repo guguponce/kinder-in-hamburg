@@ -8,6 +8,7 @@ import RecommendationsMap from "@components/@Map/RecommendationsMap";
 import TopLinks from "./@Templates/TopLinks";
 import LocationBox from "./@Templates/LocationBox";
 import LinksBox from "./@Templates/LinksBox";
+import PageTitle from "./PageTitle";
 
 export default function PostTemplate({
   post: {
@@ -47,7 +48,11 @@ export default function PostTemplate({
           pinnedPost={pinnedPost}
           title={title}
         />
-        <h1 className="text-4xl text-center font-bold">{title}</h1>
+        <PageTitle
+          title={title}
+          className="text-hh-50 lg:mb-2"
+          textShadow="0 0 16px rgb(0,0,0,0.8)"
+        />
         {!!image?.length && (
           <section
             id="posts-images"

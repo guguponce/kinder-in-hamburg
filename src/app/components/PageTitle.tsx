@@ -5,9 +5,11 @@ import { cn } from "@app/utils/functions";
 export default function PageTitle({
   title,
   className,
+  textShadow = "2px 2px 2px rgba(0,0,0,0.5)",
 }: {
   title: string;
   className?: string;
+  textShadow?: string;
 }) {
   return (
     <h1
@@ -15,7 +17,7 @@ export default function PageTitle({
         `font-bold min-w-fit text-center text-3xl ${logoFont.className} tracking-wide text-4xl sm:text-5xl text-hh-50 m-4`,
         className
       )}
-      style={{ textShadow: "2px 2px 2px rgba(0,0,0,0.5)" }}
+      style={{ textShadow }}
     >
       {title}
     </h1>
