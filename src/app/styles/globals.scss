@@ -104,6 +104,11 @@ form {
   }
 }
 
+#page-title {
+  font-size: clamp(2rem, 5vw + 1rem, 3.5rem);
+  line-height: clamp(2.25rem, 5vw + 1.25rem, 3.75rem);
+}
+
 @mixin truncate($lines) {
   position: relative;
   display: -webkit-box;
@@ -446,4 +451,22 @@ form {
 }
 .alterRange:focus + .alterRangeTag {
   opacity: 1;
+}
+
+@layer utilities {
+  @keyframes scroll {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  .animate-scroll {
+    animation: scroll 15s linear infinite;
+    &:hover {
+      animation-play-state: paused;
+    }
+  }
 }
