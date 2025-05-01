@@ -52,6 +52,7 @@ const GeneralMap = ({
       zoom={zoom}
       scrollWheelZoom={true}
       closePopupOnClick
+      className="rounded"
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

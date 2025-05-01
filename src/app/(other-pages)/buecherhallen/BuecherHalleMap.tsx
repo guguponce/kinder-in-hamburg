@@ -6,7 +6,7 @@ import BuecherhalleIcon from "@components/@Icons/BuecherhalleIcon";
 const GeneralMap = dynamic(() => import("@components/@Map/GeneralMap"), {
   ssr: false,
   loading: () => (
-    <article className="w-full max-w-[800px] aspect-square sm:aspect-video max-h-[60vh]">
+    <article className="w-full max-w-[800px] aspect-square sm:aspect-video max-h-[60vh] overflow-hidden">
       <img
         src="/assets/bezirke/hamburg.webp"
         alt="Hamburg"
@@ -21,13 +21,16 @@ const MarkersLists = dynamic(
     ssr: false,
   }
 );
-export default function BuecherHalleMap({
+export default function BuecherhallenMap({
   buecherhallenPosts,
 }: {
   buecherhallenPosts: iPost[];
 }) {
   return (
-    <div className="w-full max-w-[800px] aspect-square sm:aspect-video max-h-[60vh] bg-hh-800 rounded-lg p-1 sm:py-2 flex flex-col gap-2 overflow-hidden">
+    <div
+      id="buecherhallenMap"
+      className="w-full max-w-[800px] aspect-square sm:aspect-video max-h-[60vh] bg-gradient-to-b from-hh-800 to-hh-700 rounded-lg p-1 sm:p-2 flex flex-col gap-2 overflow-hidden"
+    >
       <GeneralMap centerUserLocation>
         <MarkersLists
           cluster={false}
