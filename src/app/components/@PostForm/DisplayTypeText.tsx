@@ -2,6 +2,7 @@ import React from "react";
 import { TextType } from "../../utils/types";
 import Link from "next/link";
 import { descriptionFont } from "@app/styles/fonts/localfonts";
+import { cn } from "@app/utils/functions";
 
 const formatText = (text: string) => {
   // Regular expressions to match the formatting tags and their content
@@ -116,7 +117,13 @@ const formatText = (text: string) => {
 
   return formattedText;
 };
-const CustomPre = ({ text }: { text: string }) => {
+const CustomPre = ({
+  text,
+  className,
+}: {
+  text: string;
+  className?: string;
+}) => {
   return (
     <pre
       style={{
@@ -125,7 +132,10 @@ const CustomPre = ({ text }: { text: string }) => {
         wordWrap: "break-word",
       }}
       key={text}
-      className={`text-wrap py-1 max-w-full w-full ${descriptionFont.className} font-[500]`}
+      className={cn(
+        `text-wrap py-1 max-w-full w-full ${descriptionFont.className}`,
+        className
+      )}
     >
       {formatText(text)}
     </pre>
@@ -134,14 +144,16 @@ const CustomPre = ({ text }: { text: string }) => {
 export default function DisplayTypeText({
   type = "paragraph",
   text,
+  className,
 }: {
   type: TextType;
   text: string;
+  className?: string;
 }) {
   return (
     <>
       {type === "paragraph" ? (
-        <CustomPre text={text} />
+        <CustomPre text={text} className={className} />
       ) : type === "subtitle1" ? (
         <h2
           style={{

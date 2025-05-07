@@ -145,6 +145,20 @@ export default function FlohmarktTemplate({
                 />
               </div>
             )}
+            {!type && (
+              <div className="absolute top-0 left-0 w-full h-full flex-grow overflow-hidden bg-hh-100 bg-opacity-50 rounded-md flex flex-wrap opacity-20">
+                {Array(4)
+                  .fill(0)
+                  .map((_, i) => (
+                    <div
+                      className="w-1/2 h-1/2 min-h-[300px] flex justify-center items-center"
+                      key={i}
+                    >
+                      <FlohmarktBackground />
+                    </div>
+                  ))}
+              </div>
+            )}
             <PageTitle
               title={title}
               className="text-hh-50 lg:mb-2"
@@ -152,24 +166,11 @@ export default function FlohmarktTemplate({
             />
             {optionalComment && (
               <div className="h-[calc(100%-4rem)] relative">
-                {!type && (
-                  <div className="absolute top-0 left-0 w-full h-full flex-grow overflow-hidden bg-hh-100 bg-opacity-50 rounded-md flex flex-wrap opacity-20">
-                    {Array(4)
-                      .fill(0)
-                      .map((_, i) => (
-                        <div
-                          className="w-1/2 h-1/2 min-h-[300px] flex justify-center items-center"
-                          key={i}
-                        >
-                          <FlohmarktBackground />
-                        </div>
-                      ))}
-                  </div>
-                )}
                 <div id="optional-comment-box" className="max-w-full">
                   <DisplayTypeText
                     text={description || optionalComment}
                     type="paragraph"
+                    className="text-hh-900"
                   />
                 </div>
               </div>
