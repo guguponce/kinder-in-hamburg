@@ -1212,6 +1212,7 @@ export const getUserEvents = async (
   email: string,
   eventTable: string = "flohmaerkte"
 ) => {
+  const { today } = getTodayNexMonday();
   try {
     const { data, error } = await supabaseAdmin
       .from(eventTable)
@@ -1221,9 +1222,24 @@ export const getUserEvents = async (
     if (error) {
       throw new Error("There was a problem getting your suggested events.");
     }
-    const parsedEvents = parseAllFlohmaerkte(data);
 
-    return separateByStatus(parsedEvents);
+    const { old, future } = parseAllFlohmaerkte(data).reduce(
+      (acc, floh) => {
+        if (floh.date >= today) {
+          acc.future.push(floh);
+        } else {
+          acc.old.push(floh);
+        }
+        return acc;
+      },
+      { old: [], future: [] } as { old: iFlohmarkt[]; future: iFlohmarkt[] }
+    );
+    // flohs sorted ascending by date from today, and older ones at the end
+
+    return separateByStatus([
+      ...[...future].sort((a, b) => a.date - b.date),
+      ...old,
+    ]);
   } catch (error) {
     return false;
   }
