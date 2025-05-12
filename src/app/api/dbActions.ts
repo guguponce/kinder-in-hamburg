@@ -1238,7 +1238,7 @@ export const getUserEvents = async (
 
     return separateByStatus([
       ...[...future].sort((a, b) => a.date - b.date),
-      ...old,
+      ...[...old].sort((a, b) => b.date - a.date),
     ]);
   } catch (error) {
     return false;
