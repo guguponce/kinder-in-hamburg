@@ -66,7 +66,7 @@ export default function WeitereEvents({
         <React.Fragment key={date}>
           <article
             className={cn(
-              "flex flex-col gap-2 w-fit flex-grow bg-hh-400 rounded",
+              "flex flex-col gap-2 w-full flex-grow bg-hh-400 rounded",
               boxStyle
             )}
           >
@@ -79,9 +79,9 @@ export default function WeitereEvents({
               }
             >
               <h3 className="text-lg font-semibold text-hh-900">
-                {getDate(parseInt(date))}
+                {getDate(parseInt(date), "short")}
               </h3>
-              <div className="flex flex-wrap justify-center gap-2 items-stretch">
+              <div className="flex flex-wrap justify-between gap-2 items-stretch max-w-[360px] sm:max-w-none">
                 {flohmaerkteByDate.current[date].map(
                   (
                     { title, address, date, id, time, image, stadtteil, type },
@@ -90,7 +90,7 @@ export default function WeitereEvents({
                   ) => (
                     <div
                       key={id}
-                      className={`w-[360px] ${arr.length > 1 ? "md:w-[calc(50%-1rem)]" : ""}`}
+                      className={`w-[360px] max-w-full ${arr.length > 1 ? "sm:w-[calc(50%-1rem)]" : ""}`}
                     >
                       <HorizontalCard
                         type={type || "flohmarkt"}
