@@ -18,7 +18,7 @@ export default async function FlohmarktPageMapContainer({
   );
 
   return (
-    <div className="flex flex-col items-center gap-2 w-full max-w-[600px] md:max-w-[800px] rounded p-2">
+    <div className="flex flex-col items-center gap-2 w-full max-w-[600px] md:max-w-[800px] rounded p-1 xs:p-2">
       <RecommendationsMap
         containerClassName={mapClassName}
         bezirk={currentTarget.bezirk}

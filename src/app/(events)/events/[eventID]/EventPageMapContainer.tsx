@@ -22,7 +22,7 @@ export default async function EventPageMapContainer({
   );
   const { nextMonday } = getTodayNexMonday();
   return (
-    <div className="flex flex-col items-center gap-2 w-full max-w-[600px] md:max-w-[800px] rounded p-2">
+    <div className="flex flex-col items-center gap-2 w-full max-w-[600px] md:max-w-[800px] rounded p-1 xs:p-2">
       <RecommendationsMap
         bezirk={currentTarget.bezirk}
         currentType="event"
