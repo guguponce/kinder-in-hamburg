@@ -307,7 +307,7 @@ export default function DynamicEventsMap({
                           ? "Aktuelle Events"
                           : getDate(parseInt(date)) === getDate(today)
                             ? "Heute"
-                            : getDate(parseInt(date))}
+                            : getDate(parseInt(date), "short")}
                       </button>
                     ))}
                     {!!future.length && (

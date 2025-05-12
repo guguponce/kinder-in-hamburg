@@ -5,6 +5,7 @@ import DisplayTypeText from "./@PostForm/DisplayTypeText";
 import PostLogo from "./@Icons/@PostLogo/PostLogo";
 import UserAvatar from "./UserAvatar";
 import {
+  cn,
   getDate,
   getEndTime,
   getStartTime,
@@ -268,7 +269,11 @@ export default function FlohmarktTemplate({
             </div>
             <div
               id="date"
-              className={`w-full sm:max-w-[calc(50%-4px)]  ${!!image && "md:max-w-full"} min-h-fit py-2 px-4 rounded bg-hh-300 ${type === "laterne" ? "bg-opa75" : "bg-opacity-25"}`}
+              className={cn(
+                "w-full sm:max-w-[calc(50%-4px)] min-h-fit py-2 px-4 rounded bg-hh-300",
+                !!image && "md:max-w-full",
+                type === "laterne" ? "bg-opa75" : "bg-opacity-25"
+              )}
             >
               <h2 className="text-lg font-semibold">Datum:</h2>
               <div className="flex flex-col gap-1">
@@ -278,7 +283,8 @@ export default function FlohmarktTemplate({
                     dateTime={new Date(date).toLocaleDateString()}
                     className="block font-semibold"
                   >
-                    {getDate(date)} {endDate && ` - ${getDate(endDate)}`}
+                    {getDate(date, "short", false, true)}{" "}
+                    {endDate && ` - ${getDate(endDate)}`}
                   </time>
                 </div>
                 {!openHours && time && (
