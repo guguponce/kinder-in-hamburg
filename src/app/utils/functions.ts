@@ -217,15 +217,23 @@ export const checkCategory = (category: string) => {
 
 export const getDate = (
   date: number,
-  withDay: boolean = false,
-  onlyNumbers = false
+  withDay: boolean | "short" = false,
+  onlyNumbers = false,
+  year = false
 ) => {
   const d = new Date(date);
   const localeDate = d.toLocaleDateString("de-DE", {
     day: onlyNumbers ? "2-digit" : "numeric",
     month: onlyNumbers ? "2-digit" : "long",
+    year: year ? "numeric" : undefined,
+    timeZone: "Europe/Berlin",
   });
-  return withDay ? `${weekDays[d.getDay()]} - ${localeDate}` : localeDate;
+  const weekDay = d.toLocaleDateString("de-DE", {
+    weekday: withDay === "short" ? "short" : "long",
+  });
+  return `${
+    withDay ? weekDay + (withDay === "short" ? "., " : ". ") : ""
+  }${localeDate}`;
 };
 export function addressWithoutCity(address: string) {
   const match = address.match(/\b\d{5}\b/);
