@@ -10,14 +10,6 @@ export async function revalidatePost() {
   revalidatePath("/update-suggestion/", "layout");
   revalidateTag("posts");
 }
-export async function revalidateSpielplatz() {
-  revalidatePath("/", "layout");
-  revalidatePath("/dashboard", "layout");
-  revalidatePath("/spielplaetze", "layout");
-  revalidatePath("/update-spielplatz/", "layout");
-  revalidatePath("/update-suggested-spielplatz/", "layout");
-  revalidateTag("spielplaetze");
-}
 export async function revalidateFlohmarkt() {
   revalidatePath("/", "layout");
   revalidatePath("/dashboard", "layout");

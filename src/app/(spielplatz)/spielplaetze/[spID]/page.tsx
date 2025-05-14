@@ -27,7 +27,7 @@ const SpielplatzgeraeteBackground = dynamic(
 
 const getSpielplatzData = unstable_cache(
   getSpielplatzWithID,
-  ["spielplaetze"],
+  ["spielplaetze", "posts"],
   {
     revalidate: 600,
   }

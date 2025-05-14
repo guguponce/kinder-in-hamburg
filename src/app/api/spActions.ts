@@ -11,7 +11,7 @@ import {
   parseSpielplatz,
   separateByStatus,
 } from "@app/utils/functions";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { iSPType } from "@app/utils/types";
 import { createClient } from "@auth/server";
 
@@ -23,6 +23,7 @@ export async function revalidateSpielplatz() {
   revalidatePath("/spielplaetze", "layout");
   revalidatePath("/update-spielplatz/", "layout");
   revalidatePath("/update-suggestion/", "layout");
+  revalidateTag("spielplaetze");
 }
 
 const supabaseAdmin = createClient();
