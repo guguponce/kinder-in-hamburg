@@ -12,6 +12,7 @@ import LocationBox from "@components/@Templates/LocationBox";
 import DisplayTypeText from "@components/@PostForm/DisplayTypeText";
 import PageTitle from "@components/PageTitle";
 import { unstable_cache } from "next/cache";
+import { parseDescriptionWithTags } from "@app/utils/functions";
 
 interface SpielplatzPageProps {
   params: { spID: string };
@@ -41,9 +42,28 @@ export async function generateMetadata({
       title: "Spielplatz nicht gefunden",
       description: "Der Spielplatz wurde nicht gefunden.",
     };
+  const { title, text: description, image, bezirk, stadtteil } = spInfo;
   return {
-    title: spInfo.title,
-    description: "Spielplatz in " + spInfo.bezirk + " " + spInfo.text,
+    title: title,
+    description:
+      "Spielplatz in " + stadtteil || "" + bezirk
+        ? `,${bezirk}. `
+        : ". " + description || "",
+    openGraph: {
+      type: "website",
+      url: "https://www.kinder-in-hamburg.de/spielplaetze/" + params.spID,
+      title: title,
+      description: parseDescriptionWithTags(description?.slice(0, 100)),
+      images: spInfo.image || process.env.BASE_URL + "opengraph-image.png",
+      siteName: "Kinder in Hamburg",
+    },
+    twitter: {
+      description: parseDescriptionWithTags(description?.slice(0, 100)),
+      title: title,
+      images: spInfo.image || process.env.BASE_URL + "opengraph-image.png",
+      site: "https://www.kinder-in-hamburg.de/spielplaetze/" + params.spID,
+      card: "summary_large_image",
+    },
   };
 }
 

@@ -7,11 +7,64 @@ import dynamic from "next/dynamic";
 import { separateInBezirke } from "@app/utils/functions";
 import ExpandableContainer from "@components/ExpandableContainer";
 import ApproveButton from "@components/@Buttons/ApproveButton";
+import { Metadata } from "next";
 
 const DynamicSielplaetzeMap = dynamic(() => import("./DynamicSielplaetzeMap"), {
   ssr: false,
 });
 
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: "Spielplätze",
+    icons: "/favicon.ico",
+    description:
+      "Hier findet ihr Spielplätze aus verschiedenen Orten in Hamburg zusammengestellt.",
+    keywords: [
+      "hamburg mit kinder",
+      "hamburg familie spielplatz",
+      "hamburg kinder spielplatz",
+      "hamburg spielplaetze",
+      "hamburg spielplatz",
+      "hamburg kinder spielplaetze",
+      "kinder in hamburg",
+      "kinder hamburg",
+      "spielplaetze",
+      "spielplätze",
+      "spielplatz",
+      "kinder",
+      "familie",
+      "spielplaetze hamburg",
+      "spielplaetze kinder",
+      "spielplaetze familie",
+      "spielplaetze hamburg kinder",
+      "spielplaetze hamburg familie",
+      "spielplatz hamburg",
+      "spielplatz kinder",
+      "spielplatz familie",
+      "spielplatz hamburg kinder",
+      "spielplatz hamburg familie",
+      "playground hamburg",
+      "playgrounds hamburg",
+    ],
+    openGraph: {
+      type: "website",
+      url: "https://www.kinder-in-hamburg.de/spielplaetze/",
+      title: "Spielplätze",
+      description:
+        "Hier findet ihr Spielplätze aus verschiedenen Orten in Hamburg zusammengestellt.",
+      images: process.env.BASE_URL + "opengraph-image.png",
+      siteName: "Kinder in Hamburg",
+    },
+    twitter: {
+      title: "Spielplätze",
+      description:
+        "Hier findet ihr Spielplätze aus verschiedenen Orten in Hamburg zusammengestellt.",
+      images: process.env.BASE_URL + "opengraph-image.png",
+      site: "https://www.kinder-in-hamburg.de/spielplaetze/",
+      card: "summary_large_image",
+    },
+  };
+}
 export default async function SpielplaeztePage() {
   const spList = await getAllSpielplaetze();
   if (!spList) return <div>There was a problem retrieving posts</div>;

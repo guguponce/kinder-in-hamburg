@@ -9,6 +9,7 @@ import BookmarkIcon from "@components/@Icons/BookmarkIcon";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import URLFilteredListSuspense from "@components/Filters/URLFilteredListSuspense";
+import { Metadata } from "next";
 
 const cachedPosts = unstable_cache(
   getAllSuggestedPosts,
@@ -18,6 +19,60 @@ const cachedPosts = unstable_cache(
     tags: ["posts"],
   }
 );
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: "Posts Suggestions",
+    icons: "/favicon.ico",
+    description:
+      "Hier findet ihr Orte für Kinder, Jugendliche oder die ganze Familie aus verschiedenen Orten in Hamburg zusammengestellt.",
+    keywords: [
+      "hamburg mit kinder",
+      "hamburg familie post",
+      "hamburg kinder post",
+      "hamburg posts",
+      "hamburg post",
+      "hamburg kinder posts",
+      "kinder in hamburg",
+      "kinder hamburg",
+      "posts",
+      "posts",
+      "post",
+      "kinder",
+      "familie",
+      "posts hamburg",
+      "posts kinder",
+      "posts familie",
+      "posts hamburg kinder",
+      "posts hamburg familie",
+      "post hamburg",
+      "post kinder",
+      "post familie",
+      "post hamburg kinder",
+      "post hamburg familie",
+      "orte kinder hamburg",
+      "places kids hamburg",
+    ],
+    openGraph: {
+      type: "website",
+      url: "https://www.kinder-in-hamburg.de/posts/",
+      title: "Posts Suggestions",
+      description:
+        "Hier findet ihr Orte für Kinder, Jugendliche oder die ganze Familie aus verschiedenen Orten in Hamburg zusammengestellt.",
+      images: process.env.BASE_URL + "opengraph-image.png",
+      siteName: "Kinder in Hamburg",
+    },
+    twitter: {
+      title: "Posts Suggestions",
+      description:
+        "Hier findet ihr Orte für Kinder, Jugendliche oder die ganze Familie aus verschiedenen Orten in Hamburg zusammengestellt.",
+      images: process.env.BASE_URL + "opengraph-image.png",
+      site: "https://www.kinder-in-hamburg.de/posts/",
+      card: "summary_large_image",
+    },
+  };
+}
+
 const URLFilteredList = dynamic(
   () => import("@components/Filters/URLFilteredList"),
   { ssr: false, loading: () => <URLFilteredListSuspense /> }

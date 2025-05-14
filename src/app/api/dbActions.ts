@@ -7,6 +7,7 @@ import type {
   iPost,
   iSessionUser,
   iStringifiedFlohmarkt,
+  TypeAndText,
 } from "@app/utils/types";
 import { createClient } from "@auth/server";
 import { getServerUser, proofUser } from "@app/api/auth/supabaseAuth";
@@ -391,6 +392,28 @@ export const updatePostStatus = async <
 };
 
 // APPROVED BLOGPOSTS
+
+export const getPostMetadata = async (id: string) => {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("posts")
+      .select("title,bezirk,text,image,stadtteil")
+      .match({ id });
+    if (error) {
+      return false;
+    }
+    const { title, bezirk, stadtteil, text, image } = data[0] as {
+      title: string;
+      bezirk: iBezirk;
+      stadtteil: string;
+      text: TypeAndText[];
+      image?: string[];
+    };
+    return { title, bezirk, text, image: image?.[0], stadtteil };
+  } catch (error) {
+    return false;
+  }
+};
 
 export const getPostsWithTag = async (
   tags: string[],

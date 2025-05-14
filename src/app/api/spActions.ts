@@ -173,17 +173,19 @@ export const getSpielplatzMetadata = async (id: string) => {
   try {
     const { data, error } = await supabaseAdmin
       .from("spielplaetze")
-      .select("title,bezirk,text")
+      .select("title,bezirk,text,image,stadtteil")
       .match({ id });
     if (error) {
       return false;
     }
-    const { title, bezirk, text } = data[0] as {
+    const { title, bezirk, stadtteil, text, image } = data[0] as {
       title: string;
       bezirk: iBezirk;
+      stadtteil: string;
       text: string;
+      image?: string[];
     };
-    return { title, bezirk, text };
+    return { title, bezirk, text, image: image?.[0], stadtteil };
   } catch (error) {
     return false;
   }

@@ -53,7 +53,7 @@ export async function generateMetadata({
       title: title,
       images:
         flohmarktInfo.image || process.env.BASE_URL + "opengraph-image.png",
-      site: "https://www.kinder-in-hamburg.de/events/" + flohmarktID,
+      site: "https://www.kinder-in-hamburg.de/flohmaerkte/" + flohmarktID,
       card: "summary_large_image",
     },
   };
