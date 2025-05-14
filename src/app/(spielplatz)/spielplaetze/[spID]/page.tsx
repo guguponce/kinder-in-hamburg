@@ -29,6 +29,7 @@ const getSpielplatzData = unstable_cache(
   getSpielplatzWithID,
   ["spielplaetze", "posts"],
   {
+    tags: ["spielplaetze", "posts"],
     revalidate: 600,
   }
 );

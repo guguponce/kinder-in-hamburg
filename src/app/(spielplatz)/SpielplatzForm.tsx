@@ -181,8 +181,8 @@ export default function SpielplatzForm({
     )
       .then(() => {
         setSubmitError({ isError: false, errorMessage: "" });
-        setSuccessfulSubmit(true);
         revalidateSpielplatz();
+        setSuccessfulSubmit(true);
       })
       // .then(() => {
       //   deleteUnusedFlohmaerkteImages();
