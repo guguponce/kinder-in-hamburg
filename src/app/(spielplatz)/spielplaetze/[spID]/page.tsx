@@ -24,9 +24,13 @@ const SpielplatzgeraeteBackground = dynamic(
   }
 );
 
-const getSpielplatzData = unstable_cache(getSpielplatzWithID, ["spielplatz"], {
-  revalidate: 600,
-});
+const getSpielplatzData = unstable_cache(
+  getSpielplatzWithID,
+  ["spielplaetze"],
+  {
+    revalidate: 600,
+  }
+);
 
 export async function generateMetadata({
   params,

@@ -146,6 +146,7 @@ export default function SpielplatzForm({
     )
       .then(() => {
         setSubmitError({ isError: false, errorMessage: "" });
+        revalidateSpielplatz();
         setSuccessfulSubmit(true);
       })
       // .then(() => {
