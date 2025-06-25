@@ -52,7 +52,7 @@ Banner.TextSide = function BannerTextSide({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col items-center self-stretch gap-1 flex-grow px-2">
+    <div className="flex flex-col items-center self-stretch gap-1 flex-grow sm:px-2">
       {children}
     </div>
   );

@@ -24,7 +24,7 @@ export default async function SommerInHamburgBanner() {
   const planschbecken = (await getTypeSpielplaetze("planschbecken")) || [];
 
   return (
-    <section className="relative p-4 rounded-lg bg-gradient-to-br from-hh-500 to-hh-700 w-full flex gap-4 flex-col items-center max-w-[420px] sm:max-w-[800px] text-white shadow-xl bg-opacity-10 transition-all overflow-hidden">
+    <section className="relative p-4 rounded-lg bg-gradient-to-br from-hh-500 to-[#759EB8] w-full flex gap-4 flex-col items-center max-w-[420px] sm:max-w-[800px] text-white shadow-xl bg-opacity-10 transition-all overflow-hidden">
       <div
         className="w-96 h-96 absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 opacity-50 rounded-full bg-sun-400 z-0"
         style={{

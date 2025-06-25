@@ -32,8 +32,15 @@ export default async function SommerInHamburgPage() {
     return null;
   const weather = await getWeatherData();
 
+  const all = [...badeplaetze, ...wasserspielplaetze, ...planschbecken];
+  console.log(
+    "All water-related posts:",
+    all.length,
+    all.filter(({ status }) => status === "approved").length
+  );
+
   return (
-    <main className="relative max-w-[1000px] w-full mx-auto flex flex-col gap-4 items-center  bg-gradient-to-br from-hh-500 to-[#4b98be] p-4 rounded overflow-hidden">
+    <main className="relative max-w-[1000px] w-full mx-auto flex flex-col gap-4 items-center  bg-gradient-to-br from-hh-500 to-[#759EB8] p-4 rounded overflow-hidden">
       <div
         className="w-96 h-96 absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 opacity-50 rounded-full bg-sun-400 z-0"
         style={{
