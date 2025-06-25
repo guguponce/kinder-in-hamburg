@@ -126,7 +126,12 @@ export const getDescription = (text: string) => {
     : splittedText.join(" ");
 };
 
-export const getPlainText = (text: TypeAndText[], max?: number) => {
+export const getPlainText = (text: string | TypeAndText[], max?: number) => {
+  if (!text || !text.length) {
+    return "";
+  }
+  if (typeof text === "string")
+    return max && max > text.length ? text + "..." : text;
   const textArray = text.map(([_, val]) => val);
   const plainText = textArray.slice(0, max || textArray.length).join(" ");
 
