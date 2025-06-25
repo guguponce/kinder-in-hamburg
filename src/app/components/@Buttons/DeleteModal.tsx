@@ -87,6 +87,9 @@ export default function DeleteModal({
         router.push(callbackURL || "/spielplaetze");
       });
     }
+    await revalidateFlohmarkt();
+    await revalidateSpielplatz();
+    await revalidatePost();
   };
   return (
     <div className="fixed left-0 top-0 flex h-screen w-screen items-center justify-center bg-black bg-opacity-50 text-gray-800 z-[300]">
