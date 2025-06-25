@@ -1,8 +1,8 @@
 import {
+  getApprovedPostWithID,
   getEventsFromBezirkStadtteil,
   getEventWithID,
   getPostsFromBezirkStadtteile,
-  getSuggestedPostWithID,
 } from "@app/api/dbActions";
 import {
   getSpielplatzFromBezirkStadtteil,
@@ -89,9 +89,9 @@ async function getList(
         acc.currentItem ||
         acc.list[itemType]?.find((post) => post.id === id) ||
         (type === "post"
-          ? await getSuggestedPostWithID(id.toString())
-          : // ------------------- await getApprovedPostWithID(id.toString())
-            type === "flohmarkt"
+          ? //  await getSuggestedPostWithID(id.toString())
+            await getApprovedPostWithID(id.toString())
+          : type === "flohmarkt"
             ? await getEventWithID(id.toString())
             : type === "spielplatz"
               ? await getSpielplatzWithID(id.toString())
