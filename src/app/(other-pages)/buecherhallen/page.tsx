@@ -11,8 +11,9 @@ const getBuecherhallenPosts = unstable_cache(
   async () => {
     const posts = await getPostsWithTag(
       ["buecherhalle"],
-      // -----------------------------
-      "kih-approved-blogposts"
+      // -----------------------------"kih-approved-blogposts"
+
+      "kih-suggestions"
     );
     return posts;
   },
