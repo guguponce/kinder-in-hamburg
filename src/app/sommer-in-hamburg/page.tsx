@@ -9,6 +9,7 @@ import dynamic from "next/dynamic";
 import { getWeatherData } from "@app/api/weatherAPI";
 import WeatherDisplay from "@components/@Weather/WeatherDisplay";
 import PageTitle from "@app/components/PageTitle";
+import { isTypePost } from "@app/utils/functions";
 
 const WaterMapContainer = dynamic(() => import("./WaterMapContainer"), {
   ssr: false,
@@ -31,13 +32,6 @@ export default async function SommerInHamburgPage() {
   if ([...badeplaetze, ...wasserspielplaetze, ...planschbecken].length === 0)
     return null;
   const weather = await getWeatherData();
-
-  const all = [...badeplaetze, ...wasserspielplaetze, ...planschbecken];
-  console.log(
-    "All water-related posts:",
-    all.length,
-    all.filter(({ status }) => status === "approved").length
-  );
 
   return (
     <main className="relative max-w-[1000px] w-full mx-auto flex flex-col gap-4 items-center  bg-gradient-to-br from-hh-500 to-[#759EB8] p-4 rounded overflow-hidden">
