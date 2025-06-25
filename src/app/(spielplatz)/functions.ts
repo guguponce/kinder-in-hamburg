@@ -36,7 +36,7 @@ export const submitNewSpielplatz = async (
     lat: data.lat || parseFloat(latlon.lat),
     lon: data.lon || parseFloat(latlon.lon),
     text: data.text,
-    pinnedSpielplatz: data.pinnedSpielplatz === "true" ? true : false,
+    pinnedSpielplatz: data.pinnedSpielplatz,
     type: typeList,
     ausruestung: ausruestungList,
     spielgeraete: spielgaereteList,
@@ -60,7 +60,6 @@ export const submitUpdateSpielplatz = async (
   );
   if (!latlon.lat || !latlon.lon)
     return alert("Could not find the location of the Spielplatz");
-
   const minAge = data.minAge ? parseInt(data.minAge) : undefined;
   const maxAge = data.maxAge ? parseInt(data.maxAge) : undefined;
   const suggestedSpielplatz: iSpielplatz = {
@@ -80,7 +79,7 @@ export const submitUpdateSpielplatz = async (
     lat: data.lat || parseFloat(latlon.lat),
     lon: data.lon || parseFloat(latlon.lon),
     text: data.text,
-    pinnedSpielplatz: data.pinnedSpielplatz === "true" ? true : false,
+    pinnedSpielplatz: data.pinnedSpielplatz,
     type: typeList,
     ausruestung: ausruestungList,
     spielgeraete: spielgaereteList,
