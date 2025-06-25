@@ -393,13 +393,17 @@ export const updatePostStatus = async <
 
 // APPROVED BLOGPOSTS
 
-export const getPostMetadata = async (id: string) => {
+export const getPostMetadata = async (
+  id: string,
+  db: "kih-approved-blogposts" | "kih-suggestions" = "kih-approved-blogposts"
+) => {
   try {
     const { data, error } = await supabaseAdmin
-      .from("posts")
+      .from(db)
       .select("title,bezirk,text,image,stadtteil")
       .match({ id });
     if (error) {
+      console.log("Error fetching post metadata:");
       return false;
     }
     const { title, bezirk, stadtteil, text, image } = data[0] as {
@@ -411,6 +415,7 @@ export const getPostMetadata = async (id: string) => {
     };
     return { title, bezirk, text, image: image?.[0], stadtteil };
   } catch (error) {
+    console.error("Error fetching post metadata:", error);
     return false;
   }
 };
@@ -688,7 +693,6 @@ export const getApprovedPostWithID = async (id: string) => {
     const res = await supabaseAdmin
       .from("kih-approved-blogposts")
       .select("*")
-      .ilike("status", "approved")
       .match({ id });
     if (res.error) {
       throw new Error("The post with the id " + id + " was not found.");
@@ -758,12 +762,11 @@ export const getAllPostsIds = async (id?: string) => {
     return false;
   }
 };
-
 export const approveSuggestedPost = async (post: iPost) => {
   try {
     const { error } = await supabaseAdmin
       .from("kih-approved-blogposts")
-      .insert(post);
+      .insert({ ...post, status: "approved" });
     await updateSuggestionStatus(post.id, "approved");
     if (error) {
       throw new Error("There was a problem approving the post.");
@@ -774,7 +777,6 @@ export const approveSuggestedPost = async (post: iPost) => {
     throw new Error("There was a problem approving the post.");
   }
 };
-
 export const rejectSuggestedPost = async (id: number) => {
   try {
     const { data, error } = await supabaseAdmin
