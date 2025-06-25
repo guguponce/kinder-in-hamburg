@@ -120,7 +120,7 @@ export default function WeatherDisplay({
                 key={date.getTime()}
                 className="flex flex-col items-center justify-center"
               >
-                <h5 className="text-xs text-white">
+                <h5 className="text-xs text-hh-900">
                   <span className="text-sm font-semibold mr-1">{d}</span>
                   {day}.{month}
                 </h5>
@@ -130,7 +130,8 @@ export default function WeatherDisplay({
                   size="1.5rem"
                 />
                 <h5 className="text-sm text-white font-semibold hidden xl:block">
-                  {max}°/<span className="text-xs">{min}°</span>
+                  {max.toFixed(0)}°/
+                  <span className="text-xs">{min.toFixed(0)}°</span>
                 </h5>
               </div>
             );
