@@ -2,7 +2,7 @@
 import {
   createArrayQueryString,
   createQueryString,
-} from "@app/(blog)/posts/filterFunctions";
+} from "@app/components/Filters/filterFunctions";
 import CloseIcon from "@components/@Icons/CloseIcon";
 import FilterIcon from "@components/@Icons/FilterIcon";
 import ScrollableContainer from "@components/ScrollableContainer";
@@ -12,7 +12,7 @@ import React, { useCallback, useEffect, useState } from "react";
 
 interface iPostFilters {
   params: string;
-  type?: "categories" | "bezirke";
+  type?: "categories" | "bezirke" | "type";
   queryFromType?: string;
   availableCategories: string[];
   categoriesFilter: string[];
