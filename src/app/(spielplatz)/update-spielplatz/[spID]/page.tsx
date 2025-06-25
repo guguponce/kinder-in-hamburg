@@ -26,7 +26,8 @@ export default async function NewSpielplatzPage({
     !user?.email ||
     ![spielplatz.addedBy.email, process.env.ADMIN_EMAIL].includes(user.email)
   )
-    redirect("/flohmaerkte/" + spID);
+    redirect("/");
+
   const { email, full_name: name, picture: image } = user;
   return (
     <AdminRoute>
