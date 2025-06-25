@@ -18,7 +18,7 @@ import {
   filterCategoriesFX,
   filteredBySearchFX,
   filterStadtteileFX,
-  orderListFx,
+  orderPostsListFx,
   removeFilter,
   getAvailableStadtteile,
   getAvailableBezirke,
@@ -27,7 +27,7 @@ import {
   orderOptions,
   isTypeOrder,
   orderType,
-} from "../../(blog)/posts/filterFunctions";
+} from "./filterFunctions";
 import { FilterButton } from "../../(blog)/posts/DeleteFilters";
 import SearchInput from "../../(blog)/posts/SearchInput";
 import CloseIcon2 from "@components/@Icons/CloseIcon2";
@@ -94,7 +94,7 @@ export default function URLFilteredList({
 
   // MEMOIZED VALUES
   const orderedList = useMemo(
-    () => orderListFx(postsListRef, order),
+    () => orderPostsListFx(postsListRef, order),
     [postsListRef, order]
   );
   const filteredBySearch = useMemo(

@@ -40,8 +40,9 @@ export default function SearchInput({
         className="absolute end-0 flex h-full w-10 items-center justify-center rounded-[0_6px_6px_0] -outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
         aria-label="post search button"
         type="submit"
+        title="Suche"
         onClick={() => {
-          if (currentSearchQuery && currentSearchQuery !== searchQuery)
+          if (currentSearchQuery !== searchQuery)
             setSearchQuery(currentSearchQuery);
         }}
       >
