@@ -28,7 +28,7 @@ const createClusterGroupIcon =
     });
 const flohmarktIcon = createNormalSizeIcon("#7B3E5E");
 const postIcon = createNormalSizeIcon("#33404D");
-const spielplatzIcon = createNormalSizeIcon("#405b3a");
+const spielplatzIcon = createNormalSizeIcon("#405b3a", undefined, "#2d3d2a");
 const eventIcon = createNormalSizeIcon("#de6c13");
 const weihnachtsmarktIcon = createWeihnachtsmarktIcon(24);
 const desaturatedWeihnachtsmarktIcon = createWeihnachtsmarktIcon(24, true);
