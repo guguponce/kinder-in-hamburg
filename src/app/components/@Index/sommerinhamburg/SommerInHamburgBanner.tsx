@@ -24,15 +24,24 @@ export default async function SommerInHamburgBanner() {
   const planschbecken = (await getTypeSpielplaetze("planschbecken")) || [];
 
   return (
-    <section className="p-4 rounded-lg bg-gradient-to-b from-hh-600 to-hh-500 w-full flex gap-4 flex-col items-center max-w-[420px] sm:max-w-[800px] text-white shadow-xl bg-opacity-10 transition-all">
+    <section className="relative p-4 rounded-lg bg-gradient-to-br from-hh-500 to-hh-700 w-full flex gap-4 flex-col items-center max-w-[420px] sm:max-w-[800px] text-white shadow-xl bg-opacity-10 transition-all overflow-hidden">
+      <div
+        className="w-96 h-96 absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 opacity-50 rounded-full bg-sun-400 z-0"
+        style={{
+          background:
+            "radial-gradient(circle at 50% 50%, #ffd487 0%, #ffd487 25%, transparent 50%, transparent 100%)",
+        }}
+      ></div>
       <div className="sm:gap-2 flex flex-col sm:flex-row w-full items-stretch">
         <Banner.TextSide>
           <Banner.Title href={"/sommer-in-hamburg"}>
-            Sommer in Hamburg
+            Der Sommer ist endlich da
           </Banner.Title>
           <Banner.Text>
-            Der Sommer ist fast vorbei, aber wir haben noch ein paar
-            Empfehlungen für den letzten warmen Wochen!
+            {/* Der Sommer ist fast vorbei, aber wir haben noch ein paar
+            Empfehlungen für den letzten warmen Wochen! */}
+            Hier findet ihr praktische Tipps und schöne Orte, an denen ihr den
+            Sommer so richtig genießen könnt!
           </Banner.Text>
           {weather && <WeatherDisplay weather={weather} />}
         </Banner.TextSide>

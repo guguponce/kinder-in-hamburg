@@ -8,6 +8,7 @@ import Planschbecken from "./Planschbecken";
 import dynamic from "next/dynamic";
 import { getWeatherData } from "@app/api/weatherAPI";
 import WeatherDisplay from "@components/@Weather/WeatherDisplay";
+import PageTitle from "@app/components/PageTitle";
 
 const WaterMapContainer = dynamic(() => import("./WaterMapContainer"), {
   ssr: false,
@@ -30,13 +31,22 @@ export default async function SommerInHamburgPage() {
   if ([...badeplaetze, ...wasserspielplaetze, ...planschbecken].length === 0)
     return null;
   const weather = await getWeatherData();
+
   return (
-    <main className="max-w-[1000px] w-full mx-auto flex flex-col gap-4 items-center bg-hh-900 bg-opacity-20 p-4 rounded">
+    <main className="relative max-w-[1000px] w-full mx-auto flex flex-col gap-4 items-center  bg-gradient-to-br from-hh-500 to-[#4b98be] p-4 rounded overflow-hidden">
+      <div
+        className="w-96 h-96 absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 opacity-50 rounded-full bg-sun-400 z-0"
+        style={{
+          background:
+            "radial-gradient(circle at 50% 50%, #ffd487 0%, #ffd487 25%, transparent 50%, transparent 100%)",
+        }}
+      ></div>
       <div className="w-full flex flex-col items-center">
-        <h1 className="text-4xl font-bold text-hh-100 p-2 lg:p-4">
-          Sommer in Hamburg
-        </h1>
-        <p className="text-hh-100 p-2 lg:p-4 lg:py-0">
+        <PageTitle
+          className="text-4xl font-bold text-hh-100 p-2 lg:p-4"
+          title="Sommer in Hamburg"
+        ></PageTitle>
+        <p className="text-hh-50 p-2 lg:p-4 lg:py-0">
           In den heißen Monaten haben Kinder in Hamburg zahlreiche
           Gelegenheiten, draußen mit Wasser zu spielen. Die Stadt bietet eine
           große Auswahl an Möglichkeiten zur Abkühlung, darunter{" "}
