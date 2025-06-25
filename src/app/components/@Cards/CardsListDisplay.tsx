@@ -1,7 +1,7 @@
 import React from "react";
 
-import { type iPost } from "@app/utils/types";
-import { getPlainText } from "@app/utils/functions";
+import { iSpielplatz, type iPost } from "@app/utils/types";
+import { getPlainText, isTypePost } from "@app/utils/functions";
 import ImgPriorityCard from "./ImgPriorityCard";
 
 const ImgPriorityCardMemo = React.memo(ImgPriorityCard);
@@ -9,7 +9,7 @@ export default function CardsListDisplay({
   children,
   cardPosts,
 }: {
-  cardPosts: iPost[];
+  cardPosts: iPost[] | iSpielplatz[];
   children?: React.ReactNode;
 }) {
   return (
@@ -19,24 +19,32 @@ export default function CardsListDisplay({
         boxShadow: "inset 4px 4px 8px #bfc2c3, inset -4px -4px 8px #ffffff",
       }}
     >
-      {cardPosts.map(({ id, title, text, image, categories }) => (
-        <React.Fragment key={id}>
-          <ImgPriorityCardMemo
-            size="small"
-            id={id}
-            title={title}
-            aspectRatio={0.75}
-            image={
-              !!image?.length
-                ? image[0]
-                : categories.includes("Badeplatz")
-                  ? "/assets/icons/swim.svg"
-                  : "/assets/icons/spielplatz/spielplatz.svg"
-            }
-            description={getPlainText(text)}
-          />
-        </React.Fragment>
-      ))}
+      {cardPosts.map((card) => {
+        const { id, title, image } = card;
+        const categories = isTypePost(card) ? card.categories : card.type;
+        const description = isTypePost(card)
+          ? getPlainText(card.text)
+          : card.text;
+        return (
+          <React.Fragment key={id}>
+            <ImgPriorityCardMemo
+              size="small"
+              id={id}
+              title={title}
+              aspectRatio={0.75}
+              image={
+                !!image?.length
+                  ? image[0]
+                  : categories.includes("Badeplatz")
+                    ? "/assets/icons/swim.svg"
+                    : "/assets/icons/spielplatz/spielplatz.svg"
+              }
+              description={description}
+              link={isTypePost(card) ? `/posts/${id}` : `/spielplaetze/${id}`}
+            />
+          </React.Fragment>
+        );
+      })}
       {cardPosts.length === 0 && (
         <div className=" text-gray-500 text-lg h-1/2 flex items-center justify-center flex-col">
           <h3 className="text-lg md:text-2xl font-semibold">

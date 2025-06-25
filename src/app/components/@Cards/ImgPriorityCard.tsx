@@ -50,6 +50,7 @@ export default function ImgPriorityCard({
         cardContainerClassname
       )}
       role="link"
+      title={title}
       aria-label={`Explore ${title}`}
     >
       <div
