@@ -35,6 +35,50 @@ const LatLonSetterMap = dynamic(() => import("../@Map/LatLonSetterMap"), {
   ssr: false,
 });
 
+function CompareFlohsSingle({ floh }: { floh: Partial<iFlohmarkt> }) {
+  return (
+    <div className="max-w-[45%] flex flex-col gap-4 p-4 mb-4 bg-gray-800 rounded">
+      {Object.entries(floh)
+        .sort(([a], [b]) => a.localeCompare(b))
+        .map(([k, value]) => {
+          type ValTypes<T> = T extends iFlohmarkt ? T[keyof T] : never;
+          type Val = ValTypes<iFlohmarkt>;
+          return (
+            <div key={k} className="flex flex-col gap-2 ">
+              <label className="text-base font-semibold leading-7">
+                {k.charAt(0).toUpperCase() + k.slice(1)}
+              </label>
+              <div className="w-full max-w-full overflow-hidden text-gray-300">
+                {(value as Val) ? (
+                  typeof value === "string" ? (
+                    <p className="text-wrap py-1 max-w-full w-full">{value}</p>
+                  ) : typeof value === "number" ? (
+                    k === "id" ? (
+                      <span className="">{value}</span>
+                    ) : (
+                      <span className="">
+                        {new Date(value).toLocaleDateString("de-DE", {
+                          day: "2-digit",
+                          month: "short",
+                          year: "2-digit",
+                        })}
+                      </span>
+                    )
+                  ) : typeof value === "object" && value !== null ? (
+                    <span className="">{JSON.stringify(value)}</span>
+                  ) : (
+                    <span className="">{"Unsupported value type"}</span>
+                  )
+                ) : (
+                  <span className="">{"No value provided"}</span>
+                )}
+              </div>
+            </div>
+          );
+        })}
+    </div>
+  );
+}
 interface FlohFormProps {
   FlohForm: Partial<iFlohmarkt>;
   user: iSessionUser;
@@ -100,6 +144,8 @@ export default function FlohForm({
   const [closedDatesArray, setClosedDates] = React.useState<number[]>(
     closedDates || []
   );
+
+  const [newFloh, setNewFloh] = React.useState<iFlohmarkt | null>(null);
   const newID = useRef(Date.now());
   const {
     register,
@@ -109,7 +155,9 @@ export default function FlohForm({
     formState: { errors, isSubmitSuccessful, isDirty, isSubmitting, isLoading },
   } = useForm({
     defaultValues: {
-      status: status || "pending",
+      status: ["new-flohmarkt", "new-event"].includes(flohFormType)
+        ? "pending"
+        : status || "pending",
       id: id || newID.current,
       createdAt: createdAt,
       title: title,
@@ -130,7 +178,9 @@ export default function FlohForm({
       optionalComment: optionalComment || "",
       type: type || "",
       endDate,
-      closedDates: closedDatesArray.filter((d) => !Number.isNaN(d)),
+      closedDates: !closedDatesArray.length
+        ? undefined
+        : closedDatesArray.filter((d) => !Number.isNaN(d)),
     },
   });
   const onSubmitNewFlohmarkt = useCallback(
@@ -173,8 +223,15 @@ export default function FlohForm({
         type: !!data.type ? data.type : undefined,
 
         endDate: data.endDate,
-        closedDates: closedDatesArray.filter((d) => !Number.isNaN(d)),
+        closedDates: !closedDatesArray.length
+          ? undefined
+          : closedDatesArray.filter((d) => !Number.isNaN(d)),
       };
+      if (flohFormType === "new-flohmarkt") {
+        setNewFloh(eventSuggestion);
+      } else {
+        setNewFloh(null);
+      }
       addEvent(
         eventSuggestion,
         flohFormType === "new-event" ? "events" : "flohmaerkte"
@@ -243,7 +300,9 @@ export default function FlohForm({
         type: !!data.type ? data.type : undefined,
 
         endDate: data.endDate,
-        closedDates: closedDatesArray,
+        closedDates: !closedDatesArray.length
+          ? undefined
+          : closedDatesArray.filter((d) => !Number.isNaN(d)),
       };
       updateEvent(
         updatedEvent,
@@ -296,6 +355,31 @@ export default function FlohForm({
 
   return (
     <section id="flohmarkt-form-container" className="w-full">
+      <div id="compare-flohs" className="w-full flex gap-2">
+        <CompareFlohsSingle
+          floh={{
+            id,
+            createdAt,
+            title,
+            image,
+            address,
+            bezirk,
+            addedBy,
+            status,
+            date,
+            location,
+            time,
+            optionalComment,
+            type,
+            stadtteil,
+            lat,
+            lon,
+            endDate,
+            closedDates,
+          }}
+        />
+        {newFloh && <CompareFlohsSingle floh={newFloh} />}
+      </div>
       <UserInputBox setUserInput={setUserInput} userInput={userInput} />
       <FlohmarktImageUploader
         user={userInput}
