@@ -1,6 +1,6 @@
 import BezirkeScrollableEvents from "@components/BezirkeScrollableEvents";
 import React from "react";
-import { getTodayNexMonday } from "@app/utils/functions";
+import { getDate, getTodayNexMonday } from "@app/utils/functions";
 import { getThisWeekEvents } from "@app/api/dbActions";
 import dynamic from "next/dynamic";
 import TodaysFlohmaerkte from "../TodaysFlohmaerkte";
@@ -10,10 +10,11 @@ import { iFlohmarkt } from "@app/utils/types";
 import Link from "next/link";
 
 function sortByFlohmaerkteDate(list: iFlohmarkt[], today: number) {
-  const timezoneOffset = -120 * 60 * 1000;
+  const timezoneOffset = -120 * 60 * 1000 * 0;
   const utcMidnight = new Date();
   utcMidnight.setHours(24, 0, 0, 0);
   const nextMidnight = utcMidnight.getTime() + timezoneOffset;
+  console.log({ today: getDate(today), nextMidnight: getDate(nextMidnight) });
   return list
     .sort((a, b) => a.date - b.date)
     .reduce(
@@ -56,12 +57,13 @@ export default async function FlohmaerkteContainer() {
   if (!flohmaerkte) return <ErrorFetchingData type="Flohmärkte" />;
   const { today } = getTodayNexMonday();
   const { thisWeekFlohmaerkte, futureFlohmaerkte, todayFlohmaerkte } =
-    sortByFlohmaerkteDate(flohmaerkte, today - 1000 * 60 * 60);
+    sortByFlohmaerkteDate(flohmaerkte, today + 1000 * 60 * 60);
   const todayFlohmaerkteLength = todayFlohmaerkte.length;
   const thisWeekFlohmaerkteLength = thisWeekFlohmaerkte.length;
   const weekday = new Date().getDay();
   const isSunday = weekday === 0;
   const onlyToday = todayFlohmaerkteLength === thisWeekFlohmaerkteLength;
+  console.log();
   return (
     <section
       className={`rounded-lg bg-gradient-to-b from-[#d0d7da50] via-[#d0d7da50] to-hh-50 bg-opacity-25 w-[calc(100%-2rem)] p-1 sm:p-4 flex flex-col items-center ${thisWeekFlohmaerkteLength ? "min-h-[50vh] max-w-[1200px]" : "max-w-[800px]"} text-hh-50"`}
