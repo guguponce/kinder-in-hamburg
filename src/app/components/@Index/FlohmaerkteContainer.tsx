@@ -8,18 +8,25 @@ import ErrorFetchingData from "../@NotFound/ErrorFetchingData";
 import PaperPlane from "../@Icons/PaperPlane";
 import { iFlohmarkt } from "@app/utils/types";
 import Link from "next/link";
+import AdminClientComponent from "@app/providers/AdminClientComponents";
 
 function sortByFlohmaerkteDate(list: iFlohmarkt[], today: number) {
-  const timezoneOffset = -120 * 60 * 1000 * 0;
+  // ------------------------------------------------------
+  // Calculate the next midnight in local time
+  const timezoneOffset = -120 * 60 * 1000;
   const utcMidnight = new Date();
   utcMidnight.setHours(24, 0, 0, 0);
   const nextMidnight = utcMidnight.getTime() + timezoneOffset;
-  console.log({ today: getDate(today), nextMidnight: getDate(nextMidnight) });
+  console.log({
+    today: getDate(today),
+    nextMidnight: new Date(utcMidnight).toLocaleTimeString(),
+  });
   return list
     .sort((a, b) => a.date - b.date)
     .reduce(
       (acc, floh) => {
         if (floh.date < nextMidnight) {
+          console.log({ floh: new Date(floh.date).toLocaleTimeString() });
           acc.todayFlohmaerkte.push(floh);
           acc.thisWeekFlohmaerkte.push(floh);
         } else if (floh.date > today) {
@@ -55,7 +62,7 @@ const DynamicEventsMap = dynamic(() => import("../@Map/DynamicEventsMap"), {
 export default async function FlohmaerkteContainer() {
   const flohmaerkte = await getThisWeekEvents();
   if (!flohmaerkte) return <ErrorFetchingData type="Flohmärkte" />;
-  const { today } = getTodayNexMonday();
+  const { today, nextMonday } = getTodayNexMonday();
   const { thisWeekFlohmaerkte, futureFlohmaerkte, todayFlohmaerkte } =
     sortByFlohmaerkteDate(flohmaerkte, today + 1000 * 60 * 60);
   const todayFlohmaerkteLength = todayFlohmaerkte.length;
@@ -63,11 +70,24 @@ export default async function FlohmaerkteContainer() {
   const weekday = new Date().getDay();
   const isSunday = weekday === 0;
   const onlyToday = todayFlohmaerkteLength === thisWeekFlohmaerkteLength;
-  console.log();
+
+  const timezoneOffset = -120 * 60 * 1000;
+  const utcMidnight = new Date();
+  utcMidnight.setHours(24, 0, 0, 0);
+  const nextMidnight = utcMidnight.getTime() + timezoneOffset;
   return (
     <section
       className={`rounded-lg bg-gradient-to-b from-[#d0d7da50] via-[#d0d7da50] to-hh-50 bg-opacity-25 w-[calc(100%-2rem)] p-1 sm:p-4 flex flex-col items-center ${thisWeekFlohmaerkteLength ? "min-h-[50vh] max-w-[1200px]" : "max-w-[800px]"} text-hh-50"`}
     >
+      <AdminClientComponent>
+        {new Date(utcMidnight).toLocaleDateString() +
+          " " +
+          new Date(utcMidnight).toLocaleTimeString()}{" "}
+        +{" "}
+        {new Date(nextMidnight).toLocaleDateString() +
+          " " +
+          new Date(nextMidnight).toLocaleTimeString()}
+      </AdminClientComponent>
       <h1 className=" text-4xl font-bold p-2 lg:pb-4 rounded text-hh-950">
         Flohmärkte
       </h1>
