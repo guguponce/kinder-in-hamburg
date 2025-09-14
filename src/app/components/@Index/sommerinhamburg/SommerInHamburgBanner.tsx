@@ -6,6 +6,7 @@ import Link from "next/link";
 import { getWeatherData } from "@app/api/weatherAPI";
 import WeatherDisplay from "../../@Weather/WeatherDisplay";
 import Banner from "@components/Banner";
+import { getBannerContentByMonth } from "./constants";
 
 export default async function SommerInHamburgBanner() {
   const weather = await getWeatherData();
@@ -22,7 +23,7 @@ export default async function SommerInHamburgBanner() {
     (sp) => sp.spielgeraete && sp.spielgeraete.includes("wasserspiel")
   );
   const planschbecken = (await getTypeSpielplaetze("planschbecken")) || [];
-
+  const bannerText = getBannerContentByMonth();
   return (
     <section className="relative p-4 rounded-lg bg-gradient-to-br from-hh-500 to-[#759EB8] w-full flex gap-4 flex-col items-center max-w-[420px] sm:max-w-[800px] text-white shadow-xl bg-opacity-10 transition-all overflow-hidden">
       <div
@@ -35,14 +36,9 @@ export default async function SommerInHamburgBanner() {
       <div className="sm:gap-2 flex flex-col sm:flex-row w-full items-stretch">
         <Banner.TextSide>
           <Banner.Title href={"/sommer-in-hamburg"}>
-            Der Sommer ist endlich da
+            {bannerText.title}
           </Banner.Title>
-          <Banner.Text>
-            {/* Der Sommer ist fast vorbei, aber wir haben noch ein paar
-            Empfehlungen für den letzten warmen Wochen! */}
-            Hier findet ihr praktische Tipps und schöne Orte, an denen ihr den
-            Sommer so richtig genießen könnt!
-          </Banner.Text>
+          <Banner.Text>{bannerText.text}</Banner.Text>
           {weather && <WeatherDisplay weather={weather} />}
         </Banner.TextSide>
         <Banner.ImagesSide>
