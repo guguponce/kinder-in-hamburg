@@ -8,10 +8,15 @@ import { separateInBezirke } from "@app/utils/functions";
 import ExpandableContainer from "@components/ExpandableContainer";
 import ApproveButton from "@components/@Buttons/ApproveButton";
 import { Metadata } from "next";
+import URLFilteredListSuspense from "@app/components/Filters/URLFilteredListSuspense";
 
 const DynamicSielplaetzeMap = dynamic(() => import("./DynamicSielplaetzeMap"), {
   ssr: false,
 });
+const URLFilteredList = dynamic(
+  () => import("@components/Filters/URLFilteredSpielplaetzeList"),
+  { ssr: false, loading: () => <URLFilteredListSuspense /> }
+);
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -75,7 +80,7 @@ export default async function SpielplaeztePage() {
   );
   return (
     <AdminRoute>
-      <main className="w-full flex flex-col items-center gap-4 p-8">
+      <main className="w-full flex flex-col items-center gap-4 p-1 sm:p-4 md:px-8">
         <div className="flex gap-4 flex-wrap justify-center">
           <Link
             href="/new-spielplatz"
@@ -91,8 +96,9 @@ export default async function SpielplaeztePage() {
             Add premade Spielplatz
           </Link>
         </div>
+        <URLFilteredList spielplaetzeList={spList}></URLFilteredList>
         <div className="flex flex-wrap items-start justify-center gap-2">
-          <DynamicSielplaetzeMap spielplaetze={spList} />
+          {/* <DynamicSielplaetzeMap spielplaetze={spList} /> */}
           <section className="flex-grow flex flex-wrap  gap-4 items-stretch mx-auto justify-around">
             {Object.entries(distributedSP)
               .sort(([_, alist], [__, blist]) => blist.length - alist.length)
