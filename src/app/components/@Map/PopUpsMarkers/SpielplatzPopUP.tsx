@@ -11,6 +11,7 @@ export default function SpielplatzPopUP({
   spielgeraete,
   address,
   distance,
+  image,
 }: {
   title: string;
   distance?: number;
@@ -18,6 +19,7 @@ export default function SpielplatzPopUP({
   type: string[];
   spielgeraete: string[];
   address?: string;
+  image?: string;
 }) {
   return (
     <Popup className="font-sans" keepInView={true} maxWidth={200}>
@@ -27,24 +29,39 @@ export default function SpielplatzPopUP({
       >
         {title}
       </Link>
-
-      <small className="text-xs font-semibold capitalize block">
-        {type?.join(" / ") || ""}
-      </small>
+      {image && (
+        <div className="mb-2 relative">
+          <img
+            src={image}
+            alt={title}
+            className="w-full aspect-square rounded"
+          />
+          <div className="absolute bottom-0 right-0 bg-gradient-to-t from-hh-950 via-hh-950 to-transparent bg-opacity-50 text-white p-1 pt-4 rounded">
+            <small className="text-xs font-semibold capitalize block">
+              {type?.join(" / ") || ""}
+            </small>
+          </div>
+        </div>
+      )}
+      {!image && (
+        <small className="text-xs font-semibold capitalize block">
+          {type?.join(" / ") || ""}
+        </small>
+      )}
       {spielgeraete && (
-        <small className="font-semibold italic  capitalize block">
+        <small className="font-semibold italic capitalize block">
           <span className="sm:hidden inline">
-            {spielgeraete.slice(0, 5).join(" - ") || ""}
-            {spielgeraete.length > 5 ? "..." : ""}
+            {spielgeraete.slice(0, 3).join(" - ") || ""}
+            {spielgeraete.length > 3 ? "..." : ""}
           </span>
           <span className="hidden sm:inline">
-            {spielgeraete.slice(0, 8).join(" - ") || ""}
-            {spielgeraete.length > 8 ? "..." : ""}
+            {spielgeraete.slice(0, 5).join(" - ") || ""}
+            {spielgeraete.length > 5 ? "..." : ""}
           </span>
         </small>
       )}
       {address && (
-        <div className="mt-auto flex items-center gap-1">
+        <div className="mt-auto flex items-center gap-1 max-h-fit">
           {" "}
           <StandortIcon color="#0078A8" />
           <p className="text-xs m-0 font-sans">{address}</p>
