@@ -1,4 +1,7 @@
-import { getSuggestedPostWithID } from "@app/api/dbActions";
+import {
+  getApprovedPostWithID,
+  getSuggestedPostWithID,
+} from "@app/api/dbActions";
 import NotFound from "@components/@NotFound/NotFound";
 import PostTemplate from "@components/PostTemplate";
 import React from "react";
@@ -15,6 +18,7 @@ export default async function CurrentPostPage({
   const user = await getServerUser();
   const { suggestionID } = params;
   const post = await getSuggestedPostWithID(suggestionID);
+  const isApproved = await getApprovedPostWithID(suggestionID);
   if (!post) return <NotFound />;
   if (post.status === "approved" && !user) return <PostTemplate post={post} />;
 
@@ -23,7 +27,7 @@ export default async function CurrentPostPage({
       <>
         <StatusDisplay status={post.status}>
           <StatusDisplay.Title>
-            {post.status === "approved"
+            {post.status === "approved" && isApproved
               ? "Dieser Post wurde schon angenommen"
               : post.status === "rejected"
                 ? "Dieser Post wurde abgelehnt"
@@ -58,7 +62,7 @@ export default async function CurrentPostPage({
             item: post,
           }}
           approveButton={
-            post.status !== "approved"
+            post.status !== "approved" || !isApproved
               ? {
                   contributor: post.addedBy,
                   post: post,
