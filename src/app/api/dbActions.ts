@@ -108,10 +108,6 @@ export const updateContributor = async (
       }
     } else if (type === "post") {
       if (contributor.postsSubmitted?.includes(id)) return;
-      console.log("id", contributor.id, [
-        ...(contributor.postsSubmitted || []),
-        id,
-      ]);
       const { error } = await supabaseAdmin
         .from("contributors")
         .update({
@@ -777,6 +773,42 @@ export const approveSuggestedPost = async (post: iPost) => {
     throw new Error("There was a problem approving the post.");
   }
 };
+
+export const makePendingPostApproved = async (id: number) => {
+  const authorized = await proofUser();
+  if (!authorized) return "Not authorized";
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("kih-approved-blogposts")
+      .update({ status: "pending" })
+      .match({ id });
+    revalidatePost();
+    return data;
+  } catch (error) {
+    throw new Error("There was a problem deleting the post.");
+  }
+};
+
+export const approveWronglyApprovedPost = async (post: iPost) => {
+  const authorized = await proofUser();
+  if (!authorized) return "Not authorized";
+  try {
+    //delete from kih-approved-blogposts
+    const { data: dataFromDelete, error: errorFromDelete } = await supabaseAdmin
+      .from("kih-approved-blogposts")
+      .delete()
+      .match({ id: post.id });
+    if (errorFromDelete) {
+      throw new Error(
+        "There was a problem deleting the post from kih-approved-posts."
+      );
+    }
+    approveSuggestedPost(post);
+  } catch (error) {
+    throw new Error("There was a problem deleting the post.");
+  }
+};
+
 export const rejectSuggestedPost = async (id: number) => {
   try {
     const { data, error } = await supabaseAdmin
@@ -1309,17 +1341,41 @@ export const addEvent = async (
     };
     if (eventTable === "flohmaerkte") {
       delete submittedEvent.closedDates;
+      delete submittedEvent.endDate;
+    }
+    if (submittedEvent.lat === null || submittedEvent.lon === null) {
+      delete submittedEvent.lat;
+      delete submittedEvent.lon;
     }
     const { error } = await supabaseAdmin
       .from(eventTable)
       .insert(submittedEvent);
     if (error) {
-      throw new Error("Error adding event: " + error.message);
+      throw new Error(
+        `1 Error adding ${eventTable === "flohmaerkte" ? "Flohmarkt" : "Event"}` +
+          JSON.stringify(error.message)
+      );
     }
     return "Event added";
   } catch (error) {
-    console.log("Error adding event", error);
-    throw new Error("Error adding event" + (error as PostgrestError).message);
+    if (error && typeof error === "object" && "message" in error) {
+      console.error(
+        `2 Error adding ${eventTable === "flohmaerkte" ? "Flohmarkt" : "Event"}` +
+          (error as { message?: string }).message
+      );
+      throw new Error(
+        `3 Error adding ${eventTable === "flohmaerkte" ? "Flohmarkt" : "Event"}` +
+          ((error as { message?: string }).message || "")
+      );
+    } else {
+      console.error(
+        `4 Error adding ${eventTable === "flohmaerkte" ? "Flohmarkt" : "Event"}`,
+        error
+      );
+      throw new Error(
+        `5 Error adding ${eventTable === "flohmaerkte" ? "Flohmarkt" : "Event"}`
+      );
+    }
   }
 };
 
@@ -1337,6 +1393,8 @@ export const deleteEvent = async (
     if (error) {
       throw new Error("Error deleting event");
     }
+    console.log("Event deleted successfully:", data);
+
     return data;
   } catch (error) {
     throw new Error("Error deleting event");

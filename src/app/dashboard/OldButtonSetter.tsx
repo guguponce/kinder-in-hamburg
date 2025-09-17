@@ -13,7 +13,6 @@ export default function OldButtonSetter({
       onClick={async () => {
         const oldFlohs = await setAllPreviousEventsAsOld(type);
         if (!oldFlohs) throw new Error("Could not set old Flohmaerkte as old");
-        console.log(oldFlohs);
       }}
     >
       Set old {type === "flohmaerkte" ? "Flohmärkte" : "Events"} as Old
