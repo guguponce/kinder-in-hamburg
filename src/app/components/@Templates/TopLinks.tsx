@@ -1,3 +1,4 @@
+import AdminServerComponent from "@app/providers/AdminServerComponents";
 import { cn } from "@app/utils/functions";
 import Link from "next/link";
 import React from "react";
@@ -19,7 +20,7 @@ const BackButton = ({ type }: { type: "spielhaus" | "general" }) => {
           <span className="arrow absolute -translate-y-1/2 top-1/2 left-0 aspect-square h-[11px] flex outline-2 outline outline-transparent justify-center items-center rounded-full transition-all">
             ←
           </span>{" "}
-          <span className="flex-grow flex justify-center">Alle Posts</span>
+          <span className="ml-3 flex-grow flex justify-center">Alle Posts</span>
         </Link>
       )}
     </>
@@ -40,13 +41,15 @@ export default function TopLinks({
       id="template-top-links"
       className="relative flex justify-between gap-2 sm:gap-4 w-full flex-col sm:flex-row text-hh-800"
     >
-      <BackButton
-        type={
-          title.toLocaleLowerCase().includes("spielhaus")
-            ? "spielhaus"
-            : "general"
-        }
-      />
+      <AdminServerComponent>
+        <BackButton
+          type={
+            title.toLocaleLowerCase().includes("spielhaus")
+              ? "spielhaus"
+              : "general"
+          }
+        />
+      </AdminServerComponent>
       {categories && (
         <section
           id="categories"
