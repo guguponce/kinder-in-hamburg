@@ -9,7 +9,6 @@ import dynamic from "next/dynamic";
 import { getWeatherData } from "@app/api/weatherAPI";
 import WeatherDisplay from "@components/@Weather/WeatherDisplay";
 import PageTitle from "@app/components/PageTitle";
-import { isTypePost } from "@app/utils/functions";
 
 const WaterMapContainer = dynamic(() => import("./WaterMapContainer"), {
   ssr: false,
