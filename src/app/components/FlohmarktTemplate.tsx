@@ -1,4 +1,4 @@
-import { iFlohmarkt, iPost } from "@app/utils/types";
+import type { iFlohmarkt } from "@app/utils/types";
 import Link from "next/link";
 import React from "react";
 import DisplayTypeText from "./@PostForm/DisplayTypeText";
@@ -15,6 +15,151 @@ import AdminServerComponent from "@app/providers/AdminServerComponents";
 import FlohmarktBackground from "./@Icons/@Flohmarkt/FlohmarktBackground";
 import Image from "next/image";
 import PageTitle from "./PageTitle";
+
+function LocationDate({
+  address,
+  date,
+  time,
+  image,
+  endDate,
+  location,
+  bezirk,
+  stadtteil,
+  type,
+  openHours,
+}: {
+  image?: string;
+  address: string;
+  date: number;
+  time?: string;
+  endDate?: number;
+  location?: string;
+  bezirk?: string;
+  stadtteil?: string;
+  type?: string;
+  openHours?: string;
+}) {
+  if (!address || !date) return null;
+  if (typeof address !== "string") {
+    return null;
+  }
+
+  const separated = separateAddress(address);
+  const { street, number, PLZ, city } = separated;
+  const startTime = getStartTime(time);
+  const endTime = getEndTime(time);
+  return (
+    <>
+      <div
+        id="date"
+        className={cn(
+          "w-full sm:max-w-[calc(50%-4px)] min-h-fit py-2 px-4 rounded bg-hh-50 bg-opacity-75 -outline-offset-4 outline outline-4 outline-hh-300",
+          !!image && "md:max-w-full",
+          type === "laterne" ? "border-0 bg-hh-300" : ""
+        )}
+      >
+        <h2 className="text-lg font-semibold">Datum:</h2>
+        <div className="flex flex-col gap-1">
+          <div className="flex gap-1 flex-wrap">
+            <PostLogo logo="date" color="#343b3e" />
+            <time
+              dateTime={new Date(date).toLocaleDateString()}
+              className="block font-semibold"
+            >
+              {getDate(date, "short", false, true)}{" "}
+              {endDate && ` - ${getDate(endDate)}`}
+            </time>
+          </div>
+          {!openHours && time && (
+            <div className="flex gap-1 items-center">
+              <div className="px-[2px]">
+                <PostLogo logo="clock" color="#343b3e" size="1.25rem" />
+              </div>
+              <h3 className="block font-semibold">
+                {startTime && <span>{startTime}</span>}
+                {endTime && <span> - {endTime}</span>}
+                {" Uhr"}
+              </h3>
+            </div>
+          )}
+        </div>
+      </div>
+      <div
+        id="location"
+        className={`flex flex-col w-fit sm:w-full sm:max-w-[calc(50%-4px)] ${!!image && "md:max-w-full"} justify-stretch rounded bg-hh-50 bg-opacity-75 -outline-offset-4 outline outline-4 outline-hh-300 ${type === "laterne" ? "bg-opacity-75" : "bg-opacity-25"} py-2 px-4`}
+      >
+        <h2 className="text-lg font-semibold">Standort:</h2>
+        {bezirk && (
+          <div className="flex gap-1">
+            <PostLogo logo="hamburg" color="#343b3e" />
+            <div className="flex flex-wrap flex-grow gap-x-1">
+              {!!stadtteil && stadtteil !== "Andere Orte" && (
+                <p id="stadtteil" className="ml-1 block font-semibold italic">
+                  {stadtteil + ", "}
+                </p>
+              )}
+              <Link
+                href={`/bezirke/${encodeURIComponent(bezirk)}`}
+                id="bezirk"
+                className="block font-semibold italic hover:underline hover:underline-offset-2"
+              >
+                {bezirk}
+              </Link>
+            </div>
+          </div>
+        )}
+
+        {!!address && (
+          <div className="flex gap-[6px] ml-[2px]">
+            <div className="min-w-5 mt-1">
+              <PostLogo logo="map" color="#343b3e" size="20px" />
+            </div>
+            {Object.values(separated).some(Boolean) ? (
+              <Link
+                href={
+                  "https://www.google.com/maps/place/" +
+                  street +
+                  "+" +
+                  number +
+                  "+" +
+                  PLZ +
+                  "+" +
+                  city
+                }
+                className="italic hover:underline hover:underline-offset-2 flex flex-col flex-grow"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span className="block font-semibold">{location}</span>
+                <span className="flex flex-wrap gap-1">
+                  <span className="block">
+                    {street} {number},
+                  </span>
+                  <span className="block">
+                    {PLZ} {city}
+                  </span>
+                </span>
+              </Link>
+            ) : (
+              <Link
+                href={
+                  "https://www.google.com/maps/place/" +
+                  address.split(/[ \.\-\,]+/gi).join("+")
+                }
+                className="italic hover:underline hover:underline-offset-2 flex flex-col flex-grow"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span className="block font-semibold">{location}</span>
+                <span className="flex flex-wrap gap-1">{address}</span>
+              </Link>
+            )}
+          </div>
+        )}
+      </div>
+    </>
+  );
+}
 
 export default function FlohmarktTemplate({
   flohmarkt: {
@@ -37,10 +182,6 @@ export default function FlohmarktTemplate({
   children?: React.ReactNode;
   creator?: boolean;
 }) {
-  const separated = separateAddress(address);
-  const { street, number, PLZ, city } = separated;
-  const startTime = getStartTime(time);
-  const endTime = getEndTime(time);
   const regex = /(.*)\s(<link>)(https?:\/\/[^\s]+)(<\/link>)/;
 
   const match = optionalComment?.match(regex);
@@ -165,6 +306,18 @@ export default function FlohmarktTemplate({
               className="text-hh-50 lg:mb-2"
               textShadow="0 0 16px #60788480, 0px 0px 16px #607884db, 2px 2px 8px #607884db, 2px 2px 4px #607884db"
             />
+            <div
+              id="location-date"
+              className="flex flex-col sm:flex-row md:hidden flex-wrap flex-grow  items-stretch gap-2 w-fit sm:w-full max-w-[800px] mx-auto rounded  text-hh-950"
+            >
+              <LocationDate
+                address={address}
+                date={date}
+                time={time}
+                image={image}
+                endDate={endDate}
+              />
+            </div>
             {optionalComment && (
               <div className="h-[calc(100%-4rem)] relative">
                 <div id="optional-comment-box" className="max-w-full">
@@ -189,118 +342,15 @@ export default function FlohmarktTemplate({
 
           <div
             id="location-date"
-            className="flex flex-col sm:flex-row flex-wrap flex-grow  items-stretch gap-2 w-fit sm:w-full max-w-[800px] mx-auto rounded  text-hh-950"
+            className="hidden md:flex flex-wrap flex-grow  items-stretch gap-2 w-fit sm:w-full max-w-[800px] mx-auto rounded  text-hh-950"
           >
-            <div
-              id="location"
-              className={`flex flex-col w-fit sm:w-full sm:max-w-[calc(50%-4px)] ${!!image && "md:max-w-full"} justify-stretch rounded bg-hh-300 ${type === "laterne" ? "bg-opacity-75" : "bg-opacity-25"} py-2 px-4`}
-            >
-              <h2 className="text-lg font-semibold">Standort:</h2>
-              {bezirk && (
-                <div className="flex gap-1">
-                  <PostLogo logo="hamburg" color="#343b3e" />
-                  <div className="flex flex-wrap flex-grow gap-x-1">
-                    {!!stadtteil && stadtteil !== "Andere Orte" && (
-                      <p
-                        id="stadtteil"
-                        className="ml-1 block font-semibold italic"
-                      >
-                        {stadtteil + ", "}
-                      </p>
-                    )}
-                    <Link
-                      href={`/bezirke/${encodeURIComponent(bezirk)}`}
-                      id="bezirk"
-                      className="block font-semibold italic hover:underline hover:underline-offset-2"
-                    >
-                      {bezirk}
-                    </Link>
-                  </div>
-                </div>
-              )}
-
-              {!!address && (
-                <div className="flex gap-[6px] ml-[2px]">
-                  <div className="min-w-5 mt-1">
-                    <PostLogo logo="map" color="#343b3e" size="20px" />
-                  </div>
-                  {Object.values(separated).some(Boolean) ? (
-                    <Link
-                      href={
-                        "https://www.google.com/maps/place/" +
-                        street +
-                        "+" +
-                        number +
-                        "+" +
-                        PLZ +
-                        "+" +
-                        city
-                      }
-                      className="italic hover:underline hover:underline-offset-2 flex flex-col flex-grow"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <span className="block font-semibold">{location}</span>
-                      <span className="flex flex-wrap gap-1">
-                        <span className="block">
-                          {street} {number},
-                        </span>
-                        <span className="block">
-                          {PLZ} {city}
-                        </span>
-                      </span>
-                    </Link>
-                  ) : (
-                    <Link
-                      href={
-                        "https://www.google.com/maps/place/" +
-                        address.split(/[ \.\-\,]+/gi).join("+")
-                      }
-                      className="italic hover:underline hover:underline-offset-2 flex flex-col flex-grow"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <span className="block font-semibold">{location}</span>
-                      <span className="flex flex-wrap gap-1">{address}</span>
-                    </Link>
-                  )}
-                </div>
-              )}
-            </div>
-            <div
-              id="date"
-              className={cn(
-                "w-full sm:max-w-[calc(50%-4px)] min-h-fit py-2 px-4 rounded bg-hh-300",
-                !!image && "md:max-w-full",
-                type === "laterne" ? "bg-opa75" : "bg-opacity-25"
-              )}
-            >
-              <h2 className="text-lg font-semibold">Datum:</h2>
-              <div className="flex flex-col gap-1">
-                <div className="flex gap-1 flex-wrap">
-                  <PostLogo logo="date" color="#343b3e" />
-                  <time
-                    dateTime={new Date(date).toLocaleDateString()}
-                    className="block font-semibold"
-                  >
-                    {getDate(date, "short", false, true)}{" "}
-                    {endDate && ` - ${getDate(endDate)}`}
-                  </time>
-                </div>
-                {!openHours && time && (
-                  <div className="flex gap-1 items-center">
-                    <div className="px-[2px]">
-                      <PostLogo logo="clock" color="#343b3e" size="1.25rem" />
-                    </div>
-                    <h3 className="block font-semibold">
-                      {startTime && <span>{startTime}</span>}
-                      {endTime && <span> - {endTime}</span>}
-                      {" Uhr"}
-                    </h3>
-                  </div>
-                )}
-              </div>
-            </div>
+            <LocationDate
+              address={address}
+              date={date}
+              time={time}
+              image={image}
+              endDate={endDate}
+            />
           </div>
           {externalLink && (
             <div
