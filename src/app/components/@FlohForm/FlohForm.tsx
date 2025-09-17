@@ -355,31 +355,6 @@ export default function FlohForm({
 
   return (
     <section id="flohmarkt-form-container" className="w-full">
-      <div id="compare-flohs" className="w-full flex gap-2">
-        <CompareFlohsSingle
-          floh={{
-            id,
-            createdAt,
-            title,
-            image,
-            address,
-            bezirk,
-            addedBy,
-            status,
-            date,
-            location,
-            time,
-            optionalComment,
-            type,
-            stadtteil,
-            lat,
-            lon,
-            endDate,
-            closedDates,
-          }}
-        />
-        {newFloh && <CompareFlohsSingle floh={newFloh} />}
-      </div>
       <UserInputBox setUserInput={setUserInput} userInput={userInput} />
       <FlohmarktImageUploader
         user={userInput}
