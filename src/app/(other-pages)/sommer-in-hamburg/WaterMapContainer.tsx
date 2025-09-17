@@ -80,7 +80,7 @@ const SpielplatzMarkers = ({
     <>
       {spielplaetze
         .filter(({ address }) => !!address)
-        .map(({ lon, lat, address, id, title, type, spielgeraete }) => (
+        .map(({ lon, lat, address, id, title, type, spielgeraete, image }) => (
           <Marker key={id} position={[lat!, lon!]} icon={icon}>
             <SpielplatzPopUP
               address={joinAddress(address!)}

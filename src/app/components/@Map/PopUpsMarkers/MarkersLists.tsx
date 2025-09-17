@@ -268,31 +268,34 @@ export default function MarkersLists({
         <ConditionalCluster cluster={cluster} type="spielplatz">
           {spielplaetze
             .filter(({ address }) => !!address)
-            .map(({ lon, lat, address, id, title, type, spielgeraete }) => (
-              <Marker
-                key={"marker" + id}
-                position={[lat!, lon!]}
-                icon={memoCustomIcon || spielplatzIcon}
-              >
-                <SpielplatzPopUP
-                  distance={
-                    currentLocation?.lat && currentLocation?.lon
-                      ? haversineDistance(
-                          currentLocation.lon,
-                          currentLocation.lat,
-                          lon!,
-                          lat!
-                        )
-                      : undefined
-                  }
-                  address={joinAddress(address!)}
-                  title={title}
-                  id={id}
-                  spielgeraete={spielgeraete || []}
-                  type={type}
-                />
-              </Marker>
-            ))}
+            .map(
+              ({ lon, lat, address, id, title, type, spielgeraete, image }) => (
+                <Marker
+                  key={"marker" + id}
+                  position={[lat!, lon!]}
+                  icon={memoCustomIcon || spielplatzIcon}
+                >
+                  <SpielplatzPopUP
+                    distance={
+                      currentLocation?.lat && currentLocation?.lon
+                        ? haversineDistance(
+                            currentLocation.lon,
+                            currentLocation.lat,
+                            lon!,
+                            lat!
+                          )
+                        : undefined
+                    }
+                    address={joinAddress(address!)}
+                    title={title}
+                    id={id}
+                    spielgeraete={spielgeraete || []}
+                    type={type}
+                    image={image?.[0]}
+                  />
+                </Marker>
+              )
+            )}
         </ConditionalCluster>
       )}
     </>

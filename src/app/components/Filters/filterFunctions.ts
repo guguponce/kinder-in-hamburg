@@ -103,7 +103,6 @@ export const filteredBySearchFX = <T extends iPost | iSpielplatz>(
   list: T[],
   searchQuery: string
 ): T[] => {
-  console.log("searchQuery", searchQuery);
   if (!searchQuery) return list as T[];
   return list.filter((post) =>
     post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||

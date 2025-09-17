@@ -123,6 +123,7 @@ export default function SPBezirkMap({
                   id={selectedSP.id}
                   type={selectedSP.type}
                   spielgeraete={selectedSP.spielgeraete || []}
+                  image={selectedSP.image?.[0]}
                 />
               </Marker>
             )}

@@ -81,6 +81,7 @@ const GeneralMap = ({
                   ? joinAddress(currentTarget.address as iAddress)
                   : ""
               }
+              image={currentTarget.image?.[0]}
             />
           ) : isTypeFlohmarkt(currentTarget) ? (
             <FlohmarktPopUP
