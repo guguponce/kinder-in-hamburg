@@ -1,7 +1,45 @@
 import PaperPlane from "@components/@Icons/PaperPlane";
 import React from "react";
-
-export default function ContactPage() {
+import type { Metadata } from "next";
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: "Kontakt",
+    icons: "/favicon.ico",
+    description:
+      "Kontaktiere uns für Fragen, Vorschläge oder Anregungen rund um Kinder in Hamburg.",
+    keywords: [
+      "kontakt",
+      "kinder in hamburg kontakt",
+      "fragen",
+      "vorschläge",
+      "familie hamburg kontakt",
+      "email kinder in hamburg",
+      "kontaktformular",
+      "kinder hamburg",
+      "familie hamburg",
+      "hamburg kontakt",
+      "hamburg kinder kontakt",
+    ],
+    openGraph: {
+      type: "website",
+      url: "https://www.kinder-in-hamburg.de/kontakt/",
+      title: "Kontakt",
+      description:
+        "Kontaktiere uns für Fragen, Vorschläge oder Anregungen rund um Kinder in Hamburg.",
+      images: process.env.BASE_URL + "opengraph-image.png",
+      siteName: "Kinder in Hamburg",
+    },
+    twitter: {
+      title: "Kontakt",
+      description:
+        "Kontaktiere uns für Fragen, Vorschläge oder Anregungen rund um Kinder in Hamburg.",
+      images: process.env.BASE_URL + "opengraph-image.png",
+      site: "https://www.kinder-in-hamburg.de/kontakt/",
+      card: "summary_large_image",
+    },
+  };
+}
+export default function kontaktPage() {
   return (
     <main className="rounded-lg p-4 w-full max-w-[600px] bg-hh-100 text-hh-900 bg-opacity-90 flex flex-col gap-2">
       <h1 className="text-3xl font-bold">Kontakt</h1>
@@ -31,7 +69,7 @@ export default function ContactPage() {
   );
 }
 
-// <h1 className="text-3xl font-bold">Contact</h1>
+// <h1 className="text-3xl font-bold">kontakt</h1>
 // <p className="text-xl font-semibold">
 //   Do you have any questions or suggestions?
 // </p>

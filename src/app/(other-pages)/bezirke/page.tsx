@@ -6,7 +6,79 @@ import RandomRecommendation from "@components/@Cards/RandomRecommendation";
 import Link from "next/link";
 import AdminRoute from "@app/providers/AdminRoute";
 import { separateInBezirke } from "@app/utils/functions";
+import { Metadata } from "next";
 
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: "Bezirke - Posts",
+    icons: "/favicon.ico",
+    description:
+      "Hier findet ihr Orte für Kinder, Jugendliche oder die ganze Familie aus allen Bezirken in Hamburg zusammengestellt.",
+    keywords: [
+      "bezirke hamburg",
+      "eimsbuettel",
+      "altona",
+      "hamburg altona",
+      "hamburg eimsbuettel",
+      "hamburg bezirke",
+      "barmbek",
+      "hamburg barmbek",
+      "wandsbek",
+      "hamburg wandsbek",
+      "harburg",
+      "hamburg harburg",
+      "hamburg mitte",
+      "mitte hamburg",
+      "hamburg nord",
+      "nord hamburg",
+      "hamburg bergedorf",
+      "bergedorf hamburg",
+      "bergedorf",
+      "hamburg mit kinder",
+      "hamburg familie post",
+      "hamburg kinder post",
+      "hamburg posts",
+      "hamburg post",
+      "hamburg kinder posts",
+      "kinder in hamburg",
+      "kinder hamburg",
+      "posts bezirke",
+      "posts bezirk",
+      "post",
+      "kinder",
+      "familie",
+      "posts hamburg",
+      "posts kinder",
+      "posts familie",
+      "posts hamburg kinder",
+      "posts hamburg familie",
+      "post hamburg",
+      "post kinder",
+      "post familie",
+      "post hamburg kinder",
+      "post hamburg familie",
+      "playground hamburg",
+      "playgrounds hamburg",
+    ],
+    openGraph: {
+      type: "website",
+      url: "https://www.kinder-in-hamburg.de/posts/",
+      title: "Bezirke - Posts",
+      description:
+        "Hier findet ihr Orte für Kinder, Jugendliche oder die ganze Familie aus allen Bezirken in Hamburg zusammengestellt.",
+      images: process.env.BASE_URL + "opengraph-image.png",
+      siteName: "Kinder in Hamburg",
+    },
+    twitter: {
+      title: "Bezirke - Posts",
+      description:
+        "Hier findet ihr Orte für Kinder, Jugendliche oder die ganze Familie aus allen Bezirken in Hamburg zusammengestellt.",
+      images: process.env.BASE_URL + "opengraph-image.png",
+      site: "https://www.kinder-in-hamburg.de/posts/",
+      card: "summary_large_image",
+    },
+  };
+}
 export default async function BezirkePage() {
   const allPosts = await getAllApprovedPosts();
   if (!allPosts) return <NotFound multiples={true} type="post" />;

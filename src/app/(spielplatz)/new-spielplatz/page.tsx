@@ -3,6 +3,14 @@ import { redirect } from "next/navigation";
 import React from "react";
 import dynamic from "next/dynamic";
 import AdminRoute from "@app/providers/AdminRoute";
+import { Metadata } from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: "New Spielplatz",
+    icons: "/favicon.ico",
+  };
+}
 
 const DynamicSpielplatzForm = dynamic(() => import("../SpielplatzForm"), {
   ssr: false,

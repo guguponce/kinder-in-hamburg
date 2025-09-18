@@ -8,6 +8,15 @@ import {
 } from "@app/api/spActions";
 import NotFound from "@components/@NotFound/NotFound";
 import AdminRoute from "@app/providers/AdminRoute";
+import { Metadata } from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: "Update Spielplatz",
+    icons: "/favicon.ico",
+  };
+}
+
 export default async function NewSpielplatzPage({
   params: { spID },
 }: {

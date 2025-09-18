@@ -9,6 +9,61 @@ import dynamic from "next/dynamic";
 import { getWeatherData } from "@app/api/weatherAPI";
 import WeatherDisplay from "@components/@Weather/WeatherDisplay";
 import PageTitle from "@app/components/PageTitle";
+import { Metadata } from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: "Sommer in Hamburg",
+    icons: "/favicon.ico",
+    description:
+      "Entdecke die besten Orte in Hamburg zum Schwimmen und Abkühlen für Kinder und Familien: Planschbecken, Badeseen, Freibäder, Schwimmbäder und Wasserspielplätze.",
+    keywords: [
+      "sommer hamburg",
+      "schwimmen hamburg",
+      "abkühlung hamburg",
+      "planschbecken hamburg",
+      "badesee hamburg",
+      "freibad hamburg",
+      "schwimmbad hamburg",
+      "wasserspielplatz hamburg",
+      "kinder hamburg wasser",
+      "familie hamburg sommer",
+      "wasserspaß hamburg",
+      "kinder abkühlung hamburg",
+      "hamburg mit kindern",
+      "hamburg familie",
+      "hamburg schwimmen",
+      "hamburg wasser",
+      "hamburg planschbecken",
+      "hamburg badeseen",
+      "hamburg freibäder",
+      "hamburg wasserspielplätze",
+      "kinder sommer hamburg",
+      "freizeit hamburg kinder",
+      "freizeit hamburg familie",
+      "ausflug hamburg sommer",
+      "ausflug hamburg kinder",
+      "ausflug hamburg familie",
+    ],
+    openGraph: {
+      type: "website",
+      url: "https://www.kinder-in-hamburg.de/sommer-in-hamburg/",
+      title: "Sommer in Hamburg",
+      description:
+        "Finde Planschbecken, Badeseen, Freibäder, Schwimmbäder und Wasserspielplätze für Kinder und Familien in Hamburg.",
+      images: process.env.BASE_URL + "opengraph-image.png",
+      siteName: "Kinder in Hamburg",
+    },
+    twitter: {
+      title: "Sommer in Hamburg",
+      description:
+        "Finde Planschbecken, Badeseen, Freibäder, Schwimmbäder und Wasserspielplätze für Kinder und Familien in Hamburg.",
+      images: process.env.BASE_URL + "opengraph-image.png",
+      site: "https://www.kinder-in-hamburg.de/sommer-in-hamburg/",
+      card: "summary_large_image",
+    },
+  };
+}
 
 const WaterMapContainer = dynamic(() => import("./WaterMapContainer"), {
   ssr: false,

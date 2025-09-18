@@ -5,7 +5,64 @@ import { categoryNames } from "@app/utils/constants";
 import { iPost } from "@app/utils/types";
 import NotFound from "@components/@NotFound/NotFound";
 import React from "react";
+import { Metadata } from "next";
 
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: "Kategorien - Posts",
+    icons: "/favicon.ico",
+    description:
+      "Entdecke Orte und Aktivitäten für Kinder, Jugendliche und Familien in Hamburg, sortiert nach Kategorien.",
+    keywords: [
+      "kategorien hamburg",
+      "hamburg kategorien",
+      "kinder kategorien hamburg",
+      "familie kategorien hamburg",
+      "posts kategorien",
+      "posts hamburg kategorien",
+      "kinder in hamburg",
+      "kinder hamburg",
+      "familie hamburg",
+      "aktivitäten hamburg",
+      "freizeit hamburg",
+      "hamburg kinder posts",
+      "hamburg familie posts",
+      "hamburg posts",
+      "hamburg kinder",
+      "hamburg familie",
+      "spielplatz hamburg",
+      "museum hamburg",
+      "veranstaltungen hamburg",
+      "ausflüge hamburg",
+      "sport hamburg",
+      "natur hamburg",
+      "kunst hamburg",
+      "musik hamburg",
+      "theater hamburg",
+      "post",
+      "posts",
+      "kinder",
+      "familie",
+    ],
+    openGraph: {
+      type: "website",
+      url: "https://www.kinder-in-hamburg.de/categories/",
+      title: "Kategorien - Posts",
+      description:
+        "Entdecke Orte und Aktivitäten für Kinder, Jugendliche und Familien in Hamburg, sortiert nach Kategorien.",
+      images: process.env.BASE_URL + "opengraph-image.png",
+      siteName: "Kinder in Hamburg",
+    },
+    twitter: {
+      title: "Kategorien - Posts",
+      description:
+        "Entdecke Orte und Aktivitäten für Kinder, Jugendliche und Familien in Hamburg, sortiert nach Kategorien.",
+      images: process.env.BASE_URL + "opengraph-image.png",
+      site: "https://www.kinder-in-hamburg.de/categories/",
+      card: "summary_large_image",
+    },
+  };
+}
 export default async function CategoriesPage() {
   const allPosts = await getAllApprovedPosts();
   if (!allPosts) return <NotFound type="categories" multiples={true} />;

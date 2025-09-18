@@ -13,7 +13,60 @@ import React from "react";
 import ShuffleGallery from "@components/@Cards/ShuffleGallery";
 import { unstable_cache } from "next/cache";
 import dynamic from "next/dynamic";
+import { Metadata } from "next";
 
+export async function generateMetadata({
+  params,
+}: {
+  params: { category: string };
+}): Promise<Metadata> {
+  const category = parseParams(params.category) as categoryName;
+  const categoryDisplayName = categoryNames.includes(category)
+    ? category
+    : "Kategorie";
+  const title = `${categoryDisplayName} - Posts`;
+  const description = `Hier findet ihr Orte für Kinder, Jugendliche oder die ganze Familie aus der Kategorie "${categoryDisplayName}" in Hamburg zusammengestellt.`;
+  const keywords = [
+    categoryDisplayName.toLowerCase(),
+    `hamburg ${categoryDisplayName.toLowerCase()}`,
+    "kinder in hamburg",
+    "familie",
+    "posts hamburg",
+    "posts kinder",
+    "posts familie",
+    "post hamburg",
+    "post kinder",
+    "post familie",
+    "playground hamburg",
+    "playgrounds hamburg",
+  ];
+  const imageUrl =
+    (process.env.BASE_URL || "https://www.kinder-in-hamburg.de/") +
+    "opengraph-image.png";
+  const pageUrl = `https://www.kinder-in-hamburg.de/categories/${category}`;
+
+  return {
+    title,
+    icons: "/favicon.ico",
+    description,
+    keywords,
+    openGraph: {
+      type: "website",
+      url: pageUrl,
+      title,
+      description,
+      images: imageUrl,
+      siteName: "Kinder in Hamburg",
+    },
+    twitter: {
+      title,
+      description,
+      images: imageUrl,
+      site: pageUrl,
+      card: "summary_large_image",
+    },
+  };
+}
 const cachedCategoryPosts = unstable_cache(
   getPostsWithCat,
   ["allSuggestedPosts"],
