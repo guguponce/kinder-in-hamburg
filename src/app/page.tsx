@@ -10,8 +10,8 @@ export default function Home() {
       id="homepage-main"
       className="w-full flex flex-col items-center gap-4 xs:px-2"
     >
-      <SommerInHamburgBanner></SommerInHamburgBanner>
       <FlohmaerkteContainer />
+      <SommerInHamburgBanner></SommerInHamburgBanner>
       <Banner className="max-w-[600px]">
         <Banner.Image
           alt="Wir sind am Werk"
