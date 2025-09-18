@@ -3,7 +3,25 @@ import FlohForm from "@components/@FlohForm/FlohForm";
 import { getServerUser } from "@app/api/auth/supabaseAuth";
 import { redirect } from "next/navigation";
 import AdminRoute from "@app/providers/AdminRoute";
-import { getEventWithID } from "@app/api/dbActions";
+import { getEventMetadata, getEventWithID } from "@app/api/dbActions";
+
+import type { Metadata } from "next";
+export async function generateMetadata({
+  params,
+}: {
+  params: { flohmarktID: string };
+}): Promise<Metadata> {
+  const { title } = (await getEventMetadata(
+    params.flohmarktID,
+    "flohmaerkte"
+  )) || {
+    title: "Event",
+  };
+  return {
+    title: "Copy " + title,
+    icons: "/favicon.ico",
+  };
+}
 
 export default async function AddCopiedFlohmarkt({
   params,

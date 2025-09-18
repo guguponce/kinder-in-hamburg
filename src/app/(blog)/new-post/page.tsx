@@ -3,7 +3,15 @@ import { getServerUser } from "@app/api/auth/supabaseAuth";
 import { redirect } from "next/navigation";
 import AdminRoute from "@app/providers/AdminRoute";
 import dynamic from "next/dynamic";
+import type { Metadata } from "next";
 const PostForm = dynamic(() => import("@components/@PostForm/PostForm"));
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: "New Post",
+    icons: "/favicon.ico",
+  };
+}
 
 export default async function AddPostPage() {
   const user = await getServerUser();

@@ -1,6 +1,6 @@
 import React from "react";
 import { getServerUser } from "@app/api/auth/supabaseAuth";
-import { getSuggestedPostWithID } from "@app/api/dbActions";
+import { getPostMetadata, getSuggestedPostWithID } from "@app/api/dbActions";
 import { parseAddress, parsePost } from "@app/utils/functions";
 import { redirect } from "next/navigation";
 import Link from "next/link";
@@ -8,7 +8,21 @@ import NotFound from "@components/@NotFound/NotFound";
 import { iUserMetadata } from "@app/api/auth/types";
 import dynamic from "next/dynamic";
 const PostForm = dynamic(() => import("@components/@PostForm/PostForm"));
+import type { Metadata } from "next";
 
+export async function generateMetadata({
+  params,
+}: {
+  params: { suggestionID: string };
+}): Promise<Metadata> {
+  const { title } = (await getPostMetadata(params.suggestionID)) || {
+    title: "",
+  };
+  return {
+    title: `Approve Suggestion ${title}`,
+    icons: "/favicon.ico",
+  };
+}
 export default async function ApproveSuggestedPostPage({
   params,
 }: {

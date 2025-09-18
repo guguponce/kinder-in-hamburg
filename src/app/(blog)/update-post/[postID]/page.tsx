@@ -1,14 +1,25 @@
 import React from "react";
 import { getServerUser } from "@app/api/auth/supabaseAuth";
-import { getApprovedPostWithID } from "@app/api/dbActions";
+import { getApprovedPostWithID, getPostMetadata } from "@app/api/dbActions";
 import { parseAddress } from "@app/utils/functions";
 import { redirect } from "next/navigation";
 import NotFound from "@components/@NotFound/NotFound";
 import AdminRoute from "@app/providers/AdminRoute";
 import dynamic from "next/dynamic";
 import AdminEditButtons from "@components/@Buttons/AdminEditButtons";
+import type { Metadata } from "next";
 const PostForm = dynamic(() => import("@components/@PostForm/PostForm"));
-
+export async function generateMetadata({
+  params,
+}: {
+  params: { postID: string };
+}): Promise<Metadata> {
+  const { title } = (await getPostMetadata(params.postID)) || { title: "Post" };
+  return {
+    title: "Update " + title,
+    icons: "/favicon.ico",
+  };
+}
 export default async function updateApprovedPostPage({
   params,
 }: {

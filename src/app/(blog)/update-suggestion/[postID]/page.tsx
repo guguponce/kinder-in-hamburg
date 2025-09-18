@@ -2,17 +2,29 @@ import React from "react";
 import { getServerUser } from "@app/api/auth/supabaseAuth";
 import {
   getApprovedPostWithID,
+  getPostMetadata,
   getSuggestedPostWithID,
 } from "@app/api/dbActions";
-import { parseAddress, parsePost } from "@app/utils/functions";
+import { parseAddress } from "@app/utils/functions";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import NotFound from "@components/@NotFound/NotFound";
 import AdminRoute from "@app/providers/AdminRoute";
-import { iUserMetadata } from "@app/api/auth/types";
 import dynamic from "next/dynamic";
+import type { Metadata } from "next";
 const PostForm = dynamic(() => import("@components/@PostForm/PostForm"));
 
+export async function generateMetadata({
+  params,
+}: {
+  params: { postID: string };
+}): Promise<Metadata> {
+  const post = await getPostMetadata(params.postID);
+  return {
+    title: "Update " + (post ? "Suggestion: " + post.title : "suggested post"),
+    icons: "/favicon.ico",
+  };
+}
 export default async function updateSuggestedPostPage({
   params,
 }: {

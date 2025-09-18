@@ -4,7 +4,14 @@ import MinimalEventDisplay from "@components/MinimalEventDisplay";
 import { getServerUser } from "@app/api/auth/supabaseAuth";
 import { redirect } from "next/navigation";
 import React from "react";
+import type { Metadata } from "next";
 
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: "Events Approval",
+    icons: "/favicon.ico",
+  };
+}
 export default async function ApprovalPage() {
   const user = await getServerUser();
   if (!user || user.email !== process.env.ADMIN_EMAIL) redirect("/events/");

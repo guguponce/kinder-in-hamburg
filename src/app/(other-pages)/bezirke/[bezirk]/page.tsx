@@ -15,7 +15,57 @@ import WeatherBox from "@components/@Weather/WeatherBox";
 import BezirkeScrollableEvents from "@components/BezirkeScrollableEvents";
 import PointsGallery from "@components/@PostForm/PointsGallery";
 import AdminRoute from "@app/providers/AdminRoute";
+import type { Metadata } from "next";
+export async function generateMetadata({
+  params,
+}: {
+  params: { bezirk: string };
+}): Promise<Metadata> {
+  const bezirk = parseParams(params.bezirk) as iBezirk;
+  const bezirkDisplayName = bezirk || "Bezirk";
+  const title = bezirkDisplayName;
+  const description = `Hier findet ihr Orte für Kinder, Jugendliche oder die ganze Familie aus dem Bezirk "${bezirkDisplayName}" in Hamburg zusammengestellt.`;
+  const keywords = [
+    bezirkDisplayName.toLowerCase(),
+    `hamburg ${bezirkDisplayName.toLowerCase()}`,
+    "kinder in hamburg",
+    "familie",
+    "posts hamburg",
+    "posts kinder",
+    "posts familie",
+    "post hamburg",
+    "post kinder",
+    "post familie",
+    "playground hamburg",
+    "playgrounds hamburg",
+  ];
+  const imageUrl =
+    (process.env.BASE_URL || "https://www.kinder-in-hamburg.de/") +
+    "opengraph-image.png";
+  const pageUrl = `https://www.kinder-in-hamburg.de/bezirke/${bezirk}`;
 
+  return {
+    title,
+    icons: "/favicon.ico",
+    description,
+    keywords,
+    openGraph: {
+      type: "website",
+      url: pageUrl,
+      title,
+      description,
+      images: imageUrl,
+      siteName: "Kinder in Hamburg",
+    },
+    twitter: {
+      title,
+      description,
+      images: imageUrl,
+      site: pageUrl,
+      card: "summary_large_image",
+    },
+  };
+}
 export default async function BezirkPage({
   params: { bezirk: bez },
 }: {

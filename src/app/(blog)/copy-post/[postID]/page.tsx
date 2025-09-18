@@ -4,11 +4,25 @@ import { redirect } from "next/navigation";
 import AdminRoute from "@app/providers/AdminRoute";
 import {
   getApprovedPostWithID,
+  getPostMetadata,
   getSuggestedPostWithID,
 } from "@app/api/dbActions";
-import { iUserMetadata } from "@app/api/auth/types";
 import dynamic from "next/dynamic";
 const PostForm = dynamic(() => import("@components/@PostForm/PostForm"));
+
+import type { Metadata } from "next";
+export async function generateMetadata({
+  params,
+}: {
+  params: { postID: string };
+}): Promise<Metadata> {
+  const { title } = (await getPostMetadata(params.postID)) || { title: "Post" };
+  return {
+    title: "Copy " + title,
+    icons: "/favicon.ico",
+  };
+}
+
 export default async function AddCopiedFlohmarkt({
   params,
 }: {

@@ -2,6 +2,52 @@ import { getPostsWithCat } from "@app/api/dbActions";
 import AdminRoute from "@app/providers/AdminRoute";
 import dynamic from "next/dynamic";
 import React from "react";
+import type { Metadata } from "next";
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: "Spielhäuser in Hamburg",
+    icons: "/favicon.ico",
+    description:
+      "Entdecke Spielhäuser in Hamburg – Gemeinschaftszentren für Kinder und Familien mit kreativen Aktivitäten, Veranstaltungen und Unterstützung.",
+    keywords: [
+      "spielhaus hamburg",
+      "spielhäuser hamburg",
+      "kinder hamburg",
+      "familie hamburg",
+      "freizeit kinder hamburg",
+      "gemeinschaftszentrum hamburg",
+      "spielhaus",
+      "spielhäuser",
+      "hamburg kinder",
+      "hamburg familie",
+      "aktivitäten kinder hamburg",
+      "veranstaltungen kinder hamburg",
+      "kinder in hamburg",
+      "hamburg mit kindern",
+      "hamburg familie",
+      "hamburg kinder",
+      "spielmöglichkeiten hamburg",
+      "spielzentrum hamburg",
+    ],
+    openGraph: {
+      type: "website",
+      url: "https://www.kinder-in-hamburg.de/posts/spielhaeuser",
+      title: "Spielhäuser in Hamburg",
+      description:
+        "Finde Spielhäuser in Hamburg – sichere und kreative Orte für Kinder und Familien mit vielfältigen Aktivitäten und Veranstaltungen.",
+      images: process.env.BASE_URL + "opengraph-image.png",
+      siteName: "Kinder in Hamburg",
+    },
+    twitter: {
+      title: "Spielhäuser in Hamburg",
+      description:
+        "Entdecke Spielhäuser in Hamburg – Gemeinschaftszentren für Kinder und Familien mit kreativen Aktivitäten und Unterstützung.",
+      images: process.env.BASE_URL + "opengraph-image.png",
+      site: "https://www.kinder-in-hamburg.de/posts/spielhaeuser",
+      card: "summary_large_image",
+    },
+  };
+}
 
 const SpielhaeuserMap = dynamic(() => import("./SpielhaeuserMap"), {
   ssr: false,

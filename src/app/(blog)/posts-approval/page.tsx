@@ -2,8 +2,14 @@ import AdminRoute from "@app/providers/AdminRoute";
 import React from "react";
 import PostsApproval from "./PostsApproval";
 import { getPendingPosts } from "@app/api/dbActions";
-import { parsePost } from "@app/utils/functions";
+import type { Metadata } from "next";
 
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: "Posts Approval",
+    icons: "/favicon.ico",
+  };
+}
 export default async function PostsApprovalPage() {
   const postsList = await getPendingPosts();
   if (!postsList) return <div>There was a problem retrieving posts</div>;

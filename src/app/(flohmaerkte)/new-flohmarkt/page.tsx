@@ -3,8 +3,14 @@ import FlohForm from "@components/@FlohForm/FlohForm";
 import { getServerUser } from "@app/api/auth/supabaseAuth";
 import { redirect } from "next/navigation";
 import AdminRoute from "@app/providers/AdminRoute";
-import { iUserMetadata } from "@app/api/auth/types";
+import type { Metadata } from "next";
 
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: "New Flohmarkt",
+    icons: "/favicon.ico",
+  };
+}
 export default async function addEvent() {
   const user = await getServerUser();
   if (!user) redirect("/");

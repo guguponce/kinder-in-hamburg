@@ -1,4 +1,4 @@
-import { getEventWithID } from "@app/api/dbActions";
+import { getEventMetadata, getEventWithID } from "@app/api/dbActions";
 import ClearLatLonButton from "@components/@Icons/@Flohmarkt/ClearLatLonButton";
 import AdminRoute from "@app/providers/AdminRoute";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
@@ -9,7 +9,21 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import React from "react";
 import AdminEditButtons from "@components/@Buttons/AdminEditButtons";
+import type { Metadata } from "next";
 
+export async function generateMetadata({
+  params,
+}: {
+  params: { eventID: string };
+}): Promise<Metadata> {
+  const { title } = (await getEventMetadata(params.eventID, "events")) || {
+    title: "Event",
+  };
+  return {
+    title: "Update " + title,
+    icons: "/favicon.ico",
+  };
+}
 export default async function UpdateEventPage({
   params: { eventID },
 }: {
