@@ -8,7 +8,7 @@ import {
 import NotFound from "@components/@NotFound/NotFound";
 import FlohmarktTemplate from "@components/FlohmarktTemplate";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import EventPageMapContainer from "./EventPageMapContainer";
 import { getSpielplatzFromBezirkStadtteil } from "@app/api/spActions";
 import { PROXIMATE_STADTTEILE_FROM_OTHER_BEZIRK } from "@app/utils/constants";

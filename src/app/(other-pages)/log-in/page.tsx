@@ -1,5 +1,5 @@
 import AuthButton from "@components/@Header/AuthButton";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import React from "react";
 
 export async function generateMetadata(): Promise<Metadata> {

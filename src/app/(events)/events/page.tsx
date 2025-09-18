@@ -6,9 +6,9 @@ import Link from "next/link";
 import React from "react";
 import BezirkableList from "@components/BezirkableList";
 import dynamic from "next/dynamic";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
-import { iFlohmarkt } from "@app/utils/types";
+import type { iFlohmarkt } from "@app/utils/types";
 import GeneralContainer from "@components/GeneralContainer";
 
 const DynamicEventsMap = dynamic(

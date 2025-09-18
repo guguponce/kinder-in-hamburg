@@ -7,13 +7,13 @@ import {
   relatedCategories,
 } from "@app/utils/constants";
 import { parseParams, sortPostsByDate } from "@app/utils/functions";
-import { categoryName } from "@app/utils/types";
+import type { categoryName } from "@app/utils/types";
 import NotFound from "@components/@NotFound/NotFound";
 import React from "react";
 import ShuffleGallery from "@components/@Cards/ShuffleGallery";
 import { unstable_cache } from "next/cache";
 import dynamic from "next/dynamic";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 
 export async function generateMetadata({
   params,

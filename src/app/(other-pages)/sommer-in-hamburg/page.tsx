@@ -9,7 +9,7 @@ import dynamic from "next/dynamic";
 import { getWeatherData } from "@app/api/weatherAPI";
 import WeatherDisplay from "@components/@Weather/WeatherDisplay";
 import PageTitle from "@app/components/PageTitle";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {

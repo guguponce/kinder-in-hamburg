@@ -8,7 +8,7 @@ import {
 } from "@app/api/spActions";
 import NotFound from "@components/@NotFound/NotFound";
 import AdminRoute from "@app/providers/AdminRoute";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {

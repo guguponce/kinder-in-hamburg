@@ -3,7 +3,7 @@ import React from "react";
 import { getPostsWithTag } from "@app/api/dbActions";
 import { unstable_cache } from "next/cache";
 import BezirkableList from "@components/BezirkableList";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import BuecherHalleMap from "./BuecherHalleMap";
 import { cn } from "@app/utils/functions";
 

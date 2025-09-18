@@ -5,7 +5,7 @@ import { unstable_cache } from "next/cache";
 import dynamic from "next/dynamic";
 import URLFilteredListSuspense from "@components/Filters/URLFilteredListSuspense";
 import PageTitle from "@components/PageTitle";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 
 export const revalidate = 20;
 

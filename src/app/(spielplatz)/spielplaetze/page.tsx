@@ -7,7 +7,7 @@ import dynamic from "next/dynamic";
 import { separateInBezirke } from "@app/utils/functions";
 import ExpandableContainer from "@components/ExpandableContainer";
 import ApproveButton from "@components/@Buttons/ApproveButton";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import URLFilteredListSuspense from "@app/components/Filters/URLFilteredListSuspense";
 
 const DynamicSielplaetzeMap = dynamic(() => import("./DynamicSielplaetzeMap"), {

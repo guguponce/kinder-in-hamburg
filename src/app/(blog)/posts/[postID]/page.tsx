@@ -10,7 +10,7 @@ import AdminRoute from "@app/providers/AdminRoute";
 import AdminEditButtons from "@components/@Buttons/AdminEditButtons";
 import { redirect } from "next/navigation";
 import { getServerUser } from "@app/api/auth/supabaseAuth";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import { getPlainText, parseDescriptionWithTags } from "@app/utils/functions";
 interface PostPageProps {
   params: { postID: string };

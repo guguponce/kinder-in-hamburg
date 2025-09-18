@@ -1,12 +1,11 @@
 import React from "react";
 import { getAllApprovedPosts } from "@app/api/dbActions";
-import { iPost } from "@app/utils/types";
 import NotFound from "@components/@NotFound/NotFound";
 import RandomRecommendation from "@components/@Cards/RandomRecommendation";
 import Link from "next/link";
 import AdminRoute from "@app/providers/AdminRoute";
 import { separateInBezirke } from "@app/utils/functions";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {

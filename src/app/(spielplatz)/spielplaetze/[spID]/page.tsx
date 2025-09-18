@@ -6,7 +6,7 @@ import SPBezirkMap from "./SPBezirkMapContainer";
 import FlohmaerkteNearby from "../FlohmaerkteNearby";
 import dynamic from "next/dynamic";
 import ImagesModalGallery from "@components/ImagesModalGallery";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import AdminEditButtons from "@components/@Buttons/AdminEditButtons";
 import LocationBox from "@components/@Templates/LocationBox";
 import DisplayTypeText from "@components/@PostForm/DisplayTypeText";

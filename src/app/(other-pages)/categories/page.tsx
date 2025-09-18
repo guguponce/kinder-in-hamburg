@@ -2,10 +2,10 @@ import { getAllApprovedPosts } from "@app/api/dbActions";
 import StackedCards from "@components/@Cards/StackedCards";
 import AdminRoute from "@app/providers/AdminRoute";
 import { categoryNames } from "@app/utils/constants";
-import { iPost } from "@app/utils/types";
+import type { iPost } from "@app/utils/types";
 import NotFound from "@components/@NotFound/NotFound";
 import React from "react";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
