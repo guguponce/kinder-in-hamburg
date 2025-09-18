@@ -37,7 +37,9 @@ export default function CardsListDisplay({
                   ? image[0]
                   : categories.includes("Badeplatz")
                     ? "/assets/icons/swim.svg"
-                    : "/assets/icons/spielplatz/spielplatz.svg"
+                    : title.includes("Bücherhalle")
+                      ? `/assets/buecherhalle${(id % 2) + 1}.webp`
+                      : "/assets/icons/spielplatz/spielplatz.svg"
               }
               description={description}
               link={isTypePost(card) ? `/posts/${id}` : `/spielplaetze/${id}`}

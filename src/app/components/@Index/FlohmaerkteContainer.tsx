@@ -8,6 +8,7 @@ import ErrorFetchingData from "../@NotFound/ErrorFetchingData";
 import PaperPlane from "../@Icons/PaperPlane";
 import { iFlohmarkt } from "@app/utils/types";
 import Link from "next/link";
+import PageTitle from "../PageTitle";
 
 function sortByFlohmaerkteDate(list: iFlohmarkt[], today: number) {
   const timezoneOffset = -120 * 60 * 1000;
@@ -66,9 +67,7 @@ export default async function FlohmaerkteContainer() {
     <section
       className={`rounded-lg bg-gradient-to-b from-[#d0d7da50] via-[#d0d7da50] to-hh-50 bg-opacity-25 w-[calc(100%-2rem)] p-1 sm:p-4 flex flex-col items-center ${thisWeekFlohmaerkteLength ? "min-h-[50vh] max-w-[1200px]" : "max-w-[800px]"} text-hh-50"`}
     >
-      <h1 className=" text-4xl font-bold p-2 lg:pb-4 rounded text-hh-950">
-        Flohmärkte
-      </h1>
+      <PageTitle title="Flohmärkte" />
       {/* <h2 className="w-fit text-base italic mb-2 p-2 bg-hh-800 bg-opacity-75 md:p-4 rounded-lg border-2 font-semibold text-hh-50 border-hh-700 max-w-[480px] text-center">
         Die Hochsaison der Flohmärkte hat noch nicht begonnen, aber im Frühjahr
         geht es endlich los.
