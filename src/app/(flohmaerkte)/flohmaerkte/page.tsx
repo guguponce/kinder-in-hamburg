@@ -131,7 +131,7 @@ export default async function FlohmarktPage() {
           events={thisWeekFlohmaerkte}
           type="flohmaerkte"
         ></BezirkeScrollableEvents>
-        <section className="flex flex-col h-fit max-w-[1200px] p-2 bg-gradient-to-b from-hh-100 to-50 shadow-md md:shadow-xl my-4 md:my-8 rounded">
+        <section className="flex flex-col h-fit max-w-full xl:max-w-[1200px] p-2 bg-gradient-to-b from-hh-100 to-50 shadow-md md:shadow-xl my-4 md:my-8 rounded">
           <div className="w-full flex flex-wrap gap-2 justify-end items-center">
             {!!futureFlohmaerkte.length && (
               <div className="font-semibold flex gap-1 text-hh-800">
@@ -146,12 +146,14 @@ export default async function FlohmarktPage() {
               </div>
             )}
           </div>
-          <DynamicFlohmarktMap
-            future={futureFlohmaerkte}
-            thisWeek={thisWeekFlohmaerkte}
-            today={today}
-            square={false}
-          />
+          <div className="w-full max-w-[800px]">
+            <DynamicFlohmarktMap
+              future={futureFlohmaerkte}
+              thisWeek={thisWeekFlohmaerkte}
+              today={today}
+              square={false}
+            />
+          </div>
         </section>
         <BezirkableList
           title="Ab nächster Woche"
