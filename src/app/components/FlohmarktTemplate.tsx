@@ -108,7 +108,6 @@ function LocationDate({
             </div>
           </div>
         )}
-
         {!!address && (
           <div className="flex gap-[6px] ml-[2px]">
             <div className="min-w-5 mt-1">
@@ -316,6 +315,8 @@ export default function FlohmarktTemplate({
                 time={time}
                 image={image}
                 endDate={endDate}
+                bezirk={bezirk}
+                stadtteil={stadtteil}
               />
             </div>
             {optionalComment && (
@@ -350,6 +351,8 @@ export default function FlohmarktTemplate({
               time={time}
               image={image}
               endDate={endDate}
+              bezirk={bezirk}
+              stadtteil={stadtteil}
             />
           </div>
           {externalLink && (
