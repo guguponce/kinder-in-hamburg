@@ -8,14 +8,31 @@ import ScrollableCardList from "@components/@Cards/ScrollableCardList";
 import DeleteUnusedImages from "@components/@Buttons/DeleteUnusedImages";
 import AdminRoute from "@app/providers/AdminRoute";
 import FlohmaerkteSearchList from "./FlohmaerkteSearchList";
+import { unstable_cache } from "next/cache";
+export const metadata = {
+  title: "Dashboard",
+  description:
+    "Dein Dashboard - Verwalte deine Vorschläge und entdecke neue Möglichkeiten in Hamburg",
+};
+
+const cachedUserPosts = unstable_cache(getUsersSuggestions, ["posts"], {
+  revalidate: 300,
+});
+const cachedUserEvents = unstable_cache(
+  getUserEvents,
+  ["events", "flohmaerkte"],
+  {
+    revalidate: 300,
+  }
+);
 
 export default async function DashboardPage() {
   const user = await getServerUser();
   if (!user?.email || !user.name) {
     redirect("/");
   }
-  const userPosts = await getUsersSuggestions(user.email);
-  const userFlohs = await getUserEvents(user.email);
+  const userPosts = await cachedUserPosts(user.email);
+  const userFlohs = await cachedUserEvents(user.email);
   return (
     <AdminRoute>
       <main className="w-[calc(100%-2rem)] max-w-[1000px] p-4 bg-hh-100 rounded-md mx-auto flex flex-col items-center gap-8">
