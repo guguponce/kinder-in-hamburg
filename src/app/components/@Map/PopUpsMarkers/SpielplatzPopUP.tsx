@@ -36,7 +36,7 @@ export default function SpielplatzPopUP({
             alt={title}
             className="w-full aspect-square rounded"
           />
-          <div className="absolute bottom-0 right-0 bg-gradient-to-t from-hh-950 via-hh-950 to-transparent bg-opacity-50 text-white p-1 pt-4 rounded">
+          <div className="absolute w-full bottom-0 right-0 bg-gradient-to-t from-hh-950 via-[#1b1d1e7b] to-transparent bg-opacity-50 text-white p-1 pt-4 rounded">
             <small className="text-xs font-semibold capitalize block">
               {type?.join(" / ") || ""}
             </small>
@@ -64,7 +64,7 @@ export default function SpielplatzPopUP({
         <div className="mt-auto flex items-center gap-1 max-h-fit">
           {" "}
           <StandortIcon color="#0078A8" />
-          <p className="text-xs m-0 font-sans">{address}</p>
+          <p className="text-xs my-0 font-sans capitalize">{address}</p>
           {distance && (
             <h4 className="text-sm font-semibold flex flex-col items-center px-1 border-2 border-[#0078A8] rounded-sm min-w-fit">
               <span className="block">

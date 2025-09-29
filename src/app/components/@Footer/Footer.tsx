@@ -22,7 +22,7 @@ export default function Footer() {
           {" "}
           {[
             { href: "/about", name: "About" },
-            { href: "/kontakt", name: "kontakt" },
+            { href: "/kontakt", name: "Kontakt" },
           ].map(({ href, name }) => (
             <Link
               key={href}

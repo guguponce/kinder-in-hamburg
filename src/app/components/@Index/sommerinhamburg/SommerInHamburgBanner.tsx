@@ -9,6 +9,8 @@ import Banner from "@components/Banner";
 import { getBannerContentByMonth } from "./constants";
 
 export default async function SommerInHamburgBanner() {
+  const todaysMonth = new Date().getMonth();
+  if (todaysMonth < 4 || todaysMonth > 8) return null;
   const weather = await getWeatherData();
   const badeplaetze = (await getPostsWithCat(["Badeplatz"])) || [];
   const freibaeder = badeplaetze.filter(
