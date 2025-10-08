@@ -4,7 +4,6 @@ import ScrollableContainer from "@components/ScrollableContainer";
 import { cn, getDate, parseDescriptionWithTags } from "@app/utils/functions";
 import { iFlohmarkt } from "@app/utils/types";
 import React from "react";
-
 export default async function EventsSameLocation({
   location,
   className,
@@ -54,7 +53,13 @@ export default async function EventsSameLocation({
               id={ev.id}
               title={ev.title}
               description={parseDescriptionWithTags(ev.optionalComment)}
-              image={ev.image || "/assets/icons/weihnachtsmarkt.svg"}
+              image={
+                ev.image || "laterne" === ev.type
+                  ? "/assets/icons/laterne/laterne.svg"
+                  : ev.type === "laternewerkstatt"
+                    ? "/assets/icons/laterne/basteln.svg"
+                    : "/assets/icons/weihnachtsmarkt.svg"
+              }
               link={"/events/" + ev.id}
               size="small"
               imgClassname={!ev.image ? "object-contain" : "object-cover"}
