@@ -16,7 +16,6 @@ import HorizontalCard from "@components/@Cards/HorizontalCard";
 import ScrollableContainer from "@components/ScrollableContainer";
 import { redirect } from "next/navigation";
 import Banner from "@components/Banner";
-import AlteUmzugue from "./AlteUmzugue";
 import PageTitle from "@app/components/PageTitle";
 
 export const metadata = {
@@ -93,7 +92,6 @@ export default async function LaternenumzuegePage() {
   if (date.getMonth() < 8 && date.getMonth() > 11) {
     return (
       <Banner childrenClassName="flex flex-col sm:flex-col gap-2 items-center">
-        <AlteUmzugue />
         <Banner.Title href="/">
           Huch! Wir sind noch nicht bereit für die Laternenumzugszeit!
         </Banner.Title>
@@ -115,8 +113,6 @@ export default async function LaternenumzuegePage() {
   if (!laternenEvents.length && !laterneBastelnEvents.length) {
     return (
       <>
-        <AlteUmzugue />
-
         <Banner childrenClassName="flex flex-col sm:flex-col gap-2 items-center">
           <Banner.Title href="/">
             Huch! Wir haben keine Laternenumzüge oder Events gefunden! Aber
@@ -179,7 +175,6 @@ export default async function LaternenumzuegePage() {
           )}
         </div>
       </AdminServerComponent>
-      <AlteUmzugue />
 
       <section className="p-4 rounded-lg bg-gradient-to-b from-hh-950 to-hh-800 w-full flex gap-4 flex-col items-center max-w-full text-white shadow-xl bg-opacity-10 transition-all">
         <div className="w-full max-w-[720px] flex flex-col gap-2 justify-between items-stretch">
