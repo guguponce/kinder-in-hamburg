@@ -9,10 +9,9 @@ import ExpandableContainer from "@components/ExpandableContainer";
 import ApproveButton from "@components/@Buttons/ApproveButton";
 import type { Metadata } from "next";
 import URLFilteredListSuspense from "@app/components/Filters/URLFilteredListSuspense";
+import ErrorComponent from "@app/components/ErrorComponent";
+import { unstable_cache } from "next/cache";
 
-const DynamicSielplaetzeMap = dynamic(() => import("./DynamicSielplaetzeMap"), {
-  ssr: false,
-});
 const URLFilteredList = dynamic(
   () => import("@components/Filters/URLFilteredSpielplaetzeList"),
   { ssr: false, loading: () => <URLFilteredListSuspense /> }
@@ -70,9 +69,16 @@ export async function generateMetadata(): Promise<Metadata> {
     },
   };
 }
+
+const cachedSpielplaetze = unstable_cache(getAllSpielplaetze, ["posts"], {
+  revalidate: 300,
+});
 export default async function SpielplaeztePage() {
-  const spList = await getAllSpielplaetze();
-  if (!spList) return <div>There was a problem retrieving posts</div>;
+  const spList = await cachedSpielplaetze();
+  if (!spList)
+    return (
+      <ErrorComponent text="Es gab ein Problem beim Abrufen der Beiträge." />
+    );
   const distributedSP = separateInBezirke(spList);
   Object.entries(distributedSP).forEach(
     ([bezirk, list]) =>
