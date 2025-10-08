@@ -16,6 +16,8 @@ import HorizontalCard from "@components/@Cards/HorizontalCard";
 import ScrollableContainer from "@components/ScrollableContainer";
 import { redirect } from "next/navigation";
 import Banner from "@components/Banner";
+import AlteUmzugue from "./AlteUmzugue";
+import PageTitle from "@app/components/PageTitle";
 
 export const metadata = {
   title: "Laternenumzüge",
@@ -88,9 +90,10 @@ export default async function LaternenumzuegePage() {
   if (!laternenEvents) return <NotFound multiples type="event" />;
   const date = new Date();
   //if not from 1st november and 15th of january
-  if (date.getMonth() !== 8 && date.getMonth() !== 11) {
+  if (date.getMonth() < 8 && date.getMonth() > 11) {
     return (
       <Banner childrenClassName="flex flex-col sm:flex-col gap-2 items-center">
+        <AlteUmzugue />
         <Banner.Title href="/">
           Huch! Wir sind noch nicht bereit für die Laternenumzugszeit!
         </Banner.Title>
@@ -111,19 +114,23 @@ export default async function LaternenumzuegePage() {
   }
   if (!laternenEvents.length && !laterneBastelnEvents.length) {
     return (
-      <Banner childrenClassName="flex flex-col sm:flex-col gap-2 items-center">
-        <Banner.Title href="/">
-          Huch! Wir haben keine Laternenumzüge oder Events gefunden! Aber keine
-          Angst, auf der Homepage findest du viele weitere spannende Inhalte und
-          Aktivitäten für Kinder in Hamburg!
-        </Banner.Title>
-        <Link
-          href="/"
-          className="p-2 rounded-md bg-hh-400 hover:bg-hh-300 active:bg-hh-200 font-semibold text-hh-800"
-        >
-          Homepage
-        </Link>
-      </Banner>
+      <>
+        <AlteUmzugue />
+
+        <Banner childrenClassName="flex flex-col sm:flex-col gap-2 items-center">
+          <Banner.Title href="/">
+            Huch! Wir haben keine Laternenumzüge oder Events gefunden! Aber
+            keine Angst, auf der Homepage findest du viele weitere spannende
+            Inhalte und Aktivitäten für Kinder in Hamburg!
+          </Banner.Title>
+          <Link
+            href="/"
+            className="p-2 rounded-md bg-hh-400 hover:bg-hh-300 active:bg-hh-200 font-semibold text-hh-800"
+          >
+            Homepage
+          </Link>
+        </Banner>
+      </>
     );
   }
   if (!laternenEvents.length) redirect("/");
@@ -172,11 +179,11 @@ export default async function LaternenumzuegePage() {
           )}
         </div>
       </AdminServerComponent>
+      <AlteUmzugue />
+
       <section className="p-4 rounded-lg bg-gradient-to-b from-hh-950 to-hh-800 w-full flex gap-4 flex-col items-center max-w-full text-white shadow-xl bg-opacity-10 transition-all">
         <div className="w-full max-w-[720px] flex flex-col gap-2 justify-between items-stretch">
-          <h1 className="text-3xl flex-grow font-bold ">
-            Laternenumzüge in Hamburg
-          </h1>
+          <PageTitle title="Laternenumzüge in Hamburg" />
 
           <p className="italic">
             Eine der bekanntesten Herbsttraditionen bringt Familien und Freunde
@@ -254,7 +261,10 @@ export default async function LaternenumzuegePage() {
                       time,
                       stadtteil,
                     }) => (
-                      <div key={id} className="w-[360px] min-w-[300px]">
+                      <div
+                        key={id}
+                        className="w-[240px] sm:w-[280px] lg:w-[360px]"
+                      >
                         <HorizontalCard
                           key={id}
                           type={type}
