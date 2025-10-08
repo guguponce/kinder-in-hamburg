@@ -4,7 +4,7 @@ import Link from "next/link";
 import { descriptionFont } from "@app/styles/fonts/localfonts";
 import { cn } from "@app/utils/functions";
 
-const formatText = (text: string) => {
+const formatText = (text: string, linkClassName?: string) => {
   // Regular expressions to match the formatting tags and their content
   const regex =
     /<b>(.*?)<\/?b>|<sb>(.*?)<\/?sb>|<bi>(.*?)<\/?bi>|<i>(.*?)<\/?i>|<u>(.*?)<\/?u>|<upper>(.*?)<\/?upper>|<link>(.*?)<\/?link>|<h3>(.*?)<\/?h3>|<h2>(.*?)<\/?h2>|<attribution>(.*?)<\/?attribution>|<email>(.*?)<\/?email>/g;
@@ -81,7 +81,10 @@ const formatText = (text: string) => {
       } else if (linkText) {
         formattedText.push(
           <a
-            className="italic underline text-hh-800 break-words"
+            className={cn(
+              "break-words w-full text-hh-800 underline outline-offset-2 hover:text-hh-600 focus:border-0 focus:outline-2 focus:outline-hh-600 active:text-hh-700",
+              linkClassName
+            )}
             key={index}
             href={linkText.includes("http") ? linkText : `https://${linkText}`}
             target="_blank"
@@ -93,7 +96,10 @@ const formatText = (text: string) => {
       } else if (email) {
         formattedText.push(
           <a
-            className="italic underline text-hh-700 break-words"
+            className={cn(
+              "break-words italic w-full text-hh-800 underline outline-offset-2 hover:text-hh-600 focus:border-0 focus:outline-2 focus:outline-hh-600 active:text-hh-700",
+              linkClassName
+            )}
             key={index}
             href={`mailto:${email}`}
             target="_blank"
@@ -120,9 +126,11 @@ const formatText = (text: string) => {
 const CustomPre = ({
   text,
   className,
+  linkClassName,
 }: {
   text: string;
   className?: string;
+  linkClassName?: string;
 }) => {
   return (
     <pre
@@ -137,23 +145,30 @@ const CustomPre = ({
         className
       )}
     >
-      {formatText(text)}
+      {formatText(text, linkClassName)}
     </pre>
   );
 };
+
 export default function DisplayTypeText({
   type = "paragraph",
   text,
   className,
+  linkClassName,
 }: {
   type: TextType;
   text: string;
   className?: string;
+  linkClassName?: string;
 }) {
   return (
     <>
       {type === "paragraph" ? (
-        <CustomPre text={text} className={className} />
+        <CustomPre
+          text={text}
+          className={className}
+          linkClassName={linkClassName}
+        />
       ) : type === "subtitle1" ? (
         <h2
           style={{
@@ -230,7 +245,10 @@ export default function DisplayTypeText({
             whiteSpace: "pre-wrap",
             wordWrap: "break-word",
           }}
-          className="break-words block w-full text-hh-800 underline outline-offset-2 hover:text-hh-600 focus:border-0 focus:outline-2 focus:outline-hh-600 active:text-hh-700"
+          className={cn(
+            "break-words w-full text-hh-800 underline outline-offset-2 hover:text-hh-600 focus:border-0 focus:outline-2 focus:outline-hh-600 active:text-hh-700",
+            linkClassName
+          )}
           target="_blank"
         >
           {text}
