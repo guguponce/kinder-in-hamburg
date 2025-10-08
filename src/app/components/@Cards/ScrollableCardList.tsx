@@ -92,13 +92,13 @@ export default function ScrollableCardList({
               }) => (
                 <article
                   className={cn(
-                    "flex flex-col items-center min-w-[180px] mr-4",
+                    "flex flex-col items-center min-w-fit mr-4",
                     cardClassname
                   )}
                   key={id + title + (key || "")}
                 >
                   {cardType === "horizontal" ? (
-                    <div key={id} className="w-[360px] min-w-[300px]">
+                    <div key={id} className="w-[240px] sm:w-[280px]">
                       <HorizontalCard
                         key={id}
                         type={type}
@@ -116,20 +116,23 @@ export default function ScrollableCardList({
                       </HorizontalCard>
                     </div>
                   ) : (
-                    <FlohmarktPoster
-                      id={id}
-                      title={title}
-                      bezirk={bezirk}
-                      date={date}
-                      stadtteil={stadtteil}
-                      contain
-                      endDate={endDate}
-                      eventType={type}
-                      image={image}
-                      size="small"
-                      prefixLink="/events/"
-                    />
+                    <div className="w-[144px] sm:w-[180px] h-full">
+                      <FlohmarktPoster
+                        id={id}
+                        title={title}
+                        bezirk={bezirk}
+                        date={date}
+                        stadtteil={stadtteil}
+                        contain
+                        endDate={endDate}
+                        eventType={type}
+                        image={image}
+                        size="small"
+                        prefixLink="/events/"
+                      />
+                    </div>
                   )}
+
                   {withDate && (
                     <div className="absolute z-50 -translate-x-1/2 bottom-0 left-1/2 rounded-[4px_4px_0_0] flex justify-center w-3/4  p-1 text-xs bg-hh-800 backdrop-blur-sm bg-opacity-50 text-white">
                       {getDate(date, true).replace(/(\w+)/, (_, p1) => {

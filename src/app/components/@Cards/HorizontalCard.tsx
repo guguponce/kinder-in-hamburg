@@ -44,7 +44,7 @@ export default function HorizontalCard({
       )}
     >
       <div
-        className={`relative cardImage h-full aspect-square min-w-1/3 w-1/3 bg-hh-50 overflow-hidden flex justify-center items-center ${
+        className={`relative cardImage h-full aspect-[0.66] sm:aspect-square w-fit bg-hh-50 flex justify-center items-center ${
           spielgeraete && "bg-opacity-5"
         } ${!image && "p-2"}  ${["laternewerkstatt", "laterne"].includes(type) && !image && "bg-hh-800"}`}
       >
@@ -74,6 +74,13 @@ export default function HorizontalCard({
                 spList={spielgeraete}
                 color="#343b3e"
                 size="2rem"
+              />
+            ) : type === "spielplatz" ? (
+              <img
+                loading="lazy"
+                src={`/assets/spielplatz${parseInt(`${id}`) % 2 ? "" : "2"}.webp`}
+                alt={title}
+                className={`w-full h-full ${imgSize || "object-contain"}`}
               />
             ) : (
               <CardLogo logo="Indoor" color="#ACBAC8" size="3rem" />
@@ -112,7 +119,8 @@ HorizontalCard.FlohmarktInfo = function FlohmarktInfo({
           {endDate ? `- ${getDate(endDate)}` : time && `(${time})`}
         </small>
         <p className="text-xs">
-          {addressWithoutCity(address)} {stadtteil}
+          {addressWithoutCity(address)}{" "}
+          <span className="font-semibold">{stadtteil}</span>
         </p>
       </div>
     </div>

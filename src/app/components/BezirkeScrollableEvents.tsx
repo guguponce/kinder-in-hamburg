@@ -93,7 +93,7 @@ export default async function BezirkeScrollableEvents({
                 eventsByBezirke[currentBezirk].length > 4 ||
                   displayBezirke.length === 1
                   ? "w-fit"
-                  : "lg:w-[calc(50%-1rem)]"
+                  : "w-fit lg:max-w-[calc(50%-1rem)]"
               )}
             >
               {!bezirk && (
