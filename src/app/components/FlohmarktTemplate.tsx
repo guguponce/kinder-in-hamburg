@@ -326,12 +326,10 @@ export default function FlohmarktTemplate({
                     text={description || optionalComment}
                     type="paragraph"
                     className={
-                      ["laterne", "laternewerkstatt"].includes(type || "")
-                        ? "text-hh-50"
-                        : "text-hh-900"
+                      type === "laterne" ? "text-hh-50" : "text-hh-900"
                     }
                     linkClassName={
-                      ["laterne", "laternewerkstatt"].includes(type || "")
+                      type === "laterne"
                         ? "text-hh-200 hover:text-hh-100 focus:outline-hh-100 active:text-hh-300"
                         : ""
                     }
