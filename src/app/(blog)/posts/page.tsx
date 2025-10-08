@@ -6,6 +6,7 @@ import dynamic from "next/dynamic";
 import URLFilteredListSuspense from "@components/Filters/URLFilteredListSuspense";
 import PageTitle from "@components/PageTitle";
 import type { Metadata } from "next";
+import ErrorComponent from "@app/components/ErrorComponent";
 
 export const revalidate = 20;
 
@@ -72,7 +73,10 @@ const cachedPosts = unstable_cache(getAllApprovedPosts, ["posts"], {
 export default async function PostsPage() {
   // -----------------------------------------------
   const postsList = await cachedPosts();
-  if (!postsList) return <div>There was a problem retrieving posts</div>;
+  if (!postsList)
+    return (
+      <ErrorComponent text="Es gab ein Problem beim Abrufen der Beiträge." />
+    );
   return (
     <AdminRoute>
       <main className="w-full max-w-[1000px] p-1 sm:p-2">

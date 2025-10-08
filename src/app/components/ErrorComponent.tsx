@@ -5,9 +5,11 @@ import React from "react";
 export default function ErrorComponent({
   error,
   reset,
+  text = "Es sieht so aus, als wäre ein Fehler aufgetreten.",
 }: {
-  error: string;
-  reset: () => void;
+  text?: string;
+  error?: string;
+  reset?: () => void;
 }) {
   return (
     <main className="p-8 flex flex-col gap-2 items-center bg-gradient-to-br  from-[#fef3f250] to-[#fefefe50] rounded border-2 border-negative-700">
@@ -21,18 +23,18 @@ export default function ErrorComponent({
           {'"'}
         </p>
       </AdminClientComponent>
-      <p className="text-base text-negative-950">
-        Es sieht so aus, als wäre ein Fehler aufgetreten.
-      </p>
+      <p className="text-base text-negative-950">{text}</p>
       <p className="text-base text-negative-950">Das kannst du tun:</p>
 
       <div className="flex justify-center items-center gap-1">
-        <button
-          className="p-2 text-white bg-positive-700 rounded"
-          onClick={() => reset()}
-        >
-          Seite neu laden
-        </button>
+        {reset && (
+          <button
+            className="p-2 text-white bg-positive-700 rounded"
+            onClick={() => reset()}
+          >
+            Seite neu laden
+          </button>
+        )}
         <Link href={"/"} className="p-2 text-white bg-negative-700 rounded">
           Zur Startseite gehen
         </Link>

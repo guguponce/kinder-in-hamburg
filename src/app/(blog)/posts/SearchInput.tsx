@@ -12,7 +12,6 @@ export default function SearchInput({
 }) {
   const [currentSearchQuery, setCurrentSearchQuery] =
     React.useState(searchQuery);
-
   return (
     <form
       onSubmit={(e) => {
