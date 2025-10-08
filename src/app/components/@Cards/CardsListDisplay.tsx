@@ -1,7 +1,11 @@
 import React from "react";
 
 import { iSpielplatz, type iPost } from "@app/utils/types";
-import { getPlainText, isTypePost } from "@app/utils/functions";
+import {
+  getPlainText,
+  isTypePost,
+  isTypeSpielplatz,
+} from "@app/utils/functions";
 import ImgPriorityCard from "./ImgPriorityCard";
 
 const ImgPriorityCardMemo = React.memo(ImgPriorityCard);
@@ -39,7 +43,11 @@ export default function CardsListDisplay({
                     ? "/assets/icons/swim.svg"
                     : title.includes("Bücherhalle")
                       ? `/assets/buecherhalle${(id % 2) + 1}.webp`
-                      : "/assets/icons/spielplatz/spielplatz.svg"
+                      : isTypeSpielplatz(card)
+                        ? card.id % 2
+                          ? "/assets/spielplatz.webp"
+                          : "/assets/spielplatz2.webp"
+                        : "/assets/icons/spielplatz/spielplatz.svg"
               }
               description={description}
               link={isTypePost(card) ? `/posts/${id}` : `/spielplaetze/${id}`}
