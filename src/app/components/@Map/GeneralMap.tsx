@@ -40,6 +40,13 @@ const GeneralMap = ({
   const { userLocation } = useUserLocation();
   return (
     <MapContainer
+      key={
+        centerUserLocation && userLocation
+          ? `${userLocation.lat},${userLocation.lon}`
+          : currentTarget?.lat && currentTarget?.lon
+            ? `${currentTarget.lat},${currentTarget.lon}`
+            : "default"
+      }
       style={{ height: "100%", width: "100%", zIndex: 10 }}
       center={[
         centerUserLocation && userLocation
