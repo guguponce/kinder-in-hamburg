@@ -181,22 +181,21 @@ export default function FlohmarktTemplate({
   children?: React.ReactNode;
   creator?: boolean;
 }) {
-  const regex = /(.*)\s(<link>)(https?:\/\/[^\s]+)(<\/link>)/;
+  // const regex = /(.*)\s(<link>)(https?:\/\/[^\s]+)(<\/link>)/;
 
-  const match = optionalComment?.match(regex);
-  const linkText = match ? match[1].trim() : null;
-  const externalLink = match ? match[3] : null;
+  // const match = optionalComment?.match(regex);
+  // const linkText = match ? match[1].trim() : null;
+  // const externalLink = match ? match[3] : null;
 
-  const textWithoutLink = optionalComment?.replace(regex, "").trim();
+  // const textWithoutLink = optionalComment?.replace(regex, "").trim();
   const openHoursRegex = /(ÖFFNUNGSZEITEN[\s\S]*?)(?=\n\s*<link>|$)/i;
-  const openHours = (textWithoutLink?.match(openHoursRegex) || [])[0]
+  const openHours = (optionalComment?.match(openHoursRegex) || [])[0]
     ?.replace(/ÖFFNUNGSZEITEN/i, "")
     .trim();
-  const description = textWithoutLink?.replace(openHoursRegex, "").trim();
+  const description = optionalComment?.replace(openHoursRegex, "").trim();
   const attribution = optionalComment?.match(
     /<attribution>([\s\S]*?)<attribution>/
   )?.[1];
-
   return (
     <>
       {children}
@@ -317,6 +316,7 @@ export default function FlohmarktTemplate({
                 endDate={endDate}
                 bezirk={bezirk}
                 stadtteil={stadtteil}
+                location={location}
               />
             </div>
             {optionalComment && (
@@ -325,7 +325,16 @@ export default function FlohmarktTemplate({
                   <DisplayTypeText
                     text={description || optionalComment}
                     type="paragraph"
-                    className="text-hh-900"
+                    className={
+                      ["laterne", "laternewerkstatt"].includes(type || "")
+                        ? "text-hh-50"
+                        : "text-hh-900"
+                    }
+                    linkClassName={
+                      ["laterne", "laternewerkstatt"].includes(type || "")
+                        ? "text-hh-200 hover:text-hh-100 focus:outline-hh-100 active:text-hh-300"
+                        : ""
+                    }
                   />
                 </div>
               </div>
@@ -353,9 +362,10 @@ export default function FlohmarktTemplate({
               endDate={endDate}
               bezirk={bezirk}
               stadtteil={stadtteil}
+              location={location}
             />
           </div>
-          {externalLink && (
+          {/* {externalLink && (
             <div
               id="external-link"
               className={` ${image ? "w-full" : "max-w-full md:max-w-[600px] md:w-fit break-words"} mx-auto h-fit mb-4 p-4 rounded bg-hh-800 text-hh-100 text-base`}
@@ -370,7 +380,7 @@ export default function FlohmarktTemplate({
                 {externalLink}
               </Link>
             </div>
-          )}
+          )} */}
         </div>
         {process.env.ADMIN_EMAIL !== addedBy.email && (
           <div id="addedBy" className="w-fit px-4 lg:ml-auto self-end">
