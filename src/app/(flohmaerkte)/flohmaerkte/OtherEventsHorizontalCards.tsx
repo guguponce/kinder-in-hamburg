@@ -8,6 +8,7 @@ import {
 } from "@app/utils/functions";
 import { iEventType } from "@app/utils/types";
 import React from "react";
+import Link from "next/link";
 
 export default async function OtherEventsHorizontalCards({
   children,
@@ -49,12 +50,12 @@ export default async function OtherEventsHorizontalCards({
   if (Object.keys(eventsByDate).length === 0) return null;
   return (
     <section
-      className={`otherEventsHorizontalCards w-full rounded sm:p-2 my-2 flex flex-col ${style}`}
+      className={`otherEventsHorizontalCards w-fit max-w-full rounded sm:p-2 my-2 flex flex-col ${style}`}
     >
       <div className="p-2">
-        <h2 className="text-xl font-semibold text-hh-50">
+        <Link href="/events" className="text-xl font-semibold text-hh-50">
           Andere Veranstaltungen dieser Woche
-        </h2>
+        </Link>
         <p className="text-hh-100 text-sm">
           In den nächsten Tagen finden auch andere Events ({typesString}) statt
         </p>
@@ -90,7 +91,10 @@ export default async function OtherEventsHorizontalCards({
                       time,
                       stadtteil,
                     }) => (
-                      <div key={id} className="w-[360px] min-w-[300px]">
+                      <div
+                        key={id}
+                        className="w-[240px] sm:w-[280px] lg:w-[360px]"
+                      >
                         <HorizontalCard
                           key={id}
                           type={type}
