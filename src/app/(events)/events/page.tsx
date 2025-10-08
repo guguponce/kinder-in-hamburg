@@ -10,6 +10,7 @@ import type { Metadata } from "next";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
 import type { iFlohmarkt } from "@app/utils/types";
 import GeneralContainer from "@components/GeneralContainer";
+import PageTitle from "@app/components/PageTitle";
 
 const DynamicEventsMap = dynamic(
   () => import("../../components/@Map/DynamicEventsMap"),
@@ -94,10 +95,8 @@ export default async function EventPage() {
             </div>
           ))}
       </AdminServerComponent>
-      <GeneralContainer classname="rounded bg-hh-100 bg-opacity-25 w-full p-4 flex flex-col items-center min-h-[50vh] gap-2 max-w-3xl">
-        <h1 className="text-4xl font-bold my-2 p-2 rounded w-full bg-opacity-50 bg-hh-50 max-w-3xl">
-          Veranstaltungen für Kinder
-        </h1>
+      <GeneralContainer classname="rounded bg-hh-100 bg-opacity-25 w-full p-4 flex flex-col items-center min-h-[50vh] gap-2 max-w-[1000px]">
+        <PageTitle title="Veranstaltungen für Kinder" />
         {events.length === 0 && (
           <h3 className="text-base w-fit max-w-2xl mb-2 font-semibold italic">
             Leider haben wir gerade keine Infos zu bevorstehenden Events.
