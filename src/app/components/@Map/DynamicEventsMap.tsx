@@ -52,7 +52,7 @@ const DisplayedMarkers = ({
   selectedEvent: iEventType | undefined;
 }) => {
   return eventsList.map(
-    ({ id, lat, lon, address, date, endDate, title, bezirk, type }) => {
+    ({ id, lat, lon, address, date, endDate, title, bezirk, type, image }) => {
       return (selectedBezirk && bezirk !== selectedBezirk) ||
         (selectedEvent && selectedEvent !== type) ? null : (
         <React.Fragment key={id}>
@@ -84,6 +84,7 @@ const DisplayedMarkers = ({
               date={date}
               title={title}
               type={!type ? "flohmaerkte" : "events"}
+              image={image}
             />
           </Marker>
         </React.Fragment>
