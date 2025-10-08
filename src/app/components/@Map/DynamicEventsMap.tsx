@@ -14,6 +14,7 @@ import {
   createWeihnachtsmarktMapIcon,
 } from "./functions";
 import { eventTypesNames } from "@app/utils/constants";
+import StandortIcon from "../@Icons/StandortIcon";
 
 const flohmarktIcon = createNormalSizeIcon("#7B3E5E", 25, "#361b29");
 const futureIcon = createNormalSizeIcon("#343b3e", 25, "#1b1d1e");
@@ -196,7 +197,7 @@ export default function DynamicEventsMap({
   return (
     <div
       className={cn(
-        "w-full sm:w-full flex flex-col md:flex-row md:flex-wrap items-stretch gap-2 rounded",
+        "w-full sm:w-full flex flex-col md:flex-row md:flex-wrap items-stretch gap-1 rounded",
         className
       )}
     >
@@ -263,10 +264,27 @@ export default function DynamicEventsMap({
           )}
         </GeneralMap>
       </section>
+      {!!eventTypes?.length && (
+        <div className="flex flex-wrap gap-1 px-2 py-1 ml-auto justify-center items-center font-semibold">
+          {!!eventTypes?.length && (
+            <div className="w-fit max-w-full flex rounded p-1 outline outline-1 outline-hh-800">
+              <div className="flex justify-center items-center">
+                <StandortIcon size="1rem" color="#de6c13" />
+                <StandortIcon size="1rem" color="#343b3e" />
+              </div>
+              <p>Veranstaltungen</p>
+            </div>
+          )}
+          <div className="justify-center items-center w-fit max-w-full flex rounded p-1 outline outline-1 outline-hh-800">
+            <StandortIcon size="1rem" color="#7B3E5E" />
+            <p>Flohmärkte</p>
+          </div>
+        </div>
+      )}
       {(!!showBezirke || !!showTermine || !showEventType) && (
         <aside
           id="flohmaerkte-map-filters-aside"
-          className="px-2 pb-2 w-full xs:min-w-[300px] max-w-[80vw] flex flex-col"
+          className="px-2 w-full xs:min-w-[300px] max-w-[80vw] flex flex-col"
         >
           <ScrollableContainer vertical>
             <div
@@ -274,7 +292,7 @@ export default function DynamicEventsMap({
             >
               {showTermine && (
                 <div className="flex w-full flex-col">
-                  <h3 className="font-bold text-lg p-2">Termine</h3>
+                  <h3 className="font-bold text-lg px-2">Termine</h3>
                   <div className="flex flex-wrap gap-2 items-center  pb-2 px-2">
                     {orderedDates.map((date) => (
                       <button
@@ -335,7 +353,7 @@ export default function DynamicEventsMap({
 
               {showBezirke && bezirke.length > 1 && (
                 <div className="flex w-full flex-col">
-                  <h3 className="font-bold text-lg p-2">Bezirke</h3>
+                  <h3 className="font-bold text-lg px-2">Bezirke</h3>
                   <div className="flex flex-wrap gap-2 items-center pb-2 px-2">
                     {bezirke.map((item) => (
                       <button
@@ -366,7 +384,9 @@ export default function DynamicEventsMap({
 
               {showEventType && !!eventTypes?.length && (
                 <div className="flex w-full flex-col">
-                  <h3 className="font-bold text-lg p-2">Event type</h3>
+                  <h3 className="font-bold text-lg px-2">
+                    Art der Veranstaltung
+                  </h3>
                   <div className="flex flex-wrap gap-2 items-center pb-2 px-2">
                     {eventTypes.map((item) => (
                       <button
