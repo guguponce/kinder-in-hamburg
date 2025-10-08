@@ -1,6 +1,6 @@
 import BezirkeScrollableEvents from "@components/BezirkeScrollableEvents";
 import React from "react";
-import { getTodayNexMonday } from "@app/utils/functions";
+import { cn, getTodayNexMonday } from "@app/utils/functions";
 import { getThisWeekEvents } from "@app/api/dbActions";
 import dynamic from "next/dynamic";
 import TodaysFlohmaerkte from "../TodaysFlohmaerkte";
@@ -65,7 +65,12 @@ export default async function FlohmaerkteContainer() {
   const onlyToday = todayFlohmaerkteLength === thisWeekFlohmaerkteLength;
   return (
     <section
-      className={`rounded-lg bg-gradient-to-b from-[#d0d7da50] via-[#d0d7da50] to-hh-50 bg-opacity-25 w-[calc(100%-2rem)] p-1 sm:p-4 flex flex-col items-center ${thisWeekFlohmaerkteLength ? "min-h-[50vh] max-w-[1200px]" : "max-w-[800px]"} text-hh-50"`}
+      className={cn(
+        "rounded-lg bg-gradient-to-b from-[#d0d7da50] via-[#d0d7da50] to-hh-50 bg-opacity-25 w-[calc(100%-2rem)] p-1 sm:p-4 flex flex-col items-center  text-hh-50 shadow-2xl",
+        thisWeekFlohmaerkteLength
+          ? "min-h-[50vh] max-w-[1200px]"
+          : "max-w-[800px]"
+      )}
     >
       <PageTitle title="Flohmärkte" />
       {/* <h2 className="w-fit text-base italic mb-2 p-2 bg-hh-800 bg-opacity-75 md:p-4 rounded-lg border-2 font-semibold text-hh-50 border-hh-700 max-w-[480px] text-center">
