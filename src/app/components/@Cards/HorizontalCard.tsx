@@ -63,10 +63,19 @@ export default function HorizontalCard({
               className={`w-full h-full ${imgSize || "object-contain"}`}
             />
           </>
-        ) : ["laternewerkstatt", "laterne"].includes(type) ? (
+        ) : "laterne" === type ? (
           <div className="h-full aspect-square relative">
-            <LaterneImage />
+            <LaterneImage
+              ff={title.includes("Feuerwehr") || title.includes("FF")}
+            />
           </div>
+        ) : "laternewerkstatt" === type ? (
+          <img
+            loading="lazy"
+            src={"/assets/icons/laterne/basteln.svg"}
+            alt={title}
+            className={`w-full h-full ${imgSize || "object-contain"}`}
+          />
         ) : (
           <>
             {spielgeraete ? (
