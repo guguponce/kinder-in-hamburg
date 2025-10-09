@@ -90,6 +90,7 @@ export default async function OtherEventsHorizontalCards({
                       date,
                       time,
                       stadtteil,
+                      bezirk,
                     }) => (
                       <div
                         key={id}
@@ -106,6 +107,7 @@ export default async function OtherEventsHorizontalCards({
                           <HorizontalCard.FlohmarktInfo
                             title={title}
                             address={addressWithoutCity(address)}
+                            bezirk={bezirk}
                             stadtteil={stadtteil}
                             date={date}
                             time={time}

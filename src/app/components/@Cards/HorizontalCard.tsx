@@ -39,7 +39,7 @@ export default function HorizontalCard({
       aria-label={`Explore ${title}`}
       href={link}
       className={cn(
-        "HorizontalCard w-full h-32 sm:flex-grow justify-center flex gap-2 items-center bg-white text-hh-900 rounded-md overflow-hidden hover:shadow-md",
+        "HorizontalCard w-full h-32 sm:flex-grow justify-center flex lg:gap-2 items-center bg-white text-hh-900 rounded-md overflow-hidden hover:shadow-md",
         className
       )}
     >
@@ -108,6 +108,7 @@ HorizontalCard.FlohmarktInfo = function FlohmarktInfo({
   time,
   address,
   stadtteil,
+  bezirk,
   endDate,
 }: {
   title: string;
@@ -116,21 +117,21 @@ HorizontalCard.FlohmarktInfo = function FlohmarktInfo({
   address: string;
   stadtteil: string;
   endDate?: number;
+  bezirk?: string;
 }) {
   return (
     <div className="flex flex-col w-2/3 h-full hover:text-hh-950 justify-between gap-2  p-2 pl-0 sm:pr-4 sm:p-2">
-      <span className="truncate-2 font-semibold text-base block text-hh-950">
+      <h3 className="truncate-2 font-semibold text-sm lg:text-base block text-hh-950">
         {title}
-      </span>
+      </h3>
       <div className="flex flex-col">
-        <small className="font-semibold italic">
-          {getDate(date)}{" "}
-          {endDate ? `- ${getDate(endDate)}` : time && `(${time})`}
-        </small>
-        <p className="text-xs">
-          {addressWithoutCity(address)}{" "}
-          <span className="font-semibold">{stadtteil}</span>
+        <p className="font-semibold italic text-sm lg:text-base text-hh-800">
+          {getDate(date)} {endDate && <span>- {getDate(endDate)}</span>}
+          {time && <span className="hidden lg:inline text-sm">({time})</span>}
         </p>
+        <small className="text-xs font-semibold">
+          {stadtteil} -<span className="block lg:inline"> {bezirk}</span>
+        </small>
       </div>
     </div>
   );

@@ -84,7 +84,17 @@ export default function WeitereEvents({
               <div className="flex flex-wrap justify-between gap-2 items-stretch max-w-[360px] sm:max-w-none">
                 {flohmaerkteByDate.current[date].map(
                   (
-                    { title, address, date, id, time, image, stadtteil, type },
+                    {
+                      title,
+                      address,
+                      date,
+                      id,
+                      time,
+                      image,
+                      stadtteil,
+                      type,
+                      bezirk,
+                    },
                     i,
                     arr
                   ) => (
@@ -103,6 +113,7 @@ export default function WeitereEvents({
                           title={title}
                           address={addressWithoutCity(address)}
                           stadtteil={stadtteil}
+                          bezirk={bezirk}
                           date={date}
                           time={time}
                         />

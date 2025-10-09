@@ -51,6 +51,7 @@ export default function AdventsEvents({
                   date,
                   time,
                   stadtteil,
+                  bezirk,
                 }) => (
                   <div key={id} className="w-[360px] min-w-[300px]">
                     <HorizontalCard
@@ -65,6 +66,7 @@ export default function AdventsEvents({
                         title={title}
                         address={addressWithoutCity(address)}
                         stadtteil={stadtteil}
+                        bezirk={bezirk}
                         date={date}
                         time={time}
                       />

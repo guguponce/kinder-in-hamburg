@@ -70,7 +70,6 @@ export const metadata = {
     images: `${process.env.BASE_URL}opengraph-image.png`,
   },
 };
-
 const DynamicEventsMap = dynamic(
   () => import("../../components/@Map/DynamicEventsMap"),
   {
@@ -201,7 +200,7 @@ export default async function LaternenumzuegePage() {
                 className="min-w-[1200px] max-h-[400px] opacity-50 rounded-lg -z-10"
               />
             </div>
-            <div className="absolute bottom-0 right-0 w-1/4 aspect-square max-w-[300px]">
+            <div className="absolute bottom-0 right-8 w-1/4 aspect-square max-w-[300px]">
               <LaterneImage />
             </div>
           </div>
@@ -289,6 +288,7 @@ export default async function LaternenumzuegePage() {
                       type,
                       title,
                       image,
+                      bezirk,
                       address,
                       date,
                       time,
@@ -310,8 +310,9 @@ export default async function LaternenumzuegePage() {
                             title={title}
                             address={addressWithoutCity(address)}
                             stadtteil={stadtteil}
-                            date={date}
+                            bezirk={bezirk}
                             time={time}
+                            date={date}
                           />
                         </HorizontalCard>
                       </div>

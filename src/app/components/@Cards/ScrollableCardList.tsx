@@ -113,6 +113,7 @@ export default function ScrollableCardList({
                           address={addressWithoutCity(address)}
                           stadtteil={stadtteil}
                           date={date}
+                          bezirk={bezirk}
                         />
                       </HorizontalCard>
                     </div>
