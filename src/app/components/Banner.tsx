@@ -48,11 +48,18 @@ export default function Banner({
 
 Banner.TextSide = function BannerTextSide({
   children,
+  className,
 }: {
   children: React.ReactNode;
+  className?: string;
 }) {
   return (
-    <div className="flex flex-col items-center self-stretch gap-1 flex-grow sm:px-2">
+    <div
+      className={cn(
+        "flex flex-col items-center self-stretch gap-1 flex-grow sm:px-2",
+        className
+      )}
+    >
       {children}
     </div>
   );
