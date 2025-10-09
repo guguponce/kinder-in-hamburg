@@ -1,97 +1,28 @@
 "use client";
 import GeneralMap from "@components/@Map/GeneralMap";
-import FlohmarktPopUP from "@components/@Map/PopUpsMarkers/FlohmarktPopUP";
 import { iBezirk, iEventType, iFlohmarkt } from "@app/utils/types";
-import { Marker } from "react-leaflet";
 import React, { useMemo, useRef } from "react";
 import { divIcon, point } from "leaflet";
 import { cn, getDate, getTodayNexMonday } from "@app/utils/functions";
 import ScrollableContainer from "@components/ScrollableContainer";
 import MarkerClusterGroup from "react-leaflet-cluster";
-import {
-  createNormalSizeIcon,
-  createStandortMapIcon,
-  createWeihnachtsmarktMapIcon,
-} from "./functions";
 import { eventTypesNames } from "@app/utils/constants";
-import StandortIcon from "../@Icons/StandortIcon";
+import { DisplayedMarkers } from "./PopUpsMarkers/DisplayedMarkers";
+import { MapIndexes } from "./PopUpsMarkers/MapIndexes";
 
-const flohmarktIcon = createNormalSizeIcon("#7B3E5E", 25, "#361b29");
-const futureIcon = createNormalSizeIcon("#343b3e", 25, "#1b1d1e");
-const eventIcon = createNormalSizeIcon("#de6c13", 25, "#602d07");
-const todayIcon = divIcon({
-  html: createStandortMapIcon("#b72f1e", 30, "#460B07"),
-  iconSize: [30, 30],
-  iconAnchor: [30 / 2, 50],
-  className: "bg-transparent",
-});
-const weihnachtsmarktIcon = divIcon({
-  html: createWeihnachtsmarktMapIcon(),
-  iconSize: [20, 25],
-  iconAnchor: [10, 20],
-  className: "bg-transparent",
-});
-const smallWeihnachtsmarktIcon = divIcon({
-  html: createWeihnachtsmarktMapIcon(15),
-  iconSize: [15, 15],
-  iconAnchor: [8, 15],
-  className: "bg-transparent",
-});
-
-const DisplayedMarkers = ({
-  eventsList,
-  selectedBezirk,
-  selectedEvent,
-  todayString,
-  nextMonday,
-}: {
-  todayString: string;
-  nextMonday: number;
-  eventsList: iFlohmarkt[];
-  selectedBezirk: iBezirk | undefined;
-  selectedEvent: iEventType | undefined;
-}) => {
-  return eventsList.map(
-    ({ id, lat, lon, address, date, endDate, title, bezirk, type, image }) => {
-      return (selectedBezirk && bezirk !== selectedBezirk) ||
-        (selectedEvent && selectedEvent !== type) ? null : (
-        <React.Fragment key={id}>
-          <Marker
-            icon={
-              type === "weihnachtsmarkt"
-                ? selectedEvent === "weihnachtsmarkt"
-                  ? weihnachtsmarktIcon
-                  : smallWeihnachtsmarktIcon
-                : endDate
-                  ? todayIcon
-                  : getDate(date) === todayString
-                    ? todayIcon
-                    : type === "flohmarkt"
-                      ? flohmarktIcon
-                      : date < nextMonday
-                        ? type
-                          ? eventIcon
-                          : flohmarktIcon
-                        : futureIcon
-            }
-            key={id}
-            position={[lat || 53.5511, lon || 9.9937]}
-          >
-            {getDate(date) === todayString && "afdasfas"}
-            <FlohmarktPopUP
-              id={id}
-              address={address}
-              date={date}
-              title={title}
-              type={!type ? "flohmaerkte" : "events"}
-              image={image}
-            />
-          </Marker>
-        </React.Fragment>
-      );
-    }
-  );
-};
+interface iDynamicEventsMap {
+  children?: React.ReactNode;
+  showTermine?: boolean;
+  showBezirke?: boolean;
+  showEventType?: boolean;
+  today: number;
+  darkBackground?: boolean;
+  thisWeek: iFlohmarkt[];
+  future?: iFlohmarkt[];
+  square?: boolean;
+  className?: string;
+  showMapIndexes?: boolean;
+}
 export default function DynamicEventsMap({
   today,
   thisWeek,
@@ -103,18 +34,8 @@ export default function DynamicEventsMap({
   showBezirke = true,
   children,
   className,
-}: {
-  children?: React.ReactNode;
-  showTermine?: boolean;
-  showBezirke?: boolean;
-  showEventType?: boolean;
-  today: number;
-  darkBackground?: boolean;
-  thisWeek: iFlohmarkt[];
-  future?: iFlohmarkt[];
-  square?: boolean;
-  className?: string;
-}) {
+  showMapIndexes = true,
+}: iDynamicEventsMap) {
   const [selectedDate, setSelectedDate] = React.useState<
     number | string | undefined
   >(undefined);
@@ -265,23 +186,7 @@ export default function DynamicEventsMap({
           )}
         </GeneralMap>
       </section>
-      {!!eventTypes?.length && (
-        <div className="flex flex-wrap gap-1 px-2 py-1 ml-auto justify-center items-center font-semibold">
-          {!!eventTypes?.length && (
-            <div className="w-fit max-w-full flex rounded p-1 outline outline-1 outline-hh-800">
-              <div className="flex justify-center items-center">
-                <StandortIcon size="1rem" color="#de6c13" />
-                <StandortIcon size="1rem" color="#343b3e" />
-              </div>
-              <p>Veranstaltungen</p>
-            </div>
-          )}
-          <div className="justify-center items-center w-fit max-w-full flex rounded p-1 outline outline-1 outline-hh-800">
-            <StandortIcon size="1rem" color="#7B3E5E" />
-            <p>Flohmärkte</p>
-          </div>
-        </div>
-      )}
+      <MapIndexes eventTypes={eventTypes} />
       {(!!showBezirke || !!showTermine || !showEventType) && (
         <aside
           id="flohmaerkte-map-filters-aside"
@@ -293,7 +198,9 @@ export default function DynamicEventsMap({
             >
               {showTermine && (
                 <div className="flex w-full flex-col">
-                  <h3 className="font-bold text-lg px-2">Termine</h3>
+                  <h3 className="font-bold text-lg px-2 backdrop-blur w-fit rounded">
+                    Termine
+                  </h3>
                   <div className="flex flex-wrap gap-2 items-center  pb-2 px-2">
                     {orderedDates.map((date) => (
                       <button
@@ -385,7 +292,7 @@ export default function DynamicEventsMap({
 
               {showEventType && !!eventTypes?.length && (
                 <div className="flex w-full flex-col">
-                  <h3 className="font-bold text-lg px-2">
+                  <h3 className="font-bold text-lg px-2 backdrop-blur w-fit rounded">
                     Art der Veranstaltung
                   </h3>
                   <div className="flex flex-wrap gap-2 items-center pb-2 px-2">
