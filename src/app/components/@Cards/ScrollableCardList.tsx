@@ -93,6 +93,7 @@ export default function ScrollableCardList({
                 <article
                   className={cn(
                     "flex flex-col items-center min-w-fit mr-4",
+                    cardType !== "horizontal" ? "aspect-[3/4]" : "",
                     cardClassname
                   )}
                   key={id + title + (key || "")}

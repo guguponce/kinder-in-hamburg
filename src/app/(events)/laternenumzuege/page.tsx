@@ -17,6 +17,10 @@ import ScrollableContainer from "@components/ScrollableContainer";
 import { redirect } from "next/navigation";
 import Banner from "@components/Banner";
 import PageTitle from "@app/components/PageTitle";
+import { unstable_cache } from "next/cache";
+import { iFlohmarkt } from "@app/utils/types";
+import Image from "next/image";
+import LaterneImage from "@app/components/@Index/laternenumzug/LaterneImage";
 
 export const metadata = {
   title: "Laternenumzüge",
@@ -82,13 +86,22 @@ const DynamicEventsMap = dynamic(
     ),
   }
 );
-export default async function LaternenumzuegePage() {
+const getAllLaterneEvents = async () => {
   const laternenEvents = await getFutureApprovedEventsFromType("laterne");
   const laterneBastelnEvents =
     (await getFutureApprovedEventsFromType("laternewerkstatt")) || [];
+  return { laternenEvents, laterneBastelnEvents } as {
+    laternenEvents: false | iFlohmarkt[];
+    laterneBastelnEvents: iFlohmarkt[];
+  };
+};
+const cachedEvents = unstable_cache(getAllLaterneEvents, ["laternenumzuege"], {
+  revalidate: 300,
+});
+export default async function LaternenumzuegePage() {
+  const { laternenEvents, laterneBastelnEvents } = await cachedEvents();
   if (!laternenEvents) return <NotFound multiples type="event" />;
   const date = new Date();
-  //if not from 1st november and 15th of january
   if (date.getMonth() < 8 && date.getMonth() > 11) {
     return (
       <Banner childrenClassName="flex flex-col sm:flex-col gap-2 items-center">
@@ -176,9 +189,34 @@ export default async function LaternenumzuegePage() {
         </div>
       </AdminServerComponent>
 
-      <section className="p-4 rounded-lg bg-gradient-to-b from-hh-950 to-hh-800 w-full flex gap-4 flex-col items-center max-w-full text-white shadow-xl bg-opacity-10 transition-all">
+      <section className="relative p-4 rounded-lg bg-gradient-to-b from-hh-950 to-hh-800 w-full flex gap-4 flex-col items-center max-w-full text-white shadow-xl bg-opacity-10 transition-all  overflow-hidden">
+        <div className="absolute bottom-3 left-3 w-full -z-1">
+          <div className="w-full aspect-video sm:aspect-[3] relative  overflow-hidden opacity-50">
+            <div className="absolute top-0 left-2 w-full h-full">
+              <Image
+                style={{ left: "-6px" }}
+                fill
+                src={"/assets/icons/laterne/stars.svg"}
+                alt="stars"
+                className="min-w-[1200px] max-h-[400px] opacity-50 rounded-lg -z-10"
+              />
+            </div>
+            <div className="absolute bottom-0 right-0 w-1/4 aspect-square max-w-[300px]">
+              <LaterneImage />
+            </div>
+          </div>
+        </div>
         <div className="w-full max-w-[720px] flex flex-col gap-2 justify-between items-stretch">
           <PageTitle title="Laternenumzüge in Hamburg" />
+          <div className="absolute top-0 left-2 w-full h-full opacity-50 -z-1">
+            <Image
+              style={{ left: "-6px" }}
+              fill
+              src={"/assets/icons/laterne/stars.svg"}
+              alt="stars"
+              className="min-w-[1200px] max-h-[180px] bg-opacity-25 rounded-lg opacity-50 -z-1"
+            />
+          </div>
 
           <p className="italic">
             Eine der bekanntesten Herbsttraditionen bringt Familien und Freunde
