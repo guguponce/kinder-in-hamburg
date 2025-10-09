@@ -1,5 +1,10 @@
 import { haversineDistance } from "@app/utils/functions";
 import { divIcon } from "leaflet";
+import {
+  createNormalSizeIcon,
+  createStandortMapIcon,
+  createWeihnachtsmarktMapIcon,
+} from "../functions";
 
 export const locations: { [key: string]: { lat: number; lon: number } } = {
   "Hamburg-Altstadt": {
@@ -459,3 +464,25 @@ export const fetchLocationData = async (lat: number, lon: number) => {
   });
   return nearestStadtteil;
 };
+
+export const flohmarktIcon = createNormalSizeIcon("#7B3E5E", 25, "#361b29");
+export const futureIcon = createNormalSizeIcon("#343b3e", 25, "#1b1d1e");
+export const eventIcon = createNormalSizeIcon("#de6c13", 25, "#602d07");
+export const todayIcon = divIcon({
+  html: createStandortMapIcon("#b72f1e", 30, "#460B07"),
+  iconSize: [30, 30],
+  iconAnchor: [30 / 2, 50],
+  className: "bg-transparent",
+});
+export const weihnachtsmarktIcon = divIcon({
+  html: createWeihnachtsmarktMapIcon(),
+  iconSize: [20, 25],
+  iconAnchor: [10, 20],
+  className: "bg-transparent",
+});
+export const smallWeihnachtsmarktIcon = divIcon({
+  html: createWeihnachtsmarktMapIcon(15),
+  iconSize: [15, 15],
+  iconAnchor: [8, 15],
+  className: "bg-transparent",
+});
