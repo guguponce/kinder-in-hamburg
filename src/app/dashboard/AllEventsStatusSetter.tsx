@@ -92,6 +92,7 @@ export default async function AllEventsStatusSetter({
                               title={floh.title}
                               address={addressWithoutCity(floh.address)}
                               stadtteil={floh.stadtteil}
+                              bezirk={floh.bezirk}
                               date={floh.date}
                               time={floh.time}
                               endDate={floh.endDate}
