@@ -3,35 +3,44 @@ import EventsGallery from "./EventsGallery";
 import LaterneImage from "./LaterneImage";
 import Image from "next/image";
 import Link from "next/link";
+import PageTitle from "@app/components/PageTitle";
 
 export default function LaternenBanner() {
-  const today = Date.now();
-  if (today > new Date("2024-12-29").getTime()) return null;
+  const today = new Date();
+  const thisMonth = today.getMonth();
+  const thisDay = today.getDate();
+  if (thisMonth < 8 && thisMonth > 11) {
+    return null;
+  }
+
   return (
-    <section className="p-4 relative rounded-lg bg-gradient-to-b  min-w-fit flex gap-2 flex-col items-center w-full  max-w-[800px] lg:from-hh-950 lg:to-hh-800  lg:w-fit lg:max-w-[420px] text-white bg-opacity-10 transition-all overflow-hidden">
-      <div className="sm:gap-2 flex flex-col items-center w-full justify-stretch">
+    <section className="p-4 relative rounded-lg bg-gradient-to-b  min-w-fit flex gap-2 flex-col items-center from-hh-950 to-hh-800  w-fit max-w-[420px] text-white bg-opacity-10 transition-all overflow-hidden">
+      <div className="sm:gap-2 flex flex-col items-center w-full min-h-full ">
         <Image
           style={{ left: "-6px" }}
           fill
           src={"/assets/icons/laterne/stars.svg"}
           alt="stars"
-          className="absolute top-0 min-w-[1200px] max-h-[150px] bg-opacity-25 rounded-lg opacity-50 -z-1 lg:invert-0 invert"
+          className="absolute top-0 min-w-[1200px] max-h-[150px] bg-opacity-25 rounded-lg opacity-50 -z-1"
         />
-        <div className="flex flex-col items-center gap-2 w-fit rounded-3xl overflow-hidden bg-hh-950 bg-opacity-5">
-          <div className="min-h-full min-w-[280px] w-full max-w-[300px] flex items-center justify-around flex-col rounded">
-            <Link
-              className="text-3xl text-center font-bold p-1 sm:mb-none hover:text-hh-50 hover:scale-[1.01] transition-all"
-              href={"/laternenumzuege"}
-            >
-              Laternenumzüge
-            </Link>
+        <div className="h-full flex flex-col items-center justify-between gap-2 w-fit rounded-3xl overflow-hidden bg-hh-950 bg-opacity-5">
+          <div className="min-h-fit min-w-[280px] w-full max-w-[300px] flex-grow flex items-center justify-around flex-col rounded">
+            <PageTitle
+              title="Laternenumzüge"
+              className="text-4xl"
+              link="/laternenumzuege"
+            />
+
             <h4 className="text-center text-sm sm:text-base italic lg:backdrop-blur-sm mb-2">
-              Die Laternensaison ist fast zu Ende, aber es gibt noch ein paar
-              Lichterumzüge vor dem Dezember!
+              {thisMonth === 9 && thisDay <= 15
+                ? "Die Laternensaison hat gerade erst begonnen! Schau dir die kommenden Umzüge an."
+                : thisMonth === 10 && thisDay >= 20
+                  ? "Die Laternensaison ist fast zu Ende, aber es gibt noch ein paar Lichterumzüge vor dem Dezember!"
+                  : "Die Laternensaison ist in vollem Gange! Schau dir die kommenden Umzüge an."}
             </h4>
             <EventsGallery eventType="laterne" />
           </div>
-          <div className="relative flex justify-end w-72 pb-2">
+          <div className="relative flex justify-end w-full pb-2">
             <div
               className="absolute left-2 bottom-0 h-12 w-12"
               style={{ transform: "scaleX(-1)" }}
