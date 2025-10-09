@@ -3,6 +3,7 @@ import Link from "next/link";
 import React from "react";
 import FlohmarktBackground from "../@Icons/@Flohmarkt/FlohmarktBackground";
 import { iEventType } from "@app/utils/types";
+import LaterneImage from "../@Index/laternenumzug/LaterneImage";
 
 const FlohmarktBackgroundMemo = React.memo(FlohmarktBackground);
 
@@ -50,7 +51,11 @@ export default function FlohmarktPoster({
       }
       className={cn(
         `relative w-full h-full shadow-md rounded flex flex-col items-center justify-between text-center hover:scale-[1.01] hover:shadow-xl focus-visible:border-2 focus-visible:border-hh-900`,
-        image ? "" : "bg-gradient-to-b from-[#e1e4e59f] to-[#d0d7da9f] p-2",
+        image
+          ? ""
+          : ["laterne", "laternewerkstatt"].includes(eventType)
+            ? "bg-hh-900"
+            : "bg-gradient-to-b from-[#e1e4e59f] to-[#d0d7da9f] p-2",
         size === "small" ? "min-w-[144px]" : "min-w-[180px]"
       )}
     >
@@ -72,20 +77,26 @@ export default function FlohmarktPoster({
               : undefined
           }
         />
+      ) : "laterne" === eventType ? (
+        <div className="absoluteCenter w-4/5 h-4/5 sm:w-full sm:h-full bg-hh-900 flex justify-center items-center rounded sm:overflow-hidden">
+          <LaterneImage
+            ff={title.includes("Feuerwehr") || title.includes("FF")}
+          />
+        </div>
       ) : (
-        (eventType === "laterne" || eventType === "laternewerkstatt") && (
-          <>
-            <div className="absolute w-[30%] aspect-square rounded-full -translate-x-full top-1/2 left-[48%] bg-gradient-radial from-orange-300 via-transparent to- transparent  z-20" />
+        "laternewerkstatt" === eventType && (
+          <div className="absolute w-full h-full top-0 left-0 bg-hh-900 rounded overflow-hidden">
             <div
-              className="absolute w-full h-full top-0 bg-hh-950 flex justify-between flex-col items-center text-orange-200 border-2 border-hh-600 rounded overflow-hidden"
+              className=" w-full h-full"
               style={{
-                backgroundImage: `url("/assets/icons/laterne/laterne.svg")`,
-                backgroundSize: "50%",
+                filter: "brightness(0.7)",
+                backgroundImage: `url("/assets/icons/laterne/basteln.svg")`,
                 backgroundPosition: "center",
+                backgroundSize: "cover",
                 backgroundRepeat: "no-repeat",
               }}
             />
-          </>
+          </div>
         )
       )}
       {!!image && !["adventsevent", "weihnachtsmarkt"].includes(eventType) ? (
@@ -113,25 +124,25 @@ export default function FlohmarktPoster({
               className={`absolute rounded object-contain w-1/2 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2`}
             />
           ) : null}
-          <h2
+          <div
             className={cn(
-              "text-sm font-extrabold p-2 my-4 max-w-[180px] break-words rounded bg-hh-300 backdrop-blur-sm text-positive-900",
+              "h-fit text-sm font-extrabold p-2 my-2 sm:my-4 max-w-[180px] break-words rounded bg-hh-300 backdrop-blur-sm text-positive-900 truncate-2",
               image
                 ? "bg-opacity-80"
                 : eventType === "laterne" || eventType === "laternewerkstatt"
-                  ? "text-orange-300 bg-opacity-30"
+                  ? "text-orange-300 bg-opacity-30  backdrop-brightness-50"
                   : "bg-opacity-50"
             )}
           >
-            {title}
-          </h2>
+            <h2 className="max-h-10 overflow-hidden truncate-2">{title}</h2>
+          </div>
           <div
             className={cn(
               "flex flex-col items-center p-1 mb-4 bg-hh-300 bg-opacity-50 backdrop-blur-sm rounded mx-1 font-semibold",
               image
                 ? "bg-opacity-80"
                 : eventType === "laterne" || eventType === "laternewerkstatt"
-                  ? "text-orange-300 bg-opacity-30"
+                  ? "text-orange-300 bg-opacity-30 backdrop-brightness-50"
                   : "bg-opacity-50"
             )}
           >
