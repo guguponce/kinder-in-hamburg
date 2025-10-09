@@ -164,6 +164,12 @@ form {
   }
 }
 
+.absoluteCenter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 .neumorphism {
   box-shadow:
     inset 4px 4px 8px #bfc2c3,
@@ -289,6 +295,14 @@ form {
 
 .laterneIcon {
   background-image: url("/assets/icons/laterne/latMapIcon.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent;
+}
+
+.laternewerkstattIcon {
+  background-image: url("/assets/icons/laterne/basteln.svg");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
