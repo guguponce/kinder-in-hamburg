@@ -40,12 +40,12 @@ export default function LaternenBanner() {
             </h4>
             <EventsGallery eventType="laterne" />
           </div>
-          <div className="relative flex justify-end w-full pb-2">
+          <div className="relative flex justify-between items-end w-full pb-2">
             <div
-              className="absolute left-2 bottom-0 h-12 w-12"
+              className="h-12 aspect-square"
               style={{ transform: "scaleX(-1)" }}
             >
-              <LaterneImage normalSize={false} />
+              <LaterneImage />
             </div>
             <Link
               href={"/laternenumzuege"}
