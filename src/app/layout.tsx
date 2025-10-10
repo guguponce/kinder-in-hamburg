@@ -63,9 +63,6 @@ export const metadata: Metadata = {
       "Hier findet ihr Aktivitäten und Flohmärkte für die ganze Familie aus verschiedenen Orten in Hamburg zusammengestellt.",
     images: `${process.env.BASE_URL}opengraph-image.png`,
   },
-  other: {
-    "fb:app_id": process.env.FB_APP_ID || "YOUR_FB_APP_ID", // fb:app_id agregado
-  },
 };
 
 export const revalidate = 60 * 60 * 6; // 6 hours
