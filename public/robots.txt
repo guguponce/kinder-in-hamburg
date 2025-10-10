@@ -9,6 +9,6 @@ Disallow: /
 
 User-agent: Amazonbot
 Disallow: /
-
+User-Agent: FacebookExternalHit
 User-agent: *
 Allow: /
