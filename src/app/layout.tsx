@@ -54,14 +54,17 @@ export const metadata: Metadata = {
       "Hier findet ihr Aktivitäten und Flohmärkte für die ganze Familie aus verschiedenen Orten in Hamburg zusammengestellt.",
     url: "https://www.kinder-in-hamburg.de",
     images: "https:www.kinder-in-hamburg.de/opengraph-image.png",
+    type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "Kinder in Hamburg",
     description:
       "Hier findet ihr Aktivitäten und Flohmärkte für die ganze Familie aus verschiedenen Orten in Hamburg zusammengestellt.",
-
     images: `${process.env.BASE_URL}opengraph-image.png`,
+  },
+  other: {
+    "fb:app_id": process.env.FB_APP_ID || "YOUR_FB_APP_ID", // fb:app_id agregado
   },
 };
 
