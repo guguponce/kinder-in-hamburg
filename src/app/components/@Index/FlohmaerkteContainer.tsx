@@ -55,9 +55,11 @@ const DynamicEventsMap = dynamic(() => import("../@Map/DynamicEventsMap"), {
 export default async function FlohmaerkteContainer() {
   const flohmaerkte = await getThisWeekEvents();
   if (!flohmaerkte) return <ErrorFetchingData type="Flohmärkte" />;
-  const { today } = getTodayNexMonday();
-  const { thisWeekFlohmaerkte, futureFlohmaerkte, todayFlohmaerkte } =
-    sortByFlohmaerkteDate(flohmaerkte, today - 1000 * 60 * 60);
+  const { today, todaysMonth } = getTodayNexMonday();
+  const { thisWeekFlohmaerkte, todayFlohmaerkte } = sortByFlohmaerkteDate(
+    flohmaerkte,
+    today - 1000 * 60 * 60
+  );
   const todayFlohmaerkteLength = todayFlohmaerkte.length;
   const thisWeekFlohmaerkteLength = thisWeekFlohmaerkte.length;
   const weekday = new Date().getDay();
@@ -72,11 +74,16 @@ export default async function FlohmaerkteContainer() {
           : "max-w-[800px]"
       )}
     >
-      <PageTitle title="Flohmärkte" />
-      {/* <h2 className="w-fit text-base italic mb-2 p-2 bg-hh-800 bg-opacity-75 md:p-4 rounded-lg border-2 font-semibold text-hh-50 border-hh-700 max-w-[480px] text-center">
-        Die Hochsaison der Flohmärkte hat noch nicht begonnen, aber im Frühjahr
-        geht es endlich los.
-      </h2> */}
+      <PageTitle title="Flohmärkte" className="pageTitle" link="/flohmaerkte" />
+      {(todaysMonth < 3 || todaysMonth > 9) && (
+        <h2 className="w-fit text-base italic mb-2 p-2 bg-hh-800 bg-opacity-75 md:p-4 rounded-lg border-2 font-semibold text-hh-50 border-hh-700 max-w-[480px] text-center">
+          {todaysMonth < 3
+            ? "Die Hochsaison der Flohmärkte hat noch nicht begonnen, aber im Frühjahr geht es endlich los."
+            : todaysMonth > 9
+              ? "Die Flohmarktsaison neigt sich dem Ende zu. Aber in den kalten Monaten gibt es noch welche."
+              : ""}
+        </h2>
+      )}
 
       <div className="flex flex-col items-center gap-4 lg:gap-8 max-w-full">
         {!!thisWeekFlohmaerkteLength ? (
