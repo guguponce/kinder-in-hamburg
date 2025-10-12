@@ -112,7 +112,8 @@ form {
   }
 }
 
-#page-title {
+#page-title,
+.pageTitle {
   font-size: clamp(2rem, 5vw + 1rem, 3.5rem);
   line-height: clamp(2.25rem, 5vw + 1.25rem, 3.75rem);
 }

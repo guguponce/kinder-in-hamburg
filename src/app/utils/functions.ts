@@ -276,6 +276,7 @@ export const getTodayNexMonday = () => {
       currentDate.getDay() === 0
         ? currentDate.getTime() + 1000 * 60 * 60 * 24
         : nextMonday.getTime(),
+    todaysMonth: currentDate.getMonth(),
   };
 };
 

@@ -1204,7 +1204,6 @@ export const getAllEventsThisWeek = async (
     .lte("date", until)
     .order("date", { ascending: true })
     .ilike("status", "approved");
-  console.log(new Date(until).toLocaleString());
   try {
     if (bezirk || stadtteile || eventTypes) {
       if (bezirk && !checkBezirk(bezirk))
