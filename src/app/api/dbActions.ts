@@ -1200,12 +1200,11 @@ export const getAllEventsThisWeek = async (
   let query = supabaseAdmin
     .from("events")
     .select("*")
-    .or(
-      `date.gte.${today - 1000 * 60 * 60},and(date.lte.${today},endDate.gte.${today + 1000 * 60 * 60 * 12})`
-    )
+    .gte("date", today)
+    .lte("date", until)
     .order("date", { ascending: true })
     .ilike("status", "approved");
-
+  console.log(new Date(until).toLocaleString());
   try {
     if (bezirk || stadtteile || eventTypes) {
       if (bezirk && !checkBezirk(bezirk))
