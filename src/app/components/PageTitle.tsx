@@ -19,7 +19,7 @@ export default function PageTitle({
       <Link
         href={link}
         className={cn(
-          `font-bold min-w-fit text-center ${logoFont.className} tracking-wide text-2xl text-hh-50 mt-4 mx-4 mb-2`,
+          `font-bold min-w-fit text-center ${logoFont.className} tracking-wide text-2xl text-hh-50 mt-4 mx-4 mb-2 hover:text-hh-100`,
           className
         )}
         style={{ textShadow }}
