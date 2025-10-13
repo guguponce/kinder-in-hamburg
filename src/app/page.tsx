@@ -1,7 +1,6 @@
 import React from "react";
 import ShortAbout from "@components/@Index/ShortAbout";
-import FlohmaerkteContainer from "./components/@Index/FlohmaerkteContainer";
-import Banner from "./components/Banner";
+import FlohmaerkteBanner from "./components/@Index/FlohmaerkteContainer";
 import SommerInHamburgBanner from "./components/@Index/sommerinhamburg/SommerInHamburgBanner";
 import LaternenBanner from "./components/@Index/laternenumzug/LaternenBanner";
 import { BaldBanner } from "./components/BaldBanner";
@@ -16,7 +15,7 @@ export default function Home() {
         <LaternenBanner />
         <BaldBanner className="hidden md:flex w-full sm:max-w-[440px] items-stretch" />
       </div>
-      <FlohmaerkteContainer />
+      <FlohmaerkteBanner />
       <BaldBanner className="md:hidden flex w-full sm:max-w-[640px] items-stretch" />
 
       <SommerInHamburgBanner></SommerInHamburgBanner>

@@ -1,4 +1,8 @@
-import { bezirke as bezirkeNames, categoryNames } from "@app/utils/constants";
+import {
+  bezirke as bezirkeNames,
+  categoryNames,
+  spielgeraeteList,
+} from "@app/utils/constants";
 import { getPlainText, isTypePost } from "@app/utils/functions";
 import { iBezirk, iPost, iSpielplatz } from "@app/utils/types";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
@@ -51,6 +55,24 @@ export const filterCategoriesFX = (
   });
 };
 
+export const filterSpielgeraeteFX = (
+  list: iSpielplatz[],
+  spielgeraete: string[],
+  every: boolean
+) => {
+  if (!spielgeraete.length) return list;
+  const filteredSpielgeraete = spielgeraete.filter((s) =>
+    spielgeraeteList.includes(s)
+  );
+  return list.filter((sp) => {
+    if (every)
+      return filteredSpielgeraete.every((cat) =>
+        sp.spielgeraete?.includes(cat)
+      );
+    return filteredSpielgeraete.some((cat) => sp.spielgeraete?.includes(cat));
+  });
+};
+
 export const filterTypesFX = (
   list: iSpielplatz[],
   types: string[],
@@ -89,10 +111,10 @@ export const filterAlterFX = <T extends iPost | iSpielplatz>(
     const postMinAge = post.minAge || 0;
     const postMaxAge = post.maxAge || 100;
     const alter = parseInt(queryAlter);
-    if (!!postMinAge && postMinAge >= alter) {
+    if (!!postMinAge && postMinAge > alter) {
       return false;
     }
-    if (!!postMaxAge && postMaxAge <= alter) {
+    if (!!postMaxAge && postMaxAge < alter) {
       return false;
     }
     return true;
@@ -104,14 +126,15 @@ export const filteredBySearchFX = <T extends iPost | iSpielplatz>(
   searchQuery: string
 ): T[] => {
   if (!searchQuery) return list as T[];
-  return list.filter((post) =>
-    post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    isTypePost(post)
-      ? getPlainText((post as iPost).text)
-          ?.toLowerCase()
-          .includes(searchQuery.toLowerCase())
-      : post.text?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const lowerQuery = searchQuery.toLowerCase();
+
+  return list.filter((post) => {
+    const { text, title } = post;
+    const titleMatch = title.toLowerCase().includes(lowerQuery);
+    if (titleMatch) return true;
+    const plainText = typeof text === "string" ? text : getPlainText(text);
+    return plainText.split(/\s+/).some((word) => word.startsWith(lowerQuery));
+  });
 };
 
 export const filterAndSearchPosts = (
@@ -196,17 +219,18 @@ export const removeFilter = ({
     arrayStateSetter(
       value === "all" ? [] : (state as string[]).filter((v) => v !== value)
     );
-    router.push(
-      params +
-        "?" +
-        createArrayQueryString(
-          filterType,
-          value,
-          value === "all" ? [] : (state as string[]),
-          new URLSearchParams(searchParams.toString())
-        ),
-      { scroll: false }
-    );
+    if (filterType !== "spielgeraete")
+      router.push(
+        params +
+          "?" +
+          createArrayQueryString(
+            filterType,
+            value,
+            value === "all" ? [] : (state as string[]),
+            new URLSearchParams(searchParams.toString())
+          ),
+        { scroll: false }
+      );
   }
 };
 
