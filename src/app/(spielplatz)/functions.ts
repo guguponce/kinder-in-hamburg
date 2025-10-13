@@ -40,7 +40,7 @@ export const submitNewSpielplatz = async (
     type: typeList,
     ausruestung: ausruestungList,
     spielgeraete: spielgaereteList,
-    minAge: minAge && maxAge ? (minAge > maxAge ? minAge : maxAge) : undefined,
+    minAge: minAge && maxAge ? (minAge > maxAge ? minAge : maxAge) : minAge,
     maxAge: maxAge,
     tags: data.tags.split("*").map((tag: string) => tag.trim()),
     image: images,
@@ -83,11 +83,10 @@ export const submitUpdateSpielplatz = async (
     type: typeList,
     ausruestung: ausruestungList,
     spielgeraete: spielgaereteList,
-    minAge: minAge && maxAge ? (minAge > maxAge ? minAge : maxAge) : undefined,
+    minAge: minAge && maxAge ? (minAge > maxAge ? minAge : maxAge) : minAge,
     maxAge: maxAge,
     tags: data.tags.split("*").map((tag: string) => tag.trim()),
     image: images,
   };
-
   return await updateSpielplatz(suggestedSpielplatz);
 };
