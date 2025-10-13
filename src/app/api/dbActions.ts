@@ -1217,7 +1217,6 @@ export const getAllEventsThisWeek = async (
       const eventsTypesConditions = eventTypes
         ? eventTypes?.map((nh) => `type.ilike.%${nh}%`).join(",")
         : "";
-
       const combinedCondition = [
         eventsTypesConditions,
         stadtteileConditions,

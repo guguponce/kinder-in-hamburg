@@ -9,6 +9,7 @@ import ScrollableContainer from "@components/ScrollableContainer";
 import { cn } from "@app/utils/functions";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useCallback, useEffect, useState } from "react";
+import { spielgeraeteDisplay } from "@app/utils/constants";
 
 interface iPostFilters {
   params: string;
@@ -29,6 +30,12 @@ interface iPostFilters {
   categoriesFilteringTogether: boolean;
   setCategoriesFilteringTogether: React.Dispatch<React.SetStateAction<boolean>>;
   resetFilters?: () => void;
+  setSpielgeraeteFilteringTogether?: React.Dispatch<
+    React.SetStateAction<boolean>
+  >;
+  spielgeraeteFilteringTogether?: boolean;
+  spielgeraeteFilter?: string[];
+  setSpielgeraeteFilter?: React.Dispatch<React.SetStateAction<string[]>>;
 }
 const FiltersBox = ({
   title,
@@ -58,7 +65,7 @@ const FiltersBox = ({
       <button
         disabled={disabled}
         className={cn(
-          "min-h-10 flex justify-between gap-x-1 items-center py-1 px-2 bg-hh-800 bg-opacity-90 text-hh-50 text-sm",
+          " capitalize min-h-10 flex justify-between gap-x-1 items-center py-1 px-2 bg-hh-800 bg-opacity-90 text-hh-50 text-sm",
           isOpen && !disabled
             ? "hover:bg-opacity-80 focus-within:rounded-[0.5rem_0.5rem_0_0]"
             : `${
@@ -141,6 +148,10 @@ export default function PostFilters({
   setStadtteileFilter,
   queryAlter,
   setQueryAlter,
+  setSpielgeraeteFilteringTogether,
+  spielgeraeteFilteringTogether,
+  spielgeraeteFilter,
+  setSpielgeraeteFilter,
   type,
   queryFromType,
   categoriesFilteringTogether,
@@ -252,7 +263,7 @@ export default function PostFilters({
           <FiltersBox title="Kategorien" open={isOpen}>
             <>
               <div className="flex flex-wrap gap-2 p-1">
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2  ">
                   {!!decodedParamQuery && (
                     <div
                       className="px-1 bg-hh-800 text-hh-50 rounded text-xs border-2 border-hh-800 
@@ -282,7 +293,7 @@ export default function PostFilters({
                             return [...prev, cat];
                           });
                         }}
-                        className={`px-1 bg-hh-800 text-hh-50 rounded text-xs border-2 border-hh-800 ${
+                        className={`px-1 bg-hh-800 text-hh-50 rounded text-xs border-2 capitalize border-hh-800 ${
                           categoriesFilter.includes(cat)
                             ? "bg-opacity-100 hover:bg-opacity-90"
                             : "bg-opacity-50 hover:bg-opacity-60"
@@ -443,8 +454,7 @@ export default function PostFilters({
                   tabIndex={isOpen ? 0 : -1}
                   type="range"
                   placeholder="Alter"
-                  defaultValue={0}
-                  value={queryAlter}
+                  value={queryAlter || ""}
                   min={0}
                   max={27}
                   onClick={(e) => {
@@ -482,6 +492,99 @@ export default function PostFilters({
               )} */}
             </div>
           </FiltersBox>
+          {setSpielgeraeteFilter && (
+            <FiltersBox title="Spielgeräte" open={isOpen}>
+              <>
+                <div className="flex flex-wrap gap-1 p-1">
+                  {(
+                    [
+                      ...Object.entries(spielgeraeteDisplay["arrays"]),
+                      ["Andere", spielgeraeteDisplay.singles],
+                      ["Sports", spielgeraeteDisplay.sport],
+                    ] as [string, string[]][]
+                  ).map(([key, val], i) => (
+                    <div
+                      key={key}
+                      className={cn(
+                        "flex flex-col gap-2 p-1 border-hh-800 rounded w-full",
+                        i % 2 ? "bg-hh-800 bg-opacity-25 items-end" : "border-2"
+                      )}
+                    >
+                      {val.map((spg) =>
+                        spg === decodedParamQuery ? null : (
+                          <button
+                            tabIndex={isOpen ? 0 : -1}
+                            key={spg}
+                            onClick={() => {
+                              // modifyURL(
+                              //   createArrayQueryString(
+                              //     "categories",
+                              //     spg,
+                              //     categoriesFilter,
+                              //     new URLSearchParams(searchParams.toString())
+                              //   )
+                              // );
+
+                              setSpielgeraeteFilter &&
+                                setSpielgeraeteFilter((prev) => {
+                                  console.log(spg, prev);
+                                  if (prev.includes(spg)) {
+                                    return prev.filter((v) => v !== spg);
+                                  }
+                                  return [...prev, spg];
+                                });
+                            }}
+                            className={`w-fit mx-1 px-1 bg-hh-800 text-hh-50 rounded text-xs border-2 capitalize border-hh-800 ${
+                              spielgeraeteFilter?.includes(spg)
+                                ? "bg-opacity-100 hover:bg-opacity-90"
+                                : "bg-opacity-50 hover:bg-opacity-60"
+                            }`}
+                          >
+                            {spg}
+                          </button>
+                        )
+                      )}
+                    </div>
+                  ))}
+                </div>
+                <div className="flex flex-col w-full px-1">
+                  <div
+                    className="grid items-center gap-2 p-1 h-10"
+                    style={{ gridTemplateColumns: "min-content auto" }}
+                  >
+                    <button
+                      tabIndex={isOpen ? 0 : -1}
+                      className="relative p-1 rounded-2xl h-5 w-10 bg-hh-800 flex items-center transition-all"
+                      onClick={() => {
+                        setSpielgeraeteFilteringTogether &&
+                          setSpielgeraeteFilteringTogether((prev) => !prev);
+                      }}
+                    >
+                      <span
+                        className={cn(
+                          "bg-hh-100 rounded-full w-4 h-4 absolute top-1/2  -translate-y-1/2 transition-all duration-300",
+                          spielgeraeteFilteringTogether
+                            ? "translate-x-1/4 left-0"
+                            : "-translate-x-full left-[calc(100%-0.25rem)]"
+                        )}
+                      />
+                    </button>
+
+                    <span className="text-[10px] font-bold">
+                      {spielgeraeteFilteringTogether
+                        ? "Alle Spielgeräte erfüllen"
+                        : "Mindestens ein Spielgerät erfüllt"}
+                    </span>
+                  </div>
+                  <p className="text-[10px] text-hh-950 px-1">
+                    {spielgeraeteFilteringTogether
+                      ? "Zeigt nur Spielplätze, die allen ausgewählten Spielgeräten entsprechen."
+                      : "Zeigt Spielplätze, die mindestens einer der ausgewählten Spielgeräte entsprechen."}
+                  </p>
+                </div>
+              </>
+            </FiltersBox>
+          )}
         </ScrollableContainer>
       </aside>
     </>
