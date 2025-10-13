@@ -30,6 +30,7 @@ import {
   filterTypesFX,
   orderSpielplaetzeListFx,
   getAvailableTypes,
+  filterSpielgeraeteFX,
 } from "./filterFunctions";
 import { FilterButton } from "../../(blog)/posts/DeleteFilters";
 import SearchInput from "../../(blog)/posts/SearchInput";
@@ -39,9 +40,6 @@ import dynamic from "next/dynamic";
 import Button from "../@Buttons/Button";
 import CardsIcon from "../@Icons/CardsIcon";
 import MapIcon from "../@Icons/MapIcon";
-import { createBuecherhalleIcon } from "../@Map/mapUtils/constants";
-
-const buecherhalleDivIcon = createBuecherhalleIcon();
 
 const DynamicGeneralMap = dynamic(() => import("@components/@Map/GeneralMap"), {
   ssr: false,
@@ -81,19 +79,20 @@ export default function URLFilteredSpielplaetzeList({
     })
   );
   const [queryAlter, setQueryAlter] = useState(searchParams.get("alter") || "");
+  const [spielgeraeteFilter, setSpielgeraeteFilter] = useState<Array<string>>(
+    searchParams.getAll("spielgeraete").map((b) => decodeURIComponent(b))
+  );
   const [showMap, setShowMap] = useState(false);
   const { current: orderParam } = useRef(
     isTypeOrder(searchParams.get("order"))
       ? (searchParams.get("order") as orderType)
       : "neueste"
   );
-
   const [order, setOrder] = useState<orderType>(orderParam || "neueste");
-
   const [categoriesFilteringTogether, setCategoriesFilteringTogether] =
     useState<boolean>(false);
-
-  // FUNCTIONS
+  const [spielgeraeteFilteringTogether, setSpielgeraeteFilteringTogether] =
+    useState<boolean>(false);
 
   // MEMOIZED VALUES
   const orderedList = useMemo(
@@ -116,8 +115,17 @@ export default function URLFilteredSpielplaetzeList({
     () => filterStadtteileFX(filteredByBezirke, stadtteileFilter),
     [filteredByBezirke, stadtteileFilter]
   );
+  const filteredBySpielgeraete = useMemo(
+    () =>
+      filterSpielgeraeteFX(
+        filteredByStadtteile,
+        spielgeraeteFilter,
+        spielgeraeteFilteringTogether
+      ),
+    [filteredByStadtteile, spielgeraeteFilter, spielgeraeteFilteringTogether]
+  );
   const filteredByType = filterTypesFX(
-    filteredByStadtteile,
+    filteredBySpielgeraete,
     typeFilter,
     categoriesFilteringTogether
   );
@@ -152,14 +160,16 @@ export default function URLFilteredSpielplaetzeList({
   const availableTypes = useMemo(
     () =>
       getAvailableTypes(
-        categoriesFilteringTogether ? filteredByType : spielplaetzeListRef
+        // categoriesFilteringTogether ? filteredByType :
+        spielplaetzeListRef
       ),
-    [filteredByType, categoriesFilteringTogether, spielplaetzeListRef]
+    [spielplaetzeListRef]
   );
   const resetFilters = useCallback(() => {
     setTypeFilter([]);
     setBezirkeFilter([]);
     setStadtteileFilter([]);
+    setSpielgeraeteFilter([]);
     setQueryAlter("");
     setSearchQuery("");
     setOrder("neueste");
@@ -170,8 +180,9 @@ export default function URLFilteredSpielplaetzeList({
       !!searchQuery ||
       !!bezirkeFilter.length ||
       !!typeFilter.length ||
-      !!queryAlter,
-    [searchQuery, bezirkeFilter, typeFilter, queryAlter]
+      !!queryAlter ||
+      !!spielgeraeteFilter.length,
+    [searchQuery, bezirkeFilter, typeFilter, queryAlter, spielgeraeteFilter]
   );
 
   if (!spielplaetzeListRef)
@@ -201,6 +212,10 @@ export default function URLFilteredSpielplaetzeList({
           setQueryAlter={setQueryAlter}
           categoriesFilteringTogether={categoriesFilteringTogether}
           setCategoriesFilteringTogether={setCategoriesFilteringTogether}
+          setSpielgeraeteFilteringTogether={setSpielgeraeteFilteringTogether}
+          spielgeraeteFilteringTogether={spielgeraeteFilteringTogether}
+          spielgeraeteFilter={spielgeraeteFilter}
+          setSpielgeraeteFilter={setSpielgeraeteFilter}
         />
         <aside className="relative self-end flex flex-col gap-2 items-end sm:flex-row sm:justify-end sm:items-center px-2 sm:pb-2 pt-16 xs:pt-3 sm:pt-2 h-fit">
           <SearchInput
@@ -348,6 +363,26 @@ export default function URLFilteredSpielplaetzeList({
                       />
                     </React.Fragment>
                   ))}
+                {!!spielgeraeteFilter.length &&
+                  spielgeraeteFilter.map((spg) => (
+                    <React.Fragment key={spg}>
+                      <FilterButton
+                        filterType="Spielgerät"
+                        filterValue={spg}
+                        typeOnClick={() => {
+                          removeFilter({
+                            state: spielgeraeteFilter,
+                            arrayStateSetter: setSpielgeraeteFilter,
+                            filterType: "spielgeraete",
+                            value: spg,
+                            router,
+                            params,
+                            searchParams,
+                          });
+                        }}
+                      />
+                    </React.Fragment>
+                  ))}
               </div>
             </div>
           )}
@@ -356,7 +391,7 @@ export default function URLFilteredSpielplaetzeList({
           >
             <Button
               onClick={() => setShowMap(false)}
-              className={`${showMap ? "bg-opacity-10 -outline-offset-2 text-hh-900 active:bg-opacity-29 hover:bg-opacity-40 focus:bg-opacity-40 focus-visible:bg-opacity-40 focus:outline-hh-50 focus-visible:outline-hh-50 outline-2 outline outline-hh-900" : "text-hh-50 bg-opacity-75 active:bg-opacity-70 hover:bg-opacity-90 focus:bg-opacity-90 focus-visible:bg-opacity-90 focus:outline-hh-50 focus-visible:outline-hh-50"} flex-grow h-10 w-fit max-w-full p-2 bg-hh-800 hover:bg-hh-800 active:bg-hh-800 font-semibold rounded flex items-center justify-center gap-2`}
+              className={`${showMap ? "bg-opacity-10 -outline-offset-2 text-hh-900 active:bg-opacity-29 hover:bg-opacity-40 focus:bg-opacity-40 focus-visible:bg-opacity-40 focus:outline-hh-50 focus-visible:outline-hh-50 outline-2 outline outline-hh-900" : "text-hh-50 bg-opacity-75 active:bg-opacity-70 hover:bg-opacity-90 focus:bg-opacity-90 focus-visible:bg-opacity-90 focus:outline-hh-50 focus-visible:outline-hh-50"} flex-grow h-10 w-fit max-w-full p-2 bg-hh-800 hover:bg-hh-800 active:bg-hh-800 font-semibold rounded flex items-center justify-center gap-1`}
             >
               <CardsIcon color="#e1e4e5" size="1.5rem" /> Liste
             </Button>
@@ -372,11 +407,11 @@ export default function URLFilteredSpielplaetzeList({
         <article className="flex flex-col w-full flex-grow p-2 pt-0">
           {showMap ? (
             <div
-              className="w-full aspect-[3/4] max-h-[75dvh] rounded-lg bg-hh-100 gap-2 lg:gap-8 min-h-[350px] overflow-auto p-2 grid grid-cols-[repeat(auto-fit,minmax(160px,1fr))] justify-items-center"
-              style={{
-                boxShadow:
-                  "inset 4px 4px 8px #bfc2c3, inset -4px -4px 8px #ffffff",
-              }}
+              className="w-full aspect-[3/4] max-h-[75dvh] rounded-lg bg-hh-100 gap-2 lg:gap-8 min-h-[350px] overflow-auto p-2 grid grid-cols-[repeat(auto-fit,minmax(160px,1fr))] justify-items-center neumorphism"
+              // style={{
+              //   boxShadow:
+              //     "inset 4px 4px 8px #bfc2c3, inset -4px -4px 8px #ffffff",
+              // }}
             >
               <div className="w-full h-full rounded-md shadow-2xl overflow-hidden">
                 <DynamicGeneralMap>
