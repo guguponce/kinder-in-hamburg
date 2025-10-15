@@ -13,6 +13,9 @@ import DisplayTypeText from "@components/@PostForm/DisplayTypeText";
 import PageTitle from "@components/PageTitle";
 import { unstable_cache } from "next/cache";
 import { parseDescriptionWithTags } from "@app/utils/functions";
+import Spielgeraete from "./Spielgeraete";
+import Link from "next/link";
+import { getUser } from "@app/api/auth/supabaseAuth";
 
 interface SpielplatzPageProps {
   params: { spID: string };
@@ -89,11 +92,7 @@ export default async function SpielplatzPage({
     image,
     text,
   } = spielplatz;
-  const addressQuery = spielplatz.address
-    ? Object.values(spielplatz.address)
-        .map((part) => part.replace(" ", "+"))
-        .join("+")
-    : "";
+  const user = await getUser();
   const types = type.filter((t) => t !== "outdoor");
   return (
     <main
@@ -141,22 +140,29 @@ export default async function SpielplatzPage({
         />
         {!!types.length && (
           <div className="flex justify-center items-center flex-wrap gap-2 text-base text-hh-950 px-2 pb-2">
-            {types
-              .filter((t) => t !== "outdoor")
-              .map((t) => (
-                <h3
-                  // href={"/spielplaetze/type/" + t}
-                  key={t}
-                  className="capitalize rounded-xl bg-hh-50 bg-opacity-90 text-hh-950 px-2 hover:bg-hh-100 transition-colors"
-                >
-                  {t}
-                </h3>
-              ))}
+            {user
+              ? types.map((t) => (
+                  <Link
+                    href={"/spielplaetze?categories=" + t}
+                    key={t}
+                    className="capitalize rounded-xl bg-hh-50 bg-opacity-90 text-hh-950 px-2 hover:bg-hh-100 transition-colors"
+                  >
+                    {t}
+                  </Link>
+                ))
+              : types.map((t) => (
+                  <h3
+                    key={t}
+                    className="capitalize rounded-xl bg-hh-50 bg-opacity-90 text-hh-950 px-2 hover:bg-hh-100 transition-colors"
+                  >
+                    {t}
+                  </h3>
+                ))}
           </div>
         )}
       </div>
       <div id="spielplatz-grid" className="w-full xs:px-2 sm:px-4">
-        {/* {spielgeraete && <Spielgeraete spielgeraete={spielgeraete} />} */}
+        {spielgeraete && <Spielgeraete spielgeraete={spielgeraete} />}
         <section
           id="spielplatz-map-container"
           className="flex flex-col gap-2 p-2 bg-hh-50 bg-opacity-50 rounded-md w-full lg:h-fit lg:max-w-[400px] mb-2"
@@ -173,7 +179,7 @@ export default async function SpielplatzPage({
         </section>
         <section
           id="spielplatz-data"
-          className="flex flex-col justify-start items-center gap-2 w-full h-fit lg:h-full overflow-hidden flex-grow mb-2"
+          className="flex flex-col justify-start items-center gap-2 w-full h-fit lg:h-fit overflow-hidden flex-grow mb-2"
         >
           <SpielplatzgeraeteBackground
             small={false}
