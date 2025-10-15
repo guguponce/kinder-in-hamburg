@@ -22,6 +22,7 @@ interface iDynamicEventsMap {
   square?: boolean;
   className?: string;
   showMapIndexes?: boolean;
+  cluster?: boolean;
 }
 export default function DynamicEventsMap({
   today,
@@ -35,6 +36,7 @@ export default function DynamicEventsMap({
   children,
   className,
   showMapIndexes = true,
+  cluster = true,
 }: iDynamicEventsMap) {
   const [selectedDate, setSelectedDate] = React.useState<
     number | string | undefined
@@ -91,10 +93,9 @@ export default function DynamicEventsMap({
   );
 
   const { current: eventTypes } = useRef(
-    [...thisWeek, ...future].reduce((acc, curr) => {
-      if (!curr.type || acc.includes(curr.type)) return acc;
-      return [...acc, curr.type];
-    }, [] as iEventType[])
+    Array.from(
+      new Set([...future, ...thisWeek].map(({ type }) => type).filter(Boolean))
+    ) as iEventType[]
   );
 
   const { nextMonday } = getTodayNexMonday();
@@ -106,6 +107,11 @@ export default function DynamicEventsMap({
     }
     return eventsByDate;
   }, [selectedDate, eventsByDate]);
+  console.log(
+    "typeof [...future, ...thisWeek]",
+    new Set([...future, ...thisWeek].map(({ type }) => type).filter(Boolean))
+  );
+  console.log("eventTypes", eventTypes);
 
   const isToday = useMemo(() => {
     const todayString = getDate(today);
@@ -126,7 +132,7 @@ export default function DynamicEventsMap({
       <section
         className={`max-h-[60vh] min-h-[250px] flex-grow xs:min-w-[300px] sm:max-w-[800px] aspect-square sm:aspect-[3/2] md:aspect-auto md:mx-auto ${square ? "w-full lg:aspect-square  lg:max-w-full" : "md:aspect-video lg:aspect-auto lg:h-[50vh] lg:max-w-full"} flex justify-center rounded overflow-hidden`}
       >
-        <GeneralMap zoom={10}>
+        <GeneralMap zoom={11}>
           {children}
           {!futureSelected &&
             Object.entries(filteredBySelectedDate).map(([day, events]) => (
@@ -155,16 +161,26 @@ export default function DynamicEventsMap({
             />
           )}
           {!selectedDate ? (
-            <MarkerClusterGroup
-              chunkedLoading
-              iconCreateFunction={(cluster: any) =>
-                divIcon({
-                  html: `<div class="clusterIcon clusterIconPost">${cluster.getChildCount()}</div>`,
-                  className: "custom-marker-cluster",
-                  iconSize: point(32, 32, true),
-                })
-              }
-            >
+            cluster ? (
+              <MarkerClusterGroup
+                chunkedLoading
+                iconCreateFunction={(cluster: any) =>
+                  divIcon({
+                    html: `<div class="clusterIcon clusterIconPost">${cluster.getChildCount()}</div>`,
+                    className: "custom-marker-cluster",
+                    iconSize: point(32, 32, true),
+                  })
+                }
+              >
+                <DisplayedMarkers
+                  eventsList={future}
+                  selectedBezirk={selectedBezirk}
+                  selectedEvent={selectedEvent}
+                  todayString={todayString}
+                  nextMonday={nextMonday}
+                />
+              </MarkerClusterGroup>
+            ) : (
               <DisplayedMarkers
                 eventsList={future}
                 selectedBezirk={selectedBezirk}
@@ -172,7 +188,7 @@ export default function DynamicEventsMap({
                 todayString={todayString}
                 nextMonday={nextMonday}
               />
-            </MarkerClusterGroup>
+            )
           ) : (
             futureSelected && (
               <DisplayedMarkers
