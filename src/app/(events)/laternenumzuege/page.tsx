@@ -21,7 +21,6 @@ import { unstable_cache } from "next/cache";
 import { iFlohmarkt } from "@app/utils/types";
 import Image from "next/image";
 import LaterneImage from "@app/components/@Index/laternenumzug/LaterneImage";
-import AlteUmzugue from "./AlteUmzugue";
 
 export const metadata = {
   title: "Laternenumzüge",
@@ -188,7 +187,6 @@ export default async function LaternenumzuegePage() {
           )}
         </div>
       </AdminServerComponent>
-      <AlteUmzugue />
       <section className="relative p-4 rounded-lg bg-gradient-to-b from-hh-950 to-hh-800 w-full flex gap-4 flex-col items-center max-w-full text-white shadow-xl bg-opacity-10 transition-all  overflow-hidden">
         <div className="absolute bottom-3 left-3 w-full -z-1">
           <div className="w-full aspect-video sm:aspect-[3] relative  overflow-hidden opacity-50">
