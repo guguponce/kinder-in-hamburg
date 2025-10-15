@@ -11,7 +11,10 @@
   @media (min-width: 1024px) {
     grid-template-columns: 400px 1fr;
     gap: 1rem;
-    grid-template-rows: minmax(auto, 1fr) minmax(50px, auto) minmax(auto, 1fr);
+    grid-template-rows: minmax(fit-content, auto) minmax(50px, auto) minmax(
+        auto,
+        1fr
+      );
     grid-template-areas:
       "map data"
       "map spielgeraete"
