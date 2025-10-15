@@ -21,6 +21,7 @@ import { unstable_cache } from "next/cache";
 import { iFlohmarkt } from "@app/utils/types";
 import Image from "next/image";
 import LaterneImage from "@app/components/@Index/laternenumzug/LaterneImage";
+import AlteUmzugue from "./AlteUmzugue";
 
 export const metadata = {
   title: "Laternenumzüge",
@@ -86,11 +87,12 @@ const DynamicEventsMap = dynamic(
   }
 );
 const getAllLaterneEvents = async () => {
-  const laternenEvents = await getFutureApprovedEventsFromType("laterne");
+  const laterneUmzuegeEvents =
+    (await getFutureApprovedEventsFromType("laterne")) || [];
   const laterneBastelnEvents =
     (await getFutureApprovedEventsFromType("laternewerkstatt")) || [];
-  return { laternenEvents, laterneBastelnEvents } as {
-    laternenEvents: false | iFlohmarkt[];
+  return { laterneUmzuegeEvents, laterneBastelnEvents } as {
+    laterneUmzuegeEvents: iFlohmarkt[];
     laterneBastelnEvents: iFlohmarkt[];
   };
 };
@@ -98,8 +100,9 @@ const cachedEvents = unstable_cache(getAllLaterneEvents, ["laternenumzuege"], {
   revalidate: 300,
 });
 export default async function LaternenumzuegePage() {
-  const { laternenEvents, laterneBastelnEvents } = await cachedEvents();
-  if (!laternenEvents) return <NotFound multiples type="event" />;
+  const { laterneUmzuegeEvents, laterneBastelnEvents } = await cachedEvents();
+  const laternenEvents = [...laterneBastelnEvents, ...laterneUmzuegeEvents];
+  if (!laternenEvents.length) return <NotFound multiples type="event" />;
   const date = new Date();
   if (date.getMonth() < 8 && date.getMonth() > 11) {
     return (
@@ -122,14 +125,14 @@ export default async function LaternenumzuegePage() {
       </Banner>
     );
   }
-  if (!laternenEvents.length && !laterneBastelnEvents.length) {
+  if (!laternenEvents.length) {
     return (
       <>
         <Banner childrenClassName="flex flex-col sm:flex-col gap-2 items-center">
           <Banner.Title href="/">
-            Huch! Wir haben keine Laternenumzüge oder Events gefunden! Aber
-            keine Angst, auf der Homepage findest du viele weitere spannende
-            Inhalte und Aktivitäten für Kinder in Hamburg!
+            Huch! Wir haben keine Laternenumzüge oder Veranstaltungen gefunden!
+            Aber keine Angst, auf der Homepage findest du viele weitere
+            spannende Inhalte und Aktivitäten für Kinder in Hamburg!
           </Banner.Title>
           <Link
             href="/"
@@ -141,16 +144,15 @@ export default async function LaternenumzuegePage() {
       </>
     );
   }
-  if (!laternenEvents.length) redirect("/");
   const { today, nextMonday } = getTodayNexMonday();
   const lastMidnight = new Date(today).setHours(0, 0, 0, 0);
-  const todayLaternenumzuege = [
-    ...laterneBastelnEvents,
-    ...laternenEvents,
-  ].filter((event) => event.date < today);
-
-  const orderedEvents = laternenEvents.sort((a, b) => a.date - b.date);
-  const [futureEvents, thisWeekEvents] = orderedEvents.reduce(
+  const todayLaternenumzuege = [...laternenEvents].filter(
+    (event) => event.date < today
+  );
+  const orderedLaternenumzuegeEvents = laterneUmzuegeEvents.sort(
+    (a, b) => a.date - b.date
+  );
+  const [futureEvents, thisWeekEvents] = laternenEvents.reduce(
     (acc, event) => {
       if (event.date < nextMonday - 1000 * 60 * 60 * 2) {
         acc[1].push(event);
@@ -159,10 +161,9 @@ export default async function LaternenumzuegePage() {
       }
       return acc;
     },
-    [[], []] as [typeof laternenEvents, typeof laternenEvents]
+    [[], []] as [iFlohmarkt[], iFlohmarkt[]]
   );
   const bastelEventsByDate = separateByDate(laterneBastelnEvents);
-
   return (
     <main
       className={`flex flex-col gap-4 items-center w-full  ${!!todayLaternenumzuege.length ? "sm:max-w-[1000px]" : "sm:max-w-[800px]"} p-1 mb-4`}
@@ -187,7 +188,7 @@ export default async function LaternenumzuegePage() {
           )}
         </div>
       </AdminServerComponent>
-
+      <AlteUmzugue />
       <section className="relative p-4 rounded-lg bg-gradient-to-b from-hh-950 to-hh-800 w-full flex gap-4 flex-col items-center max-w-full text-white shadow-xl bg-opacity-10 transition-all  overflow-hidden">
         <div className="absolute bottom-3 left-3 w-full -z-1">
           <div className="w-full aspect-video sm:aspect-[3] relative  overflow-hidden opacity-50">
@@ -242,13 +243,16 @@ export default async function LaternenumzuegePage() {
               type="events"
               cardType="horizontal"
               variant="transparent-light"
-              list={orderedEvents.filter(({ date }) => date >= lastMidnight)}
+              list={orderedLaternenumzuegeEvents.filter(
+                ({ date }) => date >= lastMidnight
+              )}
             />
           </div>
         </section>
         <article className="md:p-4 max-w-[800px] mx-auto">
           <DynamicEventsMap
             darkBackground
+            cluster={false}
             thisWeek={thisWeekEvents}
             future={futureEvents}
             today={lastMidnight}
