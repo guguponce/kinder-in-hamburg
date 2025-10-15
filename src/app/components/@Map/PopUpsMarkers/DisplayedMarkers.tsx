@@ -5,6 +5,8 @@ import {
   smallWeihnachtsmarktIcon,
   weihnachtsmarktIcon,
   eventIcon,
+  futureLaterneIcon,
+  futureLaternewerkstattMarkerIcon,
 } from "../mapUtils/constants";
 import { Marker } from "react-leaflet";
 import { iBezirk, iEventType, iFlohmarkt } from "@app/utils/types";
@@ -43,9 +45,13 @@ export const DisplayedMarkers = ({
                   : getDate(date) === todayString
                     ? todayIcon
                     : type === "laterne"
-                      ? laterneIcon
+                      ? date < nextMonday
+                        ? laterneIcon
+                        : futureLaterneIcon
                       : type === "laternewerkstatt"
-                        ? laternewerkstattMarkerIcon
+                        ? date < nextMonday
+                          ? laternewerkstattMarkerIcon
+                          : futureLaternewerkstattMarkerIcon
                         : type === "flohmarkt"
                           ? flohmarktIcon
                           : date < nextMonday
