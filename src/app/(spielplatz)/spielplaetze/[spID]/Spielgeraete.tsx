@@ -19,7 +19,6 @@ export default function Spielgeraete({
   };
   useLayoutEffect(() => {
     if (containerRef.current) {
-      // Check if the content height exceeds the initial height
       const containerHeight = containerRef.current.scrollHeight;
       const initialHeight = 128;
       if (containerHeight > initialHeight) {

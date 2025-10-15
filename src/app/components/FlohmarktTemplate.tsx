@@ -55,7 +55,9 @@ function LocationDate({
         className={cn(
           "w-full sm:max-w-[calc(50%-4px)] min-h-fit py-2 px-4 rounded bg-hh-50 bg-opacity-75 -outline-offset-4 outline outline-4 outline-hh-300",
           !!image && "md:max-w-full",
-          type === "laterne" ? "border-0 bg-hh-300" : ""
+          type === "laterne" || type === "laternewerkstatt"
+            ? "border-0 bg-hh-300"
+            : ""
         )}
       >
         <h2 className="text-lg font-semibold">Datum:</h2>
@@ -86,7 +88,7 @@ function LocationDate({
       </div>
       <div
         id="location"
-        className={`flex flex-col w-fit sm:w-full sm:max-w-[calc(50%-4px)] ${!!image && "md:max-w-full"} justify-stretch rounded bg-hh-50 bg-opacity-75 -outline-offset-4 outline outline-4 outline-hh-300 ${type === "laterne" ? "bg-opacity-75" : "bg-opacity-25"} py-2 px-4`}
+        className={`flex flex-col w-fit sm:w-full sm:max-w-[calc(50%-4px)] ${!!image && "md:max-w-full"} justify-stretch rounded bg-hh-50 bg-opacity-75 -outline-offset-4 outline outline-4 outline-hh-300 ${type === "laterne" || type === "laternewerkstatt" ? "bg-opacity-75" : "bg-opacity-25"} py-2 px-4`}
       >
         <h2 className="text-lg font-semibold">Standort:</h2>
         {bezirk && (
@@ -203,7 +205,7 @@ export default function FlohmarktTemplate({
         id="flohmarkt-template"
         className={`w-full ${
           image ? "max-w-[1000px]" : "max-w-[800px]"
-        } ${type === "laterne" ? "bg-gradient-to-b from-hh-950 to-hh-800 w-full" : "bg-hh-100"} rounded sm:rounded-lg p-2 sm:px-4 relative overflow-hidden flex flex-col gap-2`}
+        } ${type === "laterne" || type === "laternewerkstatt" ? "bg-gradient-to-b from-hh-950 to-hh-800 w-full" : "bg-hh-100"} rounded sm:rounded-lg p-2 sm:px-4 relative overflow-hidden flex flex-col gap-2`}
       >
         <aside className="flex justify-between items-center gap-4 w-full">
           <Link
@@ -271,7 +273,7 @@ export default function FlohmarktTemplate({
 
           <div
             id="flohmarkt-hero"
-            className={`relative w-full p-4 ${!image && "sm:px-10 pt-4 md:px-16 md:pb-10 "} mb-4 rounded-md ${type === "laterne" ? "text-hh-100" : "bg-hh-50"} min-h-[50%] ${!image && "max-w-[640px]"} mx-auto flex-grow overflow-hidden flex flex-col gap-4`}
+            className={`relative w-full p-4 ${!image && "sm:px-10 pt-4 md:px-16 md:pb-10 "} mb-4 rounded-md ${type === "laterne" || type === "laternewerkstatt" ? "text-hh-100" : "bg-hh-50"} min-h-[50%] ${!image && "max-w-[640px]"} mx-auto flex-grow overflow-hidden flex flex-col gap-4`}
           >
             {" "}
             {type && ["laterne", "laternewerkstatt"].includes(type) && (
@@ -326,10 +328,12 @@ export default function FlohmarktTemplate({
                     text={description || optionalComment}
                     type="paragraph"
                     className={
-                      type === "laterne" ? "text-hh-50" : "text-hh-900"
+                      type === "laterne" || type === "laternewerkstatt"
+                        ? "text-hh-50"
+                        : "text-hh-900"
                     }
                     linkClassName={
-                      type === "laterne"
+                      type === "laterne" || type === "laternewerkstatt"
                         ? "text-hh-200 hover:text-hh-100 focus:outline-hh-100 active:text-hh-300"
                         : ""
                     }

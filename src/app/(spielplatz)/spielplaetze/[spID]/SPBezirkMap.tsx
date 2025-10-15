@@ -101,7 +101,7 @@ export default function SPBezirkMap({
           )}
         </div>
         <div className="w-full h-full rounded-[0_0_2px_2px] overflow-hidden">
-          <GeneralMap currentTarget={currentSpielplatz} zoom={12}>
+          <GeneralMap currentTarget={currentSpielplatz} zoom={14}>
             <MarkersLists
               currentLocation={{
                 lat: currentSpielplatz?.lat,
