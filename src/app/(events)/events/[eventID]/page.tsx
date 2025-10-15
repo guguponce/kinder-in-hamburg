@@ -61,6 +61,7 @@ export async function generateMetadata({
 export default async function EventPage({
   params: { eventID },
 }: EventPageProps) {
+  const today = new Date().getTime();
   const event = await getEventWithID(eventID, "events");
   if (event === false) {
     const flohmarktID = await checkIfEventOrFlohmarktExists(
@@ -92,7 +93,7 @@ export default async function EventPage({
   return (
     <main className="flex flex-col items-center w-full p-1">
       <FlohmarktTemplate flohmarkt={event}>
-        {event.status === "old" && <OldEventSign />}
+        {(event.status === "old" || event.date < today) && <OldEventSign />}
         {event.closedDates?.find((d) => getDate(d) === getDate(Date.now())) && (
           <OldEventSign
             title="Heute findet diese Veranstaltung nicht statt"
