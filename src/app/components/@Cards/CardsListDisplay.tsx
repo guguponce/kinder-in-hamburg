@@ -26,9 +26,7 @@ export default function CardsListDisplay({
       {cardPosts.map((card) => {
         const { id, title, image } = card;
         const categories = isTypePost(card) ? card.categories : card.type;
-        const description = isTypePost(card)
-          ? getPlainText(card.text)
-          : card.text;
+        const description = getPlainText(card.text);
         return (
           <React.Fragment key={id}>
             <ImgPriorityCardMemo
