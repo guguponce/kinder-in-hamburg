@@ -130,8 +130,13 @@ export const getPlainText = (text: string | TypeAndText[], max?: number) => {
   if (!text || !text.length) {
     return "";
   }
-  if (typeof text === "string")
-    return max && max > text.length ? text + "..." : text;
+  if (typeof text === "string") {
+    const finalText = text.replace(
+      /([\u2700-\u27BF]|[\uE000-\uF8FF]|[\uD800-\uDFFF][\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83C[\uD000-\uDFFF]|\uD83D[\uD000-\uDFFF]|\uD83E[\uD000-\uDFFF])/g,
+      ""
+    );
+    return max && max > text.length ? finalText + "..." : finalText;
+  }
   const textArray = text.map(([_, val]) => val);
   const plainText = textArray.slice(0, max || textArray.length).join(" ");
 
@@ -195,11 +200,16 @@ export const parseFlohmarkt = (flohmarkt: iStringifiedFlohmarkt) => {
   } as iFlohmarkt;
 };
 
-export const parseDescriptionWithTags = (text: string | undefined) =>
-  (text || "").replace(
-    /<\/?b>|<\/?sb>|<\/?i>|<\/?u>|<\/?upper>|<\/?link>|<\/?h3>|<\/?h2>/g,
+export const parseDescriptionWithTags = (text?: string, maxLength?: number) => {
+  const cleanedText = (text || "").replace(
+    /<\/?b>|<\/?sb>|<\/?i>|<\/?u>|<\/?upper>|<\/?link>|<\/?h3>|<\/?h2>|([\u2700-\u27BF]|[\uE000-\uF8FF]|[\uD800-\uDFFF][\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83C[\uD000-\uDFFF]|\uD83D[\uD000-\uDFFF]|\uD83E[\uD000-\uDFFF])/g,
     ""
   );
+  if (maxLength && cleanedText.length > maxLength) {
+    return cleanedText.slice(0, maxLength) + "...";
+  }
+  return cleanedText;
+};
 
 export const parseAllFlohmaerkte = (flohmaerkte: iStringifiedFlohmarkt[]) =>
   flohmaerkte.map((f) => parseFlohmarkt(f));
