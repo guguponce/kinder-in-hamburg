@@ -79,11 +79,12 @@ export function createUserMapIcon(
 export const createNormalSizeIcon = (
   color: string,
   size: number = 30,
-  stroke?: string
+  stroke?: string,
+  future?: boolean
 ) =>
   divIcon({
     html: createStandortMapIcon(color, size, stroke),
     iconSize: [size, size],
     iconAnchor: [size / 2, size],
-    className: "bg-transparent",
+    className: "bg-transparent " + (future ? "z-10" : "z-50"),
   });

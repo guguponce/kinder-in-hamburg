@@ -465,8 +465,70 @@ export const fetchLocationData = async (lat: number, lon: number) => {
   return nearestStadtteil;
 };
 
+export const getCustomIcon = (
+  type:
+    | "futureLaterne"
+    | "futureLaternewerkstatt"
+    | "laterne"
+    | "flohmarkt"
+    | "future"
+    | "event"
+    | "today"
+    | "weihnachtsmarkt"
+    | "smallWeihnachtsmarkt"
+    | undefined
+) =>
+  type === "laterne"
+    ? laterneIcon
+    : type === "futureLaterne"
+      ? futureLaterneIcon
+      : type === "flohmarkt"
+        ? flohmarktIcon
+        : type === "futureLaternewerkstatt"
+          ? futureLaternewerkstattMarkerIcon
+          : type === "future"
+            ? futureIcon
+            : type === "event"
+              ? eventIcon
+              : type === "today"
+                ? todayIcon
+                : type === "weihnachtsmarkt"
+                  ? weihnachtsmarktIcon
+                  : type === "smallWeihnachtsmarkt"
+                    ? smallWeihnachtsmarktIcon
+                    : type === "laternewerkstatt"
+                      ? laternewerkstattMarkerIcon
+                      : divIcon({
+                          iconSize: [25, 25],
+                          className: "bg-transparent",
+                        });
+export const laterneIcon = divIcon({
+  iconSize: [35, 35],
+  iconAnchor: [17, 35],
+  className: "laterneIcon",
+});
+export const futureLaterneIcon = divIcon({
+  iconSize: [30, 30],
+  iconAnchor: [15, 30],
+  className: "laterneIcon opacity-75 saturate-[25%] z-10",
+});
+export const laternewerkstattMarkerIcon = divIcon({
+  iconSize: [35, 35],
+  iconAnchor: [17, 35],
+  className: "laternewerkstattIcon",
+});
+export const futureLaternewerkstattMarkerIcon = divIcon({
+  iconSize: [30, 30],
+  iconAnchor: [15, 30],
+  className: "laternewerkstattIcon saturate-50 z-10",
+});
 export const flohmarktIcon = createNormalSizeIcon("#7B3E5E", 25, "#361b29");
-export const futureIcon = createNormalSizeIcon("#343b3e", 25, "#1b1d1e");
+export const futureIcon = createNormalSizeIcon(
+  "#343b3e90",
+  25,
+  "#1b1d1e90",
+  true
+);
 export const eventIcon = createNormalSizeIcon("#de6c13", 25, "#602d07");
 export const todayIcon = divIcon({
   html: createStandortMapIcon("#b72f1e", 30, "#460B07"),
