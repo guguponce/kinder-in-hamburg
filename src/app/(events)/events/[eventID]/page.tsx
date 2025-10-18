@@ -15,7 +15,11 @@ import { PROXIMATE_STADTTEILE_FROM_OTHER_BEZIRK } from "@app/utils/constants";
 import AdminEditButtons from "@components/@Buttons/AdminEditButtons";
 import OldEventSign from "./OldEventSign";
 import { redirect } from "next/navigation";
-import { getDate, parseDescriptionWithTags } from "@app/utils/functions";
+import {
+  getDate,
+  getTodayNexMonday,
+  parseDescriptionWithTags,
+} from "@app/utils/functions";
 import EventsSameLocation from "./EventsSameLocation";
 // import Image from "./opengraph-image";
 
@@ -61,7 +65,7 @@ export async function generateMetadata({
 export default async function EventPage({
   params: { eventID },
 }: EventPageProps) {
-  const today = new Date().getTime();
+  const { today } = getTodayNexMonday();
   const event = await getEventWithID(eventID, "events");
   if (event === false) {
     const flohmarktID = await checkIfEventOrFlohmarktExists(
@@ -89,11 +93,11 @@ export default async function EventPage({
     (await getAllEventsThisWeek(undefined, event.bezirk, [
       ...proximateStadtteile,
     ])) || [];
-
   return (
     <main className="flex flex-col items-center w-full p-1">
       <FlohmarktTemplate flohmarkt={event}>
-        {(event.status === "old" || event.date < today) && <OldEventSign />}
+        {(event.status === "old" ||
+          event.date < today - 1000 * 60 * 60 * 4) && <OldEventSign />}
         {event.closedDates?.find((d) => getDate(d) === getDate(Date.now())) && (
           <OldEventSign
             title="Heute findet diese Veranstaltung nicht statt"
