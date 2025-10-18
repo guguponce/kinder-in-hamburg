@@ -1193,10 +1193,6 @@ export const getAllEventsThisWeek = async (
   stadtteile?: string[]
 ) => {
   const { today, nextMonday } = getTodayNexMonday();
-  const until =
-    new Date().getDay() === 0
-      ? nextMonday + 1000 * 60 * 60 * 24 * 7
-      : nextMonday - 1000 * 60 * 60 * 2;
   let query = supabaseAdmin
     .from("events")
     .select("*")
