@@ -107,12 +107,6 @@ export default function DynamicEventsMap({
     }
     return eventsByDate;
   }, [selectedDate, eventsByDate]);
-  console.log(
-    "typeof [...future, ...thisWeek]",
-    new Set([...future, ...thisWeek].map(({ type }) => type).filter(Boolean))
-  );
-  console.log("eventTypes", eventTypes);
-
   const isToday = useMemo(() => {
     const todayString = getDate(today);
     const selectedDateString =
@@ -202,7 +196,10 @@ export default function DynamicEventsMap({
           )}
         </GeneralMap>
       </section>
-      <MapIndexes eventTypes={eventTypes} />
+      <MapIndexes
+        eventTypes={eventTypes}
+        today={thisWeek.some(({ date }) => getDate(date) === getDate(today))}
+      />
       {(!!showBezirke || !!showTermine || !showEventType) && (
         <aside
           id="flohmaerkte-map-filters-aside"

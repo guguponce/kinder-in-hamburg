@@ -8,13 +8,24 @@ const MarkerIndexBox = ({ children }: { children: React.ReactNode }) => (
     <div className="flex justify-center items-center">{children}</div>
   </div>
 );
-export const MapIndexes = ({ eventTypes }: { eventTypes: iEventType[] }) => {
-  console.log("mapindexes", eventTypes);
+export const MapIndexes = ({
+  eventTypes,
+  today,
+}: {
+  eventTypes: iEventType[];
+  today?: boolean;
+}) => {
   if (!eventTypes?.length) return null;
   return (
     <>
       {!!eventTypes?.length && (
         <div className="flex flex-wrap gap-1 px-1 ml-auto justify-center items-center font-semibold">
+          {today && (
+            <MarkerIndexBox>
+              <StandortIcon size="1rem" color="#b72f1e" stroke="#fff" />
+              <p>Heute</p>
+            </MarkerIndexBox>
+          )}
           {eventTypes.includes("laterne") && (
             <MarkerIndexBox>
               <div className="laterneIcon w-4 h-4 bg-slate-400" />
