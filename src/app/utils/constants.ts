@@ -1384,6 +1384,7 @@ export const spielgeraeteDisplay = {
   sport: [
     "basketballkorb",
     "volleyballnetz",
+    "calisthenics-anlage",
     "fußballtore",
     "tischtennisplatte",
     "skatepark",
@@ -1414,6 +1415,7 @@ export const spielgeraeteList = [
   "basketballkorb",
   "volleyballnetz",
   "fußballtore",
+  "calisthenics-anlage",
   "tischtennisplatte",
   "skatepark",
   "kinderfahrrad/roller geignet",
@@ -1428,4 +1430,5 @@ export const spType = [
   "planschbecken",
   "wasserspielplatz",
   "skatepark",
+  "sportplatz",
 ];
