@@ -160,6 +160,7 @@ export default async function FlohmarktPage() {
           list={futureFlohmaerkte}
           cardClassname="relative flex flex-col items-center gap-[2px] overflow-hidden h-[250px] min-w-[180px] shadow-lg mr-4"
           withDate
+          type="flohmaerkte"
         ></BezirkableList>
         <OtherEventsHorizontalCards variant="dark" />
       </section>
