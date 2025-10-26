@@ -1,13 +1,20 @@
 import {
   getAllEventsThisWeek,
-  getAllFutureEventsFromType,
   getFutureApprovedEventsFromType,
 } from "@app/api/dbActions";
 import React from "react";
 import ClientEventsGallery from "./ClientEventsGallery";
 import { iEventType, iFlohmarkt } from "@app/utils/types";
 import { getTodayNexMonday } from "@app/utils/functions";
+import { unstable_cache } from "next/cache";
 
+const getBannerEvents = async (eventType: iEventType[]) => {
+  const eventsThisWeek = await getAllEventsThisWeek(eventType);
+  if (eventsThisWeek && eventsThisWeek.length > 0) return eventsThisWeek;
+  const nextEvents = (await getFutureApprovedEventsFromType(eventType)) || [];
+};
+
+const cachedEvents = unstable_cache(getBannerEvents, ["events"]);
 export default async function EventsGallery({
   eventType,
 }: {
@@ -19,7 +26,7 @@ export default async function EventsGallery({
       : eventType === "laterne"
         ? ["laternewerkstatt", "laterne"]
         : [eventType];
-  const eventsList = (await getAllEventsThisWeek(eventTypes)) || [];
+  const eventsList = (await cachedEvents(eventTypes)) || [];
   const today = getTodayNexMonday().today - 1000 * 60 * 60 * 1;
   const sortedList = [...eventsList]
     .reduce(
