@@ -125,13 +125,13 @@ export default async function FlohmarktPage() {
           Frühjahr geht es endlich los.
         </h2>  */}
       </MainIntroductionText>
-      <section className="rounded bg-hh-100 bg-opacity-25 w-full max-w-[1400px] p-2 md:p-4 flex flex-col items-center gap-2">
+      <section className="rounded bg-gradient-to-b from-hh-800 to-hh-950  w-full lg:w-fit max-w-[1400px] p-2 md:p-4 flex flex-col items-center gap-2">
         <BezirkeScrollableEvents
           title="Diese Woche"
           events={thisWeekFlohmaerkte}
           type="flohmaerkte"
         ></BezirkeScrollableEvents>
-        <section className="flex flex-col h-fit max-w-full xl:max-w-[1200px] p-2 bg-gradient-to-b from-hh-100 to-50 shadow-md md:shadow-xl my-4 md:my-8 rounded">
+        <section className="flex flex-col h-fit max-w-full xl:max-w-[1200px] p-2 bg-gradient-to-b from-hh-100 to-hh-200 shadow-md md:shadow-xl my-4 md:my-8 rounded">
           <div className="w-full flex flex-wrap gap-2 justify-end items-center">
             {!!futureFlohmaerkte.length && (
               <div className="font-semibold flex gap-1 text-hh-800">
@@ -155,6 +155,8 @@ export default async function FlohmarktPage() {
             />
           </div>
         </section>
+      </section>
+      <section className="rounded w-full max-w-[1400px] p-2 md:p-4 flex flex-col items-center gap-2">
         <BezirkableList
           title="Ab nächster Woche"
           list={futureFlohmaerkte}
@@ -162,7 +164,7 @@ export default async function FlohmarktPage() {
           withDate
           type="flohmaerkte"
         ></BezirkableList>
-        <OtherEventsHorizontalCards variant="dark" />
+        <OtherEventsHorizontalCards variant="transparent-light" />
       </section>
     </main>
   );

@@ -53,10 +53,14 @@ export default async function OtherEventsHorizontalCards({
       className={`otherEventsHorizontalCards w-fit max-w-full rounded sm:p-2 my-2 flex flex-col ${style}`}
     >
       <div className="p-2">
-        <Link href="/events" className="text-xl font-semibold text-hh-50">
+        <Link href="/events" className="text-xl font-semibold">
           Andere Veranstaltungen dieser Woche
         </Link>
-        <p className="text-hh-100 text-sm">
+        <p
+          className={`text-sm ${
+            variant.includes("dark") ? "text-hh-100" : "text-hh-700"
+          }`}
+        >
           In den nächsten Tagen finden auch andere Events ({typesString}) statt
         </p>
       </div>
@@ -68,7 +72,7 @@ export default async function OtherEventsHorizontalCards({
           .map(([date, events]) => (
             <article
               key={date}
-              className="bg-hh-300 bg-opacity-25 transition-all flex flex-col rounded p-2 pt-0 min-w-fit"
+              className={`transition-all flex flex-col rounded p-2 pt-0 min-w-fit bg-gradient-to-bl ${variant.includes("light") ? "from-hh-600 to-hh-700 text-hh-100" : "from-hh-200-75 to-hh-100-75 text-hh-800"}`}
             >
               <h3 className="font-semibold p-2">{getDate(parseInt(date))}</h3>
               <div className="min-w-fit flex gap-4 items-center">
@@ -92,7 +96,7 @@ export default async function OtherEventsHorizontalCards({
                       stadtteil,
                       bezirk,
                     }) => (
-                      <div
+                      <article
                         key={id}
                         className="w-[240px] sm:w-[280px] lg:w-[360px]"
                       >
@@ -106,14 +110,14 @@ export default async function OtherEventsHorizontalCards({
                         >
                           <HorizontalCard.FlohmarktInfo
                             title={title}
-                            address={addressWithoutCity(address)}
+                            address={address}
                             bezirk={bezirk}
                             stadtteil={stadtteil}
                             date={date}
                             time={time}
                           />
                         </HorizontalCard>
-                      </div>
+                      </article>
                     )
                   )}
               </div>

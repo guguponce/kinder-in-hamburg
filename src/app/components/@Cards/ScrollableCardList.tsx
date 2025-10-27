@@ -105,7 +105,7 @@ export default function ScrollableCardList({
                         type={type}
                         title={title}
                         id={id}
-                        link={`/events/${id}`}
+                        link={`${linkPrefix || "/events/"}${id}`}
                         image={image}
                       >
                         <HorizontalCard.FlohmarktInfo
@@ -130,7 +130,7 @@ export default function ScrollableCardList({
                         eventType={type}
                         image={image}
                         size="small"
-                        prefixLink="/events/"
+                        prefixLink={linkPrefix || "/events/"}
                       />
                     </div>
                   )}

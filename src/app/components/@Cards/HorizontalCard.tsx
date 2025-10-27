@@ -2,9 +2,13 @@ import Link from "next/link";
 import React from "react";
 import CardLogo from "../@Icons/CardLogo";
 import dynamic from "next/dynamic";
-import { addressWithoutCity, cn, getDate } from "@app/utils/functions";
+import { cn, getDate, separateAddress } from "@app/utils/functions";
 import { iEventType } from "@app/utils/types";
 import LaterneImage from "../@Index/laternenumzug/LaterneImage";
+import DateIcon from "../@Icons/@PostLogo/DateIcon";
+import HamburgIcon from "../@Icons/@PostLogo/HamburgIcon";
+import HamburgFilledIcon from "../@Icons/@BezirkIcon/HamburgFilledIcon";
+import StandortIcon from "../@Icons/StandortIcon";
 
 const SpielplatzgeraeteBackground = dynamic(
   () => import("./SpielplatzgeraeteBackground"),
@@ -39,7 +43,7 @@ export default function HorizontalCard({
       aria-label={`Explore ${title}`}
       href={link}
       className={cn(
-        "HorizontalCard w-full h-32 sm:flex-grow justify-center flex lg:gap-2 items-center bg-white text-hh-900 rounded-md overflow-hidden hover:shadow-md",
+        "HorizontalCard w-full h-32 sm:flex-grow justify-center flex gap-2 items-center bg-white text-hh-900 rounded-md overflow-hidden hover:shadow-md",
         className
       )}
     >
@@ -120,17 +124,30 @@ HorizontalCard.FlohmarktInfo = function FlohmarktInfo({
   bezirk?: string;
 }) {
   return (
-    <div className="flex flex-col w-2/3 h-full hover:text-hh-950 justify-between gap-2  p-2 pl-0 sm:pr-4 sm:p-2">
+    <div className="flex flex-col w-2/3 h-full hover:text-hh-950 justify-between gap-1 p-2 pl-0 sm:pr-4 sm:p-2">
       <h3 className="truncate-2 font-semibold text-sm lg:text-base block text-hh-950">
         {title}
       </h3>
-      <div className="flex flex-col">
-        <p className="font-semibold italic text-sm lg:text-base text-hh-800">
+      <div className="flex flex-col gap-[2px]">
+        <p className="font-semibold italic text-sm lg:text-base text-hh-800 leading-4">
+          <span className="float-left flex justify-center items-center h-4 lg:h-6">
+            <DateIcon size="0.8rem" color="#33404d" />
+          </span>
           {getDate(date)} {endDate && <span>- {getDate(endDate)}</span>}
           {time && <span className="hidden lg:inline text-sm">({time})</span>}
         </p>
-        <small className="text-xs font-semibold">
-          {stadtteil} -<span className="block lg:inline"> {bezirk}</span>
+
+        <small className="text-xs font-semibold max-w-full">
+          <span className="float-left flex justify-center items-center">
+            <StandortIcon size="0.8rem" color="#33404d" />
+          </span>
+          <span>
+            {stadtteil === "Andere Orte"
+              ? separateAddress(address).city
+              : stadtteil}
+          </span>
+          <span>{" - "}</span>
+          <span>{bezirk}</span>
         </small>
       </div>
     </div>
