@@ -200,15 +200,24 @@ export const parseFlohmarkt = (flohmarkt: iStringifiedFlohmarkt) => {
   } as iFlohmarkt;
 };
 
-export const parseDescriptionWithTags = (text?: string, maxLength?: number) => {
-  const cleanedText = (text || "").replace(
+export const parseDescriptionWithTags = (
+  text?: string | TypeAndText[],
+  maxLength?: number
+) => {
+  if (!text || !text.length) return "";
+  const typeText = typeof text;
+  let startText = typeText === "string" ? (text as string) : "";
+  if (typeof text !== "string") {
+    const textArray = text.map(([_, val]) => val);
+    startText = textArray.join(" ");
+  }
+  const plainText = startText.replace(
     /<\/?b>|<\/?sb>|<\/?i>|<\/?u>|<\/?upper>|<\/?link>|<\/?h3>|<\/?h2>|([\u2700-\u27BF]|[\uE000-\uF8FF]|[\uD800-\uDFFF][\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83C[\uD000-\uDFFF]|\uD83D[\uD000-\uDFFF]|\uD83E[\uD000-\uDFFF])/g,
     ""
   );
-  if (maxLength && cleanedText.length > maxLength) {
-    return cleanedText.slice(0, maxLength) + "...";
-  }
-  return cleanedText;
+  return maxLength && maxLength > plainText.length
+    ? plainText.slice(0, maxLength) + "..."
+    : plainText;
 };
 
 export const parseAllFlohmaerkte = (flohmaerkte: iStringifiedFlohmarkt[]) =>

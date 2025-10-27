@@ -14,7 +14,14 @@ const getBannerEvents = async (eventType: iEventType[]) => {
   const nextEvents = (await getFutureApprovedEventsFromType(eventType)) || [];
 };
 
-const cachedEvents = unstable_cache(getBannerEvents, ["events"]);
+const cachedEvents = unstable_cache(
+  getBannerEvents,
+  ["events", "flohmaerkte"],
+  {
+    revalidate: 300,
+    tags: ["events", "flohmaerkte"],
+  }
+);
 export default async function EventsGallery({
   eventType,
 }: {

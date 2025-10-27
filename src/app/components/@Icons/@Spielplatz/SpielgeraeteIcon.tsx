@@ -22,6 +22,7 @@ const LazyReckstangeIcon = lazy(() => import("./ReckstangeIcon"));
 const LazyBasketballkorbIcon = lazy(() => import("./BasketballkorbIcon"));
 const LazyVolleyballnetzIcon = lazy(() => import("./VolleyballnetzIcon"));
 const LazyFußballtoreIcon = lazy(() => import("./FußballtoreIcon"));
+const LazyCalisthenicsIcon = lazy(() => import("./CalisthenicsIcon"));
 const LazyTischtennisplatteIcon = lazy(() => import("./TischtennisplatteIcon"));
 const LazySkateparkIcon = lazy(() => import("./SkateparkIcon"));
 const LazyRollerIcon = lazy(() => import("./RollerIcon"));
@@ -107,6 +108,12 @@ export default function SpielgeraeteIcon({
       )}
       {logo === "fußballtore" && (
         <LazyFußballtoreIcon size={size} color={color} />
+      )}
+      {logo === "calisthenics-anlage" && (
+        <LazyCalisthenicsIcon size={size} color={color} />
+      )}
+      {logo === "calisthenics" && (
+        <LazyCalisthenicsIcon size={size} color={color} />
       )}
       {logo === "tischtennisplatte" && (
         <LazyTischtennisplatteIcon size={size} color={color} />
