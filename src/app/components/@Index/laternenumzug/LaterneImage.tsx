@@ -10,7 +10,7 @@ export default function LaterneImage({
   ff?: boolean;
 }) {
   return (
-    <div className="relative w-full aspect-square">
+    <div className="relative w-full aspect-square overflow-hidden">
       <div
         className={cn(
           "absolute animate-pulse bg-gradient-radial blur-[4px] from-orange-300 to-orange-400 rounded-full",
@@ -20,7 +20,7 @@ export default function LaterneImage({
         )}
       ></div>
       {ff && (
-        <div className="w-1/4 aspect-square absolute right-2 bottom-4 object-contain">
+        <div className="w-full aspect-square absolute -right-1/2  object-contain">
           <Image
             src="/assets/icons/feuerwehr.svg"
             alt="Feuerwehr"

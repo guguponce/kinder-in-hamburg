@@ -68,7 +68,7 @@ export default function HorizontalCard({
             />
           </>
         ) : "laterne" === type ? (
-          <div className="h-full aspect-square relative">
+          <div className="h-full aspect-square relative flex justify-center items-center">
             <LaterneImage
               ff={title.includes("Feuerwehr") || title.includes("FF")}
             />
