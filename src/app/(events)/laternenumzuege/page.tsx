@@ -146,7 +146,8 @@ export default async function LaternenumzuegePage() {
   const { today, nextMonday } = getTodayNexMonday();
   const lastMidnight = new Date(today).setHours(0, 0, 0, 0);
   const todayLaternenumzuege = [...laternenEvents].filter(
-    (event) => event.date < today
+    (event) =>
+      event.date < today && event.date >= lastMidnight - 1000 * 60 * 60 * 4
   );
   const orderedLaternenumzuegeEvents = laterneUmzuegeEvents.sort(
     (a, b) => a.date - b.date
