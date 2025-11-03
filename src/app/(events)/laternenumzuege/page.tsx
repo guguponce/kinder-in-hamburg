@@ -256,9 +256,7 @@ export default async function LaternenumzuegePage() {
           >
             <BezirkableList
               title={
-                !!todayLaternenumzuege.length
-                  ? "Kommende Laternenumzüge"
-                  : undefined
+                !!todayLaternenumzuege.length ? "Kommende Umzüge" : undefined
               }
               type="events"
               cardType="horizontal"
