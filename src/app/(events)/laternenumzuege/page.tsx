@@ -86,10 +86,23 @@ const DynamicEventsMap = dynamic(
   }
 );
 const getAllLaterneEvents = async () => {
-  const laterneUmzuegeEvents =
-    (await getFutureApprovedEventsFromType("laterne")) || [];
-  const laterneBastelnEvents =
-    (await getFutureApprovedEventsFromType("laternewerkstatt")) || [];
+  const laterneEvents =
+    (await getFutureApprovedEventsFromType(["laterne", "laternewerkstatt"])) ||
+    [];
+  const { laterneBastelnEvents, laterneUmzuegeEvents } = laterneEvents.reduce(
+    (acc, event) => {
+      if (event.type === "laterne") {
+        acc.laterneUmzuegeEvents.push(event);
+      } else if (event.type === "laternewerkstatt") {
+        acc.laterneBastelnEvents.push(event);
+      }
+      return acc;
+    },
+    { laterneBastelnEvents: [], laterneUmzuegeEvents: [] } as Record<
+      string,
+      iFlohmarkt[]
+    >
+  );
   return { laterneUmzuegeEvents, laterneBastelnEvents } as {
     laterneUmzuegeEvents: iFlohmarkt[];
     laterneBastelnEvents: iFlohmarkt[];
@@ -152,17 +165,20 @@ export default async function LaternenumzuegePage() {
   const orderedLaternenumzuegeEvents = laterneUmzuegeEvents.sort(
     (a, b) => a.date - b.date
   );
-  const [futureEvents, thisWeekEvents] = laternenEvents.reduce(
+  const [futureEvents, thisWeekEvents, oldEvents] = laternenEvents.reduce(
     (acc, event) => {
-      if (event.date < nextMonday - 1000 * 60 * 60 * 2) {
+      if (event.date < lastMidnight) {
+        acc[2].push(event);
+      } else if (event.date < nextMonday - 1000 * 60 * 60 * 2) {
         acc[1].push(event);
       } else {
         acc[0].push(event);
       }
       return acc;
     },
-    [[], []] as [iFlohmarkt[], iFlohmarkt[]]
+    [[], [], []] as [iFlohmarkt[], iFlohmarkt[], iFlohmarkt[]]
   );
+
   const bastelEventsByDate = separateByDate(laterneBastelnEvents);
   return (
     <main
@@ -239,11 +255,16 @@ export default async function LaternenumzuegePage() {
             className={`flex-grow ${!!todayLaternenumzuege.length && "md:max-w-[calc(100%-332px)]"}`}
           >
             <BezirkableList
+              title={
+                !!todayLaternenumzuege.length
+                  ? "Kommende Laternenumzüge"
+                  : undefined
+              }
               type="events"
               cardType="horizontal"
               variant="transparent-light"
               list={orderedLaternenumzuegeEvents.filter(
-                ({ date }) => date >= lastMidnight
+                ({ date }) => date >= today
               )}
             />
           </div>

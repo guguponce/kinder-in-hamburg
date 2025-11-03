@@ -1007,7 +1007,6 @@ export const getFutureApprovedEventsFromType = async (
   eventType: iEventType | iEventType[],
   date?: number
 ) => {
-  // Retrieves active Events (in the future or already started)
   const { today } = getTodayNexMonday();
   const eventTypesQuery = Array.isArray(eventType)
     ? eventType.map((nh) => `type.ilike.%${nh}%`).join(",")

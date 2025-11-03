@@ -196,10 +196,12 @@ export default function DynamicEventsMap({
           )}
         </GeneralMap>
       </section>
-      <MapIndexes
-        eventTypes={eventTypes}
-        today={thisWeek.some(({ date }) => getDate(date) === getDate(today))}
-      />
+      {showMapIndexes && (
+        <MapIndexes
+          eventTypes={eventTypes}
+          today={thisWeek.some(({ date }) => getDate(date) === getDate(today))}
+        />
+      )}
       {(!!showBezirke || !!showTermine || !showEventType) && (
         <aside
           id="flohmaerkte-map-filters-aside"
