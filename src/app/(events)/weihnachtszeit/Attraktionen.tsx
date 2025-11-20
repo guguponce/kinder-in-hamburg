@@ -23,7 +23,11 @@ export default function Attraktionen({ attraktionen }: AttraktionenProps) {
   const [selectedAttraktion, setSelectedAttraktion] =
     useState<AttraktionenType>("karussell");
   const [selectedBezirk, setSelectedBezirk] = useState<iBezirk | null>(null);
-  const attTypes = Object.keys(attraktionen) as AttraktionenType[];
+  const attTypes = (
+    Object.entries(attraktionen) as [AttraktionenType, iFlohmarkt[]][]
+  )
+    .filter(([_, events]) => !!events.length)
+    .map(([type]) => type);
   const bezirke = useMemo(
     () =>
       Array.from(
@@ -45,7 +49,7 @@ export default function Attraktionen({ attraktionen }: AttraktionenProps) {
     [selectedAttraktion, selectedBezirk, attraktionen]
   );
   return (
-    <section className="w-full max-w-full rounded-lg bg-gradient-to-br from-[#7896a550] to-[#7896a525] p-2 shadow-xl text-hh-800 md:max-w-[800px]">
+    <section className="w-full max-w-full rounded-lg bg-gradient-to-br from-[#7896a550] to-[#7896a525] p-2 shadow-xl text-hh-800">
       <h2 className="text-2xl font-bold ml-2">Weihnachtsmärkte mit</h2>
       <div className="flex items-center gap-2 ml-2 max-w-full">
         {attTypes.map((attType) => (
@@ -77,9 +81,18 @@ export default function Attraktionen({ attraktionen }: AttraktionenProps) {
           </Button>
         ))}
       </div>
-      <ScrollableContainer>
+      <ScrollableContainer containerStyle="w-full">
         {displayList.map(
-          ({ id, image, title, date, optionalComment, bezirk, stadtteil }) => (
+          ({
+            id,
+            image,
+            title,
+            date,
+            optionalComment,
+            bezirk,
+            stadtteil,
+            type,
+          }) => (
             <React.Fragment key={id}>
               <TextPriorityCard
                 id={id}
@@ -91,9 +104,24 @@ export default function Attraktionen({ attraktionen }: AttraktionenProps) {
                 title={title}
                 description={parseDescriptionWithTags(optionalComment)}
                 size="small"
-                image={image || "/assets/icons/weihnachtsmarkt.svg"}
+                image={
+                  image ||
+                  (title.toLocaleLowerCase().includes("weihnachtsmann")
+                    ? "/assets/wmann.webp"
+                    : title.toLocaleLowerCase().includes("nikolaus")
+                      ? "/assets/nikolaus.webp"
+                      : title.toLocaleLowerCase().includes("bastel")
+                        ? "/assets/bastel.webp"
+                        : title.toLocaleLowerCase().includes("schminken")
+                          ? "/assets/schminken.webp"
+                          : title.toLocaleLowerCase().includes("schneemann")
+                            ? "/assets/schneemann.webp"
+                            : "/assets/weihnachtsmarkt.webp")
+                }
                 cardContainerClassname="max-w-[150px]"
-                imgClassname={image ? "object-cover" : "object-contain p-2"}
+                imgClassname={
+                  image || type ? "object-cover" : "object-contain p-2"
+                }
               />
             </React.Fragment>
           )

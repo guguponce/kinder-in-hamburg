@@ -5,7 +5,11 @@ import { iEventType, iFlohmarkt } from "@app/utils/types";
 import { Marker } from "react-leaflet";
 import React, { useMemo } from "react";
 import { divIcon, point } from "leaflet";
-import { addressWithoutCity, cn } from "@app/utils/functions";
+import {
+  addressWithoutCity,
+  cn,
+  getTodayNexMonday,
+} from "@app/utils/functions";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import {
   createWeihnachtsmarktIcon,
@@ -16,9 +20,10 @@ import WeihnachtsmarktIcon from "@components/@Icons/@Events/WeihnachtsmarktIcon"
 import BoyGirlIcon from "@components/@Icons/@Events/BoyGirlIcon";
 
 const weihnachtsmarktIcon = createWeihnachtsmarktIcon(24);
+const desatWeihnachtsmarktIcon = createWeihnachtsmarktIcon(24, true);
 const smallWeihnachtsmarktIcon = createWeihnachtsmarktIcon(20);
 const eventIcon = createNormalSizeIcon("#405b3a", 30, "#2d3d2a");
-const selectedEventIcon = createNormalSizeIcon("#ed5946", 35, "#da3c28");
+const selectedEventIcon = createNormalSizeIcon("#ed5946", 35, "#da3c28", true);
 export default function DynamicWeihMap({
   selectedEventID,
   currentEvents,
@@ -33,24 +38,23 @@ export default function DynamicWeihMap({
   future?: iFlohmarkt[];
   mapContainerClassName?: string;
 }) {
-  //   const [selectedDate, setSelectedDate] = React.useState<number | undefined>(
-  //     undefined
-  //   );
-  //   const [selectedBezirk, setSelectedBezirk] = React.useState<
-  //     iBezirk | undefined
-  //   >();
-  //   const [futureSelected, setFutureSelected] = React.useState(false);
-
-  //   const bezirke = useRef(
-  //     Array.from(new Set([...currentEvents, ...future].map((p) => p.bezirk).flat()))
-  //   );
   const [eventTypes, setEventTypes] = React.useState<
     (iEventType | "flohmaerkte")[]
   >(["weihnachtsmarkt"]);
+  const { today } = getTodayNexMonday();
   const selectedEvent = useMemo(
-    () => future.find(({ id }) => id === selectedEventID),
+    () =>
+      future.length
+        ? future.find(({ id }) => id === selectedEventID)
+        : undefined,
     [selectedEventID, future]
   );
+  const locationTypes = (
+    [
+      currentEvents.length ? "weihnachtsmarkt" : null,
+      future.length ? "adventsevent" : null,
+    ] as iEventType[]
+  ).filter(Boolean);
   return (
     <div className="w-full max-w-full sm:w-full flex flex-col gap-2 rounded">
       <section
@@ -151,7 +155,9 @@ export default function DynamicWeihMap({
                       icon={
                         eventTypes.includes("adventsevent")
                           ? smallWeihnachtsmarktIcon
-                          : weihnachtsmarktIcon
+                          : today < date
+                            ? desatWeihnachtsmarktIcon
+                            : weihnachtsmarktIcon
                       }
                       key={id}
                       zIndexOffset={1}
@@ -173,7 +179,7 @@ export default function DynamicWeihMap({
         </GeneralMap>
       </section>
       <aside className="flex flex-wrap items-center gap-2 w-full">
-        {(["weihnachtsmarkt", "adventsevent"] as iEventType[]).map((type) => (
+        {locationTypes.map((type) => (
           <Button
             key={type}
             onClick={() =>
