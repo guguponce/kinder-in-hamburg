@@ -8,6 +8,7 @@ export default function DateIcon({ size = "24px", color = "#000" }) {
       viewBox="-0.5 0 15 15"
       xmlns="http://www.w3.org/2000/svg"
       fill={color}
+      className="inline"
     >
       <g
         id="SVGRepo_tracerCarrier"
