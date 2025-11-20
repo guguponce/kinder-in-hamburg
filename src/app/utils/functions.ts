@@ -291,6 +291,7 @@ export const getTodayNexMonday = () => {
   currentDate.setUTCHours(0, 0, 0, 1);
   return {
     today: currentDate.getTime(),
+    yesterdayEvening: currentDate.getTime() - 1000 * 60 * 60 * 4,
     nextMonday:
       currentDate.getDay() === 0
         ? currentDate.getTime() + 1000 * 60 * 60 * 24
