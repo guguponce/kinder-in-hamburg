@@ -10,10 +10,12 @@ export default function StatusSetter({
   target,
   status,
   type = "post",
+  horizontal = false,
 }: {
   target: iPost | iFlohmarkt | iSpielplatz;
   status: "pending" | "approved" | "rejected" | "old";
   type?: "post" | "flohmarkt" | "event";
+  horizontal?: boolean;
 }) {
   const typeCorrection = {
     event: "events",
@@ -42,8 +44,12 @@ export default function StatusSetter({
 
   return (
     <>
-      <div className="flex-grow h-full flex flex-wrap justify-around gap-4">
-        <div className="flex flex-col items-center w-full gap-4">
+      <div
+        className={`flex-grow h-full flex flex-wrap justify-around gap-4 ${horizontal ? "flex-row" : "flex-col"}`}
+      >
+        <div
+          className={`flex items-center gap-4  ${horizontal ? "flex-row w-fit" : "flex-col w-full"}`}
+        >
           <select
             name="status-select"
             id="status-select"
@@ -80,6 +86,7 @@ export default function StatusSetter({
           title={target.title}
           deleteFrom="all"
           type={type}
+          size={horizontal ? "medium" : "small"}
           callbackURL={`/dashboard/${typeCorrection[type]}`}
         />
       </div>

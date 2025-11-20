@@ -41,13 +41,7 @@ export default async function DashboardPage() {
           <span className="block text-sm">({user.email})</span>
         </h2>
 
-        <ul>
-          <li>URLfilteredlist</li>
-          <li>Search Fonts</li>
-          <li>Search Jugend Zentrum</li>
-          <li>Flohmarkt page show that is old, change status to approved</li>
-          <li>metadata de sommer in hamburg, spielplatz, post...</li>
-        </ul>
+        <ul>TODO</ul>
         <section className=" w-full max-w-[800px] flex justify-between items-center flex-wrap-reverse gap-4 border-2 border-hh-700 p-4 rounded-md">
           <div className="flex flex-col items-start gap-2">
             <Link
