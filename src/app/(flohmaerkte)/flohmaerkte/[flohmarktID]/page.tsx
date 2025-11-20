@@ -87,7 +87,10 @@ export default async function FlohmarktPage({
   return (
     <>
       <FlohmarktTemplate flohmarkt={flohmarkt}>
-        {flohmarkt.status === "old" && <OldFlohmarktSign />}
+        <OldFlohmarktSign
+          status={flohmarkt.status || ""}
+          date={flohmarkt.date}
+        />
         <AdminServerComponent>
           <AdminEditButtons
             updateButton={{
