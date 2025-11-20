@@ -156,18 +156,17 @@ export default async function LaternenumzuegePage() {
       </>
     );
   }
-  const { today, nextMonday } = getTodayNexMonday();
-  const lastMidnight = new Date(today).setHours(0, 0, 0, 0);
+  const { today, nextMonday, yesterdayEvening } = getTodayNexMonday();
   const todayLaternenumzuege = [...laternenEvents].filter(
     (event) =>
-      event.date < today && event.date >= lastMidnight - 1000 * 60 * 60 * 4
+      event.date < today && event.date >= yesterdayEvening - 1000 * 60 * 60 * 4
   );
   const orderedLaternenumzuegeEvents = laterneUmzuegeEvents.sort(
     (a, b) => a.date - b.date
   );
   const [futureEvents, thisWeekEvents, oldEvents] = laternenEvents.reduce(
     (acc, event) => {
-      if (event.date < lastMidnight) {
+      if (event.date < yesterdayEvening) {
         acc[2].push(event);
       } else if (event.date < nextMonday - 1000 * 60 * 60 * 2) {
         acc[1].push(event);
@@ -273,7 +272,7 @@ export default async function LaternenumzuegePage() {
             cluster={false}
             thisWeek={thisWeekEvents}
             future={futureEvents}
-            today={lastMidnight}
+            today={yesterdayEvening}
           />
         </article>
       </section>
