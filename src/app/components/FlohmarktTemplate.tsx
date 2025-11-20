@@ -183,13 +183,6 @@ export default function FlohmarktTemplate({
   children?: React.ReactNode;
   creator?: boolean;
 }) {
-  // const regex = /(.*)\s(<link>)(https?:\/\/[^\s]+)(<\/link>)/;
-
-  // const match = optionalComment?.match(regex);
-  // const linkText = match ? match[1].trim() : null;
-  // const externalLink = match ? match[3] : null;
-
-  // const textWithoutLink = optionalComment?.replace(regex, "").trim();
   const openHoursRegex = /(ÖFFNUNGSZEITEN[\s\S]*?)(?=\n\s*<link>|$)/i;
   const openHours = (optionalComment?.match(openHoursRegex) || [])[0]
     ?.replace(/ÖFFNUNGSZEITEN/i, "")

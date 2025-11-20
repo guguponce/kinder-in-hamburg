@@ -79,9 +79,9 @@ export default async function EventSuggestionPage({
                 : undefined
             }
           />
-          {suggestion.lat && suggestion.lon && (
+          {/* {suggestion.lat && suggestion.lon && (
             <SuggestedEventMap currentTarget={suggestion} zoom={13} />
-          )}
+          )} */}
         </FlohmarktTemplate>
       </main>
     </AdminRoute>

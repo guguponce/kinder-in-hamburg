@@ -110,11 +110,14 @@ export default function WeitereEvents({
                         image={image || ""}
                       >
                         <HorizontalCard.FlohmarktInfo
-                          title={title}
+                          title={
+                            type === "weihnachtsmarkt"
+                              ? "Eröffnung: " + title
+                              : title
+                          }
                           address={addressWithoutCity(address)}
                           stadtteil={stadtteil}
                           bezirk={bezirk}
-                          date={date}
                           time={time}
                         />
                       </HorizontalCard>
