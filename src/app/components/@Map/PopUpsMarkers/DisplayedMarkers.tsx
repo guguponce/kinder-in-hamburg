@@ -7,6 +7,7 @@ import {
   eventIcon,
   futureLaterneIcon,
   futureLaternewerkstattMarkerIcon,
+  adventsEventIcon,
 } from "../mapUtils/constants";
 import { Marker } from "react-leaflet";
 import { iBezirk, iEventType, iFlohmarkt } from "@app/utils/types";
@@ -40,25 +41,27 @@ export const DisplayedMarkers = ({
                 ? selectedEvent === "weihnachtsmarkt"
                   ? weihnachtsmarktIcon
                   : smallWeihnachtsmarktIcon
-                : endDate
-                  ? todayIcon
-                  : getDate(date) === todayString
+                : type === "adventsevent"
+                  ? adventsEventIcon
+                  : endDate
                     ? todayIcon
-                    : type === "laterne"
-                      ? date < nextMonday
-                        ? laterneIcon
-                        : futureLaterneIcon
-                      : type === "laternewerkstatt"
+                    : getDate(date) === todayString
+                      ? todayIcon
+                      : type === "laterne"
                         ? date < nextMonday
-                          ? laternewerkstattMarkerIcon
-                          : futureLaternewerkstattMarkerIcon
-                        : type === "flohmarkt"
-                          ? flohmarktIcon
-                          : date < nextMonday
-                            ? type
-                              ? eventIcon
-                              : flohmarktIcon
-                            : futureIcon
+                          ? laterneIcon
+                          : futureLaterneIcon
+                        : type === "laternewerkstatt"
+                          ? date < nextMonday
+                            ? laternewerkstattMarkerIcon
+                            : futureLaternewerkstattMarkerIcon
+                          : type === "flohmarkt"
+                            ? flohmarktIcon
+                            : date < nextMonday
+                              ? type
+                                ? eventIcon
+                                : flohmarktIcon
+                              : futureIcon
             }
             key={id}
             position={[lat || 53.5511, lon || 9.9937]}

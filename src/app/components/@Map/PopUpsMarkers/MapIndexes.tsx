@@ -47,7 +47,7 @@ export const MapIndexes = ({
 
           {eventTypes.includes("adventsevent") && (
             <MarkerIndexBox>
-              <WeihnachtsmannIcon />
+              <WeihnachtsmannIcon color="#b72f1e" />
               <p>Adventsprogramm</p>
             </MarkerIndexBox>
           )}

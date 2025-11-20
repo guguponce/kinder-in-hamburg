@@ -44,6 +44,8 @@ const ConditionalCluster = ({
 }) =>
   cluster ? (
     <MarkerClusterGroup
+      disableClusteringAtZoom={11}
+      maxClusterRadius
       chunkedLoading
       iconCreateFunction={createClusterGroupIcon(type)}
     >

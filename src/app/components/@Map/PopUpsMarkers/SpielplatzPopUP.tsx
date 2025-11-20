@@ -34,7 +34,7 @@ export default function SpielplatzPopUP({
           <img
             src={image}
             alt={title}
-            className="w-full aspect-square rounded"
+            className="w-full aspect-square max-h-[50%] rounded"
           />
           <div className="absolute w-full bottom-0 right-0 bg-gradient-to-t from-hh-950 via-[#1b1d1e7b] to-transparent bg-opacity-50 text-white p-1 pt-4 rounded">
             <small className="text-xs font-semibold capitalize block">
