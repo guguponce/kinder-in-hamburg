@@ -32,7 +32,7 @@ export default function PageTitle({
     <h1
       id="page-title"
       className={cn(
-        `font-bold min-w-fit text-center ${logoFont.className} tracking-wide text-hh-50 mt-4 mx-4 mb-2`,
+        `font-bold min-w-fit text-center ${logoFont.className} tracking-wide text-hh-50 mt-4 md:px-4 mb-2 break-words`,
         className
       )}
       style={{ textShadow }}
