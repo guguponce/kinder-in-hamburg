@@ -11,6 +11,7 @@ import AdminServerComponent from "@app/providers/AdminServerComponents";
 import type { iFlohmarkt } from "@app/utils/types";
 import GeneralContainer from "@components/GeneralContainer";
 import PageTitle from "@app/components/PageTitle";
+import { unstable_cache } from "next/cache";
 
 const DynamicEventsMap = dynamic(
   () => import("../../components/@Map/DynamicEventsMap"),
@@ -62,29 +63,35 @@ export const metadata: Metadata = {
   ],
 };
 
+const getEventsAndFlohmaerkte = unstable_cache(
+  getApprovedEventsAndFlohmaerkte,
+  ["flohmaerkte", "events"],
+  {
+    revalidate: 3000,
+    tags: ["flohmaerkte", "events"],
+  }
+);
+
 export default async function EventPage() {
-  const { events, flohmaerkte } =
-    (await getApprovedEventsAndFlohmaerkte()) || {};
+  const { events, flohmaerkte } = (await getEventsAndFlohmaerkte()) || {};
   if (!events || !flohmaerkte)
     return <NotFound multiples={true} type="event" />;
 
-  const { today, nextMonday } = getTodayNexMonday();
-  const lastMidnight = new Date(today).setHours(0, 0, 0, 0);
+  const { today, nextMonday, yesterdayEvening } = getTodayNexMonday();
 
   const thisWeekFlohmaerkte = flohmaerkte.filter(
-    ({ date }) => date > lastMidnight && date < nextMonday - 1000 * 60 * 60
+    ({ date }) => date > yesterdayEvening && date < nextMonday - 1000 * 60 * 60
   );
   const thisWeekEvents = events.filter(
     ({ date, endDate }) =>
-      (endDate && endDate > today && date < lastMidnight) ||
-      (date > lastMidnight && date < nextMonday)
+      (endDate && endDate > today && date < yesterdayEvening) ||
+      (date > yesterdayEvening && date < nextMonday - 1000 * 60 * 60)
   );
 
   const futureEvents = events
-    .filter(({ date }) => date > nextMonday)
+    .filter(({ date }) => date > nextMonday - 1000 * 60 * 60)
     .sort((a, b) => a.date - b.date);
   const eventsWithoutLatLon = events.filter(({ lat, lon }) => !lat || !lon);
-
   return (
     <main className="px-2 text-hh-900 w-full flex flex-col gap-2 items-center">
       <AdminServerComponent>
@@ -133,6 +140,7 @@ export default async function EventPage() {
           title="Ab nächster Woche"
           list={futureEvents}
           type="events"
+          cardType="text-priority"
         ></BezirkableList>
       )}
       {!!thisWeekFlohmaerkte.length && (
