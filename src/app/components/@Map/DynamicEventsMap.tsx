@@ -244,11 +244,20 @@ export default function DynamicEventsMap({
                               : "bg-hh-50 text-hh-800  hover:bg-hh-600 hover:text-hh-50"
                         } transition-all`}
                       >
-                        {date === "currentEvents"
-                          ? "Aktuelle Events"
-                          : getDate(parseInt(date)) === getDate(today)
-                            ? "Heute"
-                            : getDate(parseInt(date), "short")}
+                        {date === "currentEvents" ? (
+                          "Aktuelle Events"
+                        ) : getDate(parseInt(date)) === getDate(today) ? (
+                          "Heute"
+                        ) : (
+                          <>
+                            <span className="block md:hidden">
+                              {getDate(parseInt(date), "short", true)}
+                            </span>
+                            <span className="hidden md:block">
+                              {getDate(parseInt(date), "short")}
+                            </span>
+                          </>
+                        )}
                       </button>
                     ))}
                     {!!future.length && (
