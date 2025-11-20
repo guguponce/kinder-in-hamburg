@@ -2,21 +2,23 @@ import React from "react";
 import { categoryName } from "@app/utils/types";
 
 export default function CardLogo({
-  size = "24px",
+  size,
   color = "#000",
   logo,
+  alt,
 }: {
   size?: string;
   color?: string;
-  logo: categoryName;
+  logo?: categoryName;
+  alt?: string;
 }) {
   return (
     <>
-      {logo === "Indoor" && (
+      {logo === "Indoor" ? (
         <svg
           fill={color}
-          height={size}
-          width={size}
+          height={size || "24px"}
+          width={size || "24px"}
           version="1.1"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 512.00 512.00"
@@ -31,6 +33,21 @@ export default function CardLogo({
             </g>
           </g>
         </svg>
+      ) : (
+        <div
+          className={
+            "w-full h-full flex justify-center items-center rounded" + color ||
+            "bg-hh-800"
+          }
+        >
+          <img
+            src="/assets/logo/WhiteLogo-Transparent.png"
+            alt={alt || "Kinder in Hamburg Logo"}
+            width={size || "100%"}
+            height={size || "100%"}
+            className="object-contain"
+          />
+        </div>
       )}
     </>
   );
