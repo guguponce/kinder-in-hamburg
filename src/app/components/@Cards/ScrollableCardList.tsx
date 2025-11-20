@@ -82,6 +82,7 @@ export default function ScrollableCardList({
               ({
                 id,
                 image,
+                optionalComment,
                 title,
                 address,
                 date,
@@ -117,6 +118,40 @@ export default function ScrollableCardList({
                         />
                       </HorizontalCard>
                     </div>
+                  ) : cardType === "text-priority" ? (
+                    <Card
+                      id={id}
+                      title={title}
+                      description={parseDescriptionWithTags(
+                        optionalComment?.slice(0, 100)
+                      )}
+                      image={
+                        image ||
+                        (title.toLocaleLowerCase().includes("weihnachtsmann")
+                          ? "/assets/wmann.webp"
+                          : title.toLocaleLowerCase().includes("nikolaus")
+                            ? "/assets/nikolaus.webp"
+                            : title.toLocaleLowerCase().includes("bastel")
+                              ? "/assets/bastel.webp"
+                              : title.toLocaleLowerCase().includes("schminken")
+                                ? "/assets/schminken.webp"
+                                : title
+                                      .toLocaleLowerCase()
+                                      .includes("schneemann")
+                                  ? "/assets/schneemann.webp"
+                                  : type &&
+                                      [
+                                        "weihnachtsmarkt",
+                                        "adventsevent",
+                                      ].includes(type)
+                                    ? "/assets/weihnachtsmarkt.webp"
+                                    : "")
+                      }
+                      aspectRatio={3 / 4}
+                      link={`${linkPrefix || "/events/"}${id}`}
+                      size={size}
+                      cardContainerClassname={cardClassname}
+                    />
                   ) : (
                     <div className="w-[144px] sm:w-[180px] h-full">
                       <FlohmarktPoster

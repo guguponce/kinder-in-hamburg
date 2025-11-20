@@ -9,6 +9,7 @@ import DateIcon from "../@Icons/@PostLogo/DateIcon";
 import HamburgIcon from "../@Icons/@PostLogo/HamburgIcon";
 import HamburgFilledIcon from "../@Icons/@BezirkIcon/HamburgFilledIcon";
 import StandortIcon from "../@Icons/StandortIcon";
+import ClockIcon from "../@Icons/@PostLogo/ClockIcon";
 
 const SpielplatzgeraeteBackground = dynamic(
   () => import("./SpielplatzgeraeteBackground"),
@@ -80,6 +81,25 @@ export default function HorizontalCard({
             alt={title}
             className={`w-full h-full ${imgSize || "object-contain"}`}
           />
+        ) : ["weihnachtsmarkt", "adventsevent"].includes(type) ? (
+          <img
+            loading="lazy"
+            src={
+              title.toLocaleLowerCase().includes("weihnachtsmann")
+                ? "/assets/wmann.webp"
+                : title.toLocaleLowerCase().includes("nikolaus")
+                  ? "/assets/nikolaus.webp"
+                  : title.toLocaleLowerCase().includes("bastel")
+                    ? "/assets/bastel.webp"
+                    : title.toLocaleLowerCase().includes("schminken")
+                      ? "/assets/schminken.webp"
+                      : title.toLocaleLowerCase().includes("schneemann")
+                        ? "/assets/schneemann.webp"
+                        : "/assets/weihnachtsmarkt.webp"
+            }
+            alt={title}
+            className={`w-full h-full ${imgSize || "object-contain"}`}
+          />
         ) : (
           <>
             {spielgeraete ? (
@@ -96,7 +116,7 @@ export default function HorizontalCard({
                 className={`w-full h-full ${imgSize || "object-contain"}`}
               />
             ) : (
-              <CardLogo logo="Indoor" color="#ACBAC8" size="3rem" />
+              <CardLogo />
             )}
           </>
         )}
@@ -116,7 +136,7 @@ HorizontalCard.FlohmarktInfo = function FlohmarktInfo({
   endDate,
 }: {
   title: string;
-  date: number;
+  date?: number;
   time?: string;
   address: string;
   stadtteil: string;
@@ -129,14 +149,31 @@ HorizontalCard.FlohmarktInfo = function FlohmarktInfo({
         {title}
       </h3>
       <div className="flex flex-col gap-[2px]">
-        <p className="font-semibold italic text-sm lg:text-base text-hh-800 leading-4">
-          <span className="float-left flex justify-center items-center h-4 lg:h-6">
-            <DateIcon size="0.8rem" color="#33404d" />
-          </span>
-          {getDate(date)} {endDate && <span>- {getDate(endDate)}</span>}
-          {time && <span className="hidden lg:inline text-sm">({time})</span>}
-        </p>
-
+        {!!date ||
+          (time && (
+            <p className="font-semibold italic text-sm lg:text-base text-hh-800 leading-4">
+              <span className="float-left flex justify-center items-center h-4 lg:h-6">
+                {!!date ? (
+                  <DateIcon size="0.8rem" color="#33404d" />
+                ) : (
+                  <ClockIcon size="0.8rem" color="#33404d" />
+                )}
+              </span>
+              {!!date && getDate(date)}{" "}
+              {endDate && <span>- {getDate(endDate)}</span>}
+              {time && (
+                <span
+                  className={
+                    date
+                      ? "hidden lg:inline text-sm"
+                      : "inline text-sm leading-3"
+                  }
+                >
+                  {!!date ? `(${time})` : time}
+                </span>
+              )}
+            </p>
+          ))}
         <small className="text-xs font-semibold max-w-full">
           <span className="float-left flex justify-center items-center">
             <StandortIcon size="0.8rem" color="#33404d" />
