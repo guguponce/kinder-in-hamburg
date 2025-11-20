@@ -40,6 +40,7 @@ export default async function EventsSameLocation({
         {separatedEvents.map((ev) => (
           <article
             key={ev.id}
+            title={ev.title}
             className={`${ev.type === "weihnachtsmarkt" ? "bg-positive-950 p-1 min-w-[180px]" : "min-w-[150px] mb-1"} flex flex-col items-center bg-opacity-10 w-fit rounded-md shadow-md hover:shadow-lg`}
           >
             <h3
@@ -54,11 +55,25 @@ export default async function EventsSameLocation({
               title={ev.title}
               description={parseDescriptionWithTags(ev.optionalComment)}
               image={
-                ev.image || "laterne" === ev.type
-                  ? "/assets/icons/laterne/laterne.svg"
-                  : ev.type === "laternewerkstatt"
-                    ? "/assets/icons/laterne/basteln.svg"
-                    : "/assets/icons/weihnachtsmarkt.svg"
+                ev.image
+                  ? ev.image
+                  : "laterne" === ev.type
+                    ? "/assets/icons/laterne/laterne.svg"
+                    : ev.type === "laternewerkstatt"
+                      ? "/assets/icons/laterne/basteln.svg"
+                      : ev.title.toLocaleLowerCase().includes("weihnachtsmann")
+                        ? "/assets/wmann.webp"
+                        : ev.title.toLocaleLowerCase().includes("nikolaus")
+                          ? "/assets/nikolaus.webp"
+                          : ev.title.toLocaleLowerCase().includes("bastel")
+                            ? "/assets/bastel.webp"
+                            : ev.title.toLocaleLowerCase().includes("schminken")
+                              ? "/assets/schminken.webp"
+                              : ev.title
+                                    .toLocaleLowerCase()
+                                    .includes("schneemann")
+                                ? "/assets/schneemann.webp"
+                                : "/assets/weihnachtsmarkt.webp"
               }
               link={"/events/" + ev.id}
               size="small"
