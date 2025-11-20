@@ -5,7 +5,7 @@ import { getTodayNexMonday, separateByDate } from "@app/utils/functions";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
 import Link from "next/link";
 import AddLatLon from "@components/@Buttons/AddLatLon";
-import type { iFlohmarkt } from "@app/utils/types";
+import type { iEventType, iFlohmarkt } from "@app/utils/types";
 import type { Metadata } from "next";
 import Attraktionen from "./Attraktionen";
 import AdventsEvents from "./AdventsEvents";
@@ -63,16 +63,26 @@ export async function generateMetadata(): Promise<Metadata> {
     },
   };
 }
-const cachedWeihnachtsmaerkte = unstable_cache(
-  getFutureApprovedEventsFromType,
-  ["flohmaerkte", "events"],
-  {
-    revalidate: 600,
-  }
-);
 
-const cachedFutureApprovedEventsFromType = unstable_cache(
-  getFutureApprovedEventsFromType,
+const getWeihnachtsEvents = async (type: iEventType[]) => {
+  const events = (await getFutureApprovedEventsFromType(type)) || [];
+  const { weihnachtsmaerkte, adventsEvents } = events.reduce(
+    (acc, event) => {
+      if (event.type?.includes("weihnachtsmarkt")) {
+        acc.weihnachtsmaerkte.push(event);
+      }
+      if (event.type?.includes("adventsevent")) {
+        acc.adventsEvents.push(event);
+      }
+      return acc;
+    },
+    { weihnachtsmaerkte: [] as iFlohmarkt[], adventsEvents: [] as iFlohmarkt[] }
+  );
+  return { weihnachtsmaerkte, adventsEvents };
+};
+
+const cachedWeihnachtsEvents = unstable_cache(
+  getWeihnachtsEvents,
   ["flohmaerkte", "events"],
   {
     revalidate: 600,
@@ -80,15 +90,14 @@ const cachedFutureApprovedEventsFromType = unstable_cache(
 );
 
 export default async function WeihnachtszeitPage() {
-  const weihnachtsmaerkte = await cachedWeihnachtsmaerkte("weihnachtsmarkt");
-  const adventsEvents: iFlohmarkt[] =
-    (await cachedFutureApprovedEventsFromType("adventsevent")) || [];
+  const { weihnachtsmaerkte, adventsEvents } = await cachedWeihnachtsEvents([
+    "weihnachtsmarkt",
+    "adventsevent",
+  ]);
+
   if (!weihnachtsmaerkte) return <NotFound multiples type="event" />;
   const { today } = getTodayNexMonday();
-
-  const orderedEvents = [...weihnachtsmaerkte, ...adventsEvents].sort(
-    (a, b) => a.date - b.date
-  );
+  const orderedEvents = [...weihnachtsmaerkte].sort((a, b) => a.date - b.date);
   const schiffEventsIDS = [1732400443361, 1732318110756, 1732235057521];
   const [schiffEvents, andereEvents] = adventsEvents.reduce(
     (acc, event) => {
@@ -120,8 +129,7 @@ export default async function WeihnachtszeitPage() {
       optionalComment && /weihnachtsmann/gi.test(optionalComment)
   );
   const date = new Date();
-  //if not from 1st november and 15th of january
-  if (date.getMonth() !== 10 && date.getMonth() !== 0) {
+  if (date.getMonth() < 10 && date.getMonth() > 0) {
     return (
       <Banner childrenClassName="flex flex-col sm:flex-col gap-2 items-center">
         <Banner.Title href="/">
@@ -163,7 +171,7 @@ export default async function WeihnachtszeitPage() {
   }
   return (
     <main
-      className={`flex flex-col gap-4 items-center w-full  ${!!todayLaternenumzuege.length ? "sm:max-w-[1000px]" : "sm:max-w-[800px]"} p-1 mb-4`}
+      className={`flex flex-col gap-4 items-center w-full  ${!!todayLaternenumzuege.length ? "sm:max-w-[1200px]" : "sm:max-w-[1000px]"} p-1 mb-4`}
     >
       <AdminServerComponent>
         <div className="flex flex-col gap-1 outline outline-2 outline-negative-200">
@@ -198,13 +206,14 @@ export default async function WeihnachtszeitPage() {
           ))}
         </div>
       </AdminServerComponent>
-      <WeihMapContainer
-        adventsEvents={adventsEvents}
-        weihnachtsmaerkte={weihnachtsmaerkte}
-      />
+
       <WeihnachtsmaerkteHero
         orderedEvents={orderedEvents}
         todayLaternenumzuege={todayLaternenumzuege}
+      />
+      <WeihMapContainer
+        adventsEvents={adventsEvents}
+        weihnachtsmaerkte={weihnachtsmaerkte}
       />
       <Attraktionen
         attraktionen={{
