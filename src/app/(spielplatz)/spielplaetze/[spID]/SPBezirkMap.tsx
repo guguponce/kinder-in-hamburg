@@ -12,9 +12,10 @@ import MarkersLists from "@components/@Map/PopUpsMarkers/MarkersLists";
 import { createStandortMapIcon } from "@components/@Map/functions";
 import { distanceFilter } from "@app/utils/functions";
 import SpielplatzPopUP from "@components/@Map/PopUpsMarkers/SpielplatzPopUP";
+import StandortIcon from "@app/components/@Icons/StandortIcon";
 
 const CurrentSelectedSpielplatzIcon = divIcon({
-  html: createStandortMapIcon("#F6AA1C", 30),
+  html: createStandortMapIcon("#fdba74", 30),
   className: "bg-transparent",
   iconSize: [30, 30],
   iconAnchor: [15, 30],
@@ -132,7 +133,10 @@ export default function SPBezirkMap({
         </div>
       </article>
       {selector && !!otherSpielplaetzeList.length && (
-        <article className="w-full sm:w-1/2 lg:w-full  aspect-[4/3] sm:aspect-auto sm:h-full lg:h-1/2 min-h-fit border-4 border-orange-300 rounded-md">
+        <article className="relative w-full sm:w-1/2 lg:w-full  aspect-[4/3] sm:aspect-auto sm:h-full lg:h-1/2 min-h-fit border-4 border-orange-300 rounded-md">
+          <div className="w-8 aspect-square absolute top-4 left-4 z-[500]">
+            <StandortIcon size="100%" color="#fdba74" stroke="#fff" />
+          </div>
           <ShuffleGallery
             idSetter={setSelectedIndex}
             list={otherSpielplaetzeList}
