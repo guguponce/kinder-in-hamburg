@@ -31,7 +31,7 @@ export default function BuecherhallenMap({
       id="buecherhallenMap"
       className="w-full max-w-[800px] aspect-square sm:aspect-video max-h-[60vh] bg-gradient-to-b from-hh-800 to-hh-700 rounded-lg p-1 sm:p-2 flex flex-col gap-2 overflow-hidden"
     >
-      <GeneralMap centerUserLocation>
+      <GeneralMap>
         <MarkersLists
           cluster={false}
           lists={{ posts: buecherhallenPosts }}
