@@ -3,6 +3,7 @@ import { divIcon } from "leaflet";
 import {
   createNormalSizeIcon,
   createStandortMapIcon,
+  createWeihnachtsmannMapIcon,
   createWeihnachtsmarktMapIcon,
 } from "../functions";
 
@@ -538,12 +539,19 @@ export const todayIcon = divIcon({
 });
 export const weihnachtsmarktIcon = divIcon({
   html: createWeihnachtsmarktMapIcon(),
-  iconSize: [20, 25],
+  iconSize: [25, 25],
   iconAnchor: [10, 20],
   className: "bg-transparent",
 });
 export const smallWeihnachtsmarktIcon = divIcon({
-  html: createWeihnachtsmarktMapIcon(15),
+  html: createWeihnachtsmarktMapIcon(18),
+  iconSize: [18, 18],
+  iconAnchor: [9, 18],
+  className: "bg-transparent",
+});
+
+export const adventsEventIcon = divIcon({
+  html: createWeihnachtsmannMapIcon(),
   iconSize: [15, 15],
   iconAnchor: [8, 15],
   className: "bg-transparent",
