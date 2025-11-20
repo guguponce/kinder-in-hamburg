@@ -101,7 +101,35 @@ export default function ClientEventsGallery({
                   : ["weihnachtsmarkt", "adventsevent"].includes(
                         currentEvent.type
                       )
-                    ? 'url("/assets/icons/weihnachtsmarkt.svg")'
+                    ? currentEvent.title
+                        .toLocaleLowerCase()
+                        .includes("weihnachtsmann")
+                      ? "/assets/wmann.webp"
+                      : currentEvent.title
+                            .toLocaleLowerCase()
+                            .includes("nikolaus")
+                        ? "/assets/nikolaus.webp"
+                        : currentEvent.title
+                              .toLocaleLowerCase()
+                              .includes("bastel")
+                          ? "/assets/bastel.webp"
+                          : currentEvent.title
+                                .toLocaleLowerCase()
+                                .includes("schminken")
+                            ? "/assets/schminken.webp"
+                            : currentEvent.title
+                                  .toLocaleLowerCase()
+                                  .includes("schneemann")
+                              ? "/assets/schneemann.webp"
+                              : currentEvent.title
+                                    .toLocaleLowerCase()
+                                    .includes("weihnachtsmann")
+                                ? "/assets/wmann.webp"
+                                : currentEvent.title
+                                      .toLocaleLowerCase()
+                                      .includes("nikolaus")
+                                  ? "/assets/nikolaus.webp"
+                                  : 'url("/assets/weihnachtsmarkt.webp")'
                     : "",
               backgroundSize: currentEvent.title.includes("Apostelkirche")
                 ? "contain"
