@@ -68,7 +68,7 @@ function LocationDate({
               dateTime={new Date(date).toLocaleDateString()}
               className="block font-semibold"
             >
-              {getDate(date, "short", false, true)}{" "}
+              {getDate(date, endDate ? false : "short", false, !endDate)}{" "}
               {endDate && ` - ${getDate(endDate)}`}
             </time>
           </div>
@@ -259,15 +259,20 @@ export default function FlohmarktTemplate({
                 alt={title}
                 className="w-full h-auto object-cover rounded-md"
               />
-              {attribution && (
-                <Link
-                  href={attribution}
-                  className="text-hh-400 hover:underline hover:underline-offset-2 italic text-[0.5rem] flex flex-wrap gap-1 items-center"
-                >
-                  <span>Entworfen von:</span>
-                  <span>{attribution}</span>
-                </Link>
-              )}
+              {attribution &&
+                (attribution.includes("www") ? (
+                  <Link
+                    href={attribution}
+                    className="text-hh-400 hover:underline hover:underline-offset-2 italic text-[0.5rem] flex flex-wrap gap-1 items-center"
+                  >
+                    <span>© Bild von:</span>
+                    <span>{attribution}</span>
+                  </Link>
+                ) : (
+                  <small className="text-hh-400 italic text-[0.5rem] flex flex-wrap gap-1 items-center">
+                    © Bild von: {attribution}
+                  </small>
+                ))}
             </aside>
           )}
 
@@ -384,7 +389,7 @@ export default function FlohmarktTemplate({
             </div>
           )} */}
         </div>
-        {process.env.ADMIN_EMAIL !== addedBy.email && (
+        {/* {process.env.ADMIN_EMAIL !== addedBy.email && (
           <div id="addedBy" className="w-fit px-4 lg:ml-auto self-end">
             <h2 className="text-lg font-semibold">Hinzugefügt von:</h2>
             <div className="flex items-center justify-end transition-all">
@@ -397,7 +402,7 @@ export default function FlohmarktTemplate({
               <p className="addedByName hidden">{addedBy.name}</p>
             </div>
           </div>
-        )}
+        )} */}
       </section>
     </>
   );
