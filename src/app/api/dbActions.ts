@@ -1007,18 +1007,16 @@ export const getFutureApprovedEventsFromType = async (
   eventType: iEventType | iEventType[],
   date?: number
 ) => {
-  const { today } = getTodayNexMonday();
-  const eventTypesQuery = Array.isArray(eventType)
-    ? eventType.map((nh) => `type.ilike.%${nh}%`).join(",")
-    : `type.ilike.%${eventType}%`;
+  const { today, yesterdayEvening } = getTodayNexMonday();
   try {
     const { data, error } = await supabaseAdmin
       .from("events")
       .select("*")
       .order("date", { ascending: true })
+      .in("type", typeof eventType === "string" ? [eventType] : eventType)
       .ilike("status", "approved")
       .or(
-        `date.gte.${today - 1000 * 60 * 60},and(date.lte.${date || today},endDate.gte.${(date || today) + 1000 * 60 * 60 * 12}),${eventTypesQuery}`
+        `date.gte.${yesterdayEvening},and(date.lte.${date || today},endDate.gte.${(date || today) + 1000 * 60 * 60 * 12})`
       );
     if (error) {
       throw new Error("There was a problem getting the events.");
@@ -1161,6 +1159,7 @@ export const getEventsFromSameLocation = async (location: string) => {
       .or(
         `date.gte.${today - 1000 * 60 * 60},and(date.lte.${today},endDate.gte.${today + 1000 * 60 * 60 * 12})`
       )
+      .ilike("status", "approved")
       .ilike("location", location)
       .order("date", { ascending: true });
 
@@ -1201,7 +1200,6 @@ export const getAllEventsThisWeek = async (
     .gte("date", today - 1000 * 60 * 60)
     .lte("date", nextMonday - 1000 * 60 * 60 * 2)
     .order("date", { ascending: true });
-
   try {
     if (bezirk || stadtteile || eventTypes) {
       if (bezirk && !checkBezirk(bezirk))
@@ -1241,16 +1239,21 @@ export const getAllEventsThisWeek = async (
 };
 export const getApprovedEventsWithBezirk = async (
   bezirk: iBezirk,
-  eventTable: string = "flohmaerkte"
+  eventTable: string = "flohmaerkte",
+  eventTypes?: iEventType[]
 ) => {
   const { today } = getTodayNexMonday();
   try {
-    const { data, error } = await supabaseAdmin
+    let query = supabaseAdmin
       .from(eventTable)
       .select("*")
       .ilike("status", "approved")
-      .gte("date", today)
+      .or(`date.gte.${today},and(date.lte.${today},endDate.gte.${today})`)
       .ilike("bezirk", bezirk);
+    if (eventTypes && eventTypes.length > 0) {
+      query = query.in("type", eventTypes);
+    }
+    const { data, error } = await query;
     if (error) {
       throw new Error("There was a problem getting the events.");
     }
