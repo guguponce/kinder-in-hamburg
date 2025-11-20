@@ -20,12 +20,14 @@ interface iFlohmarktPosterProps {
   eventType?: iEventType;
   id: number;
   endDate?: number;
+  children?: React.ReactNode;
 }
 
 export default function FlohmarktPoster({
   title,
   image,
   date,
+  children,
   bezirk,
   prefixLink,
   id,
@@ -119,9 +121,21 @@ export default function FlohmarktPoster({
             eventType === "weihnachtsmarkt" ? (
             <img
               loading="lazy"
-              src={"/assets/icons/weihnachtsmarkt.svg"}
+              src={
+                title.toLocaleLowerCase().includes("weihnachtsmann")
+                  ? "/assets/wmann.webp"
+                  : title.toLocaleLowerCase().includes("nikolaus")
+                    ? "/assets/nikolaus.webp"
+                    : title.toLocaleLowerCase().includes("bastel")
+                      ? "/assets/bastel.webp"
+                      : title.toLocaleLowerCase().includes("schminken")
+                        ? "/assets/schminken.webp"
+                        : title.toLocaleLowerCase().includes("schneemann")
+                          ? "/assets/schneemann.webp"
+                          : "/assets/weihnachtsmarkt.webp"
+              }
               alt={title}
-              className={`absolute rounded object-contain w-1/2 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2`}
+              className={`absolute rounded object-contain`}
             />
           ) : null}
           <div
@@ -146,6 +160,7 @@ export default function FlohmarktPoster({
                   : "bg-opacity-50"
             )}
           >
+            {children}
             <h2 className="text-base ">{stadtteil || bezirk}</h2>
             {endDate ? (
               <h3
@@ -156,9 +171,11 @@ export default function FlohmarktPoster({
                     : "text-hh-800"
                 )}
               >
-                {date > today
-                  ? `Ab dem ${getDate(date)}`
-                  : `Bis zum ${getDate(endDate)}`}
+                {getDate(date) === getDate(today)
+                  ? "AB HEUTE!"
+                  : date > today
+                    ? `Ab dem ${getDate(date)}`
+                    : `Bis zum ${getDate(endDate)}`}
               </h3>
             ) : getDate(date) === getDate(today) ? (
               <h3 className="text-sm  outline-2 outline-hh-800 rounded w-full outline">

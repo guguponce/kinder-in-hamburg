@@ -159,7 +159,6 @@ export default async function RecommendationsMap({
       showSpielplaetze ? null : "spielplaetze",
     ].filter((item): item is iItemTypes => item !== null)
   );
-
   if (
     !currentItem ||
     currentItem.lat === undefined ||
