@@ -18,7 +18,7 @@ export default function TextPriorityCard({
     size === "small"
       ? {
           container: "min-w-[150px] max-w-[160px]",
-          description: "truncate-3 text-xs",
+          description: "truncate-5 text-xs max-h-[5rem]",
           title: "text-sm",
         }
       : size === "medium"
@@ -44,16 +44,27 @@ export default function TextPriorityCard({
       role="link"
       aria-label={`Explore ${title}`}
     >
-      <div className="cardImage h-2/5 flex justify-center items-center w-full bg-hh-800">
+      <div className="cardImage relative h-2/5 flex justify-center items-center w-full bg-hh-800">
         {!!image ? (
-          <img
-            loading="lazy"
-            className={cn("object-cover w-full h-full", imgClassname)}
-            src={image}
-            alt={title}
-          />
+          <>
+            <div
+              className="absolute w-full h-full top-0 left-0 blur-sm"
+              style={{
+                backgroundImage: `url(${image})`,
+                backgroundPosition: "center",
+                backgroundSize: "cover",
+                backgroundRepeat: "no-repeat",
+              }}
+            />
+            <img
+              loading="lazy"
+              className={cn("object-cover w-full h-full", imgClassname)}
+              src={image}
+              alt={title}
+            />
+          </>
         ) : (
-          <CardLogo logo="Indoor" color="#ACBAC8" size="3rem" />
+          <CardLogo />
         )}
       </div>
       <div className="cardContent w-full overflow-hidden flex-grow flex flex-col p-2 min-h-[150px]">
