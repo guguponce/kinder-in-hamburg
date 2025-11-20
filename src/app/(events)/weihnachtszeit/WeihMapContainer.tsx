@@ -42,7 +42,7 @@ export default function WeihMapContainer({
   shuffleContainerClassname?: string;
   weihnachtsmaerkte: iFlohmarkt[];
 }) {
-  if (adventsEvents.length === 0) return null;
+  if (weihnachtsmaerkte.length === 0 && adventsEvents.length === 0) return null;
   const orderedAdventsEvents = orderEvents(adventsEvents);
   return (
     <DynamicShuffleMapBox
