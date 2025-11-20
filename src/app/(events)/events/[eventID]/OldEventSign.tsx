@@ -1,13 +1,24 @@
+import { getTodayNexMonday } from "@app/utils/functions";
 import Link from "next/link";
 import React from "react";
 
 export default function OldEventSign({
   title,
   text,
+  date,
+  endDate,
 }: {
   title?: string;
   text?: string;
+  date: number;
+  endDate?: number;
 }) {
+  const { yesterdayEvening, today } = getTodayNexMonday();
+
+  const isNotCurrent = endDate
+    ? endDate < yesterdayEvening
+    : date < yesterdayEvening;
+  if (!isNotCurrent) return null;
   return (
     <aside className="flex flex-col items-center justify-center p-6 rounded-md bg-negative-100 border-4 border-negative-300 w-[500px] max-w-full m-2 gap-4">
       <h2 className="text-lg font-bold text-hh-950">
