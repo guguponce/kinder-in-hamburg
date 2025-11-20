@@ -1,6 +1,6 @@
 import { getAllEventsThisWeek, getThisWeekEvents } from "@app/api/dbActions";
 import { iFlohmarkt, iPost, iSpielplatz } from "@app/utils/types";
-import WeitereFlohmaerkte from "@components/WeitereEvents";
+import WeitereEvents from "@components/WeitereEvents";
 import RecommendationsMap from "@components/@Map/RecommendationsMap";
 import { getTodayNexMonday } from "@app/utils/functions";
 
@@ -15,10 +15,12 @@ export default async function EventPageMapContainer({
   currentTarget: iFlohmarkt | iSpielplatz | iPost;
   spielplaetzeAround?: iSpielplatz[];
 }) {
+  const { yesterdayEvening } = getTodayNexMonday();
   const thisWeekEvents = (await getAllEventsThisWeek()) || [];
   const thisWeekFlohmaerkte = (await getThisWeekEvents()) || [];
   const weitereVeranstaltungen = thisWeekEvents.filter(
-    ({ id, endDate }) => id !== currentTarget.id && !endDate
+    ({ id, endDate, date }) =>
+      id !== currentTarget.id && (endDate ? yesterdayEvening <= date : true)
   );
   const { nextMonday } = getTodayNexMonday();
   return (
@@ -45,7 +47,7 @@ export default async function EventPageMapContainer({
             <h3 className="font-bold text-2xl text-hh-800">
               Weitere Veranstaltungen dieser Woche:
             </h3>
-            <WeitereFlohmaerkte
+            <WeitereEvents
               type="Events"
               displayedMarkers={[
                 ...weitereVeranstaltungen,
