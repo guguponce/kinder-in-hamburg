@@ -2,6 +2,7 @@ import React from "react";
 import {
   checkIfEventOrFlohmarktExists,
   getAllEventsThisWeek,
+  getApprovedEventsWithBezirk,
   getEventMetadata,
   getEventWithID,
 } from "@app/api/dbActions";
@@ -21,7 +22,7 @@ import {
   parseDescriptionWithTags,
 } from "@app/utils/functions";
 import EventsSameLocation from "./EventsSameLocation";
-// import Image from "./opengraph-image";
+import { unstable_cache } from "next/cache";
 
 interface EventPageProps {
   params: { eventID: string };
@@ -62,11 +63,19 @@ export async function generateMetadata({
   };
 }
 
+const cachedGetEvent = unstable_cache(
+  getEventWithID,
+  ["events", "flohmaerkte"],
+  {
+    tags: ["events", "flohmaerkte"],
+    revalidate: 600,
+  }
+);
+
 export default async function EventPage({
   params: { eventID },
 }: EventPageProps) {
-  const { today } = getTodayNexMonday();
-  const event = await getEventWithID(eventID, "events");
+  const event = await cachedGetEvent(eventID, "events");
   if (event === false) {
     const flohmarktID = await checkIfEventOrFlohmarktExists(
       eventID,
@@ -93,17 +102,23 @@ export default async function EventPage({
     (await getAllEventsThisWeek(undefined, event.bezirk, [
       ...proximateStadtteile,
     ])) || [];
+  const { todaysMonth } = getTodayNexMonday();
+  const weihnachtsmaerkte =
+    todaysMonth >= 10
+      ? (await getApprovedEventsWithBezirk(event.bezirk!, "events", [
+          "weihnachtsmarkt",
+        ])) || []
+      : [];
   return (
     <main className="flex flex-col items-center w-full p-1">
       <FlohmarktTemplate flohmarkt={event}>
-        {(event.status === "old" ||
-          event.date < today - 1000 * 60 * 60 * 4) && <OldEventSign />}
-        {event.closedDates?.find((d) => getDate(d) === getDate(Date.now())) && (
-          <OldEventSign
-            title="Heute findet diese Veranstaltung nicht statt"
-            text="Schaue dich mal die heutigen Ereignisse an"
-          />
-        )}
+        <OldEventSign
+          date={event.date}
+          title="Heute findet diese Veranstaltung nicht statt"
+          text="Schaue dich mal die heutigen Events an"
+          closedDates={event.closedDates}
+          endDate={event.endDate}
+        />
         <AdminServerComponent>
           <AdminEditButtons
             updateButton={{
@@ -128,7 +143,7 @@ export default async function EventPage({
         <EventPageMapContainer
           spielplaetzeAround={spielplaetzeNearby}
           currentTarget={event}
-          events={eventsNearby}
+          events={[...eventsNearby, ...weihnachtsmaerkte]}
         >
           <EventsSameLocation
             eventID={eventID}
