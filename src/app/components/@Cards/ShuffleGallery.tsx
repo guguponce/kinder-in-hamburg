@@ -61,13 +61,8 @@ export default function ShuffleGallery({
           spielgeraete.length
       ];
       return { currentArticle, backupImg };
-    } else if (isTypePost(currentArticle)) {
-      const backupImg = currentArticle.image
-        ? currentArticle.image[0]
-        : undefined;
-      return { currentArticle, backupImg };
     } else {
-      const backupImg = currentArticle.image ? currentArticle.image : undefined;
+      const backupImg = currentArticle?.image?.[0];
       return { currentArticle, backupImg };
     }
   }, [currentIndex, originalList]);
@@ -82,28 +77,26 @@ export default function ShuffleGallery({
         shuffleContainerClassName
       )}
     >
-      <article className="h-full w-full md:aspect-square shadow rounded overflow-hidden bg-hh-400 bg-opacity-25 flex flex-col items-center gap-2 relative hover:shadow-2xl">
+      <article
+        className={cn(
+          "h-full w-full md:aspect-square shadow rounded bg-hh-400 bg-opacity-25 flex flex-col items-center gap-2 relative hover:shadow-2xl overflow-hidden",
+          posterClassname
+        )}
+      >
         {isTypeFlohmarkt(currentArticle) ? (
-          <div
-            className={cn(
-              "mx-auto h-full object-contain sm:w-full flex justify-center items-center",
-              posterClassname
-            )}
-          >
-            <FlohmarktPoster
-              contain
-              bezirk={currentArticle.bezirk}
-              date={currentArticle.date}
-              endDate={currentArticle.endDate}
-              stadtteil={currentArticle.stadtteil}
-              eventType={currentArticle.type || "flohmarkt"}
-              title={currentArticle.title}
-              image={currentArticle.image ? currentArticle.image : backupImg}
-              prefixLink={!!currentArticle.type ? "/events/" : "/flohmaerkte/"}
-              size={size}
-              id={currentArticle.id}
-            />
-          </div>
+          <FlohmarktPoster
+            contain
+            bezirk={currentArticle.bezirk}
+            date={currentArticle.date}
+            endDate={currentArticle.endDate}
+            stadtteil={currentArticle.stadtteil}
+            eventType={currentArticle.type || "flohmarkt"}
+            title={currentArticle.title}
+            image={currentArticle.image ? currentArticle.image : backupImg}
+            prefixLink={!!currentArticle.type ? "/events/" : "/flohmaerkte/"}
+            size={size}
+            id={currentArticle.id}
+          />
         ) : isTypePost(currentArticle) && !postPoster ? (
           !!currentArticle.image?.length ? (
             <ImageCard

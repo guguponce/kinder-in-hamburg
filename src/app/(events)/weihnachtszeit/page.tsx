@@ -128,6 +128,10 @@ export default async function WeihnachtszeitPage() {
     ({ optionalComment }) =>
       optionalComment && /weihnachtsmann/gi.test(optionalComment)
   );
+  const maerkteMitNikolaus = weihnachtsmaerkte.filter(
+    ({ optionalComment }) =>
+      optionalComment && /nikolaus/gi.test(optionalComment)
+  );
   const date = new Date();
   if (date.getMonth() < 10 && date.getMonth() > 0) {
     return (
@@ -220,6 +224,7 @@ export default async function WeihnachtszeitPage() {
           karussell: maerkteMitCarousell,
           kinderprogramm: maerkteMitKinderprogramm,
           weihnachtsmann: maerkteMitWeihnachtsmann,
+          nikolaus: maerkteMitNikolaus,
         }}
       />
       {!!adventsEvents.length && (

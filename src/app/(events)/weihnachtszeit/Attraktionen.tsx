@@ -8,12 +8,14 @@ import ScrollableContainer from "@components/ScrollableContainer";
 import { parseDescriptionWithTags } from "@app/utils/functions";
 import { iBezirk, iFlohmarkt } from "@app/utils/types";
 import React, { useMemo, useState } from "react";
+import NikolausIcon from "@app/components/@Icons/@Events/NikolausIcon";
 
 interface AttraktionenProps {
   attraktionen: {
     karussell: iFlohmarkt[];
     kinderprogramm: iFlohmarkt[];
     weihnachtsmann: iFlohmarkt[];
+    nikolaus: iFlohmarkt[];
   };
   children?: React.ReactNode;
 }
@@ -62,17 +64,12 @@ export default function Attraktionen({ attraktionen }: AttraktionenProps) {
             fontSize="xs"
             className={`px-2 py-1 rounded-lg text-sm ${attType !== "weihnachtsmann" && "capitalize"} flex gap-2 items-center min-w-fit ${selectedAttraktion === attType ? "outline-2 outline-hh-900 outline-offset-1" : "opacity-25"} shadow-sm`}
           >
-            {attType === "karussell" && (
-              <KarussellBigIcon
-                color={selectedAttraktion === attType ? "#fefefe" : "#fefefe"}
-              />
-            )}
+            {attType === "karussell" && <KarussellBigIcon color={"#fefefe"} />}
             {attType === "kinderprogramm" && <BoyGirlIcon color="#fefefe" />}
             {attType === "weihnachtsmann" && (
-              <WeihnachtsmannIcon
-                color={selectedAttraktion === attType ? "#fefefe" : "#fefefe"}
-              />
+              <WeihnachtsmannIcon color={"#fefefe"} />
             )}
+            {attType === "nikolaus" && <NikolausIcon color="#fefefe" />}
             <span
               className={`sm:block ${selectedAttraktion === attType ? "block" : "hidden"}`}
             >
