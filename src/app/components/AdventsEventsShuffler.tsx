@@ -18,7 +18,7 @@ export default function AdventsEventsShuffler({
   const { current: eventsList } = useRef(events || []);
   const nikolausDate = 1765004400000; // 6. Dezember 2025
   const isNikolausTime =
-    getDate(today) === getDate(nikolausDate) && Date.now() >= 1764745200000;
+    getDate(today) === getDate(nikolausDate) && Date.now() >= 1764745200000; //4. Dez 2025 18:00 Uhr;
   const date =
     getDate(today) === getDate(nikolausDate)
       ? "Heute"

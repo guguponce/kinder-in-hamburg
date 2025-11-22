@@ -14,7 +14,7 @@ export default function LaternenBanner() {
   }
 
   return (
-    <section className="p-4 relative rounded-lg bg-gradient-to-b  min-w-fit flex gap-2 flex-col items-center from-hh-950 to-hh-800  w-fit max-w-[420px] text-white bg-opacity-10 transition-all overflow-hidden">
+    <section className="p-4 relative rounded-lg bg-gradient-to-b  min-w-fit flex gap-2 flex-col items-center from-hh-950 to-hh-800  w-fit max-w-full xs:max-w-[420px] text-white bg-opacity-10 transition-all overflow-hidden">
       <div className="sm:gap-2 flex flex-col items-center w-full min-h-full ">
         <Image
           style={{ left: "-6px" }}

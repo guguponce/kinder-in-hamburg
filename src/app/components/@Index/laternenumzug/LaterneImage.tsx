@@ -10,7 +10,7 @@ export default function LaterneImage({
   ff?: boolean;
 }) {
   return (
-    <div className="relative w-full aspect-square overflow-hidden">
+    <div className="relative w-full aspect-square">
       <div
         className={cn(
           "absolute animate-pulse bg-gradient-radial blur-[4px] from-orange-300 to-orange-400 rounded-full",
