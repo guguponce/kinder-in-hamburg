@@ -1,3 +1,4 @@
+import { logoFont } from "@app/styles/fonts/localfonts";
 import { cn } from "@app/utils/functions";
 import Link from "next/link";
 import React from "react";
@@ -87,7 +88,7 @@ Banner.Title = function BannerTitle({
   return href ? (
     <Link
       href={href}
-      className="text-3xl sm:pt-4 lg:mb-4 text-center font-bold p-1 sm:mb-none hover:text-hh-50 hover:scale-[1.01] transition-all"
+      className={`${logoFont.className} min-w-fit tracking-wide text-hh-50 mt-4 mx-4 mb-2 hover:text-hh-100 text-4xl text-center font-bold sm:mb-none hover:scale-[1.01] transition-all`}
     >
       {children}
     </Link>

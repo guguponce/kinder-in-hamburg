@@ -9,7 +9,7 @@ export default function LaternenBanner() {
   const today = new Date();
   const thisMonth = today.getMonth();
   const thisDay = today.getDate();
-  if (thisMonth < 8 && thisMonth > 11) {
+  if (thisMonth < 8 && thisMonth >= 11) {
     return null;
   }
 
@@ -32,7 +32,7 @@ export default function LaternenBanner() {
             />
 
             <h4 className="text-center text-sm sm:text-base italic lg:backdrop-blur-sm mb-2">
-              {thisMonth === 9 && thisDay <= 15
+              {thisMonth === 9 && thisDay <= 15 //
                 ? "Die Laternensaison hat gerade erst begonnen! Schau dir die kommenden Umzüge an."
                 : thisMonth === 10 && thisDay >= 20
                   ? "Die Laternensaison ist fast zu Ende, aber es gibt noch ein paar Lichterumzüge vor dem Dezember!"
