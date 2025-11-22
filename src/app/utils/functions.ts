@@ -297,6 +297,7 @@ export const getTodayNexMonday = () => {
         ? currentDate.getTime() + 1000 * 60 * 60 * 24
         : nextMonday.getTime(),
     todaysMonth: currentDate.getMonth(),
+    todaysDate: currentDate.getDate(),
   };
 };
 
