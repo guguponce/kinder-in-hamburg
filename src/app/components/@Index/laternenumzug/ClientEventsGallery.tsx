@@ -1,9 +1,8 @@
 "use client";
 import TriangleIcon from "@components/@Icons/TriangleIcon";
 import FlohmarktPoster from "@components/@Cards/FlohmarktPoster";
-import { getDate } from "@app/utils/functions";
+import { cn } from "@app/utils/functions";
 import { iFlohmarkt } from "@app/utils/types";
-import Link from "next/link";
 import React from "react";
 
 export function ArrowGallery({
@@ -89,84 +88,42 @@ export default function ClientEventsGallery({
   return (
     <ArrowGallery length={eventsList.length} handleIndex={handleIndex}>
       <div className="relative w-[180px] aspect-[2/3] md:aspect-[3/5] pb-10 flex flex-col items-center">
-        {!currentEvent?.image ? (
-          <Link
-            href={`/events/${currentEvent.id}`}
-            className="w-full h-full flex justify-between bg-positive-700 bg-opacity-50 flex-col items-center text-orange-200 border-2 border-hh-600 rounded overflow-hidden"
-            style={{
-              backgroundImage: !currentEvent.type
-                ? ""
-                : ["laternewerkstatt", "laterne"].includes(currentEvent.type)
-                  ? `url("/assets/icons/laterne/laterne.svg")`
-                  : ["weihnachtsmarkt", "adventsevent"].includes(
-                        currentEvent.type
-                      )
-                    ? currentEvent.title
-                        .toLocaleLowerCase()
-                        .includes("weihnachtsmann")
-                      ? "/assets/wmann.webp"
-                      : currentEvent.title
-                            .toLocaleLowerCase()
-                            .includes("nikolaus")
-                        ? "/assets/nikolaus.webp"
-                        : currentEvent.title
-                              .toLocaleLowerCase()
-                              .includes("bastel")
-                          ? "/assets/bastel.webp"
-                          : currentEvent.title
-                                .toLocaleLowerCase()
-                                .includes("schminken")
-                            ? "/assets/schminken.webp"
-                            : currentEvent.title
-                                  .toLocaleLowerCase()
-                                  .includes("schneemann")
-                              ? "/assets/schneemann.webp"
-                              : currentEvent.title
-                                    .toLocaleLowerCase()
-                                    .includes("weihnachtsmann")
-                                ? "/assets/wmann.webp"
-                                : currentEvent.title
-                                      .toLocaleLowerCase()
-                                      .includes("nikolaus")
-                                  ? "/assets/nikolaus.webp"
-                                  : 'url("/assets/weihnachtsmarkt.webp")'
-                    : "",
-              backgroundSize: currentEvent.title.includes("Apostelkirche")
-                ? "contain"
-                : "50%",
-              backgroundPosition: "center",
-              backgroundRepeat: "no-repeat",
-            }}
-          >
-            <h3 className="text-center text-sm font-semibold bg-hh-950 bg-opacity-75 p-1 rounded">
-              {currentEvent.title}
-            </h3>
-            <div className="flex items-center flex-col">
-              <h4 className="text-center text-xs font-semibold bg-hh-950 bg-opacity-75 p-1 rounded">
-                {currentEvent.bezirk}
-              </h4>
-            </div>
-          </Link>
-        ) : (
-          <div
-            className={`w-full h-full ${currentEvent.type && (["laterne", "laternewerkstatt"].includes(currentEvent.type) ? "bg-hh-800" : ["adventsevent", "weihnachtsmarkt"].includes(currentEvent.type) && "bg-positive-800")} z-50  border-2 border-hh-600 rounded overflow-hidden`}
-          >
-            <FlohmarktPoster
-              bezirk={currentEvent.bezirk}
-              date={currentEvent.date}
-              id={currentEvent.id}
-              stadtteil={currentEvent.stadtteil}
-              image={currentEvent.image}
-              title={currentEvent.title}
-              index={index}
-              eventType={currentEvent.type}
-              prefixLink="/events/"
-              size="small"
-              contain
-            />
-          </div>
-        )}
-        <div className="flex absolute translate-y-full bottom-10 justify-between items-center bg-gradient-to-r from-hh-800 h-10 to-hh-700 rounded-[0_0_4px_4px] w-[95%]">
+        <div
+          className={cn(
+            "w-full h-full  z-50 border-2 rounded overflow-hidden",
+            currentEvent.type &&
+              (["laterne", "laternewerkstatt"].includes(currentEvent.type) &&
+                "bg-hh-800 border-hh-600",
+              ["adventsevent", "weihnachtsmarkt"].includes(currentEvent.type) &&
+                "bg-positive-900 border-negative-600")
+          )}
+        >
+          <FlohmarktPoster
+            bezirk={currentEvent.bezirk}
+            date={currentEvent.date}
+            id={currentEvent.id}
+            stadtteil={currentEvent.stadtteil}
+            image={currentEvent.image}
+            title={currentEvent.title}
+            index={index}
+            eventType={currentEvent.type}
+            prefixLink="/events/"
+            size="small"
+            contain
+            endDate={currentEvent.endDate}
+          />
+        </div>
+
+        <div
+          className={cn(
+            "h-10 flex absolute translate-y-full bottom-10 justify-between items-center bg-gradient-to-r rounded-[0_0_4px_4px] w-[95%]",
+            currentEvent.type &&
+              (["laterne", "laternewerkstatt"].includes(currentEvent.type) &&
+                "from-hh-800 via-hh-900 to-hh-800",
+              ["adventsevent", "weihnachtsmarkt"].includes(currentEvent.type) &&
+                "from-negative-950 to-positive-950")
+          )}
+        >
           <h5 className="text-xs font-semibold text-orange-50 w-fit px-2 py-1">
             {today === date
               ? "Heute"

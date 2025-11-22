@@ -9,9 +9,9 @@ import { getTodayNexMonday } from "@app/utils/functions";
 import { unstable_cache } from "next/cache";
 
 const getBannerEvents = async (eventType: iEventType[]) => {
-  const eventsThisWeek = await getAllEventsThisWeek(eventType);
-  if (eventsThisWeek && eventsThisWeek.length > 0) return eventsThisWeek;
-  const nextEvents = (await getFutureApprovedEventsFromType(eventType)) || [];
+  const eventsThisWeek = (await getAllEventsThisWeek(eventType)) || [];
+  if (eventsThisWeek.length > 3) return eventsThisWeek;
+  return (await getFutureApprovedEventsFromType(eventType)) || [];
 };
 
 const cachedEvents = unstable_cache(
@@ -34,11 +34,11 @@ export default async function EventsGallery({
         ? ["laternewerkstatt", "laterne"]
         : [eventType];
   const eventsList = (await cachedEvents(eventTypes)) || [];
-  const today = getTodayNexMonday().today - 1000 * 60 * 60 * 1;
+  const { yesterdayEvening } = getTodayNexMonday();
   const sortedList = [...eventsList]
     .reduce(
       (acc, event) => {
-        if (event.date >= today && event.type !== "weihnachtsmarkt") {
+        if (event.date >= yesterdayEvening) {
           acc[0].push(event);
           return acc;
         }
@@ -48,6 +48,7 @@ export default async function EventsGallery({
       [[], []] as [iFlohmarkt[], iFlohmarkt[]]
     )
     .flat();
+
   if (sortedList.length === 0) return null;
 
   return <ClientEventsGallery eventsList={sortedList} />;
