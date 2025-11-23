@@ -116,6 +116,10 @@ export default function DynamicEventsMap({
       );
     return todayString === selectedDateString;
   }, [today, selectedDate]);
+  const singleEvent =
+    [...future, ...thisWeek].length === 1
+      ? [...future, ...thisWeek][0]
+      : undefined;
   return (
     <div
       className={cn(
@@ -126,7 +130,7 @@ export default function DynamicEventsMap({
       <section
         className={`max-h-[60vh] min-h-[250px] flex-grow xs:min-w-[300px] sm:max-w-[800px] aspect-square sm:aspect-[3/2] md:aspect-auto md:mx-auto ${square ? "w-full lg:aspect-square  lg:max-w-full" : "md:aspect-video lg:aspect-auto lg:h-[50vh] lg:max-w-full"} flex justify-center rounded overflow-hidden`}
       >
-        <GeneralMap zoom={11}>
+        <GeneralMap zoom={11} currentTarget={singleEvent}>
           {children}
           {!futureSelected &&
             Object.entries(filteredBySelectedDate).map(([day, events]) => (
