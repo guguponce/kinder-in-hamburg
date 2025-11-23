@@ -23,8 +23,10 @@ const cachedEvents = unstable_cache(
   }
 );
 export default async function EventsGallery({
+  events,
   eventType,
 }: {
+  events?: iFlohmarkt[];
   eventType: iEventType;
 }) {
   const eventTypes: iEventType[] =
@@ -33,7 +35,7 @@ export default async function EventsGallery({
       : eventType === "laterne"
         ? ["laternewerkstatt", "laterne"]
         : [eventType];
-  const eventsList = (await cachedEvents(eventTypes)) || [];
+  const eventsList = events || (await cachedEvents(eventTypes)) || [];
   const { yesterdayEvening } = getTodayNexMonday();
   const sortedList = [...eventsList]
     .reduce(
