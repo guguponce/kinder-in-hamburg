@@ -65,7 +65,7 @@ export default async function FlohmaerkteContainer() {
   const weekday = new Date().getDay();
   const isSunday = weekday === 0;
   const onlyToday = todayFlohmaerkteLength === futureFlohmaerkteLength;
-
+  console.log({ todayFlohmaerkteLength, futureFlohmaerkteLength, onlyToday });
   return (
     <section
       className={cn(
@@ -113,8 +113,10 @@ export default async function FlohmaerkteContainer() {
               <div className="flex flex-grow w-full sm:min-w-[400px] justify-center sm:w-1/4">
                 <BezirkeScrollableEvents
                   title={
-                    !isSunday && todayFlohmaerkte && futureFlohmaerkte
-                      ? `Diese Woche gibt es außerdem ${futureFlohmaerkteLength} ${futureFlohmaerkteLength > 1 ? "weitere Flohmärkte" : "Flohmarkt"}x`
+                    !isSunday &&
+                    todayFlohmaerkteLength &&
+                    futureFlohmaerkteLength
+                      ? `Diese Woche gibt es außerdem ${futureFlohmaerkteLength} ${futureFlohmaerkteLength > 1 ? "weitere Flohmärkte" : "Flohmarkt"}`
                       : isSunday && todayFlohmaerkteLength
                         ? `Heute gibt es ${todayFlohmaerkteLength} ${todayFlohmaerkteLength > 1 ? "Flohmärkte" : "Flohmarkt"} in dieser Woche`
                         : `Diese Woche gibt es ${futureFlohmaerkteLength} ${futureFlohmaerkteLength > 1 ? "weitere Flohmärkte" : "Flohmarkt"}`
