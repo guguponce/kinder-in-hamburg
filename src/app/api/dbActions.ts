@@ -585,7 +585,8 @@ export const getAllApprovedPosts = async () => {
   try {
     const { data, error } = await supabaseAdmin
       .from("kih-approved-blogposts")
-      .select("*");
+      .select("*")
+      .ilike("status", "approved");
     if (error) {
       throw new Error("There was a problem getting the approved posts.");
     }

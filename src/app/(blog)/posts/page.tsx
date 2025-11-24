@@ -72,8 +72,8 @@ const cachedPosts = unstable_cache(getAllApprovedPosts, ["posts"], {
 });
 export default async function PostsPage() {
   // -----------------------------------------------
-  const postsList = await cachedPosts();
-  if (!postsList)
+  const postsList = (await cachedPosts()) || [];
+  if (!postsList.length)
     return (
       <ErrorComponent text="Es gab ein Problem beim Abrufen der Beiträge." />
     );

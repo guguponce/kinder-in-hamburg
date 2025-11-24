@@ -43,9 +43,9 @@ export default function ImgPriorityCard({
     <Link
       href={link || `/posts/${id}`}
       className={cn(
-        `singleCard ${
+        `imagePriorityCard singleCard ${
           aspectRatio ? `aspect-[${aspectRatio}]` : "aspect-[0.66]"
-        } w-full rounded-md shadow-md hover:shadow-2xl flex flex-col items-center  bg-hh-50 overflow-hidden`,
+        } w-full rounded-md shadow-md hover:shadow-2xl flex flex-col items-center  bg-hh-50 overflow-hidden hover:scale-[1.01] transition-transform duration-300`,
         classname.container,
         cardContainerClassname
       )}

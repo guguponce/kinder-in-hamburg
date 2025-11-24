@@ -37,7 +37,7 @@ export default function TextPriorityCard({
     <Link
       href={link || `/posts/${id}`}
       className={cn(
-        "textPriorityCard w-1/2 sm:w-1/3 md:w-1/4 textPriorityCard singleCard aspect-[0.66] rounded-md shadow-md hover:shadow-lg flex flex-col items-center  bg-hh-50 overflow-hidden",
+        "textPriorityCard w-1/2 sm:w-1/3 md:w-1/4 singleCard aspect-[0.66] rounded-md shadow-md hover:shadow-lg flex flex-col items-center  bg-hh-50 overflow-hidden hover:scale-[1.01] transition-transform duration-300",
         classname.container,
         cardContainerClassname
       )}

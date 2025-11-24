@@ -44,7 +44,7 @@ export default function HorizontalCard({
       aria-label={`Explore ${title}`}
       href={link}
       className={cn(
-        "HorizontalCard w-full h-32 sm:flex-grow justify-center flex gap-2 items-center bg-white text-hh-900 rounded-md overflow-hidden hover:shadow-md",
+        "HorizontalCard w-full h-32 sm:flex-grow justify-center flex gap-2 items-center bg-white text-hh-900 rounded-md overflow-hidden hover:shadow-md hover:scale-[1.01] transition-transform duration-300",
         className
       )}
     >

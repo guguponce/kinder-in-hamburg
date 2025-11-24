@@ -27,7 +27,7 @@ export default function ImageCard({
     <Link
       href={link || `/posts/${id}`}
       className={cn(
-        "singleCard relative aspect-[0.66]  w-1/3 rounded-md shadow-md hover:shadow-2xl flex flex-col items-center  bg-hh-50 overflow-hidden",
+        "imageCard singleCard relative aspect-[0.66]  w-1/3 rounded-md shadow-md hover:shadow-2xl flex flex-col items-center  bg-hh-50 overflow-hidden hover:scale-[1.01] transition-transform duration-300",
         classname.container,
         cardContainerClassname
       )}
