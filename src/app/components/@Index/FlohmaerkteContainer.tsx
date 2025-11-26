@@ -65,6 +65,7 @@ export default async function FlohmaerkteContainer() {
   const weekday = new Date().getDay();
   const isSunday = weekday === 0;
   const onlyToday = todayFlohmaerkteLength === futureFlohmaerkteLength;
+
   return (
     <section
       className={cn(

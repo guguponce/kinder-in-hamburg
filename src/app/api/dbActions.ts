@@ -1028,6 +1028,22 @@ export const getFutureApprovedEventsFromType = async (
   }
 };
 
+export const getWeihnachtsEvents = async (type: iEventType[]) => {
+  const events = (await getFutureApprovedEventsFromType(type)) || [];
+  const { weihnachtsmaerkte, adventsEvents } = events.reduce(
+    (acc, event) => {
+      if (event.type?.includes("weihnachtsmarkt")) {
+        acc.weihnachtsmaerkte.push(event);
+      }
+      if (event.type?.includes("adventsevent")) {
+        acc.adventsEvents.push(event);
+      }
+      return acc;
+    },
+    { weihnachtsmaerkte: [] as iFlohmarkt[], adventsEvents: [] as iFlohmarkt[] }
+  );
+  return { weihnachtsmaerkte, adventsEvents };
+};
 export const checkIfEventOrFlohmarktExists = async (
   id: string,
   eventTable: string
