@@ -24,10 +24,10 @@ export default function WeihnachtsBanner() {
 
           <h4 className="text-center text-sm sm:text-base italic lg:backdrop-blur-sm mb-2">
             {todaysMonth === 10 && todaysDate <= 15
-              ? "Die Weihnachtssaison hat gerade erst begonnen! Schau dir die kommenden Umzüge an."
+              ? "Die Weihnachtssaison hat gerade erst begonnen! Entdecke jetzt die kommenden Events und Märkte."
               : todaysMonth === 11 && todaysDate >= 20
-                ? "Die Weihnachtssaison ist fast zu Ende, aber es gibt noch ein paar Lichterumzüge vor dem Dezember!"
-                : "Die Weihnachtssaison ist in vollem Gange! Schau dir die kommenden Umzüge an."}
+                ? "Die Weihnachtssaison ist fast zu Ende, aber es gibt noch ein paar Events und Märkte!"
+                : "Die Weihnachtssaison ist in vollem Gange! Entdecke jetzt die kommenden Events und Märkte."}
           </h4>
           <EventsGallery eventType="adventsevent" />
         </div>
