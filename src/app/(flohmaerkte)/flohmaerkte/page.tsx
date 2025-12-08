@@ -8,7 +8,7 @@ import BezirkableList from "@components/BezirkableList";
 import dynamic from "next/dynamic";
 import type { Metadata } from "next";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
-import MainIntroductionText from "@components/@PostForm/MainIntroductionText";
+import MainIntroductionText from "@app/components/@Templates/MainIntroductionText";
 import StandortIcon from "@components/@Icons/StandortIcon";
 import OtherEventsHorizontalCards from "./OtherEventsHorizontalCards";
 
@@ -96,7 +96,7 @@ export default async function FlohmarktPage() {
         </Link>
       </main>
     );
-  const { today, nextMonday } = getTodayNexMonday();
+  const { today, nextMonday, todaysMonth } = getTodayNexMonday();
 
   const thisWeekFlohmaerkte = flohmaerkte.filter(
     ({ date }) => date > today - 1000 * 60 * 60 && date < nextMonday
@@ -120,10 +120,16 @@ export default async function FlohmarktPage() {
         variant="light"
         text="Von Spielzeug und Kleidung bis hin zu Büchern und Mobilitätsartikeln wie Fahrrädern oder Kinderwagen – diese Märkte ermöglichen es, günstige und umweltfreundliche Optionen für die ganze Familie zu entdecken. Sie bieten den Kindern die Chance, den Wert von Wiederverwendung und Recycling auf eine praktische Weise zu lernen."
       >
-        {/* <h2 className="text-xl font-bold my-4 p-2 md:p-4 rounded-xl border-4 border-hh-800 max-w-[600px] text-center">
-          Die Hochsaison der Flohmärkte hat noch nicht begonnen, aber im
-          Frühjahr geht es endlich los.
-        </h2>  */}
+        {todaysMonth < 4 ||
+          (todaysMonth === 11 && (
+            <div className="flex justify-center items-center bg-gradient-to-br from-negative-700 to-negative-800 mt-2 p-2 rounded">
+              <h2 className="w-fit text-negative-50 font-semibold text-center">
+                {todaysMonth === 11
+                  ? "Die Flohmarktsaison ist vorbei. Im Frühjahr geht es wieder los!"
+                  : "Die Hochsaison der Flohmärkte hat noch nicht begonnen, aber im Frühjahr geht es endlich los."}
+              </h2>
+            </div>
+          ))}
       </MainIntroductionText>
       <section className="rounded bg-gradient-to-b from-hh-800 to-hh-950  w-full lg:w-fit max-w-[1400px] p-2 md:p-4 flex flex-col items-center gap-2">
         <BezirkeScrollableEvents
