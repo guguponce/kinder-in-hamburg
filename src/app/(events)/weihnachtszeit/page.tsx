@@ -97,7 +97,12 @@ export default async function WeihnachtszeitPage() {
 
   if (!weihnachtsmaerkte) return <NotFound multiples type="event" />;
   const { today } = getTodayNexMonday();
-  const orderedEvents = [...weihnachtsmaerkte].sort((a, b) => a.date - b.date);
+  const orderedEvents = [...weihnachtsmaerkte].sort((a, b) => {
+    if (a.date < today && b.date < today) {
+      return Math.random() - 0.5; // Random sort for past events
+    }
+    return a.date - b.date; // Sort by date for future events
+  });
   const schiffEventsIDS = [1732400443361, 1732318110756, 1732235057521];
   const [schiffEvents, andereEvents] = adventsEvents.reduce(
     (acc, event) => {

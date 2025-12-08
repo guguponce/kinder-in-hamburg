@@ -75,7 +75,7 @@ export default async function WeihnachtsBanner() {
       <div className="sm:gap-2 flex flex-col items-center w-fit md:max-w-full max-h-full min-h-fit">
         <div className="min-h-fit min-w-[280px] w-full max-w-[300px] flex-grow flex items-center justify-around flex-col rounded">
           <PageTitle
-            title="Weihnachtsmärkte"
+            title="Weihnachtszeit"
             className="text-4xl"
             link="/weihnachtszeit"
           />
