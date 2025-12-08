@@ -1,16 +1,13 @@
 "use client";
-import GeneralMap from "@components/@Map/GeneralMap";
 import FlohmarktPopUP from "@components/@Map/PopUpsMarkers/FlohmarktPopUP";
 import { iEventType, iFlohmarkt } from "@app/utils/types";
 import { Marker } from "react-leaflet";
 import React, { useMemo } from "react";
-import { divIcon, point } from "leaflet";
 import {
   addressWithoutCity,
   cn,
   getTodayNexMonday,
 } from "@app/utils/functions";
-import MarkerClusterGroup from "react-leaflet-cluster";
 import {
   createWeihnachtsmarktIcon,
   createNormalSizeIcon,
@@ -18,6 +15,7 @@ import {
 import Button from "@components/@Buttons/Button";
 import WeihnachtsmarktIcon from "@components/@Icons/@Events/WeihnachtsmarktIcon";
 import BoyGirlIcon from "@components/@Icons/@Events/BoyGirlIcon";
+import WeihMap from "@components/@Map/WeihMap";
 
 const weihnachtsmarktIcon = createWeihnachtsmarktIcon(24);
 const desatWeihnachtsmarktIcon = createWeihnachtsmarktIcon(24, true);
@@ -26,16 +24,16 @@ const eventIcon = createNormalSizeIcon("#405b3a", 30, "#2d3d2a");
 const selectedEventIcon = createNormalSizeIcon("#ed5946", 35, "#da3c28", true);
 export default function DynamicWeihMap({
   selectedEventID,
-  currentEvents,
-  future = [],
+  weihnachtsmaerkte = [],
+  events = [],
   mapContainerClassName,
 }: {
   selectedEventID?: number;
   eventType?: iEventType | "flohmaerkte";
   today?: number;
   darkBackground?: boolean;
-  currentEvents: iFlohmarkt[];
-  future?: iFlohmarkt[];
+  weihnachtsmaerkte?: iFlohmarkt[];
+  events?: iFlohmarkt[];
   mapContainerClassName?: string;
 }) {
   const [eventTypes, setEventTypes] = React.useState<
@@ -44,17 +42,18 @@ export default function DynamicWeihMap({
   const { today } = getTodayNexMonday();
   const selectedEvent = useMemo(
     () =>
-      future.length
-        ? future.find(({ id }) => id === selectedEventID)
+      events.length
+        ? events.find(({ id }) => id === selectedEventID)
         : undefined,
-    [selectedEventID, future]
+    [selectedEventID, events]
   );
   const locationTypes = (
     [
-      currentEvents.length ? "weihnachtsmarkt" : null,
-      future.length ? "adventsevent" : null,
+      weihnachtsmaerkte.length ? "weihnachtsmarkt" : null,
+      events.length ? "adventsevent" : null,
     ] as iEventType[]
   ).filter(Boolean);
+
   return (
     <div className="w-full max-w-full sm:w-full flex flex-col gap-2 rounded">
       <section
@@ -63,120 +62,37 @@ export default function DynamicWeihMap({
           mapContainerClassName
         )}
       >
-        <GeneralMap zoom={11}>
-          <>
-            {selectedEvent &&
-              eventTypes.some((type) => type !== "weihnachtsmarkt") && (
-                <Marker
-                  icon={selectedEventIcon}
-                  key={selectedEvent.id}
-                  zIndexOffset={200}
-                  position={[
-                    selectedEvent.lat || 53.5511,
-                    selectedEvent.lon || 9.9937,
-                  ]}
-                >
-                  <FlohmarktPopUP
-                    endDate={selectedEvent.endDate}
-                    id={selectedEvent.id}
-                    address={
-                      addressWithoutCity(selectedEvent.address) +
-                      " " +
-                      selectedEvent.stadtteil
-                    }
-                    date={selectedEvent.date}
-                    title={selectedEvent.title}
-                    type={!selectedEvent.type ? "flohmaerkte" : "events"}
-                  />
-                </Marker>
-              )}
-            <MarkerClusterGroup
-              chunkedLoading
-              maxClusterRadius={10}
-              iconCreateFunction={(cluster: any) =>
-                divIcon({
-                  html: `<div class="clusterIcon clusterIconSpielplatz">${cluster.getChildCount()}</div>`,
-                  className: "custom-marker-cluster",
-                  iconSize: point(32, 32, true),
-                })
-              }
-            >
-              {eventTypes.includes("adventsevent") &&
-                future.map(
-                  ({
-                    id,
-                    lat,
-                    lon,
-                    address,
-                    date,
-                    title,
-                    endDate,
-                    stadtteil,
-                    type,
-                  }) =>
-                    id === selectedEventID ? null : (
-                      <React.Fragment key={id}>
-                        <Marker
-                          icon={eventIcon}
-                          key={id}
-                          zIndexOffset={200}
-                          position={[lat || 53.5511, lon || 9.9937]}
-                        >
-                          <FlohmarktPopUP
-                            endDate={endDate}
-                            id={id}
-                            address={
-                              addressWithoutCity(address) + " " + stadtteil
-                            }
-                            date={date}
-                            title={title}
-                            type={!type ? "flohmaerkte" : "events"}
-                          />
-                        </Marker>
-                      </React.Fragment>
-                    )
-                )}
-            </MarkerClusterGroup>
-            {eventTypes.includes("weihnachtsmarkt") &&
-              currentEvents.map(
-                ({
-                  id,
-                  lat,
-                  lon,
-                  address,
-                  date,
-                  title,
-                  stadtteil,
-                  endDate,
-                  type,
-                }) => (
-                  <React.Fragment key={id}>
-                    <Marker
-                      icon={
-                        eventTypes.includes("adventsevent")
-                          ? smallWeihnachtsmarktIcon
-                          : today < date
-                            ? desatWeihnachtsmarktIcon
-                            : weihnachtsmarktIcon
-                      }
-                      key={id}
-                      zIndexOffset={1}
-                      position={[lat || 53.5511, lon || 9.9937]}
-                    >
-                      <FlohmarktPopUP
-                        endDate={endDate}
-                        id={id}
-                        address={addressWithoutCity(address) + " " + stadtteil}
-                        date={date}
-                        title={title}
-                        type={!type ? "flohmaerkte" : "events"}
-                      />
-                    </Marker>
-                  </React.Fragment>
-                )
-              )}
-          </>{" "}
-        </GeneralMap>
+        <WeihMap
+          events={events}
+          weihnachtsmaerkte={weihnachtsmaerkte}
+          eventTypes={eventTypes}
+        >
+          {selectedEvent &&
+            eventTypes.some((type) => type !== "weihnachtsmarkt") && (
+              <Marker
+                icon={selectedEventIcon}
+                key={selectedEvent.id}
+                zIndexOffset={200}
+                position={[
+                  selectedEvent.lat || 53.5511,
+                  selectedEvent.lon || 9.9937,
+                ]}
+              >
+                <FlohmarktPopUP
+                  endDate={selectedEvent.endDate}
+                  id={selectedEvent.id}
+                  address={
+                    addressWithoutCity(selectedEvent.address) +
+                    " " +
+                    selectedEvent.stadtteil
+                  }
+                  date={selectedEvent.date}
+                  title={selectedEvent.title}
+                  type={!selectedEvent.type ? "flohmaerkte" : "events"}
+                />
+              </Marker>
+            )}
+        </WeihMap>
       </section>
       <aside className="flex flex-wrap items-center gap-2 w-full">
         {locationTypes.map((type) => (
