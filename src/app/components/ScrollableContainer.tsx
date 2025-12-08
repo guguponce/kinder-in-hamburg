@@ -1,5 +1,6 @@
+"use client";
 import { cn } from "@app/utils/functions";
-import React from "react";
+import React, { useEffect } from "react";
 import ScrollableContainerButtons from "./ScrollableContainerButtons";
 
 export default function ScrollableContainer({
@@ -20,6 +21,28 @@ export default function ScrollableContainer({
   paddingForButtons?: boolean;
 }) {
   const scrollbarThumbColor = `scrollbarThumb${color}`;
+  const scrollbar = React.useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const currentScrollbar = scrollbar.current;
+
+    const handleWheel = (evt: WheelEvent) => {
+      if (!vertical) {
+        evt.preventDefault();
+        if (currentScrollbar) {
+          currentScrollbar.scrollLeft += evt.deltaY;
+        }
+      }
+    };
+
+    currentScrollbar?.addEventListener("wheel", handleWheel);
+
+    return () => {
+      if (currentScrollbar) {
+        currentScrollbar.removeEventListener("wheel", handleWheel);
+      }
+    };
+  }, [vertical]);
+
   return (
     <div
       className={cn(
@@ -38,6 +61,7 @@ export default function ScrollableContainer({
           } ${scrollbarThumbColor} ${paddingForButtons && showButtons ? "md:px-12" : ""} relative flex gap-2 lg:gap-4 items-stretch`,
           boxStyle
         )}
+        ref={scrollbar}
       >
         {children}
       </div>
