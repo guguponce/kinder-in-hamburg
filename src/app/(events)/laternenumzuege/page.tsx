@@ -8,19 +8,17 @@ import {
   separateByDate,
 } from "@app/utils/functions";
 import dynamic from "next/dynamic";
-import AdminServerComponent from "@app/providers/AdminServerComponents";
 import Link from "next/link";
-import AddLatLon from "@components/@Buttons/AddLatLon";
 import ClientLaterneGallery from "@components/@Index/laternenumzug/ClientEventsGallery";
 import HorizontalCard from "@components/@Cards/HorizontalCard";
 import ScrollableContainer from "@components/ScrollableContainer";
-import { redirect } from "next/navigation";
 import Banner from "@components/Banner";
 import PageTitle from "@app/components/PageTitle";
 import { unstable_cache } from "next/cache";
 import { iFlohmarkt } from "@app/utils/types";
 import Image from "next/image";
 import LaterneImage from "@app/components/@Index/laternenumzug/LaterneImage";
+import AdventsEvents from "../weihnachtszeit/AdventsEvents";
 
 export const metadata = {
   title: "Laternenumzüge",
@@ -70,6 +68,22 @@ export const metadata = {
     images: `${process.env.BASE_URL}opengraph-image.png`,
   },
 };
+
+const backupBannerTexts = {
+  outOfSeason: {
+    title: "Huch! Wir sind noch nicht bereit für die Laternenumzugszeit!",
+    text: `Komm zurück, zwischen September und Dezember!
+Aber bis dann, auf der Homepage findest du viele weitere spannende Inhalte und Aktivitäten für Kinder in Hamburg!`,
+  },
+  justFinished: {
+    title: "Die Laternenumzugszeit ist vorbei!",
+    text: `Aber keine Sorge, auf der Homepage findest du viele weitere spannende Inhalte und Aktivitäten für Kinder in Hamburg!`,
+  },
+  noEvents: {
+    title: "Huch! Keine Veranstaltungen gefunden!",
+    text: `Wir haben keine Laternenumzüge oder ähnliche Veranstaltungen gefunden! Aber keine Angst, auf der Homepage findest du viele weitere spannende Inhalte und Aktivitäten für Kinder in Hamburg!`,
+  },
+};
 const DynamicEventsMap = dynamic(
   () => import("../../components/@Map/DynamicEventsMap"),
   {
@@ -114,48 +128,39 @@ const cachedEvents = unstable_cache(getAllLaterneEvents, ["laternenumzuege"], {
 export default async function LaternenumzuegePage() {
   const { laterneUmzuegeEvents, laterneBastelnEvents } = await cachedEvents();
   const laternenEvents = [...laterneBastelnEvents, ...laterneUmzuegeEvents];
-  if (!laternenEvents.length) return <NotFound multiples type="event" />;
   const date = new Date();
-  if (date.getMonth() < 8 && date.getMonth() > 11) {
+  const thisMonth = date.getMonth();
+  const backUp =
+    thisMonth < 8 || thisMonth > 11
+      ? backupBannerTexts.outOfSeason
+      : laternenEvents.length === 0
+        ? thisMonth === 11
+          ? backupBannerTexts.justFinished
+          : backupBannerTexts.noEvents
+        : null;
+  if (!!backUp) {
     return (
       <Banner childrenClassName="flex flex-col sm:flex-col gap-2 items-center">
-        <Banner.Title href="/">
-          Huch! Wir sind noch nicht bereit für die Laternenumzugszeit!
-        </Banner.Title>
-        <Banner.Text>
-          Komm zurück, zwischen September und Dezember!
-          <br />
-          Aber keine Angst, auf der Homepage findest du viele weitere spannende
-          Inhalte und Aktivitäten für Kinder in Hamburg!
-        </Banner.Text>
-        <Link
-          href="/"
-          className="p-2 rounded-md bg-hh-400 hover:bg-hh-300 active:bg-hh-200 font-semibold text-hh-800"
-        >
-          Homepage
-        </Link>
-      </Banner>
-    );
-  }
-  if (!laternenEvents.length) {
-    return (
-      <>
-        <Banner childrenClassName="flex flex-col sm:flex-col gap-2 items-center">
-          <Banner.Title href="/">
-            Huch! Wir haben keine Laternenumzüge oder Veranstaltungen gefunden!
-            Aber keine Angst, auf der Homepage findest du viele weitere
-            spannende Inhalte und Aktivitäten für Kinder in Hamburg!
-          </Banner.Title>
+        <Banner.Title href="/">{backUp.title}</Banner.Title>
+        <Banner.Text>{backUp.text}</Banner.Text>
+        <div className="flex justify-center items-stretch flex-wrap max-w-full py-2 gap-4">
+          <Link
+            href="/events"
+            className="p-2 rounded-md bg-hh-300 hover:bg-hh-400 active:bg-hh-200 font-semibold text-hh-800"
+          >
+            Andere Events
+          </Link>
           <Link
             href="/"
-            className="p-2 rounded-md bg-hh-400 hover:bg-hh-300 active:bg-hh-200 font-semibold text-hh-800"
+            className="p-2 rounded-md bg-hh-300 hover:bg-hh-400 active:bg-hh-200 font-semibold text-hh-800"
           >
             Homepage
           </Link>
-        </Banner>
-      </>
+        </div>
+      </Banner>
     );
   }
+
   const { today, nextMonday, yesterdayEvening } = getTodayNexMonday();
   const todayLaternenumzuege = [...laternenEvents].filter(
     (event) =>
@@ -175,35 +180,18 @@ export default async function LaternenumzuegePage() {
       }
       return acc;
     },
-    [[], [], []] as [iFlohmarkt[], iFlohmarkt[], iFlohmarkt[]]
+    [[], [], []] as Array<iFlohmarkt[]>
   );
 
   const bastelEventsByDate = separateByDate(laterneBastelnEvents);
   return (
     <main
-      className={`flex flex-col gap-4 items-center w-full  ${!!todayLaternenumzuege.length ? "sm:max-w-[1000px]" : "sm:max-w-[800px]"} p-1 mb-4`}
+      className={`flex flex-col gap-4 items-center w-full  ${!!todayLaternenumzuege.length ? "sm:max-w-[1000px]" : "sm:max-w-[800px]"} 2xl:max-w-full p-1 mb-4`}
     >
-      <AdminServerComponent>
-        <div className="flex flex-col gap-1 outline outline-2 outline-hh-200">
-          {laternenEvents.map((event) =>
-            event.status !== "approved" || !event.lat || !event.lon ? (
-              <Link
-                key={event.id}
-                href={"/events/" + event.id}
-                className="flex gap-2 items-center flex-wrap bg-hh-600 text-hh-50"
-              >
-                <span className="font-semibold">{event.title}</span>
-                {event.status !== "approved" && (
-                  <span className="font-semibold">{event.status}</span>
-                )}
-
-                {!event.lat || (!event.lon && <AddLatLon item={event} />)}
-              </Link>
-            ) : null
-          )}
-        </div>
-      </AdminServerComponent>
-      <section className="relative p-4 rounded-lg bg-gradient-to-b from-hh-950 to-hh-800 w-full flex gap-4 flex-col items-center max-w-full text-white shadow-xl bg-opacity-10 transition-all  overflow-hidden">
+      <section
+        id="laternenumzuege-map-banner"
+        className="relative p-4 rounded-lg bg-gradient-to-b from-hh-950 to-hh-800 w-full flex gap-2 flex-col 2xl:flex-row items-center max-w-full text-white shadow-xl bg-opacity-10 transition-all  overflow-hidden"
+      >
         <div className="absolute bottom-3 left-3 w-full -z-1">
           <div className="w-full aspect-video sm:aspect-[3] relative  overflow-hidden opacity-50">
             <div className="absolute top-0 left-2 w-full h-full">
@@ -215,57 +203,59 @@ export default async function LaternenumzuegePage() {
                 className="min-w-[1200px] max-h-[400px] opacity-50 rounded-lg -z-10"
               />
             </div>
-            <div className="absolute bottom-0 right-8 w-1/4 aspect-square max-w-[300px]">
+            <div className="absolute bottom-0 right-8 w-1/4 2xl:w-1/12 aspect-square max-w-[300px]">
               <LaterneImage />
             </div>
           </div>
         </div>
-        <div className="w-full max-w-[720px] flex flex-col gap-2 justify-between items-stretch">
-          <PageTitle title="Laternenumzüge in Hamburg" />
-          <div className="absolute top-0 left-2 w-full h-full opacity-50 -z-1">
-            <Image
-              style={{ left: "-6px" }}
-              fill
-              src={"/assets/icons/laterne/stars.svg"}
-              alt="stars"
-              className="min-w-[1200px] max-h-[180px] bg-opacity-25 rounded-lg opacity-50 -z-1"
-            />
-          </div>
-
-          <p className="italic">
-            Eine der bekanntesten Herbsttraditionen bringt Familien und Freunde
-            zusammen, die mit bunten Laternen durch die Straßen ziehen und dabei
-            Lieder singen. Diese Umzüge, oft zu Ehren des Heiligen Sankt Martin,
-            sind in Hamburg in vielen Stadtteilen vertreten – von kleinen
-            Nachbarschaftsumzügen bis zu großen öffentlichen Veranstaltungen.
-            Hier haben wir eine Übersicht der kommenden Termine für euch
-            zusammengestellt, damit ihr die herbstlichen Abende in Hamburg
-            gemeinsam erleben könnt.
-          </p>
-        </div>
-        <section className="self-start max-w-full flex justify-center items-center flex-wrap gap-4">
-          {!!todayLaternenumzuege.length && (
-            <div className="flex flex-col items-center gap-1 w-[300px]">
-              <h2 className="text-2xl font-semibold">Heute</h2>
-              <ClientLaterneGallery eventsList={todayLaternenumzuege} />
+        <div className="flex flex-col gap-4">
+          <div className="w-full max-w-[720px] flex flex-col gap-2 justify-between items-stretch">
+            <PageTitle title="Laternenumzüge in Hamburg" />
+            <div className="absolute top-0 left-2 w-full h-full opacity-50 -z-1">
+              <Image
+                style={{ left: "-6px" }}
+                fill
+                src={"/assets/icons/laterne/stars.svg"}
+                alt="stars"
+                className="min-w-[1200px] max-h-[180px] bg-opacity-25 rounded-lg opacity-50 -z-1"
+              />
             </div>
-          )}
-          <div
-            className={`flex-grow ${!!todayLaternenumzuege.length && "md:max-w-[calc(100%-332px)]"}`}
-          >
-            <BezirkableList
-              title={
-                !!todayLaternenumzuege.length ? "Kommende Umzüge" : undefined
-              }
-              type="events"
-              cardType="horizontal"
-              variant="transparent-light"
-              list={orderedLaternenumzuegeEvents.filter(
-                ({ date }) => date >= today
-              )}
-            />
+
+            <p className="italic">
+              Eine der bekanntesten Herbsttraditionen bringt Familien und
+              Freunde zusammen, die mit bunten Laternen durch die Straßen ziehen
+              und dabei Lieder singen. Diese Umzüge, oft zu Ehren des Heiligen
+              Sankt Martin, sind in Hamburg in vielen Stadtteilen vertreten –
+              von kleinen Nachbarschaftsumzügen bis zu großen öffentlichen
+              Veranstaltungen. Hier haben wir eine Übersicht der kommenden
+              Termine für euch zusammengestellt, damit ihr die herbstlichen
+              Abende in Hamburg gemeinsam erleben könnt.
+            </p>
           </div>
-        </section>
+          <section className="self-start max-w-full flex justify-center items-center flex-wrap gap-4">
+            {!!todayLaternenumzuege.length && (
+              <div className="flex flex-col items-center gap-1 w-[300px]">
+                <h2 className="text-2xl font-semibold">Heute</h2>
+                <ClientLaterneGallery eventsList={todayLaternenumzuege} />
+              </div>
+            )}
+            <div
+              className={`flex-grow ${!!todayLaternenumzuege.length && "md:max-w-[calc(100%-332px)]"}`}
+            >
+              <BezirkableList
+                title={
+                  !!todayLaternenumzuege.length ? "Kommende Umzüge" : undefined
+                }
+                type="events"
+                cardType="horizontal"
+                variant="transparent-light"
+                list={orderedLaternenumzuegeEvents.filter(
+                  ({ date }) => date >= today
+                )}
+              />
+            </div>
+          </section>
+        </div>
         <article className="md:p-4 max-w-[800px] mx-auto">
           <DynamicEventsMap
             darkBackground
@@ -345,6 +335,7 @@ export default async function LaternenumzuegePage() {
           </ScrollableContainer>
         </section>
       )}
+      <AdventsEvents />
     </main>
   );
 }

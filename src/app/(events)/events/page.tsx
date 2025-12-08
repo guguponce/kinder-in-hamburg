@@ -102,7 +102,7 @@ export default async function EventPage() {
             </div>
           ))}
       </AdminServerComponent>
-      <GeneralContainer classname="rounded bg-hh-100 bg-opacity-25 w-full p-4 flex flex-col items-center min-h-[50vh] gap-2 max-w-[1000px]">
+      <GeneralContainer classname="rounded bg-hh-100 bg-opacity-25 w-full px-0 sm:px-4 flex flex-col items-center min-h-[50vh] gap-2 max-w-[1000px]">
         <PageTitle title="Veranstaltungen für Kinder" />
         {events.length === 0 && (
           <h3 className="text-base w-fit max-w-2xl mb-2 font-semibold italic">
