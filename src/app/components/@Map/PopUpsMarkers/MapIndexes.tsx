@@ -11,9 +11,13 @@ const MarkerIndexBox = ({ children }: { children: React.ReactNode }) => (
 export const MapIndexes = ({
   eventTypes,
   today,
+  kommendeEvents = true,
+  children,
 }: {
+  kommendeEvents?: boolean;
   eventTypes: iEventType[];
   today?: boolean;
+  children?: React.ReactNode;
 }) => {
   if (!eventTypes?.length) return null;
   return (
@@ -57,10 +61,13 @@ export const MapIndexes = ({
               <p>Flohmärkte</p>
             </MarkerIndexBox>
           )}
-          <MarkerIndexBox>
-            <StandortIcon size="1rem" color="#343b3e" stroke="#fff" />
-            <p>Kommende Events</p>
-          </MarkerIndexBox>
+          {children && <MarkerIndexBox>{children}</MarkerIndexBox>}
+          {kommendeEvents && (
+            <MarkerIndexBox>
+              <StandortIcon size="1rem" color="#343b3e" stroke="#fff" />
+              <p>Kommende Events</p>
+            </MarkerIndexBox>
+          )}
         </div>
       )}
     </>
