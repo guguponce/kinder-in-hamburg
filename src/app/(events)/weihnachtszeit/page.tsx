@@ -110,7 +110,6 @@ export default async function WeihnachtszeitPage() {
     },
     [[], []] as [typeof adventsEvents, typeof adventsEvents]
   );
-  const adventsEventsByDate = separateByDate(andereEvents, true);
 
   const todayLaternenumzuege = [...adventsEvents].filter(
     (event) => event.date < today
@@ -229,7 +228,7 @@ export default async function WeihnachtszeitPage() {
       />
       {!!adventsEvents.length && (
         <AdventsEvents
-          adventsEventsByDate={adventsEventsByDate}
+          eventsByDate={andereEvents}
           schiffEvents={schiffEvents}
         />
       )}

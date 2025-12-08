@@ -40,8 +40,8 @@ export default function AdventsShuffleMapBox({
         }}
       >
         <DynamicWeihMap
-          future={adventsEvents}
-          currentEvents={weihnachtsmaerkte}
+          events={adventsEvents}
+          weihnachtsmaerkte={weihnachtsmaerkte}
           selectedEventID={selectedEventID}
         />
       </article>
