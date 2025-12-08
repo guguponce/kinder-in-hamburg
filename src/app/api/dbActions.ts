@@ -1316,6 +1316,27 @@ export const getUserEvents = async (
     return false;
   }
 };
+
+export const getQuantityThisWeekEvents = async (
+  eventTable: string = "flohmaerkte"
+) => {
+  const { today, nextMonday } = getTodayNexMonday();
+  try {
+    const { count, error } = await supabaseAdmin
+      .from(eventTable)
+      .select("*", { count: "exact", head: true })
+      .match({ status: "approved" })
+      .gte("date", today - 1000 * 60 * 60)
+      .lte("date", nextMonday - 1000 * 60 * 60 * 2);
+    if (error) {
+      return false;
+    }
+    return count || 0;
+  } catch (error) {
+    return false;
+  }
+};
+
 export const getThisWeekEvents = async (eventTable: string = "flohmaerkte") => {
   const { today, nextMonday } = getTodayNexMonday();
   try {
