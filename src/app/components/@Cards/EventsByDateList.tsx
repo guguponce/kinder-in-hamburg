@@ -125,8 +125,8 @@ export default function EventsByDateList({
 }) {
   const isDark = color?.tone === 800;
   const colors = {
-    section: `from-${color?.colorName || "hh"}-${isDark ? 800 : 300} to-${color?.colorName || "hh"}-${isDark ? 900 : 200} text-${color?.colorName || "hh"}-${isDark ? 50 : 800}`,
-    boxColor: `from-${color?.colorName || "hh"}-${isDark ? 600 : 900} to-${color?.colorName || "hh"}-${isDark ? 700 : 800} text-${color?.colorName || "hh"}-${isDark ? 900 : 50}`,
+    section: `bg-${color?.colorName || "hh"}-${isDark ? 800 : 300} from-${color?.colorName || "hh"}-${isDark ? 800 : 200} to-${color?.colorName || "hh"}-${isDark ? 800 : 300} text-${color?.colorName || "hh"}-${isDark ? 50 : 800}`,
+    boxColor: `bg-${color?.colorName || "hh"}-${isDark ? 900 : 600} from-${color?.colorName || "hh"}-${isDark ? 900 : 600} to-${color?.colorName || "hh"}-${isDark ? 900 : 500} text-${color?.colorName || "hh"}-${isDark ? 900 : 50}`,
   };
 
   return (
