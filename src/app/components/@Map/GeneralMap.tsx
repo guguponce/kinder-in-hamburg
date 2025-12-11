@@ -44,9 +44,9 @@ const GeneralMap = ({
   // const { userLocation } = useUserLocation();
   return (
     <div className="relative w-full h-full">
-      <div className="userbutton absolute bottom-2 right-2 z-[500] m-2">
+      {/* <div className="userbutton absolute bottom-2 right-2 z-[500] m-2">
         <UserLocationButton />
-      </div>
+      </div> */}
       <MapContainer
         key={
           // centerUserLocation && userLocation
