@@ -55,12 +55,12 @@ body {
   min-height: 100dvh;
   margin: 0;
   color: var(--main-text-color);
-  background-color: hsl(210, 7%, 99%);
+  background-color: $hh-600;
   background-image:
-    radial-gradient(at 91% 88%, hsl(195, 7%, 97%) 0px, transparent 50%),
-    radial-gradient(at 17% 87%, hsl(210, 7%, 99%) 0px, transparent 50%),
-    radial-gradient(at 94% 8%, hsl(220, 7%, 95%) 0px, transparent 50%),
-    radial-gradient(at 0% 0%, hsl(230, 7%, 90%) 0px, transparent 50%);
+    radial-gradient(at 91% 88%, $hh-300 0px, transparent 50%),
+    radial-gradient(at 17% 87%, $hh-400 0px, transparent 50%),
+    radial-gradient(at 94% 8%, $hh-300 0px, transparent 50%),
+    radial-gradient(at 0% 0%, $hh-500 0px, transparent 50%);
   // background: linear-gradient(
   //     to bottom,
   //     transparent,

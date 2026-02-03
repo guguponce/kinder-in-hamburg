@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     "flea market",
   ],
   metadataBase: new URL(
-    process.env.BASE_URL || "https://www.kinder-in-hamburg.de"
+    process.env.BASE_URL || "https://www.kinder-in-hamburg.de",
   ),
   openGraph: {
     title: "Kinder in Hamburg",
@@ -81,7 +81,7 @@ export default async function RootLayout({
       </head> */}
       <body
         className={`${fixelFont.className}
-         flex flex-col items-center bg-hh-600 max-w-[1400px] mx-auto gap-2`}
+         flex flex-col items-center max-w-[1400px] mx-auto gap-2`}
       >
         <SessionProvider>
           <UserLocationProvider>
