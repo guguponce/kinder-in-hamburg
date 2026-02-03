@@ -25,7 +25,7 @@ export default async function BezirkeScrollableEvents({
 }) {
   if (events.length === 0) return null;
   const eventsByBezirke = separateInBezirke(
-    [...events].sort((a, b) => a.date - b.date)
+    [...events].sort((a, b) => a.date - b.date),
   );
   const filteredList = bezirk
     ? events.filter((ev) => ev.bezirk === bezirk)
@@ -45,7 +45,7 @@ export default async function BezirkeScrollableEvents({
       className={cn(
         "w-fit max-w-full rounded",
         verticalTitle ? " flex items-stretch" : "",
-        className
+        className,
       )}
     >
       {title &&
@@ -59,7 +59,7 @@ export default async function BezirkeScrollableEvents({
                   ? "-rotate-90 w-full tracking-wide text-2xl sm:text-4xl font-bold lg:py-4"
                   : "text-2xl sm:text-3xl font-bold text-start self-start pb-2 sm:pb-4 px-3"
               }
-              style={titleShadow ? { textShadow: "#33404D 3px 3px 6px" } : {}}
+              style={titleShadow ? { textShadow: "#33404D 2px 2px 12px" } : {}}
             >
               {title}
             </h2>
@@ -93,7 +93,7 @@ export default async function BezirkeScrollableEvents({
                 eventsByBezirke[currentBezirk].length > 4 ||
                   displayBezirke.length === 1
                   ? "w-fit"
-                  : "w-fit lg:max-w-[calc(50%-1rem)]"
+                  : "w-fit lg:max-w-[calc(50%-1rem)]",
               )}
             >
               {!bezirk && (
@@ -124,7 +124,7 @@ export default async function BezirkeScrollableEvents({
                       type: eventType,
                       endDate,
                     },
-                    i
+                    i,
                   ) => {
                     const evDate = getDate(date, false, true);
                     const offenHeute =
@@ -155,7 +155,7 @@ export default async function BezirkeScrollableEvents({
                         </h3>
                       </article>
                     );
-                  }
+                  },
                 )}
               </ScrollableContainer>
             </div>

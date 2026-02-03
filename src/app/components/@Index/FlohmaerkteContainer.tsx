@@ -33,7 +33,7 @@ function sortByFlohmaerkteDate(list: iFlohmarkt[], todayEvening: number) {
         thisWeekFlohmaerkte: iFlohmarkt[];
         todayFlohmaerkte: iFlohmarkt[];
         futureFlohmaerkte: iFlohmarkt[];
-      }
+      },
     );
 }
 const DynamicEventsMap = dynamic(() => import("../@Map/DynamicEventsMap"), {
@@ -58,7 +58,7 @@ export default async function FlohmaerkteContainer() {
   const { today, todaysMonth, yesterdayEvening } = getTodayNexMonday();
   const { futureFlohmaerkte, todayFlohmaerkte } = sortByFlohmaerkteDate(
     flohmaerkte,
-    yesterdayEvening + 24 * 60 * 60 * 1000
+    yesterdayEvening + 24 * 60 * 60 * 1000,
   );
   const todayFlohmaerkteLength = todayFlohmaerkte.length;
   const futureFlohmaerkteLength = futureFlohmaerkte.length;
@@ -72,12 +72,12 @@ export default async function FlohmaerkteContainer() {
         "rounded-lg bg-gradient-to-b from-[#d0d7da50] via-[#d0d7da50] to-hh-50 bg-opacity-25 w-[calc(100%-2rem)] p-1 sm:p-4 flex flex-col items-center  text-hh-50 shadow-2xl",
         futureFlohmaerkteLength
           ? "min-h-[50vh] max-w-[1200px]"
-          : "max-w-[800px]"
+          : "max-w-[800px]",
       )}
     >
       <PageTitle title="Flohmärkte" className="pageTitle" link="/flohmaerkte" />
       {(todaysMonth < 3 || todaysMonth > 9) && (
-        <h2 className="w-fit text-base italic mb-2 p-2 bg-hh-800 bg-opacity-75 md:p-4 rounded-lg border-2 font-semibold text-hh-50 border-hh-700 max-w-[480px] text-center">
+        <h2 className="w-fit text-base italic mb-4 p-2 bg-hh-800 bg-opacity-75 md:p-4 rounded border-2 font-semibold text-hh-50 border-hh-700 max-w-[480px] text-center">
           {todaysMonth < 3
             ? "Die Hochsaison der Flohmärkte hat noch nicht begonnen, aber im Frühjahr geht es endlich los."
             : todaysMonth > 9
@@ -104,7 +104,7 @@ export default async function FlohmaerkteContainer() {
               <DynamicEventsMap
                 showTermine={!onlyToday}
                 thisWeek={futureFlohmaerkte.filter(
-                  (floh) => floh.lat && floh.lon
+                  (floh) => floh.lat && floh.lon,
                 )}
                 today={getTodayNexMonday().today}
               />
@@ -122,6 +122,7 @@ export default async function FlohmaerkteContainer() {
                         : `Diese Woche gibt es ${futureFlohmaerkteLength} ${futureFlohmaerkteLength > 1 ? "weitere Flohmärkte" : "Flohmarkt"}`
                   }
                   events={futureFlohmaerkte}
+                  titleShadow
                 />
               </div>
             )}
@@ -143,7 +144,7 @@ export default async function FlohmaerkteContainer() {
               </p>
               <a
                 href="mailto:admin@kinder-in-hamburg.de"
-                className="flex items-center gap-2 self-center p-4 bg-hh-800 text-hh-100 font-semibold rounded-lg mt-4 w-max hover:bg-hh-700 transition-colors duration-300 ease-in-out"
+                className="flex items-center gap-2 self-center p-4 bg-hh-800 text-hh-100 font-semibold rounded mt-4 w-max hover:bg-hh-700 transition-colors duration-300 ease-in-out"
               >
                 <PaperPlane />
                 admin@kinder-in-hamburg.de
