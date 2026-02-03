@@ -27,7 +27,10 @@ const getThisWeekWeihnachtsEvents = async (type: iEventType[]) => {
       }
       return acc;
     },
-    { weihnachtsmaerkte: [] as iFlohmarkt[], adventsEvents: [] as iFlohmarkt[] }
+    {
+      weihnachtsmaerkte: [] as iFlohmarkt[],
+      adventsEvents: [] as iFlohmarkt[],
+    },
   );
   return { weihnachtsmaerkte, adventsEvents };
 };
@@ -37,7 +40,7 @@ const cachedQuantityFlohmaerkte = unstable_cache(
   ["flohmaerkte", "events"],
   {
     revalidate: 600,
-  }
+  },
 );
 
 const cachedWeihnachtsEvents = unstable_cache(
@@ -45,7 +48,7 @@ const cachedWeihnachtsEvents = unstable_cache(
   ["flohmaerkte", "events"],
   {
     revalidate: 600,
-  }
+  },
 );
 
 const DynamicWeihMap = dynamic(() => import("@components/@Map/WeihMap"), {
@@ -54,22 +57,23 @@ const DynamicWeihMap = dynamic(() => import("@components/@Map/WeihMap"), {
 
 export default async function WeihnachtsBanner() {
   const { todaysMonth, todaysDate, today } = getTodayNexMonday();
-  if (![1, 10, 11].includes(todaysMonth)) {
+  console.log("todaysmonth", todaysMonth, "todaysDate", todaysDate);
+  if (![0, 10, 11].includes(todaysMonth)) {
     return null;
   }
   const { weihnachtsmaerkte, adventsEvents } = await cachedWeihnachtsEvents([
     "weihnachtsmarkt",
     "adventsevent",
   ]);
+  if (![...weihnachtsmaerkte, ...adventsEvents].length) return null;
   const quantityFlohs = (await cachedQuantityFlohmaerkte("flohmaerkte")) || 0;
-
   return (
     <section
       className={cn(
         "relative rounded-lg bg-gradient-to-b w-fit p-4 flex flex-column md:flex-row justify-around md:items-stretch flex-wrap gap-2 md:gap-4 from-positive-700 via-positive-700 to-[#628d5a50] text-white bg-opacity-10 transition-all overflow-hidden",
         !quantityFlohs
           ? "w-fit max-w-[420px] md:max-w-full"
-          : "w-fit max-w-[420px]"
+          : "w-fit max-w-[420px]",
       )}
     >
       <div className="sm:gap-2 flex flex-col items-center w-fit md:max-w-full max-h-full min-h-fit">
