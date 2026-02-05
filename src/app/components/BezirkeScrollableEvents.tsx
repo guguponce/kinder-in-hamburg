@@ -86,7 +86,11 @@ export default async function BezirkeScrollableEvents({
 
       {!!displayBezirke.length && (
         // <div className="overflow-x-auto w-fit lg:w-full max-w-full flex justify-center flex-wrap gap-2 items-stretch mx-auto">
-        <ScrollableContainer>
+        <ScrollableContainer
+          containerStyle="max-h-[400px]"
+          color="800"
+          showButtons
+        >
           {displayBezirke.map((currentBezirk) => (
             <div
               key={currentBezirk}
@@ -110,7 +114,7 @@ export default async function BezirkeScrollableEvents({
                 </h3>
               )}
               <ScrollableContainer
-                color="800"
+                color="300"
                 paddingForButtons={false}
                 showButtons={eventsByBezirke[currentBezirk].length > 2}
               >
