@@ -54,7 +54,7 @@ body {
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   min-height: 100dvh;
   margin: 0;
-  color: var(--main-text-color);
+  color: $hh-50;
   background-color: $hh-600;
   background-image:
     radial-gradient(at 91% 88%, $hh-300 0px, transparent 50%),

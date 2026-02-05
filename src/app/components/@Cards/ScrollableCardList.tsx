@@ -56,6 +56,7 @@ export default function ScrollableCardList({
                   link={linkPrefix ? `${linkPrefix}${id}` : `/posts/${id}`}
                   imgSize="object-contain"
                   className="min-w-96"
+                  type="post"
                 >
                   <HorizontalCard.PostInfo
                     title={title}
@@ -89,7 +90,7 @@ export default function ScrollableCardList({
                 bezirk,
                 stadtteil,
                 endDate,
-                type,
+                type = "flohmarkt",
               }) => (
                 <article
                   className={cn(
