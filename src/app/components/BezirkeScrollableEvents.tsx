@@ -83,13 +83,15 @@ export default async function BezirkeScrollableEvents({
             </a>
           </div>
         ))}
+
       {!!displayBezirke.length && (
-        <div className="overflow-x-auto w-fit lg:w-full max-w-full flex justify-center flex-wrap gap-2 items-stretch mx-auto">
+        // <div className="overflow-x-auto w-fit lg:w-full max-w-full flex justify-center flex-wrap gap-2 items-stretch mx-auto">
+        <ScrollableContainer>
           {displayBezirke.map((currentBezirk) => (
             <div
               key={currentBezirk}
               className={cn(
-                "min-w-[248px] max-w-full flex items-center flex-col rounded bg-hh-600 bg-opacity-50 p-2 shadow-md",
+                "min-w-[248px] max-w-full flex items-center flex-col rounded bg-gradient-to-br from-hh-800-50 to-hh-700-50 bgop p-2 shadow-md",
                 eventsByBezirke[currentBezirk].length > 4 ||
                   displayBezirke.length === 1
                   ? "w-fit"
@@ -160,7 +162,8 @@ export default async function BezirkeScrollableEvents({
               </ScrollableContainer>
             </div>
           ))}
-        </div>
+        </ScrollableContainer>
+        // </div>
       )}
     </div>
   );

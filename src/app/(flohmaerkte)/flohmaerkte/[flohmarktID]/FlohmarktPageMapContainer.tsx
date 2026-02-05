@@ -2,6 +2,7 @@ import { getThisWeekEvents } from "@app/api/dbActions";
 import { iFlohmarkt, iPost, iSpielplatz } from "@app/utils/types";
 import WeitereFlohmaerkte from "@components/WeitereEvents";
 import RecommendationsMap from "@components/@Map/RecommendationsMap";
+import { getTodayNexMonday, isTypeFlohmarkt } from "@app/utils/functions";
 
 export default async function FlohmarktPageMapContainer({
   currentTarget,
@@ -14,9 +15,13 @@ export default async function FlohmarktPageMapContainer({
 }) {
   const thisWeekFlohmaerkte = (await getThisWeekEvents()) || [];
   const weitereFlohmaerkte = thisWeekFlohmaerkte.filter(
-    ({ id }) => id !== currentTarget.id
+    ({ id }) => id !== currentTarget.id,
   );
-
+  const { nextMonday } = getTodayNexMonday();
+  const isCurrentTargetThisWeek =
+    isTypeFlohmarkt(currentTarget) &&
+    (nextMonday > currentTarget.date ||
+      (currentTarget.endDate && nextMonday > currentTarget.endDate));
   return (
     <div className="flex flex-col items-center gap-2 w-full max-w-[600px] md:max-w-[800px] rounded p-1 xs:p-2">
       <RecommendationsMap
@@ -37,7 +42,7 @@ export default async function FlohmarktPageMapContainer({
           <hr className="w-full border-t border-hh-800 mt-4" />
           <section className="w-full max-w-[800px] flex flex-col gap-2 items-center my-4 px-1 xs:px-4 sm:px-8">
             <h3 className="font-bold text-2xl text-hh-800">
-              Weitere Märkte dieser Woche:
+              {isCurrentTargetThisWeek && "Weitere "}Märkte dieser Woche:
             </h3>
             <WeitereFlohmaerkte
               type="Flohmärkte"
