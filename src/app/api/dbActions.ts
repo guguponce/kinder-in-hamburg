@@ -650,14 +650,14 @@ export const getPinnedPostsWithFilter = async (
 };
 
 export const getAllFlohmaerteSeparatedByStatus = async (
-  futureFlohmaerkte: boolean = true,
+  onlyFutureFlohmaerkte: boolean = true,
   eventTable: string = "flohmaerkte"
 ) => {
   try {
     const { data, error } = await supabaseAdmin
       .from(eventTable)
       .select("*")
-      .gte("date", futureFlohmaerkte ? Date.now() : 0);
+      .gte("date", onlyFutureFlohmaerkte ? Date.now() : 0);
     if (error) {
       throw new Error("There was a problem getting the event posts.");
     }
