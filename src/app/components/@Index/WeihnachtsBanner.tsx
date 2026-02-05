@@ -56,8 +56,7 @@ const DynamicWeihMap = dynamic(() => import("@components/@Map/WeihMap"), {
 });
 
 export default async function WeihnachtsBanner() {
-  const { todaysMonth, todaysDate, today } = getTodayNexMonday();
-  console.log("todaysmonth", todaysMonth, "todaysDate", todaysDate);
+  const { todaysMonth, todaysDate } = getTodayNexMonday();
   if (![0, 10, 11].includes(todaysMonth)) {
     return null;
   }
