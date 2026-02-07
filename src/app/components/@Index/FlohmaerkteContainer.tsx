@@ -55,7 +55,7 @@ const getFlohmaerkte = unstable_cache(getThisWeekEvents, [], {
 export default async function FlohmaerkteContainer() {
   const flohmaerkte = await getFlohmaerkte();
   if (!flohmaerkte) return <ErrorFetchingData type="Flohmärkte" />;
-  const { today, todaysMonth, yesterdayEvening } = getTodayNexMonday();
+  const { todaysMonth, yesterdayEvening } = getTodayNexMonday();
   const { futureFlohmaerkte, todayFlohmaerkte } = sortByFlohmaerkteDate(
     flohmaerkte,
     yesterdayEvening + 24 * 60 * 60 * 1000,
@@ -103,7 +103,7 @@ export default async function FlohmaerkteContainer() {
               )}
               <DynamicEventsMap
                 showTermine={!onlyToday}
-                thisWeek={futureFlohmaerkte.filter(
+                thisWeek={[...todayFlohmaerkte, ...futureFlohmaerkte].filter(
                   (floh) => floh.lat && floh.lon,
                 )}
                 today={getTodayNexMonday().today}
