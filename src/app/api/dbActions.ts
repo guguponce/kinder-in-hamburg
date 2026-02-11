@@ -1371,7 +1371,10 @@ export const getEventsInSameLocation = async (
   }
 };
 
-export const getThisWeekEvents = async (eventTable: string = "flohmaerkte") => {
+export const getThisWeekEvents = async (
+  eventTable: string = "flohmaerkte",
+  thisMonth?: boolean,
+) => {
   const { today, nextMonday } = getTodayNexMonday();
   try {
     const { data, error } = await supabaseAdmin
@@ -1379,7 +1382,12 @@ export const getThisWeekEvents = async (eventTable: string = "flohmaerkte") => {
       .select("*")
       .match({ status: "approved" })
       .gte("date", today - 1000 * 60 * 60)
-      .lte("date", nextMonday - 1000 * 60 * 60 * 2);
+      .lte(
+        "date",
+        thisMonth
+          ? today + 1000 * 60 * 60 * 24 * 30
+          : nextMonday - 1000 * 60 * 60 * 2,
+      );
     if (error) {
       return false;
     }

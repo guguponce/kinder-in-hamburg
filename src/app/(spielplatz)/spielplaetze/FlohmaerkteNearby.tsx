@@ -18,15 +18,15 @@ export default async function FlohmaerkteNearby({
   lat: number;
   lon: number;
 }) {
-  const flohmaerkte = await getThisWeekEvents();
+  const flohmaerkte = await getThisWeekEvents("flohmaerkte", true);
   if (!flohmaerkte) return null;
   const list = flohmaerkte
     .filter(
       ({ bezirk: flohBezirk, stadtteil: flohStadtteil }) =>
         bezirk === flohBezirk ||
         PROXIMATE_STADTTEILE_FROM_OTHER_BEZIRK[stadtteil]?.includes(
-          flohStadtteil
-        )
+          flohStadtteil,
+        ),
     )
     .filter(({ lat: flohLat, lon: flohLon }) => {
       if (!flohLat || !flohLon) return false;
@@ -64,7 +64,7 @@ export default async function FlohmaerkteNearby({
             {list.map(
               (
                 { id, title, date, image, bezirk: flohBezirk, stadtteil },
-                i
+                i,
               ) => (
                 <article
                   key={id + Math.random()}
@@ -95,7 +95,7 @@ export default async function FlohmaerkteNearby({
                     </span>{" "}
                   </h3>
                 </article>
-              )
+              ),
             )}
           </ScrollableContainer>
         </div>

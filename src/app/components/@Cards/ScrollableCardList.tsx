@@ -176,9 +176,9 @@ export default function ScrollableCardList({
                   {withDate && (
                     <div
                       className={cn(
-                        "absolute z-50 bottom-0 left-1/2 rounded-[4px_4px_0_0] flex justify-center w-3/4  p-1 text-xs bg-hh-800 backdrop-blur-sm bg-opacity-50 text-white",
+                        "absolute z-50 bottom-0 -translate-x-1/2 left-1/2 rounded-[4px_4px_0_0] flex justify-center w-3/4  p-1 text-xs bg-hh-800 backdrop-blur-sm bg-opacity-50 text-white",
                         cardType === "horizontal"
-                          ? "left-0 w-20 sm:w-28 rounded-[0_4px_0_0]"
+                          ? "-translate-x-0 left-0 w-20 sm:w-28 rounded-[0_4px_0_0]"
                           : "",
                       )}
                     >

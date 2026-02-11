@@ -3,7 +3,6 @@ import type {
   iBezirk,
   iSpielplatz,
   iStringifiedSpielplatz,
-  iSessionUser,
 } from "@app/utils/types";
 import { getServerUser, proofUser } from "@app/api/auth/supabaseAuth";
 import {
@@ -71,7 +70,7 @@ export const getTypeSpielplaetze = async (type: iSPType) => {
       .ilike("type", `%${type}%`);
     if (error) {
       throw new Error(
-        "There was a problem getting the posts for this Category and Bezirk."
+        "There was a problem getting the posts for this Category and Bezirk.",
       );
     }
     return data.map((sp) => parseSpielplatz(sp));
@@ -82,7 +81,7 @@ export const getTypeSpielplaetze = async (type: iSPType) => {
 
 export const getSpielplatzFromBezirkStadtteil = async (
   bezirk: iBezirk,
-  stadtteile: string[] | undefined
+  stadtteile: string[] | undefined,
 ) => {
   if (!checkBezirk(bezirk)) throw new Error("Invalid Bezirk: " + bezirk);
 
@@ -161,7 +160,7 @@ export const getSpielplaetzeFromStadtteile = async (stadtteile: string[]) => {
       .in("stadtteil", stadtteile);
     if (error) {
       throw new Error(
-        "There was a problem getting the posts for this Stadtteil."
+        "There was a problem getting the posts for this Stadtteil.",
       );
     }
     return data.map((sp) => parseSpielplatz(sp));
@@ -382,7 +381,7 @@ export const approveSuggestedSpielplatz = async (id: string) => {
 
 export const updateSpielplatzStatus = async (
   id: number | string,
-  status: string
+  status: string,
 ) => {
   try {
     const { data, error } = await supabaseAdmin
@@ -435,17 +434,17 @@ export const getImageURL = async (bucket: string, path: string) =>
 
 export const getAllImagesURLFromSupabaseFolder = async (
   bucket: string,
-  id: string
+  id: string,
 ) => {
   try {
     const files = ((await listFilesInFolder("spielplaetze", id)) || []).filter(
-      ({ metadata }) => metadata.mimetype.includes("image")
+      ({ metadata }) => metadata.mimetype.includes("image"),
     );
     const urls = await Promise.all(
       files.map(async (file) => {
         const url = await getImageURL(bucket, `${id}/${file.name}`);
         return { url, fileName: file.name, metadata: file.metadata };
-      })
+      }),
     );
 
     return urls;
@@ -456,7 +455,7 @@ export const getAllImagesURLFromSupabaseFolder = async (
 
 export const deleteSupabaseFiles = async (
   bucket: string,
-  pathWithFilename: string | string[]
+  pathWithFilename: string | string[],
 ) => {
   try {
     const { error, data } = await supabaseAdmin.storage
@@ -464,7 +463,7 @@ export const deleteSupabaseFiles = async (
       .remove(
         typeof pathWithFilename === "string"
           ? [pathWithFilename]
-          : pathWithFilename
+          : pathWithFilename,
       );
     if (error) {
       throw new Error("Error deleting image");
@@ -507,7 +506,7 @@ export const deleteUnusedSupabaseImagesFromBucket = async (bucket: string) => {
         if (deleteError) {
           throw new Error("Error deleting images from " + folderID);
         }
-      })
+      }),
     );
     return { error: null };
   } catch (error) {
