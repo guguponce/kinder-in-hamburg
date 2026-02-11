@@ -51,14 +51,14 @@ export default function DynamicEventsMap({
   >();
   const { current: bezirke } = useRef(
     Array.from(
-      new Set([...thisWeek, ...future].map((p) => p.bezirk).flat())
+      new Set([...thisWeek, ...future].map((p) => p.bezirk).flat()),
     ).sort((a, b) =>
       a === "Umland Hamburg"
         ? 1
         : b === "Umland Hamburg"
           ? -1
-          : a.localeCompare(b)
-    )
+          : a.localeCompare(b),
+    ),
   );
 
   const { current: eventsByDate } = useRef(
@@ -78,8 +78,8 @@ export default function DynamicEventsMap({
         }
         return acc;
       },
-      {} as { [key: string]: iFlohmarkt[] }
-    )
+      {} as { [key: string]: iFlohmarkt[] },
+    ),
   );
 
   const { current: orderedDates } = useRef(
@@ -88,14 +88,14 @@ export default function DynamicEventsMap({
         ? -1
         : a === "currentEvents"
           ? 1
-          : parseInt(a) - parseInt(b)
-    )
+          : parseInt(a) - parseInt(b),
+    ),
   );
 
   const { current: eventTypes } = useRef(
     Array.from(
-      new Set([...future, ...thisWeek].map(({ type }) => type).filter(Boolean))
-    ) as iEventType[]
+      new Set([...future, ...thisWeek].map(({ type }) => type).filter(Boolean)),
+    ) as iEventType[],
   );
 
   const { nextMonday } = getTodayNexMonday();
@@ -112,7 +112,7 @@ export default function DynamicEventsMap({
     const selectedDateString =
       !selectedDate ||
       getDate(
-        selectedDate === "currentEvents" ? today : (selectedDate as number)
+        selectedDate === "currentEvents" ? today : (selectedDate as number),
       );
     return todayString === selectedDateString;
   }, [today, selectedDate]);
@@ -124,7 +124,7 @@ export default function DynamicEventsMap({
     <div
       className={cn(
         "w-full sm:w-full flex flex-col md:flex-row md:flex-wrap items-stretch gap-1 rounded",
-        className
+        className,
       )}
     >
       <section
@@ -149,7 +149,7 @@ export default function DynamicEventsMap({
               eventsList={
                 eventsByDate["currentEvents"]?.filter(
                   ({ closedDates }) =>
-                    !closedDates?.find((c) => getDate(c) === todayString)
+                    !closedDates?.find((c) => getDate(c) === todayString),
                 ) || []
               }
               selectedBezirk={selectedBezirk}
@@ -231,7 +231,7 @@ export default function DynamicEventsMap({
                               ? undefined
                               : date === "currentEvents"
                                 ? "currentEvents"
-                                : parseInt(date)
+                                : parseInt(date),
                           );
                         }}
                         className={`text-sm p-1 border-2  border-hh-600 rounded-md ${
@@ -298,7 +298,7 @@ export default function DynamicEventsMap({
                           setSelectedBezirk((prev) =>
                             prev === (item as iBezirk)
                               ? undefined
-                              : (item as iBezirk)
+                              : (item as iBezirk),
                           );
                         }}
                         className={`text-sm p-1 border-2 border-hh-600 rounded-md ${
@@ -329,7 +329,7 @@ export default function DynamicEventsMap({
                         key={item}
                         onClick={() => {
                           setSelectedEvent((prev) =>
-                            prev === item ? undefined : item
+                            prev === item ? undefined : item,
                           );
                         }}
                         className={`text-sm p-1 border-2 border-hh-600 rounded-md ${
