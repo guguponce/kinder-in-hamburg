@@ -16,6 +16,7 @@ import AdminEditButtons from "@components/@Buttons/AdminEditButtons";
 import OldFlohmarktSign from "./OldFlohmarktSign";
 import { parseDescriptionWithTags } from "@app/utils/functions";
 import { redirect } from "next/navigation";
+import FlohmaerkteSameLocation from "./FlohmaerkteSameLocation";
 
 interface FlohmarktPageProps {
   params: { flohmarktID: string };
@@ -81,7 +82,7 @@ export default async function FlohmarktPage({
       flohmarkt.bezirk!,
       PROXIMATE_STADTTEILE_FROM_OTHER_BEZIRK[flohmarkt.bezirk!] || [
         flohmarkt.stadtteil,
-      ]
+      ],
     )) || [];
 
   return (
@@ -111,6 +112,11 @@ export default async function FlohmarktPage({
           />
         </AdminServerComponent>
       </FlohmarktTemplate>
+      <FlohmaerkteSameLocation
+        location={flohmarkt.location || ""}
+        image={!!flohmarkt.image}
+        flohmarktID={flohmarktID}
+      />
       <section className="w-full flex flex-wrap-reverse lg:flex-wrap justify-center gap-2 px-1 xs:px-2">
         <FlohmarktPageMapContainer
           spielplaetzeAround={spielplaetzeNearby}
