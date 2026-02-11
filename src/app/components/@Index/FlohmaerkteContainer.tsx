@@ -70,7 +70,7 @@ export default async function FlohmaerkteContainer() {
   return (
     <section
       className={cn(
-        "rounded-lg bg-gradient-to-b from-[#d0d7da50] via-[#d0d7da50] to-hh-50 bg-opacity-25 w-[calc(100%-2rem)] p-1 sm:p-4 flex flex-col items-center  text-hh-50 shadow-2xl",
+        "rounded-lg bg-gradient-to-b from-hh-200-50 via-hh-200-50 to-hh-50 bg-opacity-25 w-full p-1 sm:p-4 flex flex-col items-centertext-hh-50 shadow-2xl",
         futureFlohmaerkteLength
           ? "min-h-[50vh] max-w-[1200px]"
           : "max-w-[800px]",
@@ -78,7 +78,7 @@ export default async function FlohmaerkteContainer() {
     >
       <PageTitle title="Flohmärkte" className="pageTitle" link="/flohmaerkte" />
       {(todaysMonth < 3 || todaysMonth > 9) && (
-        <h2 className="w-fit text-base italic mb-4 p-2 bg-hh-800 bg-opacity-75 md:p-4 rounded border-2 font-semibold text-hh-50 border-hh-700 max-w-[480px] text-center">
+        <h2 className="w-fit mx-auto text-base italic mb-4 p-2 bg-hh-800 bg-opacity-75 md:p-4 rounded border-2 font-semibold text-hh-50 border-hh-700 max-w-[480px] text-center">
           {todaysMonth < 3
             ? "Die Hochsaison der Flohmärkte hat noch nicht begonnen, aber im Frühjahr geht es endlich los."
             : todaysMonth > 9
@@ -124,6 +124,7 @@ export default async function FlohmaerkteContainer() {
                   }
                   events={futureFlohmaerkte}
                   titleShadow
+                  className="text-hh-50"
                 />
               </div>
             )}
