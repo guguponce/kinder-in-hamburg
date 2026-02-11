@@ -166,7 +166,7 @@ export default async function FlohmarktPage() {
         <BezirkableList
           title="Ab nächster Woche"
           list={futureFlohmaerkte}
-          cardClassname="relative flex flex-col items-center gap-[2px] overflow-hidden h-[250px] min-w-[180px] shadow-lg mr-4"
+          cardClassname="relative flex flex-col items-center gap-[2px] overflow-hidden h-[250px] min-w-[180px] shadow-lg"
           withDate
           type="flohmaerkte"
         ></BezirkableList>
