@@ -52,12 +52,12 @@ export const getContributorData = async (email: string) => {
 export const addNewContributor = async (
   type: "post" | "flohmarkt" | "spielplatz" | "event",
   contributor: iSessionUser,
-  id: number | string
+  id: number | string,
 ) => {
   try {
     const contributorData = {
       flohmaerkteSubmitted: JSON.stringify(
-        type === "flohmarkt" || type === "event" ? [id] : []
+        type === "flohmarkt" || type === "event" ? [id] : [],
       ),
       spielplaetzeSubmitted: JSON.stringify(type === "spielplatz" ? [id] : []),
       name: contributor.name,
@@ -80,7 +80,7 @@ export const addNewContributor = async (
 export const updateContributor = async (
   type: "post" | "flohmarkt" | "spielplatz" | "event",
   user: iSessionUser,
-  id: number
+  id: number,
 ) => {
   const authorized = await proofUser();
   if (!authorized) return "Not authorized";
@@ -103,7 +103,7 @@ export const updateContributor = async (
         .match({ id: contributor.id });
       if (error) {
         throw new Error(
-          "There was a problem updating the contributor's flohmarktSubmitted."
+          "There was a problem updating the contributor's flohmarktSubmitted.",
         );
       }
     } else if (type === "post") {
@@ -116,7 +116,7 @@ export const updateContributor = async (
         .match({ id: contributor.id });
       if (error) {
         throw new Error(
-          "There was a problem updating the contributor's postSubmitted."
+          "There was a problem updating the contributor's postSubmitted.",
         );
       }
     } else if (type === "spielplatz") {
@@ -132,7 +132,7 @@ export const updateContributor = async (
         .match({ id: contributor.id });
       if (error) {
         throw new Error(
-          "There was a problem updating the contributor's spielplatzSubmitted."
+          "There was a problem updating the contributor's spielplatzSubmitted.",
         );
       }
     }
@@ -254,7 +254,7 @@ export const getPendingPosts = async () => {
 export const getPostsWithCatAndBezirk = async (
   category: categoryName,
   bezirk: iBezirk,
-  db: "kih-approved-blogposts" | "kih-suggestions" = "kih-approved-blogposts"
+  db: "kih-approved-blogposts" | "kih-suggestions" = "kih-approved-blogposts",
 ) => {
   if (!checkCategory(category))
     throw new Error("Invalid Category: " + category);
@@ -269,7 +269,7 @@ export const getPostsWithCatAndBezirk = async (
       .like("bezirk", bezirk);
     if (error) {
       throw new Error(
-        "There was a problem getting the posts for this Category and Bezirk."
+        "There was a problem getting the posts for this Category and Bezirk.",
       );
     }
     return parseAllPosts(data);
@@ -334,7 +334,7 @@ export const getUsersSuggestions = async (email: string) => {
         approved: [] as iPost[],
         pending: [] as iPost[],
         rejected: [] as iPost[],
-      }
+      },
     );
   } catch (error) {
     return false;
@@ -351,14 +351,14 @@ export const updateSuggestionStatus = async (id: number, status: string) => {
       .match({ id });
     if (error) {
       throw new Error(
-        "There was a problem updating the status of the post: " + id + "."
+        "There was a problem updating the status of the post: " + id + ".",
       );
     }
     revalidatePost();
     return true;
   } catch (error) {
     throw new Error(
-      "There was a problem updating the status of the post: " + id + "."
+      "There was a problem updating the status of the post: " + id + ".",
     );
   }
 };
@@ -369,7 +369,7 @@ export const updatePostStatus = async <
   id: number,
   oldStatus: T,
   newStatus: T,
-  post?: iPost
+  post?: iPost,
 ) => {
   const authorized = await proofUser();
   if (!authorized) return "Not authorized";
@@ -391,7 +391,7 @@ export const updatePostStatus = async <
 
 export const getPostMetadata = async (
   id: string,
-  db: "kih-approved-blogposts" | "kih-suggestions" = "kih-approved-blogposts"
+  db: "kih-approved-blogposts" | "kih-suggestions" = "kih-approved-blogposts",
 ) => {
   try {
     const { data, error } = await supabaseAdmin
@@ -419,7 +419,7 @@ export const getPostMetadata = async (
 export const getPostsWithTag = async (
   tags: string[],
   db: "kih-approved-blogposts" | "kih-suggestions" = "kih-approved-blogposts",
-  pinnedPosts?: boolean
+  pinnedPosts?: boolean,
 ) => {
   const pinnedQuery = pinnedPosts ? "pinnedPost.eq.true" : "";
   try {
@@ -442,7 +442,7 @@ export const getPostsWithTag = async (
 export const getPostsWithCat = async (
   categories: categoryName[],
   pinnedPosts?: boolean,
-  db: "kih-approved-blogposts" | "kih-suggestions" = "kih-approved-blogposts"
+  db: "kih-approved-blogposts" | "kih-suggestions" = "kih-approved-blogposts",
 ) => {
   const pinnedQuery = pinnedPosts ? "pinnedPost.eq.true" : "";
   try {
@@ -466,7 +466,7 @@ export const getPostsWithCat = async (
 
 export const getPostsByCategoryBezirkStadtteile = async (
   bezirk: iBezirk,
-  stadtteile: string[]
+  stadtteile: string[],
 ) => {
   if (!checkBezirk(bezirk)) throw new Error("Invalid Bezirk: " + bezirk);
 
@@ -484,7 +484,7 @@ export const getPostsByCategoryBezirkStadtteile = async (
       .or(combinedCondition);
     if (error) {
       throw new Error(
-        "There was a problem getting the posts for this category."
+        "There was a problem getting the posts for this category.",
       );
     }
     return parseAllPosts(data);
@@ -512,7 +512,7 @@ export const getUserApprovedPosts = async (user: iSessionUser) => {
 export const getEventsFromBezirkStadtteil = async (
   bezirk: iBezirk,
   stadtteile: string[],
-  eventTable: string = "flohmaerkte"
+  eventTable: string = "flohmaerkte",
 ) => {
   const combinedCondition = await createQueryCondition(bezirk, stadtteile);
   try {
@@ -531,7 +531,7 @@ export const getEventsFromBezirkStadtteil = async (
 };
 export const createQueryCondition = async (
   bezirk: iBezirk,
-  stadtteile: string[] | undefined
+  stadtteile: string[] | undefined,
 ) => {
   if (!checkBezirk(bezirk)) throw new Error("Invalid Bezirk: " + bezirk);
 
@@ -545,7 +545,7 @@ export const createQueryCondition = async (
 
 export const getPostsFromBezirkStadtteile = async (
   bezirk: iBezirk,
-  stadtteile: string[] | undefined
+  stadtteile: string[] | undefined,
 ) => {
   const combinedCondition = await createQueryCondition(bezirk, stadtteile);
   try {
@@ -598,7 +598,7 @@ export const getAllApprovedPosts = async () => {
 
 export const checkIfPostExists = async (
   id: string,
-  eventTable: "kih-approved-blogposts" | "kih-suggestions"
+  eventTable: "kih-approved-blogposts" | "kih-suggestions",
 ) => {
   try {
     const { data, error } = await supabaseAdmin
@@ -632,7 +632,7 @@ export const getPinnedPosts = async () => {
 
 export const getPinnedPostsWithFilter = async (
   filter: "category" | "bezirk",
-  value: string
+  value: string,
 ) => {
   try {
     const { data, error } = await supabaseAdmin
@@ -651,7 +651,7 @@ export const getPinnedPostsWithFilter = async (
 
 export const getAllFlohmaerteSeparatedByStatus = async (
   onlyFutureFlohmaerkte: boolean = true,
-  eventTable: string = "flohmaerkte"
+  eventTable: string = "flohmaerkte",
 ) => {
   try {
     const { data, error } = await supabaseAdmin
@@ -702,7 +702,7 @@ export const getApprovedPostWithID = async (id: string) => {
 
 export const deleteApprovedPost = async (
   id: number,
-  newStatus: "pending" | "rejected" = "rejected"
+  newStatus: "pending" | "rejected" = "rejected",
 ) => {
   try {
     const { data, error } = await supabaseAdmin
@@ -721,7 +721,7 @@ export const deleteApprovedPost = async (
 
 export const getAllNearPosts = async (
   stadtteil: string | undefined,
-  bezirk: iBezirk
+  bezirk: iBezirk,
 ) => {
   try {
     const { data, error } = await supabaseAdmin
@@ -747,8 +747,8 @@ export const getAllPostsIds = async (id?: string) => {
   try {
     const data = await Promise.all(
       ["kih-approved-blogposts", "kih-suggestions"].map((folder) =>
-        getIDs(folder)
-      )
+        getIDs(folder),
+      ),
     );
     if (data.some((d) => d.error)) {
       throw new Error("Error getting posts IDs from a db");
@@ -801,7 +801,7 @@ export const approveWronglyApprovedPost = async (post: iPost) => {
       .match({ id: post.id });
     if (errorFromDelete) {
       throw new Error(
-        "There was a problem deleting the post from kih-approved-posts."
+        "There was a problem deleting the post from kih-approved-posts.",
       );
     }
     approveSuggestedPost(post);
@@ -893,7 +893,7 @@ export const updateApprovedPost = async (post: iPost) => {
 };
 export const setEventAsOld = async (
   id: number,
-  eventTable: string = "flohmaerkte"
+  eventTable: string = "flohmaerkte",
 ) => {
   try {
     const { error } = await supabaseAdmin
@@ -909,7 +909,7 @@ export const setEventAsOld = async (
   }
 };
 export const setAllPreviousEventsAsOld = async (
-  eventTable: "flohmaerkte" | "events" = "flohmaerkte"
+  eventTable: "flohmaerkte" | "events" = "flohmaerkte",
 ) => {
   try {
     const { today } = getTodayNexMonday();
@@ -919,7 +919,7 @@ export const setAllPreviousEventsAsOld = async (
         .select(
           eventTable === "events"
             ? "id, date, endDate,status, title"
-            : "id, date, status"
+            : "id, date, status",
         )
         .lte("date", today)) || [];
 
@@ -929,14 +929,14 @@ export const setAllPreviousEventsAsOld = async (
         !!f.status &&
         f.date < today &&
         ["approved", "pending"].includes(f.status) &&
-        (!f.endDate || f.endDate < today)
+        (!f.endDate || f.endDate < today),
     );
     // revalidate!
     if (!flohsToFilter || flohsToFilter.length === 0)
       return "No old events found.";
     const oldFlohs = [];
     await Promise.all(
-      flohsToFilter.map((f) => setEventAsOld(f.id!, eventTable))
+      flohsToFilter.map((f) => setEventAsOld(f.id!, eventTable)),
     );
     return "All previous events set as old." + oldFlohs.length;
   } catch (error) {
@@ -947,7 +947,7 @@ export const setAllPreviousEventsAsOld = async (
 // FLOHMAERKTE
 // GET
 export const getSuggestedEvents = async (
-  eventTable: string = "flohmaerkte"
+  eventTable: string = "flohmaerkte",
 ) => {
   try {
     const { data, error } = await supabaseAdmin
@@ -971,7 +971,7 @@ export const getFutureEventsWithTitle = async (wordInTitle: string) => {
       .select("*")
       .ilike("title", `%${wordInTitle}%`)
       .or(
-        `date.gte.${today - 1000 * 60 * 60},and(date.lte.${today},endDate.gte.${today + 1000 * 60 * 60 * 12})`
+        `date.gte.${today - 1000 * 60 * 60},and(date.lte.${today},endDate.gte.${today + 1000 * 60 * 60 * 12})`,
       )
       .ilike("status", "approved");
 
@@ -992,7 +992,7 @@ export const getAllFutureEventsFromType = async (eventType: iEventType) => {
       .order("date", { ascending: true })
       .ilike("type", eventType)
       .or(
-        `date.gte.${today - 1000 * 60 * 60},and(date.lte.${today},endDate.gte.${today + 1000 * 60 * 60 * 12})`
+        `date.gte.${today - 1000 * 60 * 60},and(date.lte.${today},endDate.gte.${today + 1000 * 60 * 60 * 12})`,
       )
       .ilike("status", "approved");
     if (error) {
@@ -1006,7 +1006,7 @@ export const getAllFutureEventsFromType = async (eventType: iEventType) => {
 
 export const getFutureApprovedEventsFromType = async (
   eventType: iEventType | iEventType[],
-  date?: number
+  date?: number,
 ) => {
   const { today, yesterdayEvening } = getTodayNexMonday();
   try {
@@ -1017,7 +1017,7 @@ export const getFutureApprovedEventsFromType = async (
       .in("type", typeof eventType === "string" ? [eventType] : eventType)
       .ilike("status", "approved")
       .or(
-        `date.gte.${yesterdayEvening},and(date.lte.${date || today},endDate.gte.${(date || today) + 1000 * 60 * 60 * 12})`
+        `date.gte.${yesterdayEvening},and(date.lte.${date || today},endDate.gte.${(date || today) + 1000 * 60 * 60 * 12})`,
       );
     if (error) {
       throw new Error("There was a problem getting the events.");
@@ -1040,13 +1040,16 @@ export const getWeihnachtsEvents = async (type: iEventType[]) => {
       }
       return acc;
     },
-    { weihnachtsmaerkte: [] as iFlohmarkt[], adventsEvents: [] as iFlohmarkt[] }
+    {
+      weihnachtsmaerkte: [] as iFlohmarkt[],
+      adventsEvents: [] as iFlohmarkt[],
+    },
   );
   return { weihnachtsmaerkte, adventsEvents };
 };
 export const checkIfEventOrFlohmarktExists = async (
   id: string,
-  eventTable: string
+  eventTable: string,
 ) => {
   try {
     const { data, error } = await supabaseAdmin
@@ -1065,7 +1068,7 @@ export const checkIfEventOrFlohmarktExists = async (
 
 export const getEventWithID = async (
   id: string,
-  eventTable: string = "flohmaerkte"
+  eventTable: string = "flohmaerkte",
 ) => {
   try {
     const { data, error } = await supabaseAdmin
@@ -1086,7 +1089,7 @@ export const getEventWithID = async (
 
 export const getEventMetadata = async (
   id: string,
-  eventTable: string = "flohmaerkte"
+  eventTable: string = "flohmaerkte",
 ) => {
   const supabase = createClient();
   try {
@@ -1119,7 +1122,7 @@ export const getApprovedEventsAndFlohmaerkte = async () => {
       .select("*")
       .ilike("status", "approved")
       .or(
-        `date.gte.${today - 1000 * 60 * 60},and(date.lte.${today},endDate.gte.${today + 1000 * 60 * 60 * 12})`
+        `date.gte.${today - 1000 * 60 * 60},and(date.lte.${today},endDate.gte.${today + 1000 * 60 * 60 * 12})`,
       );
     if (flohError || eventError) {
       throw new Error("There was a problem getting the events.");
@@ -1151,7 +1154,7 @@ export const getApprovedEvents = async (eventTable: string = "flohmaerkte") => {
 };
 
 export const getAllApprovedEvents = async (
-  eventTable: string = "flohmaerkte"
+  eventTable: string = "flohmaerkte",
 ) => {
   try {
     const { data, error } = await supabaseAdmin
@@ -1174,7 +1177,7 @@ export const getEventsFromSameLocation = async (location: string) => {
       .from("events")
       .select("*")
       .or(
-        `date.gte.${today - 1000 * 60 * 60},and(date.lte.${today},endDate.gte.${today + 1000 * 60 * 60 * 12})`
+        `date.gte.${today - 1000 * 60 * 60},and(date.lte.${today},endDate.gte.${today + 1000 * 60 * 60 * 12})`,
       )
       .ilike("status", "approved")
       .ilike("location", location)
@@ -1207,7 +1210,7 @@ export async function getAllEventsFromType(type: string) {
 export const getAllEventsThisWeek = async (
   eventTypes?: iEventType[],
   bezirk?: iBezirk,
-  stadtteile?: string[]
+  stadtteile?: string[],
 ) => {
   const { today, nextMonday } = getTodayNexMonday();
   let query = supabaseAdmin
@@ -1257,7 +1260,7 @@ export const getAllEventsThisWeek = async (
 export const getApprovedEventsWithBezirk = async (
   bezirk: iBezirk,
   eventTable: string = "flohmaerkte",
-  eventTypes?: iEventType[]
+  eventTypes?: iEventType[],
 ) => {
   const { today } = getTodayNexMonday();
   try {
@@ -1282,7 +1285,7 @@ export const getApprovedEventsWithBezirk = async (
 
 export const getUserEvents = async (
   email: string,
-  eventTable: string = "flohmaerkte"
+  eventTable: string = "flohmaerkte",
 ) => {
   const { today } = getTodayNexMonday();
   try {
@@ -1304,7 +1307,7 @@ export const getUserEvents = async (
         }
         return acc;
       },
-      { old: [], future: [] } as { old: iFlohmarkt[]; future: iFlohmarkt[] }
+      { old: [], future: [] } as { old: iFlohmarkt[]; future: iFlohmarkt[] },
     );
     // flohs sorted ascending by date from today, and older ones at the end
 
@@ -1318,7 +1321,7 @@ export const getUserEvents = async (
 };
 
 export const getQuantityThisWeekEvents = async (
-  eventTable: string = "flohmaerkte"
+  eventTable: string = "flohmaerkte",
 ) => {
   const { today, nextMonday } = getTodayNexMonday();
   try {
@@ -1333,6 +1336,37 @@ export const getQuantityThisWeekEvents = async (
     }
     return count || 0;
   } catch (error) {
+    return false;
+  }
+};
+
+export const getEventsInSameLocation = async (
+  eventID: string,
+  location: string,
+  eventTable: string = "flohmaerkte",
+) => {
+  const { today } = getTodayNexMonday();
+  try {
+    let query = supabaseAdmin
+      .from(eventTable)
+      .select("*")
+      .ilike("status", "approved")
+      .ilike("location", location)
+      .gte("date", today - 1000 * 60 * 60)
+      .order("date");
+
+    if (eventID) {
+      query = query.neq("id", eventID);
+    }
+    const { data, error } = await query;
+
+    if (error) {
+      console.error("There was a problem getting the events.");
+      return false;
+    }
+    return parseAllFlohmaerkte(data);
+  } catch (error) {
+    console.error("There was a problem getting the events.");
     return false;
   }
 };
@@ -1357,7 +1391,7 @@ export const getThisWeekEvents = async (eventTable: string = "flohmaerkte") => {
 // POST
 export const addEvent = async (
   event: iFlohmarkt,
-  eventTable: string = "flohmaerkte"
+  eventTable: string = "flohmaerkte",
 ) => {
   try {
     const user = await getServerUser();
@@ -1389,7 +1423,7 @@ export const addEvent = async (
     if (error) {
       throw new Error(
         `1 Error adding ${eventTable === "flohmaerkte" ? "Flohmarkt" : "Event"}` +
-          JSON.stringify(error.message)
+          JSON.stringify(error.message),
       );
     }
     return "Event added";
@@ -1397,19 +1431,19 @@ export const addEvent = async (
     if (error && typeof error === "object" && "message" in error) {
       console.error(
         `2 Error adding ${eventTable === "flohmaerkte" ? "Flohmarkt" : "Event"}` +
-          (error as { message?: string }).message
+          (error as { message?: string }).message,
       );
       throw new Error(
         `3 Error adding ${eventTable === "flohmaerkte" ? "Flohmarkt" : "Event"}` +
-          ((error as { message?: string }).message || "")
+          ((error as { message?: string }).message || ""),
       );
     } else {
       console.error(
         `4 Error adding ${eventTable === "flohmaerkte" ? "Flohmarkt" : "Event"}`,
-        error
+        error,
       );
       throw new Error(
-        `5 Error adding ${eventTable === "flohmaerkte" ? "Flohmarkt" : "Event"}`
+        `5 Error adding ${eventTable === "flohmaerkte" ? "Flohmarkt" : "Event"}`,
       );
     }
   }
@@ -1418,7 +1452,7 @@ export const addEvent = async (
 // DELETE
 export const deleteEvent = async (
   id: string,
-  eventTable: string = "flohmaerkte"
+  eventTable: string = "flohmaerkte",
 ) => {
   try {
     const { data, error } = await supabaseAdmin
@@ -1438,7 +1472,7 @@ export const deleteEvent = async (
 };
 export const rejectEvent = async (
   id: string,
-  eventTable: string = "flohmaerkte"
+  eventTable: string = "flohmaerkte",
 ) => {
   try {
     const { data, error } = await supabaseAdmin
@@ -1457,7 +1491,7 @@ export const rejectEvent = async (
 // UPDATE
 export const updateEvent = async (
   event: iFlohmarkt,
-  eventTable: string = "flohmaerkte"
+  eventTable: string = "flohmaerkte",
 ) => {
   const authorized = await proofUser();
   if (!authorized) return "Not authorized";
@@ -1487,7 +1521,7 @@ export const updateEvent = async (
 
 export const approveSuggestedEvent = async (
   id: string,
-  eventTable: string = "flohmaerkte"
+  eventTable: string = "flohmaerkte",
 ) => {
   try {
     const { data, error } = await supabaseAdmin
@@ -1506,7 +1540,7 @@ export const approveSuggestedEvent = async (
 export const updateEventStatus = async (
   id: number | string,
   status: string,
-  eventTable: string = "flohmaerkte"
+  eventTable: string = "flohmaerkte",
 ) => {
   const authorized = await proofUser();
   if (!authorized) return "Not authorized";
@@ -1527,7 +1561,7 @@ export const updateEventStatus = async (
 
 export const clearLatLonFromEvent = async (
   id: string,
-  eventTable: string = "flohmaerkte"
+  eventTable: string = "flohmaerkte",
 ) => {
   try {
     const { data, error } = await supabaseAdmin
