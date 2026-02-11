@@ -4,7 +4,10 @@ import AdminRoute from "@app/providers/AdminRoute";
 import HorizontalCard from "@components/@Cards/HorizontalCard";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { separateInBezirke } from "@app/utils/functions";
+import {
+  parseDescriptionWithTags,
+  separateInBezirke,
+} from "@app/utils/functions";
 import ExpandableContainer from "@components/ExpandableContainer";
 import ApproveButton from "@components/@Buttons/ApproveButton";
 import type { Metadata } from "next";
@@ -102,6 +105,20 @@ export default async function SpielplaeztePage() {
             Add premade Spielplatz
           </Link>
         </div>
+        <div className="flex flex-col gap-1">
+          {spList
+            .filter(
+              ({ tags, type }) =>
+                tags?.includes("sport") && !type.includes("sportplatz")
+            )
+            .map(({ title, id, type }) => (
+              <React.Fragment key={title}>
+                <Link href={`/update-spielplatz/${id}`}>
+                  {title} - {JSON.stringify(type)}
+                </Link>
+              </React.Fragment>
+            ))}
+        </div>
         <URLFilteredList spielplaetzeList={spList}></URLFilteredList>
         <div className="flex flex-wrap items-start justify-center gap-2">
           {/* <DynamicSielplaetzeMap spielplaetze={spList} /> */}
@@ -144,9 +161,10 @@ export default async function SpielplaeztePage() {
                             >
                               <HorizontalCard.PostInfo
                                 title={sp.title}
-                                description={
-                                  sp.text ? sp.text.slice(0, 100) + "..." : ""
-                                }
+                                description={parseDescriptionWithTags(
+                                  sp.text,
+                                  100
+                                )}
                                 stadtteil={sp.stadtteil}
                               />
                             </HorizontalCard>

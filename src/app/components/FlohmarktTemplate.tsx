@@ -57,7 +57,7 @@ function LocationDate({
           !!image && "md:max-w-full",
           type === "laterne" || type === "laternewerkstatt"
             ? "border-0 bg-hh-300"
-            : ""
+            : "",
         )}
       >
         <h2 className="text-lg font-semibold">Datum:</h2>
@@ -189,7 +189,7 @@ export default function FlohmarktTemplate({
     .trim();
   const description = optionalComment?.replace(openHoursRegex, "").trim();
   const attribution = optionalComment?.match(
-    /<attribution>([\s\S]*?)<attribution>/
+    /<attribution>([\s\S]*?)<attribution>/,
   )?.[1];
   return (
     <>

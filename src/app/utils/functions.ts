@@ -133,7 +133,7 @@ export const getPlainText = (text: string | TypeAndText[], max?: number) => {
   if (typeof text === "string") {
     const finalText = text.replace(
       /([\u2700-\u27BF]|[\uE000-\uF8FF]|[\uD800-\uDFFF][\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83C[\uD000-\uDFFF]|\uD83D[\uD000-\uDFFF]|\uD83E[\uD000-\uDFFF])/g,
-      ""
+      "",
     );
     return max && max > text.length ? finalText + "..." : finalText;
   }
@@ -202,7 +202,7 @@ export const parseFlohmarkt = (flohmarkt: iStringifiedFlohmarkt) => {
 
 export const parseDescriptionWithTags = (
   text?: string | TypeAndText[],
-  maxLength?: number
+  maxLength?: number,
 ) => {
   if (!text || !text.length) return "";
   const typeText = typeof text;
@@ -213,7 +213,7 @@ export const parseDescriptionWithTags = (
   }
   const plainText = startText.replace(
     /<\/?b>|<\/?sb>|<\/?i>|<\/?u>|<\/?upper>|<\/?link>|<\/?h3>|<\/?h2>|([\u2700-\u27BF]|[\uE000-\uF8FF]|[\uD800-\uDFFF][\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83C[\uD000-\uDFFF]|\uD83D[\uD000-\uDFFF]|\uD83E[\uD000-\uDFFF])/g,
-    ""
+    "",
   );
   return maxLength && maxLength > plainText.length
     ? plainText.slice(0, maxLength) + "..."
@@ -243,7 +243,7 @@ export const getDate = (
   date: number,
   withDay: boolean | "short" = false,
   onlyNumbers = false,
-  year = false
+  year = false,
 ) => {
   const d = new Date(date);
   const localeDate = d.toLocaleDateString("de-DE", {
@@ -285,7 +285,7 @@ export const getTodayNexMonday = () => {
   const millisecondsUntilNextMonday =
     (daysUntilNextMonday || 7) * 24 * 60 * 60 * 1000;
   const nextMonday = new Date(
-    currentDate.getTime() + millisecondsUntilNextMonday
+    currentDate.getTime() + millisecondsUntilNextMonday,
   );
   nextMonday.setUTCHours(0, 0, 0, 1);
   currentDate.setUTCHours(0, 0, 0, 1);
@@ -309,13 +309,13 @@ export const getCurrentTime = () => {
 };
 export const whenWillRainLater = (hours: iForecastHourly[]) => {
   return hours.findIndex(
-    ({ HasPrecipitation, Hour }) => Hour > 6 && Hour < 21 && HasPrecipitation
+    ({ HasPrecipitation, Hour }) => Hour > 6 && Hour < 21 && HasPrecipitation,
   );
 };
 
 export const getTimeRainAndActivity = (
   hours: iForecastHourly[],
-  activity: "Outdoor" | "Indoor" | "Both"
+  activity: "Outdoor" | "Indoor" | "Both",
 ) => {
   const currentTime = getCurrentTime();
   const currentHour = getCurrentTime().getHours();
@@ -335,7 +335,7 @@ export const getTimeRainAndActivity = (
 
 export const separateByDate = (
   events: iFlohmarkt[],
-  withDate: boolean = false
+  withDate: boolean = false,
 ) => {
   return events.reduce(
     (acc, flohmarkt) => {
@@ -346,7 +346,7 @@ export const separateByDate = (
       acc[date].push(flohmarkt);
       return acc;
     },
-    {} as Record<string, iFlohmarkt[]>
+    {} as Record<string, iFlohmarkt[]>,
   );
 };
 
@@ -357,7 +357,7 @@ export const sortPostsByDate = (posts: iPost[]) =>
   [...posts].sort((a, b) => b.createdAt - a.createdAt);
 
 export const separateByStatus = <T extends iFlohmarkt | iPost | iSpielplatz>(
-  array: T[]
+  array: T[],
 ) => {
   return array.reduce(
     (acc, current) => {
@@ -376,14 +376,14 @@ export const separateByStatus = <T extends iFlohmarkt | iPost | iSpielplatz>(
       pending: [] as T[],
       rejected: [] as T[],
       old: [] as T[],
-    }
+    },
   );
 };
 
 export function distanceFilter<T extends iSpielplatz | iFlohmarkt | iPost>(
   list: T[],
   currentSP: T,
-  maxDistance: number
+  maxDistance: number,
 ) {
   if (!currentSP || !currentSP.lat || !currentSP.lon) return list;
   const { lat, lon } = currentSP;
@@ -426,8 +426,8 @@ export const addLatLongToPost = async (post: iPost) => {
 export const getAllLatLong = async (posts: iPost[]) => {
   return Promise.all(
     posts.map((post) =>
-      getLatLong(post.address ? joinAddress(post.address) : "")
-    )
+      getLatLong(post.address ? joinAddress(post.address) : ""),
+    ),
   );
 };
 
@@ -548,7 +548,7 @@ export function haversineDistance(
   lat1: number,
   lon1: number,
   lat2: number,
-  lon2: number
+  lon2: number,
 ) {
   const toRadians = (degree: number) => degree * (Math.PI / 180);
 
@@ -568,7 +568,7 @@ export function haversineDistance(
 }
 
 export const separateInBezirke = <T extends iSpielplatz | iFlohmarkt | iPost>(
-  array: Array<T>
+  array: Array<T>,
 ) =>
   array.reduce(
     (acc, sp) => {
@@ -577,14 +577,14 @@ export const separateInBezirke = <T extends iSpielplatz | iFlohmarkt | iPost>(
       else acc[bezirk].push(sp);
       return acc;
     },
-    {} as { [key: string]: T[] }
+    {} as { [key: string]: T[] },
   );
 
 export const filterByDistance = (
   lat: number,
   lon: number,
   lists: iListsFPS,
-  maxDistance: number
+  maxDistance: number,
 ) => {
   const resultList = {} as iListsFPS;
   Object.entries(lists).map(([key, list]) => {
@@ -620,7 +620,7 @@ async function reduceQualityUnderSpecificKb(
   canvas: HTMLCanvasElement,
   kb: number,
   minQuality: number = 0.5,
-  fileName: string
+  fileName: string,
 ) {
   let finalFile: File | undefined = undefined;
   let url: string | undefined = undefined;
@@ -653,7 +653,7 @@ const createBlob = (dataUrl: string, fileName: string) => {
     fileName.slice(0, fileName.lastIndexOf(".")) + ".webp",
     {
       type: "image/webp",
-    }
+    },
   );
 };
 export async function convertToWebp(
@@ -661,11 +661,10 @@ export async function convertToWebp(
   maxWidth: number,
   maxFileKb: number,
   fileSetter?: React.Dispatch<React.SetStateAction<File[]>>,
-  urlSetter?: React.Dispatch<React.SetStateAction<string[]>>
+  urlSetter?: React.Dispatch<React.SetStateAction<string[]>>,
 ) {
   const url = URL.createObjectURL(file);
 
-  // If file is already smaller than the max size, no need to convert
   if (file.size < maxFileKb * 1000) {
     if (fileSetter && urlSetter) {
       fileSetter([file]);
@@ -705,7 +704,7 @@ export async function convertToWebp(
             canvas,
             maxFileKb,
             0.5,
-            newName
+            newName,
           );
 
           if (url) {
@@ -723,13 +722,13 @@ export async function convertToWebp(
         }
       };
       img.onerror = reject; // If there's an error loading the image
-    }
+    },
   );
 }
 export async function convertAllFilesToWebp(
   filesArr: FileList,
   maxWidth: number,
-  maxFileKb: number
+  maxFileKb: number,
 ) {
   const conversionPromises = Array.from(filesArr).map((file) => {
     return convertToWebp(file, maxWidth, maxFileKb);
@@ -747,7 +746,7 @@ export async function convertAllFilesToWebp(
       }
       return acc;
     },
-    { urls: [], files: [] } as { urls: string[]; files: File[] }
+    { urls: [], files: [] } as { urls: string[]; files: File[] },
   );
 
   // Log after all conversions are done
