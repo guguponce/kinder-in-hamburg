@@ -25,6 +25,7 @@ export default function ScrollableCardList({
   linkPrefix,
   withDate,
   cardClassname,
+  color,
 }: {
   cardClassname?: string;
   key?: string;
@@ -34,6 +35,7 @@ export default function ScrollableCardList({
   descriptions?: boolean;
   linkPrefix?: string;
   withDate?: boolean;
+  color?: "300" | "500" | "800";
 }) {
   const Card =
     cardType === "image"
@@ -44,7 +46,7 @@ export default function ScrollableCardList({
           ? HorizontalCard
           : TextPriorityCard;
   return (
-    <ScrollableContainer>
+    <ScrollableContainer color={color}>
       {isTypePost(posts[0]) || isTypeSpielplatz(posts[0])
         ? (posts as iPost[]).map(({ id, image, title, text, stadtteil }) => (
             <React.Fragment key={id + title + (key || "")}>
@@ -96,7 +98,7 @@ export default function ScrollableCardList({
                   className={cn(
                     "flex flex-col items-center min-w-fit mr-4",
                     cardType !== "horizontal" ? "aspect-[3/4]" : "",
-                    cardClassname
+                    cardClassname,
                   )}
                   key={id + title + (key || "")}
                 >
@@ -124,7 +126,7 @@ export default function ScrollableCardList({
                       id={id}
                       title={title}
                       description={parseDescriptionWithTags(
-                        optionalComment?.slice(0, 100)
+                        optionalComment?.slice(0, 100),
                       )}
                       image={
                         image ||
@@ -172,14 +174,21 @@ export default function ScrollableCardList({
                   )}
 
                   {withDate && (
-                    <div className="absolute z-50 -translate-x-1/2 bottom-0 left-1/2 rounded-[4px_4px_0_0] flex justify-center w-3/4  p-1 text-xs bg-hh-800 backdrop-blur-sm bg-opacity-50 text-white">
+                    <div
+                      className={cn(
+                        "absolute z-50 bottom-0 left-1/2 rounded-[4px_4px_0_0] flex justify-center w-3/4  p-1 text-xs bg-hh-800 backdrop-blur-sm bg-opacity-50 text-white",
+                        cardType === "horizontal"
+                          ? "left-0 w-20 sm:w-28 rounded-[0_4px_0_0]"
+                          : "",
+                      )}
+                    >
                       {getDate(date, true).replace(/(\w+)/, (_, p1) => {
                         return p1.slice(0, 2) + ".";
                       })}
                     </div>
                   )}
                 </article>
-              )
+              ),
             )
           : null}
     </ScrollableContainer>
