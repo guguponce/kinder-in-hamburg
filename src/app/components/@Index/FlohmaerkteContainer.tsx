@@ -10,6 +10,7 @@ import { iFlohmarkt } from "@app/utils/types";
 import Link from "next/link";
 import PageTitle from "../PageTitle";
 import { unstable_cache } from "next/cache";
+import NoFlohmarktBanner from "./NoFlohmarktBanner";
 
 function sortByFlohmaerkteDate(list: iFlohmarkt[], todayEvening: number) {
   return list
@@ -128,40 +129,9 @@ export default async function FlohmaerkteContainer() {
             )}
           </section>
         ) : (
-          <section
-            id="current-week-section"
-            className={`flex gap-4 w-full justify-center`}
-          >
-            <div className="max-w-full flex flex-col items-center">
-              <h2 className="text-2xl font-semibold text-hh-800 text-center p-1 lg:p-2">
-                {weekday !== 6 && !isSunday
-                  ? "Diese Woche finden keine Flohmärkte statt"
-                  : "Für den Rest der Woche finden keine Flohmärkte statt"}
-              </h2>
-              <p className="text-hh-800">
-                Wenn ihr einen veranstaltet oder kennt, schreibt uns gerne eine
-                E-Mail.
-              </p>
-              <a
-                href="mailto:admin@kinder-in-hamburg.de"
-                className="flex items-center gap-2 self-center p-4 bg-hh-800 text-hh-100 font-semibold rounded mt-4 w-max hover:bg-hh-700 transition-colors duration-300 ease-in-out"
-              >
-                <PaperPlane />
-                admin@kinder-in-hamburg.de
-              </a>
-            </div>
-          </section>
+          <NoFlohmarktBanner weekday={weekday} isSunday={isSunday} />
         )}
-        {/* {!!futureFlohmaerkte.length && (
-          <BezirkableList
-            title={
-              !!thisWeekFlohmaerkteLength
-                ? "Ab nächster Woche"
-                : "Zukünftige Flohmärkte"
-            }
-            list={futureFlohmaerkte}
-          ></BezirkableList>
-        )} */}
+
         <Link
           href="/flohmaerkte"
           className="text-hh-800 underline-offset-2 underline hover:text-hh-700 hover:underline-offset-4 transition-all self-end mx-2 py-1 px-2 rounded hover:backdrop-brightness-95"

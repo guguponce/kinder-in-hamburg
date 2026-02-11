@@ -43,7 +43,7 @@ export default function FlohmarktPoster({
     <Link
       href={!!prefixLink ? `${prefixLink}${id}` : `/flohmaerkte/${id}`}
       style={
-        title.includes("Goldbekhaus")
+        title?.includes("Goldbekhaus")
           ? {
               backgroundImage: "url(/assets/flohmarkt-images/goldbekhaus.webp)",
               backgroundPosition: "center",
@@ -58,7 +58,7 @@ export default function FlohmarktPoster({
           : ["laterne", "laternewerkstatt"].includes(eventType)
             ? "bg-hh-900"
             : "bg-gradient-to-b from-[#e1e4e59f] to-[#d0d7da9f] p-2",
-        size === "small" ? "min-w-[144px]" : "min-w-[180px]"
+        size === "small" ? "min-w-[144px]" : "min-w-[180px]",
       )}
     >
       {image ? (
@@ -145,7 +145,7 @@ export default function FlohmarktPoster({
                 ? "bg-opacity-80"
                 : eventType === "laterne" || eventType === "laternewerkstatt"
                   ? "text-orange-300 bg-opacity-30  backdrop-brightness-50"
-                  : "bg-opacity-50"
+                  : "bg-opacity-50",
             )}
           >
             <h2 className="max-h-10 overflow-hidden truncate-2">{title}</h2>
@@ -157,7 +157,7 @@ export default function FlohmarktPoster({
                 ? "bg-opacity-80"
                 : eventType === "laterne" || eventType === "laternewerkstatt"
                   ? "text-orange-300 bg-opacity-30 backdrop-brightness-50"
-                  : "bg-opacity-50"
+                  : "bg-opacity-50",
             )}
           >
             {children}
@@ -168,7 +168,7 @@ export default function FlohmarktPoster({
                   "text-xs ",
                   ["laterne", "laternewerkstatt"].includes(eventType)
                     ? "text-orange-200"
-                    : "text-hh-800"
+                    : "text-hh-800",
                 )}
               >
                 {getDate(date) === getDate(today)
