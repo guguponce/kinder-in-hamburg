@@ -1,16 +1,8 @@
-import { type NextRequest, NextResponse } from "next/server";
 import { updateSession } from "@auth/middleware";
+import { type NextRequest } from "next/server";
 
 export async function middleware(request: NextRequest) {
-  // Redirect uppercase URLs to lowercase
-  if (request.nextUrl.pathname !== request.nextUrl.pathname.toLowerCase()) {
-    const url = request.nextUrl.clone();
-    url.pathname = url.pathname.toLowerCase();
-    return NextResponse.redirect(url);
-  }
-
-  // Run auth session middleware
-  return await updateSession(request);
+  return updateSession(request);
 }
 
 export const config = {
