@@ -27,7 +27,7 @@ import {
   revalidatePost,
 } from "@app/utils/actions/revalidate";
 import UserInputBox from "./UserInputBox";
-import { deleteUnusedFlohmaerkteImages } from "@app/api/storageActions";
+import { deleteUnusedFlohmaerkteImages } from "@app/api/storageActions-server";
 import dynamic from "next/dynamic";
 import Button from "../@Buttons/Button";
 
@@ -117,7 +117,7 @@ export default function FlohForm({
 }: FlohFormProps) {
   const router = useRouter();
   const [userInput, setUserInput] = React.useState<iSessionUser>(
-    addedBy || user
+    addedBy || user,
   );
   const [imagesUrlsReady, setImagesUrlsReady] = React.useState<{
     ready: boolean;
@@ -128,7 +128,7 @@ export default function FlohForm({
       address
         ? separateAddress(address)
         : { street: "", number: "", PLZ: "", city: "" },
-    [address]
+    [address],
   );
   const [successfulSubmit, setSuccessfulSubmit] =
     React.useState<boolean>(false);
@@ -138,11 +138,11 @@ export default function FlohForm({
     errorMessage: string;
   }>({ isError: false, errorMessage: "" });
   const [bezirkInput, setBezirkInput] = React.useState<iBezirk>(
-    bezirk || "Altona"
+    bezirk || "Altona",
   );
   const [latlon, setLatLon] = React.useState({ lat, lon });
   const [closedDatesArray, setClosedDates] = React.useState<number[]>(
-    closedDates || []
+    closedDates || [],
   );
 
   const [newFloh, setNewFloh] = React.useState<iFlohmarkt | null>(null);
@@ -234,7 +234,7 @@ export default function FlohForm({
       }
       addEvent(
         eventSuggestion,
-        flohFormType === "new-event" ? "events" : "flohmaerkte"
+        flohFormType === "new-event" ? "events" : "flohmaerkte",
       )
         .then(() => {
           revalidatePost();
@@ -250,7 +250,7 @@ export default function FlohForm({
           router.push(
             flohFormType === "new-flohmarkt"
               ? `/flohmarkt-suggestion/${data.id}`
-              : `/events/${data.id}`
+              : `/events/${data.id}`,
           );
         })
         .catch((error) => {
@@ -265,7 +265,7 @@ export default function FlohForm({
       flohFormType,
       createdAt,
       closedDatesArray,
-    ]
+    ],
   );
 
   const onupdateEvent = useCallback(
@@ -308,7 +308,7 @@ export default function FlohForm({
         updatedEvent,
         ["new-event", "update-event"].includes(flohFormType)
           ? "events"
-          : "flohmaerkte"
+          : "flohmaerkte",
       )
         .then(() => {
           setSubmitError({ isError: false, errorMessage: "" });
@@ -326,11 +326,11 @@ export default function FlohForm({
                 : `/flohmarkt-suggestion/${data.id}`
               : flohFormType === "update-event" || flohFormType === "new-event"
                 ? `/events/${data.id}`
-                : "/"
+                : "/",
           );
         })
         .catch((error) =>
-          setSubmitError({ isError: true, errorMessage: error.message })
+          setSubmitError({ isError: true, errorMessage: error.message }),
         );
     },
     [
@@ -342,7 +342,7 @@ export default function FlohForm({
       addedBy,
       flohFormType,
       closedDatesArray,
-    ]
+    ],
   );
 
   if (!user) {
@@ -365,7 +365,7 @@ export default function FlohForm({
         onSubmit={handleSubmit(
           ["new-flohmarkt", "new-event"].includes(flohFormType)
             ? onSubmitNewFlohmarkt
-            : onupdateEvent
+            : onupdateEvent,
         )}
         className="flohForm mx-auto w-full text-gray-900 lg:w-3/4 my-2 flex flex-col gap-2"
       >
@@ -523,7 +523,7 @@ export default function FlohForm({
                     }`}</p>
                   ) : (
                     <React.Fragment key={p}></React.Fragment>
-                  )
+                  ),
                 )}
             </div>{" "}
             <button
@@ -537,7 +537,7 @@ export default function FlohForm({
                     getValues("number"),
                     getValues("PLZ"),
                     getValues("city"),
-                  ].join(" ")
+                  ].join(" "),
                 );
                 setLatLon({ lat: parseFloat(lat), lon: parseFloat(lon) });
               }}
@@ -640,7 +640,7 @@ export default function FlohForm({
                         onChange={(e) =>
                           setValue(
                             "endDate",
-                            new Date(e.target.value).getTime()
+                            new Date(e.target.value).getTime(),
                           )
                         }
                         className="w-full block rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
@@ -665,7 +665,7 @@ export default function FlohForm({
                               new Set([
                                 ...prev,
                                 new Date(e.target.value).getTime(),
-                              ])
+                              ]),
                             );
                           });
                         }}
@@ -682,7 +682,7 @@ export default function FlohForm({
                           onClick={(e) => {
                             e.preventDefault();
                             setClosedDates((prev) =>
-                              prev.filter((_, i) => i !== index)
+                              prev.filter((_, i) => i !== index),
                             );
                           }}
                         >

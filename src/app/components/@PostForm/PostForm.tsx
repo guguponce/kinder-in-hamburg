@@ -29,7 +29,7 @@ import {
   categoryNames,
 } from "@app/utils/constants";
 import IgAccountInput from "./IgAccountInput";
-import { deleteUnusedPostsImages } from "@app/api/storageActions";
+import { deleteUnusedPostsImages } from "@app/api/storageActions-server";
 import AdminClientComponents from "@app/providers/AdminClientComponents";
 import { revalidatePost } from "@app/utils/actions/revalidate";
 import { getLatLong } from "@app/utils/functions";
@@ -39,7 +39,7 @@ const LatLonSetterMap = dynamic(
   () => import("@components/@Map/LatLonSetterMap"),
   {
     ssr: false,
-  }
+  },
 );
 interface PostFormProps {
   PostForm: Partial<iPost>;
@@ -82,7 +82,7 @@ export default function PostForm({
   const router = useRouter();
   const [userInput, setUserInput] = React.useState<iSessionUser>(user);
   const [bezirkInput, setBezirkInput] = React.useState<iBezirk>(
-    (bezirk as iBezirk) || "Altona"
+    (bezirk as iBezirk) || "Altona",
   );
   const [imagesUrlsReady, setImagesUrlsReady] = React.useState<{
     ready: boolean;
@@ -94,13 +94,13 @@ export default function PostForm({
   >(null);
 
   const [savedPostText, setSavedPostText] = React.useState<TypeAndText[]>(
-    text?.filter((p) => !!p[1]) || []
+    text?.filter((p) => !!p[1]) || [],
   );
   const [categoriesList, setCategoriesList] = React.useState<string[]>(
-    categories || []
+    categories || [],
   );
   const [addressInput, setAddressInput] = React.useState<iAddress | undefined>(
-    address || { street: "", number: "", PLZ: "", city: "" }
+    address || { street: "", number: "", PLZ: "", city: "" },
   );
   const [latlon, setLatLon] = React.useState({ lat, lon });
 
@@ -155,7 +155,9 @@ export default function PostForm({
       return alert("Text is required and needs to be saved");
     if (!userInput.email)
       return alert(
-        "User is required" + JSON.stringify(userInput) + JSON.stringify(addedBy)
+        "User is required" +
+          JSON.stringify(userInput) +
+          JSON.stringify(addedBy),
       );
     const suggestionPost: iPost = {
       id: newID.current,
@@ -197,7 +199,7 @@ export default function PostForm({
         }, 4000);
       })
       .catch((error) =>
-        setSubmitError({ isError: true, errorMessage: error.message })
+        setSubmitError({ isError: true, errorMessage: error.message }),
       );
   };
 
@@ -245,7 +247,7 @@ export default function PostForm({
         }, 4000);
       })
       .catch((error) =>
-        setSubmitError({ isError: true, errorMessage: error.message })
+        setSubmitError({ isError: true, errorMessage: error.message }),
       );
   };
 
@@ -292,10 +294,10 @@ export default function PostForm({
         setTimeout(() => {
           revalidatePost();
           router.push(`/posts/${data.id}`);
-        }, 4000)
+        }, 4000),
       )
       .catch((error) =>
-        setSubmitError({ isError: true, errorMessage: error.message })
+        setSubmitError({ isError: true, errorMessage: error.message }),
       );
   };
 
@@ -342,7 +344,7 @@ export default function PostForm({
         }, 4000);
       })
       .catch((error) =>
-        setSubmitError({ isError: true, errorMessage: error.message })
+        setSubmitError({ isError: true, errorMessage: error.message }),
       );
   };
   if (!user) {
@@ -354,6 +356,7 @@ export default function PostForm({
   return (
     <section id="post-form-container" className="flex-col flex gap-1">
       <ImageUploader
+        bucket="posts"
         email={user.email || ""}
         setImagesUrlsReady={setImagesUrlsReady}
         id={id ? id : newID.current}
@@ -370,7 +373,7 @@ export default function PostForm({
                   ? onUpdateApprovedPost
                   : () => {
                       console.error("missing handler");
-                    }
+                    },
         )}
         className="postForm mx-auto flex w-full flex-col items-center gap-1 text-gray-900"
       >
@@ -454,7 +457,7 @@ export default function PostForm({
                       setCategoriesList([...categoriesList, category]);
                     } else {
                       setCategoriesList(
-                        categoriesList.filter((cat) => cat !== category)
+                        categoriesList.filter((cat) => cat !== category),
                       );
                     }
                   }}
@@ -498,7 +501,7 @@ export default function PostForm({
             <IgAccountInput
               handleAddIgAccount={(account: iIgAccount) => {
                 setIgAccountsInput((prev) =>
-                  prev ? [...prev, account] : [account]
+                  prev ? [...prev, account] : [account],
                 );
               }}
             />
@@ -511,8 +514,8 @@ export default function PostForm({
                   onClick={() => {
                     setIgAccountsInput(
                       igAccountsInput?.filter(
-                        (account) => account.name !== igAccount.name
-                      )
+                        (account) => account.name !== igAccount.name,
+                      ),
                     );
                   }}
                   className="bg-negative-500 h-8 w-8 text-white rounded-md p-1"
@@ -538,7 +541,7 @@ export default function PostForm({
                   setBezirkInput(e.target.value as iBezirk);
                   setValue(
                     "stadtteil",
-                    BEZIRK_TO_STADTTEILE[e.target.value as iBezirk][0]
+                    BEZIRK_TO_STADTTEILE[e.target.value as iBezirk][0],
                   );
                 }}
                 className="mx  rounded border border-gray-300 bg-gray-100 bg-opacity-95 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
@@ -644,7 +647,7 @@ export default function PostForm({
                   addressInput?.number,
                   addressInput?.PLZ,
                   addressInput?.city,
-                ].join(" ")
+                ].join(" "),
               );
               setLatLon({ lat: parseFloat(lat), lon: parseFloat(lon) });
             }}
