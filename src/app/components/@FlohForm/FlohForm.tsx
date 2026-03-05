@@ -15,6 +15,7 @@ import {
   getEndTime,
   getLatLong,
   getStartTime,
+  getTodayNexMonday,
   joinAddress,
   joinTime,
   separateAddress,
@@ -35,50 +36,6 @@ const LatLonSetterMap = dynamic(() => import("../@Map/LatLonSetterMap"), {
   ssr: false,
 });
 
-function CompareFlohsSingle({ floh }: { floh: Partial<iFlohmarkt> }) {
-  return (
-    <div className="max-w-[45%] flex flex-col gap-4 p-4 mb-4 bg-gray-800 rounded">
-      {Object.entries(floh)
-        .sort(([a], [b]) => a.localeCompare(b))
-        .map(([k, value]) => {
-          type ValTypes<T> = T extends iFlohmarkt ? T[keyof T] : never;
-          type Val = ValTypes<iFlohmarkt>;
-          return (
-            <div key={k} className="flex flex-col gap-2 ">
-              <label className="text-base font-semibold leading-7">
-                {k.charAt(0).toUpperCase() + k.slice(1)}
-              </label>
-              <div className="w-full max-w-full overflow-hidden text-gray-300">
-                {(value as Val) ? (
-                  typeof value === "string" ? (
-                    <p className="text-wrap py-1 max-w-full w-full">{value}</p>
-                  ) : typeof value === "number" ? (
-                    k === "id" ? (
-                      <span className="">{value}</span>
-                    ) : (
-                      <span className="">
-                        {new Date(value).toLocaleDateString("de-DE", {
-                          day: "2-digit",
-                          month: "short",
-                          year: "2-digit",
-                        })}
-                      </span>
-                    )
-                  ) : typeof value === "object" && value !== null ? (
-                    <span className="">{JSON.stringify(value)}</span>
-                  ) : (
-                    <span className="">{"Unsupported value type"}</span>
-                  )
-                ) : (
-                  <span className="">{"No value provided"}</span>
-                )}
-              </div>
-            </div>
-          );
-        })}
-    </div>
-  );
-}
 interface FlohFormProps {
   FlohForm: Partial<iFlohmarkt>;
   user: iSessionUser;
@@ -115,6 +72,7 @@ export default function FlohForm({
   user,
   flohFormType,
 }: FlohFormProps) {
+  const { today } = getTodayNexMonday();
   const router = useRouter();
   const [userInput, setUserInput] = React.useState<iSessionUser>(
     addedBy || user,
@@ -204,6 +162,9 @@ export default function FlohForm({
         !data.type
       )
         return alert("Please provide the type of the event");
+      if (!data.endDate && data.date < today) {
+        return alert("The date of the Flohmarkt cannot be in the past");
+      }
       const eventSuggestion: iFlohmarkt = {
         id: data.id,
         status: data.status,
@@ -259,6 +220,7 @@ export default function FlohForm({
         });
     },
     [
+      today,
       imagesUrlsReady,
       userInput,
       router,
@@ -281,6 +243,9 @@ export default function FlohForm({
         !data.type
       )
         return alert("Please provide the type of the event");
+      if (!data.endDate && data.date < today) {
+        return alert("The date of the Flohmarkt cannot be in the past");
+      }
       const updatedEvent: iFlohmarkt = {
         id: id || newID.current,
         status: data.status,
@@ -342,6 +307,7 @@ export default function FlohForm({
       addedBy,
       flohFormType,
       closedDatesArray,
+      today,
     ],
   );
 
@@ -572,9 +538,13 @@ export default function FlohForm({
                       id={date + "Input"}
                       name={"date"}
                       type="date"
-                      onChange={(e) =>
-                        setValue("date", new Date(e.target.value).getTime())
-                      }
+                      onChange={(e) => {
+                        console.log("Date input changed:", e.target.value);
+                        return setValue(
+                          "date",
+                          new Date(e.target.value).getTime(),
+                        );
+                      }}
                       className="w-full block rounded border border-gray-300 bg-gray-100 bg-opacity-60 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
                     />
                   </div>
