@@ -12,7 +12,7 @@ import {
   revalidateFlohmarkt,
   revalidatePost,
 } from "@app/utils/actions/revalidate";
-import { deleteAllImagesFromPost } from "@app/api/storageActions";
+import { deleteAllImagesFromPost } from "@app/api/storageActions-server";
 import {
   deleteSpielplatz,
   rejectSpielplatz,
@@ -54,12 +54,12 @@ export default function DeleteModal({
       if (deleteFrom === "all" || deleteFrom === "suggested") {
         await deleteEvent(
           id.toString(),
-          type === "flohmarkt" ? "flohmaerkte" : "events"
+          type === "flohmarkt" ? "flohmaerkte" : "events",
         );
       } else {
         await rejectEvent(
           id.toString(),
-          type === "flohmarkt" ? "flohmaerkte" : "events"
+          type === "flohmarkt" ? "flohmaerkte" : "events",
         );
       }
     } else if (type === "spielplatz") {
@@ -78,7 +78,7 @@ export default function DeleteModal({
     if (type === "flohmarkt" || type === "event") {
       revalidateFlohmarkt().then(() => {
         router.push(
-          callbackURL || type === "flohmarkt" ? "/flohmaerkte" : "/events"
+          callbackURL || type === "flohmarkt" ? "/flohmaerkte" : "/events",
         );
       });
     }

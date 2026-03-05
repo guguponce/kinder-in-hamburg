@@ -17,7 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default async function NewSpielplatzPage({
+export default async function UpdateSpielplatzPage({
   params: { spID },
 }: {
   params: { spID: string };
@@ -27,7 +27,7 @@ export default async function NewSpielplatzPage({
   const spielplatz = await getSpielplatzWithID(spID);
   const spImages = await getAllImagesURLFromSupabaseFolder(
     "spielplaetze",
-    spID
+    spID,
   );
   if (!spielplatz) return <NotFound type="spielplatz" />;
   if (

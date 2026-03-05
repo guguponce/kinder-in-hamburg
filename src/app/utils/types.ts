@@ -1,4 +1,3 @@
-import { FullMetadata } from "firebase/storage";
 import { spielgeraeteList } from "./constants";
 
 export interface iPost {
@@ -309,17 +308,16 @@ export interface iSpielplatz {
   addedBy: iSessionUser;
 }
 
-export interface iStringifiedSpielplatz
-  extends Omit<
-    iSpielplatz,
-    | "addedBy"
-    | "address"
-    | "tags"
-    | "image"
-    | "type"
-    | "spielgeraete"
-    | "ausruestung"
-  > {
+export interface iStringifiedSpielplatz extends Omit<
+  iSpielplatz,
+  | "addedBy"
+  | "address"
+  | "tags"
+  | "image"
+  | "type"
+  | "spielgeraete"
+  | "ausruestung"
+> {
   type: string;
   tags: string;
   spielgeraete: string;
@@ -414,8 +412,10 @@ export type iEventType =
   | "adventsevent"
   | "laternewerkstatt";
 
-export interface iStringifiedFlohmarkt
-  extends Omit<iFlohmarkt, "addedBy" | "closedDates"> {
+export interface iStringifiedFlohmarkt extends Omit<
+  iFlohmarkt,
+  "addedBy" | "closedDates"
+> {
   addedBy: string;
   closedDates: string;
 }
@@ -542,7 +542,7 @@ export type imageDataURLSetter = React.Dispatch<
     Array<{
       url: string;
       fileName: string;
-      metadata?: FullMetadata;
+      metadata?: Record<string, any>;
     }>
   >
 >;
