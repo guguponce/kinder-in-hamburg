@@ -1,15 +1,10 @@
 "use client";
 import React, { useEffect, useMemo, useState } from "react";
-import "firebase/storage";
-import DownloadImageButton from "../@PostForm/DownloadImageButton";
-import DeleteImageButton from "../@PostForm/DeleteImageButton";
-import UploadImagePreview from "../@PostForm/UploadImagePreview";
-import { type FullMetadata } from "firebase/storage";
 import {
   deletePreviousFlohmaerkteImages,
   getFlohmaerkteImagesURLs,
-  uploadFlohmarktImage,
-} from "@app/api/storageActions";
+} from "@app/api/storageActions-server";
+import { uploadFlohmarktImage } from "@app/api/storageActions-client";
 import { iSessionUser } from "@app/utils/types";
 import { convertToWebp } from "@app/utils/functions";
 import ImageUploaderUI from "../@PostForm/ImageUploaderUI";
@@ -31,19 +26,19 @@ const ImageUploader = ({
   user,
 }: ImageUploaderProps) => {
   const [previousImage, setPreviousImage] = useState<
-    Array<{ url: string; fileName: string; metadata?: FullMetadata }>
+    Array<{ url: string; fileName: string; metadata?: Record<string, any> }>
   >([]);
   const [imageFile, setImageFile] = useState<Array<File>>([]);
   const [localImageUrl, setLocalImageUrl] = useState<string[]>([]);
   const [imageURL, setImageURL] = useState<
-    Array<{ url: string; fileName: string; metadata: FullMetadata }>
+    Array<{ url: string; fileName: string; metadata?: Record<string, any> }>
   >([]);
   const [uploadStatus, setUploadStatus] = useState<
     "await" | "uploading" | "success" | "error" | "paused"
   >("await");
   const fileInputRef = React.useRef<HTMLInputElement>(null);
   useEffect(() => {
-    getFlohmaerkteImagesURLs(`flohmaerkteImages/${id}`).then((url) => {
+    getFlohmaerkteImagesURLs(`${id}`).then((url) => {
       setPreviousImage(url);
     });
   }, [id]);
@@ -60,7 +55,7 @@ const ImageUploader = ({
   }, [imageURL, setImagesUrlsReady, imageFile, previousImage]);
 
   const handleImageChange = async (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     if (event.target.files) {
       convertToWebp(
@@ -68,7 +63,7 @@ const ImageUploader = ({
         400,
         40,
         setImageFile,
-        setLocalImageUrl
+        setLocalImageUrl,
       );
     }
   };
@@ -80,17 +75,23 @@ const ImageUploader = ({
       .catch((error) => {
         throw new Error("Error deleting previous Flohmärkte images", error);
       });
-
+    if (!user.email) {
+      throw new Error("User email is required for uploading images");
+    }
+    if (!user.name) {
+      throw new Error("User name is required for uploading images");
+    }
     Promise.all(
       imageFile.map((image) => {
         uploadFlohmarktImage(
-          user,
+          user.email as string,
+          user.name as string,
           id.toString(),
           image,
           setImageURL,
-          setUploadStatus
+          setUploadStatus,
         );
-      })
+      }),
     )
       .then(() => {
         setImageFile([]);
@@ -103,7 +104,7 @@ const ImageUploader = ({
   };
   const filesSize = useMemo(
     () => imageFile.reduce((acc, { size }) => acc + size, 0),
-    [imageFile]
+    [imageFile],
   );
 
   return (
@@ -115,6 +116,7 @@ const ImageUploader = ({
         uploadStatus={uploadStatus}
         imageFiles={imageFile}
         setImageFiles={setImageFile}
+        setImagesURLS={setImageURL}
         setLocalImageUrl={setLocalImageUrl}
         previousImagesURLS={previousImage}
         imagesURLS={imageURL}

@@ -1,12 +1,9 @@
 "use client";
 import React, { useEffect, useMemo, useState } from "react";
-import "firebase/storage";
 import DownloadImageButton from "./DownloadImageButton";
 import DeleteImageButton from "./DeleteImageButton";
 import UploadImagePreview from "./UploadImagePreview";
-import { type FullMetadata } from "firebase/storage";
-import { getImagesURLs, uploadPostImage } from "@app/api/storageActions";
-import { convertAllFilesToWebp } from "@app/utils/functions";
+
 import LoadingIcon from "../@Icons/LoadingIcon";
 import DeleteSupabaseImageButton from "@app/(spielplatz)/DeleteSupabaseImage";
 import { imageDataURLSetter } from "@app/utils/types";
@@ -29,9 +26,13 @@ interface ImageUploaderUIProps {
   previousImagesURLS: Array<{
     url: string;
     fileName: string;
-    metadata?: FullMetadata;
+    metadata?: Record<string, any>;
   }>;
-  imagesURLS: Array<{ url: string; fileName: string; metadata?: FullMetadata }>;
+  imagesURLS: Array<{
+    url: string;
+    fileName: string;
+    metadata?: Record<string, any>;
+  }>;
   localImageUrl: string[];
   id: number;
   setImagesURLS?: imageDataURLSetter;
@@ -60,7 +61,7 @@ export const ImageUploaderUI = ({
 }: ImageUploaderUIProps) => {
   const filesSize = useMemo(
     () => imageFiles.reduce((acc, { size }) => acc + size, 0),
-    [imageFiles]
+    [imageFiles],
   );
 
   const statusDisplay = {
@@ -188,10 +189,10 @@ export const ImageUploaderUI = ({
                             className="flex h-10 w-fit items-center justify-center rounded bg-negative-500 px-2 py-2 font-bold text-white hover:bg-negative-700 "
                             onClick={() => {
                               setImageFiles((prev) =>
-                                prev.filter((_, index) => index !== i)
+                                prev.filter((_, index) => index !== i),
                               );
                               setLocalImageUrl((prev) =>
-                                prev.filter((_, index) => index !== i)
+                                prev.filter((_, index) => index !== i),
                               );
                               fileInputRef.current!.value = "";
                             }}
@@ -259,7 +260,8 @@ export const ImageUploaderUI = ({
                             <DeleteImageButton
                               imageIndex={imageIndex}
                               imageName={imageUrl.fileName}
-                              path={`${type === "post" ? "postsImages" : "flohmaerkteImages"}/${id}`}
+                              bucket={type === "post" ? "posts" : "flohmaerkte"}
+                              path={id}
                               setImagesArray={setPreviousImagesURLS}
                             />
                           )}
@@ -297,7 +299,8 @@ export const ImageUploaderUI = ({
                             <DeleteImageButton
                               imageIndex={imageIndex}
                               imageName={imageUrl.fileName}
-                              path={`postsImages/${id}`}
+                              bucket={type === "post" ? "posts" : "flohmaerkte"}
+                              path={id}
                               setImagesArray={
                                 setImagesURLS || setPreviousImagesURLS
                               }

@@ -11,7 +11,7 @@ const LatLonSetterMap = dynamic(
   () => import("../components/@Map/LatLonSetterMap"),
   {
     ssr: false,
-  }
+  },
 );
 
 import {
@@ -85,10 +85,10 @@ export default function SpielplatzForm({
   }>({ isError: false, errorMessage: "" });
   const [bezirkInput, setBezirkInput] = useState<iBezirk>(bezirk || "Altona");
   const [spielgaereteList, setSpielgeraeteList] = useState<string[]>(
-    spielgeraete || []
+    spielgeraete || [],
   );
   const [ausruestungList, setAusruestungList] = useState<string[]>(
-    ausruestung || []
+    ausruestung || [],
   );
   const [typeList, setTypeList] = useState<string[]>(type || ["outdoor"]);
   const [latlon, setLatLon] = useState({ lat, lon });
@@ -142,7 +142,7 @@ export default function SpielplatzForm({
       ausruestungList,
       typeList,
       newID.current,
-      imagesUrlsReady.urls
+      imagesUrlsReady.urls,
     )
       .then(() => {
         setSubmitError({ isError: false, errorMessage: "" });
@@ -157,7 +157,7 @@ export default function SpielplatzForm({
         router.push(`/update-spielplatz/${data.id}`);
       })
       .catch((error) =>
-        setSubmitError({ isError: true, errorMessage: error.message })
+        setSubmitError({ isError: true, errorMessage: error.message }),
       );
   };
 
@@ -177,7 +177,7 @@ export default function SpielplatzForm({
       spielgaereteList,
       ausruestungList,
       typeList,
-      imagesUrlsReady.urls
+      imagesUrlsReady.urls,
     )
       .then(() => {
         setSubmitError({ isError: false, errorMessage: "" });
@@ -192,7 +192,7 @@ export default function SpielplatzForm({
         router.push(`/spielplaetze/${data.id}`);
       })
       .catch((error) =>
-        setSubmitError({ isError: true, errorMessage: error.message })
+        setSubmitError({ isError: true, errorMessage: error.message }),
       );
   };
   useEffect(() => {}, [bezirkInput, getValues]);
@@ -215,7 +215,7 @@ export default function SpielplatzForm({
               ? onSubmitUpdateSpielplatz(data)
               : () => {
                   return data;
-                }
+                },
         )}
         className="spielplatzForm mx-auto w-full text-gray-900 lg:w-3/4 my-2 flex flex-col gap-2"
       >
@@ -263,7 +263,7 @@ export default function SpielplatzForm({
                     setBezirkInput(e.target.value as iBezirk);
                     setValue(
                       "stadtteil",
-                      BEZIRK_TO_STADTTEILE[e.target.value as iBezirk][0]
+                      BEZIRK_TO_STADTTEILE[e.target.value as iBezirk][0],
                     );
                   }}
                   className="mx  rounded border border-gray-300 bg-gray-100 bg-opacity-95 px-3 py-1 text-base leading-8 text-gray-900 outline-none transition-colors duration-200 ease-in-out focus:border-hh-600 focus:bg-white focus:ring-2 focus:ring-hh-700"
@@ -352,7 +352,7 @@ export default function SpielplatzForm({
                     }`}</p>
                   ) : (
                     <React.Fragment key={p}></React.Fragment>
-                  )
+                  ),
                 )}
             </div>{" "}
             <button
@@ -366,7 +366,7 @@ export default function SpielplatzForm({
                     getValues("number"),
                     getValues("PLZ"),
                     getValues("city"),
-                  ].join(" ")
+                  ].join(" "),
                 );
                 setLatLon({ lat: parseFloat(lat), lon: parseFloat(lon) });
               }}
@@ -412,7 +412,7 @@ export default function SpielplatzForm({
                               type="checkbox"
                               value={item}
                               defaultChecked={spielgaereteList.includes(
-                                item.toLowerCase()
+                                item.toLowerCase(),
                               )}
                               onChange={(e) => {
                                 if (e.target.checked) {
@@ -423,8 +423,8 @@ export default function SpielplatzForm({
                                 } else {
                                   setSpielgeraeteList(
                                     spielgaereteList.filter(
-                                      (cat) => cat !== item
-                                    )
+                                      (cat) => cat !== item,
+                                    ),
                                   );
                                 }
                               }}
@@ -435,7 +435,7 @@ export default function SpielplatzForm({
                         ))}
                       </div>
                     </div>
-                  )
+                  ),
                 )}
               </div>
               <div className=" w-full min-w-[200px] flex flex-wrap justify-center gap-2">
@@ -448,14 +448,14 @@ export default function SpielplatzForm({
                       type="checkbox"
                       value={key}
                       defaultChecked={spielgaereteList.includes(
-                        key.toLowerCase()
+                        key.toLowerCase(),
                       )}
                       onChange={(e) => {
                         if (e.target.checked) {
                           setSpielgeraeteList([...spielgaereteList, key]);
                         } else {
                           setSpielgeraeteList(
-                            spielgaereteList.filter((cat) => cat !== key)
+                            spielgaereteList.filter((cat) => cat !== key),
                           );
                         }
                       }}
@@ -479,14 +479,14 @@ export default function SpielplatzForm({
                         type="checkbox"
                         value={item}
                         defaultChecked={spielgaereteList.includes(
-                          item.toLowerCase()
+                          item.toLowerCase(),
                         )}
                         onChange={(e) => {
                           if (e.target.checked) {
                             setSpielgeraeteList([...spielgaereteList, item]);
                           } else {
                             setSpielgeraeteList(
-                              spielgaereteList.filter((cat) => cat !== item)
+                              spielgaereteList.filter((cat) => cat !== item),
                             );
                           }
                         }}
@@ -514,14 +514,14 @@ export default function SpielplatzForm({
                       type="checkbox"
                       value={key}
                       defaultChecked={ausruestungList.includes(
-                        key.toLowerCase()
+                        key.toLowerCase(),
                       )}
                       onChange={(e) => {
                         if (e.target.checked) {
                           setAusruestungList([...ausruestungList, key]);
                         } else {
                           setAusruestungList(
-                            ausruestungList.filter((cat) => cat !== key)
+                            ausruestungList.filter((cat) => cat !== key),
                           );
                         }
                       }}

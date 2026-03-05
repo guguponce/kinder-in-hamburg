@@ -1,17 +1,17 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import "firebase/storage";
-import { type FullMetadata } from "firebase/storage";
-import { getImagesURLs, uploadPostImage } from "@app/api/storageActions";
+import { getImagesURLs } from "@app/api/storageActions-server";
+import { uploadPostImage } from "@app/api/storageActions-client";
 import { convertAllFilesToWebp } from "@app/utils/functions";
 import { ImageUploaderUI } from "./ImageUploaderUI";
 
 interface ImageUploaderProps {
+  bucket: string;
   setImagesUrlsReady: React.Dispatch<
     React.SetStateAction<{
       ready: boolean;
       urls: string[];
-      metadata?: FullMetadata;
+      metadata?: Record<string, any>;
     }>
   >;
   id: number;
@@ -19,16 +19,17 @@ interface ImageUploaderProps {
 }
 
 export const ImageUploader = ({
+  bucket,
   id,
   setImagesUrlsReady,
   email,
 }: ImageUploaderProps) => {
   const [previousImagesURLS, setPreviousImagesURLS] = useState<
-    Array<{ url: string; fileName: string; metadata?: FullMetadata }>
+    Array<{ url: string; fileName: string; metadata?: Record<string, any> }>
   >([]);
   const [imageFiles, setImageFiles] = useState<Array<File>>([]);
   const [imagesURLS, setImagesURLS] = useState<
-    Array<{ url: string; fileName: string; metadata?: FullMetadata }>
+    Array<{ url: string; fileName: string; metadata?: Record<string, any> }>
   >([]);
   const [localImageUrl, setLocalImageUrl] = useState<string[]>([]);
   const [uploadStatus, setUploadStatus] = useState<
@@ -37,10 +38,10 @@ export const ImageUploader = ({
   const fileInputRef = React.useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    getImagesURLs(`postsImages/${id}`).then((urls) => {
+    getImagesURLs(bucket, id.toString()).then((urls) => {
       setPreviousImagesURLS(urls);
     });
-  }, [id]);
+  }, [bucket, id]);
 
   useEffect(() => {
     if (!imageFiles.length) {
@@ -59,7 +60,7 @@ export const ImageUploader = ({
     const { urls, files } = await convertAllFilesToWebp(
       e.target.files,
       1200,
-      300
+      300,
     );
     setImageFiles((prev) => [...prev, ...files]);
     setLocalImageUrl((prev) => [...prev, ...urls]);
@@ -71,12 +72,13 @@ export const ImageUploader = ({
       imageFiles.map((image) => {
         uploadPostImage(
           email,
+          bucket,
           id.toString(),
           image,
           setImagesURLS,
-          setUploadStatus
+          setUploadStatus,
         );
-      })
+      }),
     )
       .then(() => {
         setImageFiles([]);

@@ -1,9 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import "firebase/storage";
 import { convertAllFilesToWebp } from "@app/utils/functions";
 import { iSessionUser } from "@app/utils/types";
-import { handleUploadToSupabaseStorage } from "@app/api/storageActions";
+import { uploadSpielplatzImage } from "@app/api/storageActions-client";
 import { getAllImagesURLFromSupabaseFolder } from "@app/api/spActions";
 import ImageUploaderUI from "@components/@PostForm/ImageUploaderUI";
 
@@ -65,7 +64,7 @@ export const SpielplatzImageUploader = ({
     const { urls, files } = await convertAllFilesToWebp(
       e.target.files,
       1200,
-      300
+      300,
     );
 
     setImageFiles((prev) => [...prev, ...files]);
@@ -77,26 +76,21 @@ export const SpielplatzImageUploader = ({
     if (!imageFiles.length) return;
     setUploadStatus("uploading");
     try {
-      const urls = (
-        await Promise.all(
-          imageFiles.map((image) =>
-            handleUploadToSupabaseStorage(id.toString(), "spielplaetze", image)
-          )
-        )
-      )
-        .filter((url) => !!url.data)
-        .map(
-          ({ data }) =>
-            data as {
-              url: string;
-              fileName: string;
-            }
-        );
+      await Promise.all(
+        imageFiles.map((image) =>
+          uploadSpielplatzImage(
+            user.email as string,
+            "spielplaetze",
+            id.toString(),
+            image,
+            setImagesURL,
+            setUploadStatus,
+          ),
+        ),
+      );
       setImageFiles([]);
       setLocalImageUrl([]);
 
-      fileInputRef.current!.value = "";
-      setImagesURL((prev) => [...prev, ...urls]);
       setUploadStatus("success");
     } catch (e) {
       setUploadStatus("error");
