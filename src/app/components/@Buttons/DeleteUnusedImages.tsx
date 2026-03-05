@@ -2,7 +2,7 @@
 import {
   deleteUnusedFlohmaerkteImages,
   deleteUnusedPostsImages,
-} from "@app/api/storageActions";
+} from "@app/api/storageActions-server";
 import React from "react";
 
 export default function DeleteUnusedImages() {
