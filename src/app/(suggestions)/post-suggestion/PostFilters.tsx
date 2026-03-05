@@ -476,7 +476,7 @@ export default function PostFilters({
                   className={`alterRange w-full ${isAlleAlterChecked ? "opacity-50" : ""}`}
                 />
                 <span
-                  className={`alterRangeTag absolute -bottom-5 text-red-800 font-bold z-30`}
+                  className={`alterRangeTag absolute -bottom-5 text-negative-800 font-bold z-30`}
                   style={{
                     left: `calc(${(parseInt(queryAlter) / 27) * 100}% - ${(parseInt(queryAlter) / 27) * 1}rem)`,
                   }}
@@ -527,7 +527,6 @@ export default function PostFilters({
 
                               setSpielgeraeteFilter &&
                                 setSpielgeraeteFilter((prev) => {
-                                  console.log(spg, prev);
                                   if (prev.includes(spg)) {
                                     return prev.filter((v) => v !== spg);
                                   }

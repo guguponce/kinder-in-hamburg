@@ -241,12 +241,12 @@ export default function URLFilteredList({
         </aside>
         <div className="flex flex-col md:flex-row items-center justify-end px-2 gap-2 w-full">
           {anyFilterUsed && (
-            <div className="flex-grow self-stretch flex flex-col gap-1 rounded bg-hh-300 bg-opacity-75 p-1  mx-2">
-              <div className="px-1 flex flex-wrap-reverse gap-2 items-center">
+            <div className="flex-grow self-stretch flex flex-col gap-1 rounded bg-hh-300 bg-opacity-75 p-1">
+              <div className="px-1 flex flex-wrap-reverse gap-2 items-end">
                 <h4 className="font-semibold">Angewendete Filter:</h4>
                 <button
                   onClick={resetFilters}
-                  className="deleteFilterButton p-[2px] pl-2 ml-auto bg-negative-500 text-hh-50  font-semibold hover:bg-negative-500 hover:bg-opacity-25 hover:border-negative-800 hover:text-negative-800 focus:-outline-offset-1 focus-within:-outline-offset-1 focus-visible:-outline-offset-1 active:outline-offset-1 -800 focus:outline-negative-600 focus-within:outline-negative-600 focus-visible:outline-negative-600 rounded-full text-xs flex gap items-center focus:border-transparent focus-within:border-transparent focus-visible:border-transparent transition-all"
+                  className="deleteFilterButton p-[2px] pl-2 ml-auto mt-[2px]  bg-negative-500 text-hh-50  font-semibold hover:bg-negative-500 hover:bg-opacity-25 hover:border-negative-800 hover:text-negative-800 focus:-outline-offset-1 focus-within:-outline-offset-1 focus-visible:-outline-offset-1 active:outline-offset-1 -800 focus:outline-negative-600 focus-within:outline-negative-600 focus-visible:outline-negative-600 rounded-full text-xs flex gap items-center focus:border-transparent focus-within:border-transparent focus-visible:border-transparent transition-all"
                 >
                   <span className="hidden xs:inline pr-1">Alle</span>
                   <span>zurücksetzen</span>

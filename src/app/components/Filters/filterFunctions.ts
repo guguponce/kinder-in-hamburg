@@ -3,7 +3,7 @@ import {
   categoryNames,
   spielgeraeteList,
 } from "@app/utils/constants";
-import { getPlainText, isTypePost } from "@app/utils/functions";
+import { parseDescriptionWithTags } from "@app/utils/functions";
 import { iBezirk, iPost, iSpielplatz } from "@app/utils/types";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
@@ -11,11 +11,11 @@ export const orderPostsListFx = (list: iPost[], order: string) => {
   switch (order) {
     case "neueste":
       return [...list].sort(
-        (a, b) => (b.lastUpdate || b.createdAt) - (a.lastUpdate || a.createdAt)
+        (a, b) => (b.lastUpdate || b.createdAt) - (a.lastUpdate || a.createdAt),
       );
     case "beliebste":
       return [...list].sort((a, b) =>
-        a.pinnedPost ? -1 : b.pinnedPost ? 1 : 0
+        a.pinnedPost ? -1 : b.pinnedPost ? 1 : 0,
       );
     case "az":
       return [...list].sort((a, b) => a.title.localeCompare(b.title));
@@ -32,7 +32,7 @@ export const orderSpielplaetzeListFx = (list: iSpielplatz[], order: string) => {
       return [...list].sort((a, b) => b.createdAt - a.createdAt);
     case "beliebste":
       return [...list].sort((a, b) =>
-        a.pinnedSpielplatz ? -1 : b.pinnedSpielplatz ? 1 : 0
+        a.pinnedSpielplatz ? -1 : b.pinnedSpielplatz ? 1 : 0,
       );
     case "az":
       return [...list].sort((a, b) => a.title.localeCompare(b.title));
@@ -46,7 +46,7 @@ export const orderSpielplaetzeListFx = (list: iSpielplatz[], order: string) => {
 export const filterCategoriesFX = (
   list: iPost[],
   categories: string[],
-  every: boolean
+  every: boolean,
 ) => {
   if (!categories.length) return list;
   return list.filter((post) => {
@@ -58,16 +58,16 @@ export const filterCategoriesFX = (
 export const filterSpielgeraeteFX = (
   list: iSpielplatz[],
   spielgeraete: string[],
-  every: boolean
+  every: boolean,
 ) => {
   if (!spielgeraete.length) return list;
   const filteredSpielgeraete = spielgeraete.filter((s) =>
-    spielgeraeteList.includes(s)
+    spielgeraeteList.includes(s),
   );
   return list.filter((sp) => {
     if (every)
       return filteredSpielgeraete.every((cat) =>
-        sp.spielgeraete?.includes(cat)
+        sp.spielgeraete?.includes(cat),
       );
     return filteredSpielgeraete.some((cat) => sp.spielgeraete?.includes(cat));
   });
@@ -76,7 +76,7 @@ export const filterSpielgeraeteFX = (
 export const filterTypesFX = (
   list: iSpielplatz[],
   types: string[],
-  every: boolean
+  every: boolean,
 ) => {
   if (!types.length) return list;
   return list.filter((sp) => {
@@ -87,14 +87,14 @@ export const filterTypesFX = (
 
 export const filterBezirkeFX = <T extends iPost | iSpielplatz>(
   list: T[],
-  bezirke: string[]
+  bezirke: string[],
 ): T[] => {
   if (!bezirke.length) return list;
   return list.filter((post) => bezirke.includes(post.bezirk));
 };
 export const filterStadtteileFX = <T extends iPost | iSpielplatz>(
   list: T[],
-  stadtteile: string[]
+  stadtteile: string[],
 ): T[] => {
   if (!stadtteile.length) return list;
   return list.filter((post) => {
@@ -104,7 +104,7 @@ export const filterStadtteileFX = <T extends iPost | iSpielplatz>(
 
 export const filterAlterFX = <T extends iPost | iSpielplatz>(
   list: T[],
-  queryAlter: string
+  queryAlter: string,
 ): T[] => {
   if (!queryAlter) return list;
   return list.filter((post) => {
@@ -123,7 +123,7 @@ export const filterAlterFX = <T extends iPost | iSpielplatz>(
 
 export const filteredBySearchFX = <T extends iPost | iSpielplatz>(
   list: T[],
-  searchQuery: string
+  searchQuery: string,
 ): T[] => {
   if (!searchQuery) return list as T[];
   const lowerQuery = searchQuery.toLowerCase();
@@ -132,7 +132,7 @@ export const filteredBySearchFX = <T extends iPost | iSpielplatz>(
     const { text, title } = post;
     const titleMatch = title.toLowerCase().includes(lowerQuery);
     if (titleMatch) return true;
-    const plainText = typeof text === "string" ? text : getPlainText(text);
+    const plainText = parseDescriptionWithTags(text).toLowerCase();
     return plainText.split(/\s+/).some((word) => word.startsWith(lowerQuery));
   });
 };
@@ -144,7 +144,7 @@ export const filterAndSearchPosts = (
   bezirkeFilter: string[],
   categoriesFilter: string[],
   order: string,
-  everyCategory: boolean
+  everyCategory: boolean,
 ) => {
   const orderedList = orderPostsListFx(list, order);
   const filteredBySearch = filteredBySearchFX(orderedList, searchQuery);
@@ -156,7 +156,7 @@ export const filterAndSearchPosts = (
 export const createQueryString = (
   name: string,
   value: string,
-  params: URLSearchParams
+  params: URLSearchParams,
 ) => {
   if (params.has(name)) {
     params.delete(name);
@@ -172,7 +172,7 @@ export const createArrayQueryString = (
   name: string,
   value: string,
   array: string[],
-  params: URLSearchParams
+  params: URLSearchParams,
 ) => {
   const oldValues = params.getAll(name);
   const currentValues = array.includes(value)
@@ -211,13 +211,13 @@ export const removeFilter = ({
         createQueryString(
           filterType,
           "",
-          new URLSearchParams(searchParams.toString())
+          new URLSearchParams(searchParams.toString()),
         ),
-      { scroll: false }
+      { scroll: false },
     );
   } else if (stateType === "object" && arrayStateSetter) {
     arrayStateSetter(
-      value === "all" ? [] : (state as string[]).filter((v) => v !== value)
+      value === "all" ? [] : (state as string[]).filter((v) => v !== value),
     );
     if (filterType !== "spielgeraete")
       router.push(
@@ -227,16 +227,16 @@ export const removeFilter = ({
             filterType,
             value,
             value === "all" ? [] : (state as string[]),
-            new URLSearchParams(searchParams.toString())
+            new URLSearchParams(searchParams.toString()),
           ),
-        { scroll: false }
+        { scroll: false },
       );
   }
 };
 
 export const getAvailableStadtteile = (
   postsList: iPost[] | iSpielplatz[],
-  bezirke: iBezirk[]
+  bezirke: iBezirk[],
 ) => {
   const bWS = postsList.reduce(
     (acc, post) => {
@@ -249,14 +249,14 @@ export const getAvailableStadtteile = (
 
       return acc;
     },
-    {} as Record<string, Set<string>>
+    {} as Record<string, Set<string>>,
   );
 
   const result = Object.fromEntries(
     Object.entries(bWS).map(([bezirk, stadtteileSet]) => [
       bezirk,
       Array.from(stadtteileSet),
-    ])
+    ]),
   );
 
   return result;
