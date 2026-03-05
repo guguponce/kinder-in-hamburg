@@ -1,3 +1,4 @@
+"use server";
 import { getUserEvents, getUsersSuggestions } from "@app/api/dbActions";
 import AdminComponents from "@app/providers/AdminServerComponents";
 import { getServerUser } from "@app/api/auth/supabaseAuth";
@@ -9,12 +10,12 @@ import DeleteUnusedImages from "@components/@Buttons/DeleteUnusedImages";
 import AdminRoute from "@app/providers/AdminRoute";
 import FlohmaerkteSearchList from "./FlohmaerkteSearchList";
 import { unstable_cache } from "next/cache";
+
 export const metadata = {
   title: "Dashboard",
   description:
     "Dein Dashboard - Verwalte deine Vorschläge und entdecke neue Möglichkeiten in Hamburg",
 };
-
 const cachedUserPosts = unstable_cache(getUsersSuggestions, ["posts"], {
   revalidate: 300,
 });
@@ -23,7 +24,7 @@ const cachedUserEvents = unstable_cache(
   ["events", "flohmaerkte"],
   {
     revalidate: 300,
-  }
+  },
 );
 
 export default async function DashboardPage() {
@@ -33,6 +34,7 @@ export default async function DashboardPage() {
   }
   const userPosts = await cachedUserPosts(user.email);
   const userFlohs = await cachedUserEvents(user.email);
+
   return (
     <AdminRoute>
       <main className="w-[calc(100%-2rem)] max-w-[1000px] p-4 bg-hh-100 rounded-md mx-auto flex flex-col items-center gap-8">
@@ -41,7 +43,10 @@ export default async function DashboardPage() {
           <span className="block text-sm">({user.email})</span>
         </h2>
 
-        <ul>TODO</ul>
+        <ul>
+          TODO
+          <li>Add next week pins to Flohmärkte map in Flohmaerkte Page?</li>
+        </ul>
         <section className=" w-full max-w-[800px] flex justify-between items-center flex-wrap-reverse gap-4 border-2 border-hh-700 p-4 rounded-md">
           <div className="flex flex-col items-start gap-2">
             <Link
@@ -103,7 +108,7 @@ export default async function DashboardPage() {
                     </div>
                   </div>
                 </div>
-              ) : null
+              ) : null,
             )}
           </section>
         )}
