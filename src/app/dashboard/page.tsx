@@ -1,4 +1,3 @@
-"use server";
 import { getUserEvents, getUsersSuggestions } from "@app/api/dbActions";
 import AdminComponents from "@app/providers/AdminServerComponents";
 import { getServerUser } from "@app/api/auth/supabaseAuth";
