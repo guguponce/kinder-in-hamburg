@@ -22,12 +22,11 @@ import {
   parseContributor,
   separateByStatus,
 } from "@app/utils/functions";
-import { deletePreviousFlohmaerkteImages } from "./storageActions";
+import { deletePreviousFlohmaerkteImages } from "./storageActions-server";
 import {
   revalidateFlohmarkt,
   revalidatePost,
 } from "@app/utils/actions/revalidate";
-import { PostgrestError } from "@supabase/supabase-js";
 
 const supabaseAdmin = createClient();
 
@@ -753,9 +752,16 @@ export const getAllPostsIds = async (id?: string) => {
     if (data.some((d) => d.error)) {
       throw new Error("Error getting posts IDs from a db");
     }
-    const ids = [...data.map((d) => d.data!.map((d) => d.id)).flat()];
+    const ids = [
+      ...data
+        .map((d) =>
+          d.data!.map((d) => (typeof d.id === "string" ? d.id : String(d.id))),
+        )
+        .flat(),
+    ];
     return id ? [...ids, id] : ids;
   } catch (error) {
+    console.error("Error getting posts IDs:", error);
     return false;
   }
 };
@@ -1153,6 +1159,20 @@ export const getApprovedEvents = async (eventTable: string = "flohmaerkte") => {
   }
 };
 
+export const getAllEvents = async (eventTable: string = "flohmaerkte") => {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from(eventTable)
+      .select("*")
+      .order("date", { ascending: true });
+    if (error) {
+      throw new Error("There was a problem getting the events.");
+    }
+    return data.map((f) => parseFlohmarkt(f)) as iFlohmarkt[];
+  } catch (error) {
+    return false;
+  }
+};
 export const getAllApprovedEvents = async (
   eventTable: string = "flohmaerkte",
 ) => {
@@ -1292,7 +1312,8 @@ export const getUserEvents = async (
     const { data, error } = await supabaseAdmin
       .from(eventTable)
       .select("*")
-      .ilike("addedBy", `%"email":"${email}"%`);
+      .ilike("addedBy", `%"email":"${email}"%`)
+      .order("date", { ascending: true });
 
     if (error) {
       throw new Error("There was a problem getting your suggested events.");
@@ -1309,10 +1330,8 @@ export const getUserEvents = async (
       },
       { old: [], future: [] } as { old: iFlohmarkt[]; future: iFlohmarkt[] },
     );
-    // flohs sorted ascending by date from today, and older ones at the end
-
     return separateByStatus([
-      ...[...future].sort((a, b) => a.date - b.date),
+      ...future,
       ...[...old].sort((a, b) => b.date - a.date),
     ]);
   } catch (error) {
@@ -1560,7 +1579,6 @@ export const updateEventStatus = async (
     if (error) {
       throw new Error("There was a problem updating the event.");
     }
-    console.log("Event updated", status);
     return true;
   } catch (error) {
     throw new Error("There was a problem updating the event.");
@@ -1586,13 +1604,22 @@ export const clearLatLonFromEvent = async (
   }
 };
 
-export const getAllEventsIds = async (eventTable: string = "flohmaerkte") => {
+export const getAllEventsIds = async (eventTable?: string) => {
   try {
-    const { data, error } = await supabaseAdmin.from(eventTable).select("id");
-    if (error) {
-      throw new Error("Error getting events IDs from a db");
+    const data = eventTable
+      ? await supabaseAdmin.from(eventTable).select("id")
+      : await Promise.all(
+          ["flohmaerkte", "events"].map((table) =>
+            supabaseAdmin.from(table).select("id"),
+          ),
+        );
+
+    if (data instanceof Array) {
+      const ids = data.map((d) => d.data!.map((d) => d.id)).flat();
+      return ids;
+    } else {
+      return data.data!.map((d) => d.id);
     }
-    return data.map((d) => d.id);
   } catch (error) {
     return false;
   }
