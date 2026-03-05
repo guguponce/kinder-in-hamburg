@@ -5,15 +5,18 @@ import AddLatLon from "@components/@Buttons/AddLatLon";
 import OldButtonSetter from "./OldButtonSetter";
 import ErrorFetchingData from "@components/@NotFound/ErrorFetchingData";
 import HorizontalCard from "@components/@Cards/HorizontalCard";
-import { addressWithoutCity, isTypeFlohmarkt } from "@app/utils/functions";
+import { addressWithoutCity, separateByStatus } from "@app/utils/functions";
 import { getAllFlohmaerteSeparatedByStatus } from "@app/api/dbActions";
 import { unstable_cache } from "next/cache";
 import RevalidateButton from "../components/@Buttons/RevalidateButton";
+import { iFlohmarkt } from "@app/utils/types";
 
 export default async function AllEventsStatusSetter({
   eventsType,
+  events,
 }: {
   eventsType: "flohmaerkte" | "events";
+  events?: iFlohmarkt[];
 }) {
   const cachedEvents = unstable_cache(
     getAllFlohmaerteSeparatedByStatus,
@@ -21,9 +24,11 @@ export default async function AllEventsStatusSetter({
     {
       revalidate: 600,
       tags: [eventsType],
-    }
+    },
   );
-  const allEventsByStatus = await cachedEvents(false, eventsType);
+  const allEventsByStatus = events
+    ? separateByStatus(events)
+    : await cachedEvents(false, eventsType);
   if (!allEventsByStatus)
     return (
       <ErrorFetchingData
@@ -113,7 +118,7 @@ export default async function AllEventsStatusSetter({
                     ))}
                 </article>
               </section>
-            )
+            ),
         )}
       </main>
     </AdminRoute>
