@@ -19,10 +19,10 @@ export default function FlohmaerkteSearchList({
 }) {
   const [searchQuery, setSearchQuery] = React.useState("");
   const flohsRef = React.useRef(userFlohs);
-
+  const deferredQuery = React.useDeferredValue(searchQuery);
   const flohmaerkteLists = React.useMemo(() => {
-    if (!searchQuery) return flohsRef.current;
-    const query = searchQuery.toLowerCase();
+    if (!deferredQuery) return flohsRef.current;
+    const query = deferredQuery.toLowerCase();
     const lists: iUserFlohs = {};
     Object.entries(flohsRef.current).forEach(([status, flohs]) => {
       lists[status] = flohs?.filter(
@@ -32,7 +32,7 @@ export default function FlohmaerkteSearchList({
       );
     });
     return lists;
-  }, [searchQuery]);
+  }, [deferredQuery]);
   return (
     <>
       <input
