@@ -22,14 +22,13 @@ export default function FlohmaerkteSearchList({
 
   const flohmaerkteLists = React.useMemo(() => {
     if (!searchQuery) return flohsRef.current;
+    const query = searchQuery.toLowerCase();
     const lists: iUserFlohs = {};
     Object.entries(flohsRef.current).forEach(([status, flohs]) => {
       lists[status] = flohs?.filter(
         (floh) =>
-          floh.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          floh.optionalComment
-            ?.toLowerCase()
-            .includes(searchQuery.toLowerCase())
+          floh.title.toLowerCase().includes(query) ||
+          floh.optionalComment?.toLowerCase().includes(query),
       );
     });
     return lists;
@@ -71,7 +70,7 @@ export default function FlohmaerkteSearchList({
                   </div>
                 </div>
               </div>
-            ) : null
+            ) : null,
           )}
         </section>
       )}
