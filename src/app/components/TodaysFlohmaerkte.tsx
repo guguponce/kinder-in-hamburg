@@ -9,7 +9,7 @@ export default function TodaysFlohmaerkte({
   todayFlohmaerkte: iFlohmarkt[];
 }) {
   return (
-    <div className="relative flex  flex-col rounded-md bg-hh-200 bg-opacity-50 min-w-[220px] w-fit max-w-full p-2 pt-0 shadow-sm h-fit">
+    <div className="relative flex  flex-col rounded-md bg-hh-200 hover:shadow-lg transition-all bg-opacity-50 min-w-[220px] w-fit max-w-full p-2 pt-0 shadow-sm h-fit">
       <h2 className="text-2xl font-semibold text-hh-800 text-center p-2 pb-0  self-start">
         Heute
       </h2>
