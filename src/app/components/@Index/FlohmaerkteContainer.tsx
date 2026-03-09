@@ -84,7 +84,13 @@ export default async function FlohmaerkteContainer() {
               : ""}
         </h2>
       )}
-
+      <h2 className="text-lg sm:text-2xl font-bold text-start self-start pb-2 sm:pb-4 px-3 text-nowrap max-w-full">
+        {!isSunday && todayFlohmaerkteLength && futureFlohmaerkteLength
+          ? `Diese Woche gibt es außerdem ${futureFlohmaerkteLength} ${futureFlohmaerkteLength > 1 ? "weitere Flohmärkte" : "Flohmarkt"}`
+          : isSunday && todayFlohmaerkteLength
+            ? `Heute gibt es ${todayFlohmaerkteLength} ${todayFlohmaerkteLength > 1 ? "Flohmärkte" : "Flohmarkt"} in dieser Woche`
+            : `Diese Woche gibt es ${futureFlohmaerkteLength} ${futureFlohmaerkteLength > 1 ? "Flohmärkte" : "Flohmarkt"}`}
+      </h2>
       <div className="flex flex-col items-center gap-4 max-w-full">
         {!!flohmaerkte.length ? (
           <section
@@ -111,13 +117,13 @@ export default async function FlohmaerkteContainer() {
                     ? todayFlohmaerkte
                     : undefined
                 }
-                title={
-                  !isSunday && todayFlohmaerkteLength && futureFlohmaerkteLength
-                    ? `Diese Woche gibt es außerdem ${futureFlohmaerkteLength} ${futureFlohmaerkteLength > 1 ? "weitere Flohmärkte" : "Flohmarkt"}`
-                    : isSunday && todayFlohmaerkteLength
-                      ? `Heute gibt es ${todayFlohmaerkteLength} ${todayFlohmaerkteLength > 1 ? "Flohmärkte" : "Flohmarkt"} in dieser Woche`
-                      : `Diese Woche gibt es ${futureFlohmaerkteLength} ${futureFlohmaerkteLength > 1 ? "weitere Flohmärkte" : "Flohmarkt"}`
-                }
+                // title={
+                //   !isSunday && todayFlohmaerkteLength && futureFlohmaerkteLength
+                //     ? `Diese Woche gibt es außerdem ${futureFlohmaerkteLength} ${futureFlohmaerkteLength > 1 ? "weitere Veranstaltungen" : "Veranstaltung"}`
+                //     : isSunday && todayFlohmaerkteLength
+                //       ? `Heute gibt es ${todayFlohmaerkteLength} ${todayFlohmaerkteLength > 1 ? "Veranstaltungen" : "Veranstaltung"} in dieser Woche`
+                //       : `Diese Woche gibt es ${futureFlohmaerkteLength} ${futureFlohmaerkteLength > 1 ? "weitere Veranstaltungen" : "Veranstaltung"}`
+                // }
                 events={!onlyToday || isSunday ? futureFlohmaerkte : []}
                 titleShadow
                 className="text-hh-50"
