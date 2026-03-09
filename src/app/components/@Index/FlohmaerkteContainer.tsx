@@ -77,9 +77,9 @@ export default async function FlohmaerkteContainer() {
       )}
     >
       <PageTitle title="Flohmärkte" className="pageTitle" link="/flohmaerkte" />
-      {(todaysMonth < 3 || todaysMonth > 9) && (
+      {(todaysMonth < 2 || todaysMonth > 9) && (
         <h2 className="w-fit mx-auto text-base italic mb-4 p-2 bg-hh-800 bg-opacity-75 md:p-4 rounded border-2 font-semibold text-hh-50 border-hh-700 max-w-[480px] text-center">
-          {todaysMonth < 3
+          {todaysMonth < 2
             ? "Die Hochsaison der Flohmärkte hat noch nicht begonnen, aber im Frühjahr geht es endlich los."
             : todaysMonth > 9
               ? "Die Flohmarktsaison neigt sich dem Ende zu. Aber in den kalten Monaten gibt es noch welche."
@@ -87,21 +87,16 @@ export default async function FlohmaerkteContainer() {
         </h2>
       )}
 
-      <div className="flex flex-col items-center gap-4 lg:gap-8 max-w-full">
+      <div className="flex flex-col items-center gap-4 max-w-full">
         {!!flohmaerkte.length ? (
           <section
             id="current-week-section"
-            className={`flex ${
-              isSunday ? "flex-wrap-reverse" : "flex-wrap"
-            } gap-4 w-full justify-center`}
+            className={`flex flex-col gap-4 w-full justify-center items-center`}
           >
             <div
               id="heute-map-container"
-              className={`flex ${onlyToday ? "flex-row lg:w-full justify-center lg:items-stretch flex-wrap md:flex-nowrap" : "lg:max-w-[400px] w-full flex-col"} gap-4 items-center rounded bg-hh-200 bg-opacity-50 p-2 shadow-md`}
+              className={`flex max-w-[1000px] ${onlyToday ? "flex-row w-full justify-center flex-wrap md:flex-nowrap" : "w-full flex-col"} gap-4 items-center rounded bg-hh-200 bg-opacity-50 p-2 shadow-md`}
             >
-              {!!todayFlohmaerkteLength && !isSunday && (
-                <TodaysFlohmaerkte todayFlohmaerkte={todayFlohmaerkte} />
-              )}
               <DynamicEventsMap
                 showTermine={!onlyToday}
                 thisWeek={[...todayFlohmaerkte, ...futureFlohmaerkte].filter(
@@ -110,24 +105,27 @@ export default async function FlohmaerkteContainer() {
                 today={getTodayNexMonday().today}
               />
             </div>
-            {(!onlyToday || isSunday) && (
-              <div className="flex flex-grow w-full sm:min-w-[400px] justify-center sm:w-1/4">
-                <BezirkeScrollableEvents
-                  title={
-                    !isSunday &&
-                    todayFlohmaerkteLength &&
-                    futureFlohmaerkteLength
-                      ? `Diese Woche gibt es außerdem ${futureFlohmaerkteLength} ${futureFlohmaerkteLength > 1 ? "weitere Flohmärkte" : "Flohmarkt"}`
-                      : isSunday && todayFlohmaerkteLength
-                        ? `Heute gibt es ${todayFlohmaerkteLength} ${todayFlohmaerkteLength > 1 ? "Flohmärkte" : "Flohmarkt"} in dieser Woche`
-                        : `Diese Woche gibt es ${futureFlohmaerkteLength} ${futureFlohmaerkteLength > 1 ? "weitere Flohmärkte" : "Flohmarkt"}`
-                  }
-                  events={futureFlohmaerkte}
-                  titleShadow
-                  className="text-hh-50"
-                />
-              </div>
-            )}
+
+            <div className="flex flex-grow w-full justify-center mb-4">
+              <BezirkeScrollableEvents
+                todaysFlohmaerkte={
+                  !!todayFlohmaerkteLength && !isSunday
+                    ? todayFlohmaerkte
+                    : undefined
+                }
+                title={
+                  !isSunday && todayFlohmaerkteLength && futureFlohmaerkteLength
+                    ? `Diese Woche gibt es außerdem ${futureFlohmaerkteLength} ${futureFlohmaerkteLength > 1 ? "weitere Flohmärkte" : "Flohmarkt"}`
+                    : isSunday && todayFlohmaerkteLength
+                      ? `Heute gibt es ${todayFlohmaerkteLength} ${todayFlohmaerkteLength > 1 ? "Flohmärkte" : "Flohmarkt"} in dieser Woche`
+                      : `Diese Woche gibt es ${futureFlohmaerkteLength} ${futureFlohmaerkteLength > 1 ? "weitere Flohmärkte" : "Flohmarkt"}`
+                }
+                events={!onlyToday || isSunday ? futureFlohmaerkte : []}
+                titleShadow
+                className="text-hh-50"
+                type="flohmaerkte"
+              />
+            </div>
           </section>
         ) : (
           <NoFlohmarktBanner weekday={weekday} isSunday={isSunday} />
