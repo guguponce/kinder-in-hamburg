@@ -19,8 +19,8 @@ export default function PageTitle({
       <Link
         href={link}
         className={cn(
-          `font-bold min-w-fit text-center ${logoFont.className} tracking-wide text-2xl text-hh-50 mt-4 mx-4 mb-2 hover:text-hh-100`,
-          className
+          `font-bold min-w-fit text-center ${logoFont.className} tracking-wide text-2xl text-hh-50 mt-4 mx-4 mb-2 hover:text-white`,
+          className,
         )}
         style={{ textShadow }}
       >
@@ -33,7 +33,7 @@ export default function PageTitle({
       id="page-title"
       className={cn(
         `font-bold min-w-fit text-center ${logoFont.className} tracking-wide text-hh-50 mt-4 md:px-4 mb-2 break-words`,
-        className
+        className,
       )}
       style={{ textShadow }}
     >
