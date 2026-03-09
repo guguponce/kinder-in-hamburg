@@ -26,7 +26,9 @@ export default function ScrollableCardList({
   withDate,
   cardClassname,
   color,
+  showButtons,
 }: {
+  showButtons?: boolean;
   cardClassname?: string;
   key?: string;
   size: "small" | "medium" | "large";
@@ -46,7 +48,7 @@ export default function ScrollableCardList({
           ? HorizontalCard
           : TextPriorityCard;
   return (
-    <ScrollableContainer color={color}>
+    <ScrollableContainer color={color} showButtons={showButtons}>
       {isTypePost(posts[0]) || isTypeSpielplatz(posts[0])
         ? (posts as iPost[]).map(({ id, image, title, text, stadtteil }) => (
             <React.Fragment key={id + title + (key || "")}>
