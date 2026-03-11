@@ -87,7 +87,6 @@ export const uploadFlohmarktImage = async (
     .replace(/[\u0300-\u036f]/g, "")
     .replace(/[^a-zA-Z0-9.-]/g, "_")}`;
   const supabaseAdminClient = createClient();
-  console.log("Path for upload:", path);
   try {
     const { data, error } = await supabaseAdminClient.storage
       .from("flohmaerkte")

@@ -539,7 +539,6 @@ export default function FlohForm({
                       name={"date"}
                       type="date"
                       onChange={(e) => {
-                        console.log("Date input changed:", e.target.value);
                         return setValue(
                           "date",
                           new Date(e.target.value).getTime(),
