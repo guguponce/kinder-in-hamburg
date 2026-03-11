@@ -68,8 +68,8 @@ export default async function FlohmaerkteContainer() {
   return (
     <section
       className={cn(
-        "rounded-lg bg-gradient-to-b from-hh-200-50 via-hh-200-50 to-hh-50 bg-opacity-25 w-full p-1 sm:p-4 flex flex-col items-centertext-hh-50 shadow-2xl",
-        futureFlohmaerkteLength
+        "rounded-lg bg-gradient-to-b from-hh-200-50 via-hh-200-50 to-hh-50 bg-opacity-25 w-full p-1 sm:p-4 flex flex-col items-center text-hh-50 shadow-2xl",
+        futureFlohmaerkteLength > 4
           ? "min-h-[50vh] max-w-[1200px]"
           : "max-w-[800px]",
       )}
@@ -84,12 +84,12 @@ export default async function FlohmaerkteContainer() {
               : ""}
         </h2>
       )}
-      <h2 className="text-lg sm:text-2xl font-bold text-start self-start pb-2 sm:pb-4 px-3 text-nowrap max-w-full">
+      <h2 className="text-lg sm:text-2xl font-bold text-hh-800 pb-2 sm:pb-4 px-3 text-nowrap max-w-full">
         {!isSunday && todayFlohmaerkteLength && futureFlohmaerkteLength
-          ? `Diese Woche gibt es außerdem ${futureFlohmaerkteLength} ${futureFlohmaerkteLength > 1 ? "weitere Flohmärkte" : "Flohmarkt"}`
+          ? `Diese Woche gibt es außerdem ${futureFlohmaerkteLength} ${futureFlohmaerkteLength > 1 ? "weitere Veranstaltungen" : "Veranstaltung"}`
           : isSunday && todayFlohmaerkteLength
-            ? `Heute gibt es ${todayFlohmaerkteLength} ${todayFlohmaerkteLength > 1 ? "Flohmärkte" : "Flohmarkt"} in dieser Woche`
-            : `Diese Woche gibt es ${futureFlohmaerkteLength} ${futureFlohmaerkteLength > 1 ? "Flohmärkte" : "Flohmarkt"}`}
+            ? `Heute gibt es ${todayFlohmaerkteLength} ${todayFlohmaerkteLength > 1 ? "Veranstaltungen" : "Veranstaltung"} in dieser Woche`
+            : `Diese Woche gibt es ${futureFlohmaerkteLength} ${futureFlohmaerkteLength > 1 ? "Veranstaltungen" : "Veranstaltung"}`}
       </h2>
       <div className="flex flex-col items-center gap-4 max-w-full">
         {!!flohmaerkte.length ? (

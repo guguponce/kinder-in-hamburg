@@ -156,7 +156,7 @@ export default async function BezirkeScrollableEvents({
               <div
                 key={currentBezirk}
                 className={cn(
-                  "min-w-[300px] max-w-full h-fit flex items-center flex-col rounded px-2 pb-2 shadow-md outline outline-2 outline-hh-800",
+                  "min-w-[250px] max-w-full h-fit flex items-center flex-col rounded px-2 pb-2 shadow-md outline outline-2 outline-hh-800",
                   eventsByBezirke[currentBezirk].length > 4 ||
                     displayBezirke.length === 1
                     ? "w-fit"
