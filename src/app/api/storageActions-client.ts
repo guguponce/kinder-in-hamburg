@@ -25,7 +25,10 @@ export const uploadPostImage = async (
       uploadedBy: userEmail,
     },
   };
-  const path = `${id}/${file.name}`;
+  const path = `${id}/${file.name
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-zA-Z0-9.-]/g, "_")}`;
   const supabaseAdminClient = createClient();
   try {
     const { data, error } = await supabaseAdminClient.storage
@@ -79,8 +82,12 @@ export const uploadFlohmarktImage = async (
       name: userName,
     }),
   };
-  const path = `${id}/${file.name}`;
+  const path = `${id}/${file.name
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-zA-Z0-9.-]/g, "_")}`;
   const supabaseAdminClient = createClient();
+  console.log("Path for upload:", path);
   try {
     const { data, error } = await supabaseAdminClient.storage
       .from("flohmaerkte")
@@ -112,7 +119,15 @@ export async function handleUploadToSupabaseStorage(
   folder?: string,
 ) {
   const supabaseAdminClient = createClient();
-  const path = folder ? `${folder}/${file.name}` : `${id}/${file.name}`;
+  const path = folder
+    ? `${folder}/${file.name
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-zA-Z0-9.-]/g, "_")}`
+    : `${id}/${file.name
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-zA-Z0-9.-]/g, "_")}`;
 
   try {
     const { data, error } = await supabaseAdminClient.storage
@@ -156,7 +171,10 @@ export const uploadSpielplatzImage = async (
       uploadedBy: userEmail,
     },
   };
-  const path = `${id}/${file.name}`;
+  const path = `${id}/${file.name
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-zA-Z0-9.-]/g, "_")}`;
   const supabaseAdminClient = createClient();
   try {
     const { data, error } = await supabaseAdminClient.storage
