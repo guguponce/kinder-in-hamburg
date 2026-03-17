@@ -26,7 +26,7 @@ const DynamicEventsMap = dynamic(
         />
       </article>
     ),
-  }
+  },
 );
 export const revalidate = 120;
 
@@ -69,7 +69,7 @@ const getEventsAndFlohmaerkte = unstable_cache(
   {
     revalidate: 3000,
     tags: ["flohmaerkte", "events"],
-  }
+  },
 );
 
 export default async function EventPage() {
@@ -80,12 +80,12 @@ export default async function EventPage() {
   const { today, nextMonday, yesterdayEvening } = getTodayNexMonday();
 
   const thisWeekFlohmaerkte = flohmaerkte.filter(
-    ({ date }) => date > yesterdayEvening && date < nextMonday - 1000 * 60 * 60
+    ({ date }) => date > yesterdayEvening && date < nextMonday - 1000 * 60 * 60,
   );
   const thisWeekEvents = events.filter(
     ({ date, endDate }) =>
       (endDate && endDate > today && date < yesterdayEvening) ||
-      (date > yesterdayEvening && date < nextMonday - 1000 * 60 * 60)
+      (date > yesterdayEvening && date < nextMonday - 1000 * 60 * 60),
   );
 
   const futureEvents = events
@@ -115,7 +115,7 @@ export default async function EventPage() {
         <BezirkeScrollableEvents
           title="Diese Woche"
           events={thisWeekEvents.filter(
-            ({ type }) => type !== "weihnachtsmarkt"
+            ({ type }) => type !== "weihnachtsmarkt",
           )}
           type="events"
         ></BezirkeScrollableEvents>
@@ -128,6 +128,7 @@ export default async function EventPage() {
               type: "flohmarkt",
             })) as iFlohmarkt[]),
           ]}
+          zoom={10}
           showBezirke={false}
           today={today}
           className="max-w-4xl"

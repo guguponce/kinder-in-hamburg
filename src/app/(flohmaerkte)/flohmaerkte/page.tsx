@@ -157,6 +157,7 @@ export default async function FlohmarktPage() {
               future={futureFlohmaerkte}
               thisWeek={thisWeekFlohmaerkte}
               today={today}
+              zoom={10}
               square={false}
             />
           </div>
