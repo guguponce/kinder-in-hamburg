@@ -6,6 +6,8 @@ import PaperPlane from "./@Icons/PaperPlane";
 import { bezirke } from "@app/utils/constants";
 import { cn, getDate, separateInBezirke } from "@app/utils/functions";
 import ScrollableCardList from "./@Cards/ScrollableCardList";
+import Link from "next/link";
+import Button from "./@Buttons/Button";
 
 export default async function BezirkeScrollableEvents({
   events,
@@ -41,7 +43,11 @@ export default async function BezirkeScrollableEvents({
     ? [bezirk]
     : bezirke
         .filter((bez) => eventsBezirke.includes(bez))
-        .sort((a, b) => eventsByBezirke[b].length - eventsByBezirke[a].length);
+        .sort((a, b) => {
+          if (a === "Umland Hamburg") return 1;
+          if (b === "Umland Hamburg") return -1;
+          return eventsByBezirke[b].length - eventsByBezirke[a].length;
+        });
   const heuteMilisec = Date.now();
   const heute = getDate(heuteMilisec, false, true);
   const todayFlohmaerkteLength = todaysFlohmaerkte?.length || 0;
@@ -49,7 +55,7 @@ export default async function BezirkeScrollableEvents({
     <div
       id="bezirke-scrollable-events"
       className={cn(
-        "w-full flex items-stretch flex-wrap gap-4",
+        "w-full flex items-stretch flex-wrap gap-4 scroll-mt-20 hover:bg-hh-800 hover:bg-opacity-10 transition-colors rounded",
         todayFlohmaerkteLength < 3
           ? "md:flex-nowrap"
           : todayFlohmaerkteLength < 4
@@ -144,16 +150,29 @@ export default async function BezirkeScrollableEvents({
               </a>
             </div>
           ))}
-
+        {events.length > 3 && (
+          <div className="flex flex-wrap items-center gap-2 ">
+            {bezirke.map((bez) => (
+              <Link
+                key={bez}
+                className="w-fit rounded-full text-sm text-hh-950 bg-hh-100 px-2"
+                href={`#${bez.toLowerCase().replace(/\s/g, "-")}`}
+              >
+                {bez}
+              </Link>
+            ))}
+          </div>
+        )}
         {!!displayBezirke.length && (
           // <div className="overflow-x-auto w-fit lg:w-full max-w-full flex justify-center flex-wrap gap-2 items-stretch mx-auto">
           <ScrollableContainer
-            containerStyle="max-h-[400px]"
+            containerStyle="max-h-[400px] mb-4"
             color="800"
             showButtons={false}
           >
             {displayBezirke.map((currentBezirk) => (
               <div
+                id={currentBezirk.toLowerCase().replace(/\s/g, "-")}
                 key={currentBezirk}
                 className={cn(
                   "min-w-[250px] max-w-full h-fit flex items-center flex-col rounded px-2 pb-2 shadow-md outline outline-2 outline-hh-800",
