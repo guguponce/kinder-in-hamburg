@@ -8,7 +8,9 @@ export default function MainIntroductionText({
   title,
   text,
   children,
+  shadow,
 }: {
+  shadow?: boolean;
   children?: React.ReactNode;
   title: string;
   text: string;
@@ -17,7 +19,16 @@ export default function MainIntroductionText({
 }) {
   return (
     <div
-      className={`px-2 lg:py-4 rounded  ${variant === "light" ? "text-hh-50" : "text-hh-800"} ${width === "full" ? "w-full" : width === "half" ? "w-1/2" : `w-[${width}%]`} flex flex-col items-center`}
+      className={cn(
+        "px-2 lg:py-4 rounded flex flex-col items-center",
+        variant === "light" ? "text-hh-50" : "text-hh-800",
+        width === "full"
+          ? "w-full"
+          : width === "half"
+            ? "w-1/2"
+            : `w-[${width}%]`,
+        shadow ? "shadow-lg" : "",
+      )}
     >
       <PageTitle title={title} />
       <p
@@ -25,7 +36,7 @@ export default function MainIntroductionText({
           "text-sm sm:text-base italic font-semibold bg-gradient-to-b rounded p-2",
           variant === "light"
             ? "from-hh-800-50 to-hh-800-75"
-            : "from-hh-100-50 : to-hh-100-25"
+            : "from-hh-100-50 : to-hh-100-25",
         )}
       >
         {text}
