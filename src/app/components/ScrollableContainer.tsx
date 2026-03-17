@@ -49,7 +49,7 @@ export default function ScrollableContainer({
         `relative flex items-center ${
           vertical ? "w-full" : "w-fit max-w-full"
         } overflow-hidden h-full scrollable-container`,
-        containerStyle
+        containerStyle,
       )}
     >
       <div
@@ -59,7 +59,7 @@ export default function ScrollableContainer({
               ? "verticalScrollbar w-full overflow-y-auto h-fit max-h-full flex-col"
               : "horizontalScrollbar overflow-x-auto w-fit max-w-full p-1 pb-4 pt-2 h-full"
           } ${scrollbarThumbColor} ${paddingForButtons && showButtons ? "md:px-12" : ""} relative flex gap-2 lg:gap-4 items-stretch`,
-          boxStyle
+          boxStyle,
         )}
         ref={scrollbar}
       >

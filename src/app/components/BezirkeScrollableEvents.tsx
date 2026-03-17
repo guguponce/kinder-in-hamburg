@@ -55,7 +55,7 @@ export default async function BezirkeScrollableEvents({
     <div
       id="bezirke-scrollable-events"
       className={cn(
-        "w-full flex items-stretch flex-wrap gap-4 scroll-mt-20 hover:bg-hh-800 hover:bg-opacity-10 transition-colors rounded",
+        "w-full h-fit flex items-stretch flex-wrap gap-4 scroll-mt-20 hover:bg-hh-700 hover:bg-opacity-20 outline outline-2 outline-offset-2 outline-transparent hover:outline-hh-950 transition-colors duration-500 rounded",
         todayFlohmaerkteLength < 3
           ? "md:flex-nowrap"
           : todayFlohmaerkteLength < 4
@@ -107,7 +107,7 @@ export default async function BezirkeScrollableEvents({
       )}
       <div
         className={cn(
-          "w-fit max-w-full rounded",
+          "w-fit h-fit max-w-full rounded",
           verticalTitle ? " flex items-stretch" : "",
           className,
         )}
@@ -150,21 +150,7 @@ export default async function BezirkeScrollableEvents({
               </a>
             </div>
           ))}
-        {events.length > 3 && (
-          <div className="flex flex-wrap items-center gap-2 ">
-            {bezirke.map((bez) => (
-              <Link
-                key={bez}
-                className="w-fit rounded-full text-sm text-hh-950 bg-hh-100 px-2"
-                href={`#${bez.toLowerCase().replace(/\s/g, "-")}`}
-              >
-                {bez}
-              </Link>
-            ))}
-          </div>
-        )}
         {!!displayBezirke.length && (
-          // <div className="overflow-x-auto w-fit lg:w-full max-w-full flex justify-center flex-wrap gap-2 items-stretch mx-auto">
           <ScrollableContainer
             containerStyle="max-h-[400px] mb-4"
             color="800"
@@ -265,8 +251,20 @@ export default async function BezirkeScrollableEvents({
               </div>
             ))}
           </ScrollableContainer>
-          // </div>
         )}
+        {/* {events.length > 3 && displayBezirke.length > 1 && (
+          <div className="flex flex-wrap items-center gap-2 ">
+            {bezirke.map((bez) => (
+              <Link
+                key={bez}
+                className="w-fit rounded-full text-sm text-hh-950 bg-hh-100 px-2"
+                href={`#${bez.toLowerCase().replace(/\s/g, "-")}`}
+              >
+                {bez}
+              </Link>
+            ))}
+          </div>
+        )} */}
       </div>
     </div>
   );
