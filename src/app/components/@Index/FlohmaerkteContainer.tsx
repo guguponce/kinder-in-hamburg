@@ -89,7 +89,9 @@ export default async function FlohmaerkteContainer() {
           ? `Diese Woche gibt es außerdem ${futureFlohmaerkteLength} ${futureFlohmaerkteLength > 1 ? "weitere Veranstaltungen" : "Veranstaltung"}`
           : isSunday && todayFlohmaerkteLength
             ? `Heute gibt es ${todayFlohmaerkteLength} ${todayFlohmaerkteLength > 1 ? "Veranstaltungen" : "Veranstaltung"} in dieser Woche`
-            : `Diese Woche gibt es ${futureFlohmaerkteLength} ${futureFlohmaerkteLength > 1 ? "Veranstaltungen" : "Veranstaltung"}`}
+            : futureFlohmaerkteLength
+              ? `Diese Woche gibt es ${futureFlohmaerkteLength} ${futureFlohmaerkteLength > 1 ? "Veranstaltungen" : "Veranstaltung"}`
+              : null}
       </h2>
       <div className="flex flex-col items-center gap-4 max-w-full">
         {!!flohmaerkte.length ? (
