@@ -97,7 +97,7 @@ const DynamicEventsMap = dynamic(
         />
       </article>
     ),
-  }
+  },
 );
 const getAllLaterneEvents = async () => {
   const laterneEvents =
@@ -115,7 +115,7 @@ const getAllLaterneEvents = async () => {
     { laterneBastelnEvents: [], laterneUmzuegeEvents: [] } as Record<
       string,
       iFlohmarkt[]
-    >
+    >,
   );
   return { laterneUmzuegeEvents, laterneBastelnEvents } as {
     laterneUmzuegeEvents: iFlohmarkt[];
@@ -140,7 +140,7 @@ export default async function LaternenumzuegePage() {
         : null;
   if (!!backUp) {
     return (
-      <Banner childrenClassName="flex flex-col sm:flex-col gap-2 items-center">
+      <Banner childrenClassName="flex flex-col gap-2 items-center">
         <Banner.Title href="/">{backUp.title}</Banner.Title>
         <Banner.Text>{backUp.text}</Banner.Text>
         <div className="flex justify-center items-stretch flex-wrap max-w-full py-2 gap-4">
@@ -164,10 +164,10 @@ export default async function LaternenumzuegePage() {
   const { today, nextMonday, yesterdayEvening } = getTodayNexMonday();
   const todayLaternenumzuege = [...laternenEvents].filter(
     (event) =>
-      event.date < today && event.date >= yesterdayEvening - 1000 * 60 * 60 * 4
+      event.date < today && event.date >= yesterdayEvening - 1000 * 60 * 60 * 4,
   );
   const orderedLaternenumzuegeEvents = laterneUmzuegeEvents.sort(
-    (a, b) => a.date - b.date
+    (a, b) => a.date - b.date,
   );
   const [futureEvents, thisWeekEvents, oldEvents] = laternenEvents.reduce(
     (acc, event) => {
@@ -180,7 +180,7 @@ export default async function LaternenumzuegePage() {
       }
       return acc;
     },
-    [[], [], []] as Array<iFlohmarkt[]>
+    [[], [], []] as Array<iFlohmarkt[]>,
   );
 
   const bastelEventsByDate = separateByDate(laterneBastelnEvents);
@@ -250,7 +250,7 @@ export default async function LaternenumzuegePage() {
                 cardType="horizontal"
                 variant="transparent-light"
                 list={orderedLaternenumzuegeEvents.filter(
-                  ({ date }) => date >= today
+                  ({ date }) => date >= today,
                 )}
               />
             </div>
@@ -327,7 +327,7 @@ export default async function LaternenumzuegePage() {
                           />
                         </HorizontalCard>
                       </div>
-                    )
+                    ),
                   )}
                 </div>
               </article>

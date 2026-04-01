@@ -1,5 +1,4 @@
 import type {
-  Hour,
   TypeAndText,
   categoryName,
   iAddress,
@@ -28,9 +27,8 @@ import {
   mappingSpielgeraete,
   spType,
   spielgeraeteList,
-  weekDays,
 } from "./constants";
-import { ClassValue } from "clsx";
+import type { ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import clsx from "clsx";
 
@@ -613,7 +611,7 @@ export function removeCopyrightLine(text: string) {
 }
 
 export function cn(...classes: ClassValue[]) {
-  return twMerge(clsx(classes));
+  return twMerge(clsx(...classes));
 }
 
 async function reduceQualityUnderSpecificKb(

@@ -39,7 +39,12 @@ export default function MainIntroductionText({
             : "from-hh-100-50 : to-hh-100-25",
         )}
       >
-        {text}
+        {text.split("<br>").map((line, index) => (
+          <span key={index}>
+            {line}
+            <br />
+          </span>
+        ))}
       </p>
       {children}
     </div>

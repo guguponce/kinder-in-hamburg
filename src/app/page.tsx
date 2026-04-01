@@ -17,10 +17,12 @@ export default function Home() {
         <LaternenBanner />
       </div>
       <FlohmaerkteBanner />
-      <BaldBanner className="flex w-full sm:max-w-[640px] items-stretch" />
 
       <SommerInHamburgBanner></SommerInHamburgBanner>
-      <ShortAbout></ShortAbout>
+      <div className="w-full flex gap-4 justify-center items-stretch flex-wrap">
+        <BaldBanner className="flex w-full max-w-full sm:max-w-[640px] items-stretch" />
+        <ShortAbout></ShortAbout>
+      </div>
     </main>
   );
 }

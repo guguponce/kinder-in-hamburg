@@ -2,7 +2,7 @@ import Banner from "./Banner";
 
 export const BaldBanner = ({ className }: { className?: string }) => {
   return (
-    <Banner className={className} childrenClassName="sm:flex-col">
+    <Banner className={className} childrenClassName="flex-row">
       <Banner.Image
         alt="Wir sind am Werk"
         src="/assets/logo/workinprogress.png"

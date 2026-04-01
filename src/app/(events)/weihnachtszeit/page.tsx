@@ -76,7 +76,10 @@ const getWeihnachtsEvents = async (type: iEventType[]) => {
       }
       return acc;
     },
-    { weihnachtsmaerkte: [] as iFlohmarkt[], adventsEvents: [] as iFlohmarkt[] }
+    {
+      weihnachtsmaerkte: [] as iFlohmarkt[],
+      adventsEvents: [] as iFlohmarkt[],
+    },
   );
   return { weihnachtsmaerkte, adventsEvents };
 };
@@ -86,7 +89,7 @@ const cachedWeihnachtsEvents = unstable_cache(
   ["flohmaerkte", "events"],
   {
     revalidate: 600,
-  }
+  },
 );
 
 export default async function WeihnachtszeitPage() {
@@ -113,33 +116,33 @@ export default async function WeihnachtszeitPage() {
       }
       return acc;
     },
-    [[], []] as [typeof adventsEvents, typeof adventsEvents]
+    [[], []] as [typeof adventsEvents, typeof adventsEvents],
   );
 
   const todayLaternenumzuege = [...adventsEvents].filter(
-    (event) => event.date < today
+    (event) => event.date < today,
   );
 
   const maerkteMitKinderprogramm = weihnachtsmaerkte.filter(
     ({ optionalComment }) =>
-      optionalComment && /kinderprogramm/gi.test(optionalComment)
+      optionalComment && /kinderprogramm/gi.test(optionalComment),
   );
   const maerkteMitCarousell = weihnachtsmaerkte.filter(
     ({ optionalComment }) =>
-      optionalComment && /karussell/gi.test(optionalComment)
+      optionalComment && /karussell/gi.test(optionalComment),
   );
   const maerkteMitWeihnachtsmann = weihnachtsmaerkte.filter(
     ({ optionalComment }) =>
-      optionalComment && /weihnachtsmann/gi.test(optionalComment)
+      optionalComment && /weihnachtsmann/gi.test(optionalComment),
   );
   const maerkteMitNikolaus = weihnachtsmaerkte.filter(
     ({ optionalComment }) =>
-      optionalComment && /nikolaus/gi.test(optionalComment)
+      optionalComment && /nikolaus/gi.test(optionalComment),
   );
   const date = new Date();
   if (date.getMonth() < 10 && date.getMonth() > 0) {
     return (
-      <Banner childrenClassName="flex flex-col sm:flex-col gap-2 items-center">
+      <Banner childrenClassName="flex flex-col gap-2 items-center">
         <Banner.Title href="/">
           Huch! Wir sind noch nicht bereit für die Weihnachtszeit!
         </Banner.Title>
@@ -160,7 +163,7 @@ export default async function WeihnachtszeitPage() {
   }
   if (!weihnachtsmaerkte.length && !adventsEvents.length) {
     return (
-      <Banner childrenClassName="flex flex-col sm:flex-col gap-2 items-center">
+      <Banner childrenClassName="flex flex-col gap-2 items-center">
         <Banner.Title href="/">
           Huch! Wir haben keine Weihnachtsmärkte oder Adventsevents gefunden!
         </Banner.Title>
@@ -197,7 +200,7 @@ export default async function WeihnachtszeitPage() {
 
                 {!event.lat || (!event.lon && <AddLatLon item={event} />)}
               </Link>
-            ) : null
+            ) : null,
           )}
         </div>
 
