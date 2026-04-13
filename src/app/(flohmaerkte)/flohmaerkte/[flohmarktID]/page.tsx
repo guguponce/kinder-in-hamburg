@@ -80,11 +80,10 @@ export default async function FlohmarktPage({
   const spielplaetzeNearby =
     (await getSpielplatzFromBezirkStadtteil(
       flohmarkt.bezirk!,
-      PROXIMATE_STADTTEILE_FROM_OTHER_BEZIRK[flohmarkt.bezirk!] || [
+      PROXIMATE_STADTTEILE_FROM_OTHER_BEZIRK[flohmarkt.stadtteil!] || [
         flohmarkt.stadtteil,
       ],
     )) || [];
-
   return (
     <>
       <FlohmarktTemplate flohmarkt={flohmarkt}>
