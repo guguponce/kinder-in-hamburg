@@ -30,17 +30,12 @@ export async function generateMetadata({
     description:
       "Empfehlung in " + stadtteil || "" + bezirk
         ? `,${bezirk}. `
-        : ". " +
-            parseDescriptionWithTags(
-              getPlainText(description)?.slice(0, 150),
-            ) || "",
+        : ". " + parseDescriptionWithTags(description)?.slice(0, 150) || "",
     openGraph: {
       type: "website",
       url: "https://www.kinder-in-hamburg.de/posts/" + params.postID,
       title: title,
-      description: parseDescriptionWithTags(
-        getPlainText(description)?.slice(0, 150),
-      ),
+      description: parseDescriptionWithTags(description)?.slice(0, 150) || "",
       images: postInfo.image || process.env.BASE_URL + "opengraph-image.png",
       siteName: "Kinder in Hamburg",
     },
@@ -48,10 +43,7 @@ export async function generateMetadata({
       description:
         "Empfehlung in " + stadtteil || "" + bezirk
           ? `,${bezirk}. `
-          : ". " +
-              parseDescriptionWithTags(
-                getPlainText(description)?.slice(0, 150),
-              ) || "",
+          : ". " + parseDescriptionWithTags(description)?.slice(0, 150) || "",
 
       title: title,
       images: postInfo.image || process.env.BASE_URL + "opengraph-image.png",
