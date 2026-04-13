@@ -39,21 +39,29 @@ export async function generateMetadata({
   } = flohmarktInfo;
   return {
     title: title,
-    description: "Flohmarkt in " + stadtteil || "" + " " + description || "",
+    description:
+      "Flohmarkt in " + (stadtteil || "") + " " + (description || ""),
     openGraph: {
       type: "website",
-      url: "https://www.kinder-in-hamburg.de/flohmaerkte/" + flohmarktID,
+      url: `https://www.kinder-in-hamburg.de/flohmaerkte/${flohmarktID}`,
       title: title,
       description: parseDescriptionWithTags(description?.slice(0, 100)),
-      images:
-        flohmarktInfo.image || process.env.BASE_URL + "opengraph-image.png",
+      images: [
+        {
+          url:
+            flohmarktInfo.image ||
+            process.env.BASE_URL + "/opengraph-image.png",
+          width: 1200,
+          height: 630,
+        },
+      ],
       siteName: "Kinder in Hamburg",
     },
     twitter: {
       description: parseDescriptionWithTags(description?.slice(0, 100)),
       title: title,
       images:
-        flohmarktInfo.image || process.env.BASE_URL + "opengraph-image.png",
+        flohmarktInfo.image || process.env.BASE_URL + "/opengraph-image.png",
       site: "https://www.kinder-in-hamburg.de/flohmaerkte/" + flohmarktID,
       card: "summary_large_image",
     },
