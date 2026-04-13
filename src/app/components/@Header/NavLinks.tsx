@@ -10,8 +10,7 @@ export default function NavLinks() {
         {[
           { href: "/posts", name: "Posts", auth: true },
           { href: "/flohmaerkte", name: "Flohmärkte", auth: true },
-          { href: "/categories", name: "Categories", auth: true },
-          { href: "/bezirke", name: "Bezirke", auth: true },
+          { href: "/spielplaetze", name: "Spielplätze", auth: true },
         ].map(({ href, name, auth }) =>
           auth ? (
             <React.Fragment key={href}>
@@ -25,7 +24,7 @@ export default function NavLinks() {
               {name}
               <LinkActive linkHref={href} />
             </Link>
-          )
+          ),
         )}
       </nav>
     </AdminServerComponent>

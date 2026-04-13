@@ -22,7 +22,7 @@ function BurgerIcon({
       aria-label="Options"
       className={cn(
         "relative rounded bg-opacity-25 bg-hh-800 hover:bg-opacity-30 active:bg-opacity-40 w-10 h-10  mx-2",
-        className
+        className,
       )}
     >
       <div
@@ -95,8 +95,7 @@ export default function BurgerMenu({}) {
             { href: "/", name: "Home", auth: true },
             { href: "/posts", name: "Posts", auth: true },
             { href: "/flohmaerkte", name: "Flohmärkte", auth: true },
-            { href: "/categories", name: "Categories", auth: true },
-            { href: "/bezirke", name: "Bezirke", auth: true },
+            { href: "/spielplaetze", name: "Spielplätze", auth: true },
           ].map(({ name, href, auth }, i) =>
             auth ? (
               <React.Fragment key={href}>
@@ -128,7 +127,7 @@ export default function BurgerMenu({}) {
               >
                 {name}
               </Link>
-            )
+            ),
           )}
         </nav>
       )}
