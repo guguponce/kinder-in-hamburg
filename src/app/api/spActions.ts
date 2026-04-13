@@ -183,9 +183,16 @@ export const getSpielplatzMetadata = async (id: string) => {
       bezirk: iBezirk;
       stadtteil: string;
       text: string;
-      image?: string[];
+      image?: string;
     };
-    return { title, bezirk, text, image: image?.[0], stadtteil };
+    const images = image ? JSON.parse(image) : undefined;
+    return {
+      title,
+      bezirk,
+      text,
+      image: images ? images[0] : undefined,
+      stadtteil,
+    };
   } catch (error) {
     return false;
   }

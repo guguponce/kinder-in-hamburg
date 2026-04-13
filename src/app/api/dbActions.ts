@@ -406,9 +406,10 @@ export const getPostMetadata = async (
       bezirk: iBezirk;
       stadtteil: string;
       text: TypeAndText[];
-      image?: string[];
+      image?: string;
     };
-    return { title, bezirk, text, image: image?.[0], stadtteil };
+    const parsedImage = image ? JSON.parse(image) : undefined;
+    return { title, bezirk, text, image: parsedImage?.[0], stadtteil };
   } catch (error) {
     console.error("Error fetching post metadata:", error);
     return false;

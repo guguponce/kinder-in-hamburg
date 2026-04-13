@@ -1,4 +1,3 @@
-import "./style.scss";
 import { getSpielplatzMetadata, getSpielplatzWithID } from "@app/api/spActions";
 import NotFound from "@components/@NotFound/NotFound";
 import React from "react";
@@ -25,7 +24,7 @@ const SpielplatzgeraeteBackground = dynamic(
   () => import("@components/@Cards/SpielplatzgeraeteBackground"),
   {
     ssr: false,
-  }
+  },
 );
 
 const getSpielplatzData = unstable_cache(
@@ -34,7 +33,7 @@ const getSpielplatzData = unstable_cache(
   {
     tags: ["spielplaetze", "posts"],
     revalidate: 600,
-  }
+  },
 );
 
 export async function generateMetadata({
@@ -47,6 +46,7 @@ export async function generateMetadata({
       description: "Der Spielplatz wurde nicht gefunden.",
     };
   const { title, text: description, image, bezirk, stadtteil } = spInfo;
+  console.log(image);
   return {
     title: title,
     description:
@@ -58,7 +58,7 @@ export async function generateMetadata({
       url: "https://www.kinder-in-hamburg.de/spielplaetze/" + params.spID,
       title: title,
       description: parseDescriptionWithTags(description?.slice(0, 100)),
-      images: spInfo.image || process.env.BASE_URL + "opengraph-image.png",
+      images: image || process.env.BASE_URL + "opengraph-image.png",
       siteName: "Kinder in Hamburg",
     },
     twitter: {
