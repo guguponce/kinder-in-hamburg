@@ -3,12 +3,13 @@ import type { Metadata } from "next";
 import Script from "next/script";
 
 import localFont from "next/font/local";
-import "@styles/globals.scss";
+import "./styles/globals.scss";
 import Header from "@components/@Header/Header";
 import Footer from "./components/@Footer/Footer";
 import GetAnalytics from "./GetAnalytics";
 import { SessionProvider } from "./providers/SessionContext";
 import UserLocationProvider from "@app/utils/context/UserLocationContext";
+import { SharingModalProvider } from "./components/@Buttons/SharingButtons/SharingModal";
 const fixelFont = localFont({
   src: "./styles/fonts/FixelVariable.ttf",
   display: "swap",
@@ -84,11 +85,13 @@ export default async function RootLayout({
          flex flex-col items-center max-w-[1400px] mx-auto gap-2`}
       >
         <SessionProvider>
-          <UserLocationProvider>
-            <Header />
-            {children}
-            <Footer />
-          </UserLocationProvider>
+          <SharingModalProvider>
+            <UserLocationProvider>
+              <Header />
+              {children}
+              <Footer />
+            </UserLocationProvider>
+          </SharingModalProvider>
         </SessionProvider>
         <GetAnalytics />
       </body>

@@ -11,7 +11,7 @@ import AdminEditButtons from "@components/@Buttons/AdminEditButtons";
 import { redirect } from "next/navigation";
 import { getServerUser } from "@app/api/auth/supabaseAuth";
 import type { Metadata } from "next";
-import { getPlainText, parseDescriptionWithTags } from "@app/utils/functions";
+import { getPlainText } from "@app/utils/functions";
 interface PostPageProps {
   params: { postID: string };
 }
@@ -24,29 +24,33 @@ export async function generateMetadata({
       title: "Beitrag nicht gefunden",
       description: "Der Beitrag wurde nicht gefunden.",
     };
-  const { title, text: description, image, bezirk, stadtteil } = postInfo;
+  const { title, text, image, bezirk, stadtteil } = postInfo;
+  const plainTextDescription = getPlainText(text);
+  const description = `Empfehlung in ${stadtteil || ""}${bezirk ? `, ${bezirk}. ` : ". "}${
+    plainTextDescription ? plainTextDescription.slice(0, 150) : ""
+  }`;
+  console.log("Image for metadata:", image);
   return {
     title: title,
-    description:
-      "Empfehlung in " + stadtteil || "" + bezirk
-        ? `,${bezirk}. `
-        : ". " + parseDescriptionWithTags(description)?.slice(0, 150) || "",
+    description,
     openGraph: {
       type: "website",
       url: "https://www.kinder-in-hamburg.de/posts/" + params.postID,
       title: title,
-      description: parseDescriptionWithTags(description)?.slice(0, 150) || "",
-      images: postInfo.image || process.env.BASE_URL + "opengraph-image.png",
+      description,
+      images: [
+        {
+          url: image || process.env.BASE_URL + "opengraph-image.png",
+          width: 500,
+          height: 500,
+        },
+      ],
       siteName: "Kinder in Hamburg",
     },
     twitter: {
-      description:
-        "Empfehlung in " + stadtteil || "" + bezirk
-          ? `,${bezirk}. `
-          : ". " + parseDescriptionWithTags(description)?.slice(0, 150) || "",
-
+      description,
       title: title,
-      images: postInfo.image || process.env.BASE_URL + "opengraph-image.png",
+      images: image || process.env.BASE_URL + "opengraph-image.png",
       site: "https://www.kinder-in-hamburg.de/posts/" + params.postID,
       card: "summary_large_image",
     },
