@@ -1,14 +1,17 @@
+# AI Blocking
 User-agent: GPTBot
-Disallow: /
-
-User-agent: CCBot
-Disallow: /
-
+User-agent: ChatGPT-User
 User-agent: ClaudeBot
+User-agent: CCBot
+User-agent: PerplexityBot
+User-agent: Google-Extended
+User-agent: Amazonbot
+User-agent: FacebookBot
+User-agent: Omgilibot
 Disallow: /
 
-User-agent: Amazonbot
-Disallow: /
-User-Agent: FacebookExternalHit
+# Allowed
 User-agent: *
 Allow: /
+
+Sitemap: https://tu-dominio.com
