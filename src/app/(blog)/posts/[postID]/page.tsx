@@ -29,7 +29,6 @@ export async function generateMetadata({
   const description = `Empfehlung in ${stadtteil || ""}${bezirk ? `, ${bezirk}. ` : ". "}${
     plainTextDescription ? plainTextDescription.slice(0, 150) : ""
   }`;
-  console.log("Image for metadata:", image);
   return {
     title: title,
     description,
@@ -41,8 +40,8 @@ export async function generateMetadata({
       images: [
         {
           url: image || process.env.BASE_URL + "opengraph-image.png",
-          width: 500,
-          height: 500,
+          width: 1200,
+          height: 1200,
         },
       ],
       siteName: "Kinder in Hamburg",
@@ -50,7 +49,13 @@ export async function generateMetadata({
     twitter: {
       description,
       title: title,
-      images: image || process.env.BASE_URL + "opengraph-image.png",
+      images: [
+        {
+          url: image || process.env.BASE_URL + "opengraph-image.png",
+          width: 1200,
+          height: 1200,
+        },
+      ],
       site: "https://www.kinder-in-hamburg.de/posts/" + params.postID,
       card: "summary_large_image",
     },
