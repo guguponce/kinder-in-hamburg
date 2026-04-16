@@ -7,7 +7,6 @@ import type {
   iPost,
   iSessionUser,
   iStringifiedFlohmarkt,
-  TypeAndText,
 } from "@app/utils/types";
 import { createClient } from "@auth/server";
 import { getServerUser, proofUser } from "@app/api/auth/supabaseAuth";
@@ -21,6 +20,8 @@ import {
   parsePost,
   parseContributor,
   separateByStatus,
+  parseDescriptionWithTags,
+  getPlainText,
 } from "@app/utils/functions";
 import { deletePreviousFlohmaerkteImages } from "./storageActions-server";
 import {
@@ -405,11 +406,18 @@ export const getPostMetadata = async (
       title: string;
       bezirk: iBezirk;
       stadtteil: string;
-      text: TypeAndText[];
+      text: string;
       image?: string;
     };
     const parsedImage = image ? JSON.parse(image) : undefined;
-    return { title, bezirk, text, image: parsedImage?.[0], stadtteil };
+    const parsedText = parseDescriptionWithTags(JSON.parse(text));
+    return {
+      title,
+      bezirk,
+      text: parsedText,
+      image: parsedImage?.[0],
+      stadtteil,
+    };
   } catch (error) {
     console.error("Error fetching post metadata:", error);
     return false;
@@ -1110,7 +1118,14 @@ export const getEventMetadata = async (
     }
     const { title, bezirk, optionalComment, image, stadtteil, status } =
       data as Partial<iFlohmarkt>;
-    return { title, bezirk, optionalComment, image, stadtteil, status };
+    return {
+      title,
+      bezirk,
+      optionalComment: parseDescriptionWithTags(optionalComment),
+      image,
+      stadtteil,
+      status,
+    };
   } catch (error) {
     return false;
   }
