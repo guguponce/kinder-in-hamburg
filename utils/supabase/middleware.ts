@@ -2,15 +2,23 @@ import { createServerClient } from "@supabase/ssr";
 import { type NextRequest, NextResponse } from "next/server";
 
 export const updateSession = async (request: NextRequest) => {
-  const { pathname, origin } = request.nextUrl;
+  const { pathname, search, origin } = request.nextUrl;
 
-  // 1️⃣ Normalize URL to lowercase
+  // 1. Check for uppercase
   if (pathname !== pathname.toLowerCase()) {
-    return NextResponse.redirect(new URL(origin + pathname.toLowerCase()));
+    // Construct the lowercase URL manually to ensure accuracy
+    const lowercasePath = pathname.toLowerCase();
+    const url = new URL(`${lowercasePath}${search}`, origin);
+
+    return NextResponse.redirect(url, 301);
   }
 
-  // 2️⃣ Base response
-  const response = NextResponse.next({ request });
+  // 2. ONLY proceed to Supabase if the path is already lowercase
+  const response = NextResponse.next({
+    request: {
+      headers: request.headers,
+    },
+  });
 
   // 3️⃣ Supabase server client with manual cookie adapter (needed in middleware)
   const supabase = createServerClient(

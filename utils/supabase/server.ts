@@ -1,4 +1,3 @@
-import "server-only";
 import { createServerClient } from "@supabase/ssr";
 import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
 import { cookies } from "next/headers";
@@ -21,13 +20,13 @@ export const createClient = (dynamicCookies?: ReadonlyRequestCookies) => {
   if (!cookieStore) {
     return createClientJS(
       process.env.SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!,
+      process.env.SUPABASE_ANON_KEY!!,
     );
   }
 
   return createServerClient(
     process.env.SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    process.env.SUPABASE_ANON_KEY!!,
     {
       cookies: {
         getAll() {
