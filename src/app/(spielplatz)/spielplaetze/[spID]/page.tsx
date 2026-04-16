@@ -46,7 +46,6 @@ export async function generateMetadata({
       description: "Der Spielplatz wurde nicht gefunden.",
     };
   const { title, text: description, image, bezirk, stadtteil } = spInfo;
-  console.log(image);
   return {
     title: title,
     description:
