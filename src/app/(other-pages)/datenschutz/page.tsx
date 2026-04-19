@@ -1,17 +1,18 @@
 import Link from "next/link";
 import React from "react";
 
+const List = ({ items }: { items: string[] }) => (
+  <ul className="ml-8">
+    <li className="list-disc">{items}</li>
+  </ul>
+);
 export default function page() {
   return (
     <main className="rounded-lg p-4 w-full max-w-[800px] bg-hh-200 text-hh-900 flex flex-col gap-2">
       <h1 className="text-3xl font-bold">Datenschutzerklärung</h1>
       <div className="rounded p-2 bg-hh-100 bg-opacity-75">
-        <h2 className="text-xl font-semibold p-1">
-          1. Datenschutz auf einen Blick
-        </h2>
-
         <div className="rounded p-2 bg-hh-100 bg-opacity-75">
-          <h3 className="text-lg font-semibold p-1">1.1 Allgemeine Hinweise</h3>
+          <h3 className="text-lg font-semibold p-1">1 Allgemeine Hinweise</h3>
           <p className="px-2">
             Wir nehmen den Schutz Ihrer persönlichen Daten sehr ernst.
             Nachfolgend informieren wir Sie über die Verarbeitung Ihrer
@@ -20,7 +21,7 @@ export default function page() {
         </div>
         <div className="rounded p-2 bg-hh-100 bg-opacity-75">
           <h3 className="text-lg font-semibold p-1">
-            1.2 Datenerfassung auf unserer Website
+            2 Datenerfassung auf unserer Website
           </h3>
           <div className="rounded p-2 bg-hh-100 bg-opacity-75">
             <h4 className="fonsemi">
@@ -28,15 +29,14 @@ export default function page() {
             </h4>
             <p className="px-2">
               Die Datenverarbeitung auf dieser Website erfolgt durch den
-              Websitebetreiber. Kontaktinformationen finden Sie im Impressum
-              dieser Website.
+              Websitebetreiber. Die Kontaktdaten finden Sie im Impressum.
             </p>
 
             <h4 className="fonsemi">Wie erfassen wir Ihre Daten?</h4>
             <p className="px-2">
-              Ihre Daten werden zum einen durch Ihre Angaben an uns erhoben. Zum
-              anderen werden technische Daten automatisch beim Besuch der
-              Website durch unsere IT-Systeme erfasst.
+              Ihre Daten werden einerseits dadurch erhoben, dass Sie uns diese
+              mitteilen. Andere Daten werden automatisch beim Besuch der Website
+              durch unsere IT-Systeme erfasst (technische Daten).
             </p>
 
             <h4 className="fonsemi">Wofür nutzen wir Ihre Daten?</h4>
@@ -50,17 +50,16 @@ export default function page() {
               Welche Rechte haben Sie bezüglich Ihrer Daten?
             </h4>
             <p className="px-2">
-              Sie haben das Recht, Auskunft über Ihre gespeicherten
-              personenbezogenen Daten zu erhalten, diese zu berichtigen, zu
-              löschen oder die Verarbeitung einzuschränken. Für weitere
-              Informationen dazu und bei Fragen zum Datenschutz wenden Sie sich
-              bitte an die im Impressum angegebene Kontaktadresse.
+              Sie haben jederzeit das Recht auf: - Auskunft über Ihre
+              gespeicherten Daten - Berichtigung oder Löschung - Einschränkung
+              der Verarbeitung Bei Fragen wenden Sie sich bitte an die im
+              Impressum angegebene Kontaktadresse.
             </p>
           </div>
         </div>
         <div className="rounded p-2 bg-hh-100 bg-opacity-75">
           <h3 className="text-lg font-semibold p-1">
-            1.3 Analyse-Tools und Tools von Drittanbietern
+            3 Analyse-Tools und Tools von Drittanbietern
           </h3>
           <div
             id="vercel-container"
@@ -69,53 +68,26 @@ export default function page() {
             <h4 className="text-lg font-semibold p-1">Vercel Web Analytics</h4>
             <div className="rounded p-2 bg-hh-100 bg-opacity-75">
               <p className="px-2">
-                Wir verwenden Vercel Web Analytics, um Einblicke in die Nutzung
-                unserer Website zu erhalten. Vercel Web Analytics arbeitet in
-                Übereinstimmung mit führenden Datenschutzstandards und erfasst
-                keine personenbezogenen Daten (PII) und verwendet keine Cookies
-                von Drittanbietern zu Tracking-Zwecken.
+                Wir nutzen Vercel Web Analytics, um die Nutzung unserer Website
+                zu analysieren. Das Tool ist datenschutzfreundlich konfiguriert
+                und verwendet keine Cookies für Tracking oder
+                plattformübergreifende Nutzerverfolgung.
               </p>
-              <h5 className="text-base font-semibold p-1">Datensammlung</h5>
               <p className="px-2">
-                Vercel Web Analytics erfasst anonyme, aggregierte Datenpunkte,
-                einschließlich:
+                Es werden ausschließlich aggregierte Nutzungsdaten verarbeitet,
+                z. B.:
               </p>
-              <ul className="ml-8">
-                <li className="list-disc">Ereigniszeitstempel</li>
-                <li className="list-disc">URL</li>
-                <li className="list-disc">Dynamischer Pfad</li>
-                <li className="list-disc">Referrer</li>
-                <li className="list-disc">Abgefilterte Abfrageparameter</li>
-                <li className="list-disc">Geolokation</li>
-                <li className="list-disc">Gerätebetriebssystem & Version</li>
-                <li className="list-disc">Browser & Version</li>
-                <li className="list-disc">Gerätetyp</li>
-                <li className="list-disc">Web Analytics Skriptversion</li>
-              </ul>
-              <h5 className="text-base font-semibold p-1">
-                Besucheridentifizierung und Datenspeicherung
-              </h5>
+              <List
+                items={[
+                  "Seitenaufrufe",
+                  "Referrer",
+                  "Gerätetyp und Browserinformationen",
+                  "allgemeine technische Informationen",
+                ]}
+              />
               <p className="px-2">
-                Besuchersitzungen werden durch einen Hash generiert aus dem
-                eingehenden Request identifiziert, und Sitzungsdaten werden
-                automatisch nach 24 Stunden verworfen. Es werden keine
-                personenbezogenen Daten gespeichert oder an Vercel-Server
-                übertragen.
-              </p>
-              <h5 className="text-base font-semibold p-1">Konformität</h5>
-              <p className="px-2">
-                Unsere Verwendung von Vercel Web Analytics entspricht relevanten
-                Datenschutzbestimmungen, wie z. B. der DSGVO. Wir legen Wert auf
-                den Schutz der Privatsphäre und Transparenz bei der
-                Datensammlung.
-              </p>
-              <h5 className="text-base font-semibold p-1">Anpassung</h5>
-              <p className="px-2">
-                Um die Benutzerprivatsphäre weiter zu gewährleisten, haben wir
-                Vercel Web Analytics so konfiguriert, dass sensible oder
-                personenbezogene Daten aus Datenpunkten ausgeschlossen sind.
-                Dazu gehört die Schwärzung von URLs und Abfrageparametern, die
-                identifizierbare Daten enthalten.
+                Die Verarbeitung erfolgt auf Grundlage berechtigter Interessen
+                zur Verbesserung unseres Angebots.
               </p>
               <p className="px-2">
                 Für weitere Informationen zu Vercel Web Analytics und seinen
@@ -132,61 +104,27 @@ export default function page() {
             </div>{" "}
           </div>{" "}
           <div
-            id="vercel-container"
+            id="simple-analytics-container"
             className="rounded p-2 bg-hh-100 bg-opacity-75"
           >
             <h4 className="text-lg font-semibold p-1"> Simple Analytics</h4>
             <div className="rounded p-2 bg-hh-100 bg-opacity-75">
               <p className="px-2">
-                Wir verwenden Simple Analytics, um Einblicke in die Nutzung
-                unserer Website zu erhalten. Simple Analytics legt großen Wert
-                auf Datenschutz und erfasst keine personenbezogenen Daten (PII)
-                und verwendet keine Cookies von Drittanbietern zu
-                Tracking-Zwecken.
+                Wir nutzen zusätzlich Simple Analytics zur
+                datenschutzfreundlichen Auswertung der Website-Nutzung. Simple
+                Analytics verwendet keine Cookies und keine persönlichen
+                Identifikatoren. Es werden ausschließlich aggregierte, nicht
+                rückverfolgbare Daten verarbeitet, z. B.:
               </p>
-              <h5 className="text-base font-semibold p-1">Datensammlung</h5>
-              <p className="px-2">
-                Simple Analytics erfasst anonyme, aggregierte Datenpunkte,
-                einschließlich:
-              </p>
-              <ul className="ml-8">
-                <li className="list-disc">Ereigniszeitstempel</li>
-                <li className="list-disc">URL</li>
-                <li className="list-disc">Referrer</li>
-                <li className="list-disc">Geolokation (auf Stadtebene)</li>
-                <li className="list-disc">
-                  Gerätetyp (z. B. Mobilgerät oder Desktop)
-                </li>
-                <li className="list-disc">Browser & Version</li>
-                <li className="list-disc">Betriebssystem</li>
-                <li className="list-disc">Spracheinstellungen</li>
-              </ul>
-              <h5 className="text-base font-semibold p-1">
-                Besucheridentifizierung und Datenspeicherung
-              </h5>
-              <p className="px-2">
-                Im Gegensatz zu traditionellen Analysewerkzeugen verwendet
-                Simple Analytics keine personenbezogenen Daten, keine
-                eindeutigen Tracking-IDs oder Cookies. Anstatt Sitzungen
-                nachzuverfolgen, werden aggregierte Daten gesammelt, ohne den
-                Benutzer als individuelle Person zu identifizieren. Simple
-                Analytics speichert nur anonyme, nicht rückverfolgbare Daten.
-              </p>
-              <h5 className="text-base font-semibold p-1">Konformität</h5>
-              <p className="px-2">
-                Unsere Verwendung von Simple Analytics entspricht relevanten
-                Datenschutzbestimmungen, wie z. B. der DSGVO und der
-                ePrivacy-Verordnung. Es werden keine personenbezogenen Daten
-                gesammelt, und die Privatsphäre unserer Nutzer wird
-                vollumfänglich geschützt.
-              </p>
-              <h5 className="text-base font-semibold p-1">Anpassung</h5>
-              <p className="px-2">
-                Simple Analytics ist so konfiguriert, dass keine
-                identifizierbaren Daten gesammelt oder verfolgt werden. Es gibt
-                keine Schwärzung von URLs, da keine personenbezogenen
-                Informationen erfasst werden.
-              </p>
+              <List
+                items={[
+                  "Seitenaufrufe",
+                  "Referrer",
+                  "Gerätetyp",
+                  "Browserinformationen",
+                ]}
+              />
+
               <p className="px-2">
                 Für weitere Informationen zu Simple Analytics und ihren
                 Datenschutzfunktionen lesen Sie bitte die Datenschutzrichtlinie
@@ -203,8 +141,94 @@ export default function page() {
             </div>{" "}
           </div>{" "}
         </div>
+        <div
+          id="cloudflare-container"
+          className="rounded p-2 bg-hh-100 bg-opacity-75"
+        >
+          <h4 className="text-lg font-semibold p-1">Cloudfare</h4>
+          <div className="rounded p-2 bg-hh-100 bg-opacity-75">
+            <p className="px-2">
+              Wir nutzen Cloudflare als Content Delivery Network (CDN) und
+              DNS-Anbieter. Dabei können technische Daten wie IP-Adressen und
+              Anfrageinformationen verarbeitet werden, um Sicherheit, Stabilität
+              und Performance der Website zu gewährleisten.
+            </p>
+          </div>
+        </div>
+        <div className="rounded p-2 bg-hh-100 bg-opacity-75">
+          <h3 className="text-lg font-semibold p-1">4 Funktionales Cookie</h3>
+          <div className="rounded p-2 bg-hh-100 bg-opacity-75">
+            <p className="px-2">
+              Wir verwenden ein einzelnes funktionales Cookie („kih“).{" "}
+            </p>
+            <p className="px-2">Dieses Cookie:</p>
+            <List
+              items={[
+                "speichert eine lokale Nutzereinstellung (z. B. ob bestimmte Komponenten angezeigt werden sollen)",
+                "hat eine Lebensdauer von 7 Tagen",
+                "dient ausschließlich der Funktionalität der Website",
+                "verfolgt keine Nutzer über Websites hinweg",
+              ]}
+            />
+          </div>
+        </div>
+        <div className="rounded p-2 bg-hh-100 bg-opacity-75">
+          <h3 className="text-lg font-semibold p-1">5 Rechtsgrundlage</h3>
+          <div className="rounded p-2 bg-hh-100 bg-opacity-75">
+            <p className="px-2">
+              Die Verarbeitung erfolgt auf Grundlage unseres berechtigten
+              Interesses an:
+            </p>
+            <p className="px-2">Dieses Cookie:</p>
+            <List
+              items={[
+                "der technischen Bereitstellung der Website",
+                "der Verbesserung unseres Angebots",
+              ]}
+            />
+          </div>
+        </div>
+        <div className="rounded p-2 bg-hh-100 bg-opacity-75">
+          <h3 className="text-lg font-semibold p-1">
+            6 Datenübermittlung an Dritte
+          </h3>
+          <div className="rounded p-2 bg-hh-100 bg-opacity-75">
+            <p className="px-2">
+              Wir geben keine personenbezogenen Daten zu Werbezwecken weiter.
+              Technische Daten können jedoch an folgende Dienstleister
+              übermittelt werden:
+            </p>
+            <List
+              items={[
+                "Vercel (Hosting und Analytics)",
+                "Supabase (Datenbank und Speicher)",
+                "Cloudflare (CDN und DNS)",
+              ]}
+            />
+          </div>
+        </div>
+        <div className="rounded p-2 bg-hh-100 bg-opacity-75">
+          <h3 className="text-lg font-semibold p-1">7 Speicherdauer</h3>
+          <div className="rounded p-2 bg-hh-100 bg-opacity-75">
+            <p className="px-2">
+              Personenbezogene Daten werden nur so lange gespeichert, wie es für
+              den jeweiligen Zweck erforderlich ist.
+            </p>
+          </div>
+        </div>
+
+        <div className="rounded p-2 bg-hh-100 bg-opacity-75">
+          <h3 className="text-lg font-semibold p-1">8 Kontakt</h3>
+          <div className="rounded p-2 bg-hh-100 bg-opacity-75">
+            <p className="px-2">
+              Bei Fragen zum Datenschutz kontaktieren Sie uns bitte über die im
+              Impressum angegebene E-Mail-Adresse.
+            </p>
+          </div>
+        </div>
       </div>
-      <div className="rounded p-2 bg-hh-100 bg-opacity-75">
+
+      {/* <div className="rounded p-2 bg-hh-100 bg-opacity-75">
         <h2 className="text-xl font-semibold p-1">
           2. Allgemeine Hinweise und Pflichtinformationen
         </h2>
@@ -340,13 +364,13 @@ export default function page() {
               gesetzt und bleiben für eine begrenzte Zeit gültig, um die Sitzung
               des Benutzers aufrechtzuerhalten.
             </p>
-            <ul className="ml-8">
-              <li className="list-disc">supabase-auth.callback-url</li>
-              <li className="list-disc">supabase-auth.csrf-token</li>
-              <li className="list-disc">supabase-auth.session-token</li>
-              <li className="list-disc">sb-auth-token.0</li>
-              <li className="list-disc">sb-auth-token.1</li>
-            </ul>
+            <List items={[
+              "supabase-auth.callback-url",
+              "supabase-auth.csrf-token",
+              "supabase-auth.session-token",
+              "sb-auth-token.0",
+              "sb-auth-token.1",
+            ]} />
             <p>
               Diese Cookies werden verwendet, um den Anmeldeprozess zu verwalten
               und sicherzustellen, dass Benutzer angemeldet bleiben, während sie
@@ -391,14 +415,14 @@ export default function page() {
               Informationen in so genannten Server-Log-Dateien, die Ihr Browser
               automatisch an uns übermittelt. Dies sind:
             </p>
-            <ul className="ml-8">
-              <li className="list-disc">Browsertyp und Browserversion</li>
-              <li className="list-disc">verwendetes Betriebssystem</li>
-              <li className="list-disc">Referrer URL</li>
-              <li className="list-disc">Hostname des zugreifenden Rechners</li>
-              <li className="list-disc">Uhrzeit der Serveranfrage</li>
-              <li className="list-disc">IP-Adresse</li>
-            </ul>
+            <List items={[
+              "Browsertyp und Browserversion",
+              "verwendetes Betriebssystem",
+              "Referrer URL",
+              "Hostname des zugreifenden Rechners",
+              "Uhrzeit der Serveranfrage",
+              "IP-Adresse",
+            ]} />
 
             <p>
               Eine Zusammenführung dieser Daten mit anderen Datenquellen wird
@@ -416,7 +440,7 @@ export default function page() {
             nicht ohne Ihre Einwilligung weiter.
           </p>
         </div>
-      </div>
+      </div> */}
     </main>
   );
 }
