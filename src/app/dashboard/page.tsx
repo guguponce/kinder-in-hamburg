@@ -81,7 +81,7 @@ export default async function DashboardPage() {
           </AdminComponents>
         </section>
         {userFlohs && <FlohmaerkteSearchList userFlohs={userFlohs} />}
-        {userPosts && Object.values(userPosts).some((a) => !!a.length) && (
+        {/* {userPosts && Object.values(userPosts).some((a) => !!a.length) && (
           <section className="w-full max-w-[800px] flex flex-col gap-2">
             <h3 className="text-lg font-semibold">Your Suggested Posts</h3>
             {Object.entries(userPosts).map(([status, posts]) =>
@@ -110,7 +110,7 @@ export default async function DashboardPage() {
               ) : null,
             )}
           </section>
-        )}
+        )} */}
       </main>
     </AdminRoute>
   );
