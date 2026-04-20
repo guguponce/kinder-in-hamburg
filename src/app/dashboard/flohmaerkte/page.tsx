@@ -79,7 +79,7 @@ export default async function AllFlohmaerkteStatusPage() {
         <h2 className="text-2xl font-bold text-hh-50">
           Flohmärkte at this time of the year
         </h2>
-        <div className="flex flex-col gap-2 max-w-full p-2">
+        {/* <div className="flex flex-col gap-2 max-w-full p-2">
           {currentAndNextTwoMonths.map((monthName, i) => {
             const monthNumber = (currentMonth + i) % 12;
             const eventsInMonth = filteredFlohmaerkte.filter((event) => {
@@ -109,12 +109,12 @@ export default async function AllFlohmaerkteStatusPage() {
               </div>
             );
           })}
-        </div>
+        </div> */}
       </section>
-      <AllEventsStatusSetter
+      {/* <AllEventsStatusSetter
         eventsType="flohmaerkte"
         events={flohmaerkte || undefined}
-      />
+      /> */}
     </main>
   );
 }
