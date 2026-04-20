@@ -12,6 +12,28 @@ interface iUserFlohs {
   old?: iFlohmarkt[];
 }
 
+function useDebounce(value: string, delay = 300) {
+  const [debounced, setDebounced] = React.useState(value);
+
+  React.useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebounced(value);
+    }, delay);
+
+    return () => clearTimeout(handler);
+  }, [value, delay]);
+
+  return debounced;
+}
+
+const slicedFlohList = (flohsLists: iUserFlohs) => {
+  const slicedLists: iUserFlohs = {};
+  Object.entries(flohsLists).forEach(([status, flohs]) => {
+    slicedLists[status] = flohs?.slice(0, 6);
+  });
+  return slicedLists;
+};
+
 export default function FlohmaerkteSearchList({
   userFlohs,
 }: {
@@ -19,20 +41,21 @@ export default function FlohmaerkteSearchList({
 }) {
   const [searchQuery, setSearchQuery] = React.useState("");
   const flohsRef = React.useRef(userFlohs);
-  const deferredQuery = React.useDeferredValue(searchQuery);
+  const debouncedQuery = useDebounce(searchQuery, 300);
   const flohmaerkteLists = React.useMemo(() => {
-    if (!deferredQuery) return flohsRef.current;
-    const query = deferredQuery.toLowerCase();
+    if (!debouncedQuery) return slicedFlohList(flohsRef.current);
+    const query = debouncedQuery.toLowerCase();
     const lists: iUserFlohs = {};
     Object.entries(flohsRef.current).forEach(([status, flohs]) => {
       lists[status] = flohs?.filter(
         (floh) =>
           floh.title.toLowerCase().includes(query) ||
-          floh.optionalComment?.toLowerCase().includes(query),
+          floh.optionalComment?.toLowerCase().includes(query) ||
+          floh.location?.toLowerCase().includes(query),
       );
     });
     return lists;
-  }, [deferredQuery]);
+  }, [debouncedQuery]);
   return (
     <>
       <input
