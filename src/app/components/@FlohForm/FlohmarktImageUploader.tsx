@@ -60,7 +60,7 @@ const ImageUploader = ({
     if (event.target.files) {
       convertToWebp(
         event.target.files[0],
-        400,
+        600,
         40,
         setImageFile,
         setLocalImageUrl,
