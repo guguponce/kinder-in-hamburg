@@ -4,6 +4,7 @@ import React from "react";
 import FlohmarktBackground from "../@Icons/@Flohmarkt/FlohmarktBackground";
 import { iEventType } from "@app/utils/types";
 import LaterneImage from "../@Index/laternenumzug/LaterneImage";
+import Image from "next/image";
 
 const FlohmarktBackgroundMemo = React.memo(FlohmarktBackground);
 
@@ -102,25 +103,30 @@ export default function FlohmarktPoster({
         )
       )}
       {!!image && !["adventsevent", "weihnachtsmarkt"].includes(eventType) ? (
-        <img
-          loading="lazy"
+        <Image
           src={image}
           alt={title}
-          className={`w-full h-full rounded ${contain ? "object-contain" : "object-cover"}`}
+          fill
+          placeholder="blur"
+          blurDataURL="/public/assets/logo/KiHLogo.png"
+          className={`rounded ${contain ? "object-contain" : "object-cover"}`}
+          sizes="(max-width: 400px) 100vw, 33vw"
         />
       ) : (
         <>
           {image ? (
-            <img
-              loading="lazy"
+            <Image
               src={image}
               alt={title}
-              className={`absolute w-full h-full rounded ${contain ? "object-contain" : "object-cover"}`}
+              fill
+              placeholder="blur"
+              blurDataURL="/public/assets/logo/KiHLogo.png"
+              className={`absolute rounded ${contain ? "object-contain" : "object-cover"}`}
+              sizes="(max-width: 400px) 100vw, 33vw"
             />
           ) : eventType === "adventsevent" ||
             eventType === "weihnachtsmarkt" ? (
-            <img
-              loading="lazy"
+            <Image
               src={
                 title.toLocaleLowerCase().includes("weihnachtsmann")
                   ? "/assets/wmann.webp"
@@ -135,7 +141,11 @@ export default function FlohmarktPoster({
                           : "/assets/weihnachtsmarkt.webp"
               }
               alt={title}
+              fill
+              placeholder="blur"
+              blurDataURL="/public/assets/logo/KiHLogo.png"
               className={`absolute rounded object-contain`}
+              sizes="(max-width: 400px) 100vw, 33vw"
             />
           ) : null}
           <div

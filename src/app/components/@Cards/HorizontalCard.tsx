@@ -10,10 +10,11 @@ import HamburgIcon from "../@Icons/@PostLogo/HamburgIcon";
 import HamburgFilledIcon from "../@Icons/@BezirkIcon/HamburgFilledIcon";
 import StandortIcon from "../@Icons/StandortIcon";
 import ClockIcon from "../@Icons/@PostLogo/ClockIcon";
+import Image from "next/image";
 
 const SpielplatzgeraeteBackground = dynamic(
   () => import("./SpielplatzgeraeteBackground"),
-  { ssr: false }
+  { ssr: false },
 );
 
 interface iHorizontalCard {
@@ -45,7 +46,7 @@ export default function HorizontalCard({
       href={link}
       className={cn(
         "HorizontalCard w-full h-32 sm:flex-grow justify-center flex gap-2 items-center bg-white text-hh-900 rounded-md overflow-hidden hover:shadow-md hover:scale-[1.01] transition-transform duration-300",
-        className
+        className,
       )}
     >
       <div
@@ -55,17 +56,21 @@ export default function HorizontalCard({
       >
         {!!image || type === "flohmarkt" ? (
           <>
-            <img
-              loading="lazy"
+            <Image
               src={image || "/assets/icons/market.svg"}
               alt={title}
-              className="absolute left-0 top-0 object-cover blur-sm w-full h-full"
+              fill
+              className="object-cover blur-sm"
+              sizes="(max-width: 400px) 100vw, 33vw"
             />
-            <img
-              loading="lazy"
+
+            {/* Foreground image */}
+            <Image
               src={image || "/assets/icons/market.svg"}
               alt={title}
-              className={`w-full h-full ${imgSize || "object-contain"}`}
+              fill
+              className={`object-cover"}`}
+              sizes="(max-width: 400px) 100vw, 33vw"
             />
           </>
         ) : "laterne" === type ? (
@@ -75,15 +80,15 @@ export default function HorizontalCard({
             />
           </div>
         ) : "laternewerkstatt" === type ? (
-          <img
-            loading="lazy"
+          <Image
             src={"/assets/icons/laterne/basteln.svg"}
             alt={title}
-            className={`w-full h-full ${imgSize || "object-contain"}`}
+            fill
+            className={`object-cover"}`}
+            sizes="(max-width: 400px) 100vw, 33vw"
           />
         ) : ["weihnachtsmarkt", "adventsevent"].includes(type) ? (
-          <img
-            loading="lazy"
+          <Image
             src={
               title.toLocaleLowerCase().includes("weihnachtsmann")
                 ? "/assets/wmann.webp"
@@ -98,7 +103,9 @@ export default function HorizontalCard({
                         : "/assets/weihnachtsmarkt.webp"
             }
             alt={title}
-            className={`w-full h-full ${imgSize || "object-contain"}`}
+            fill
+            className={`object-cover"}`}
+            sizes="(max-width: 400px) 100vw, 33vw"
           />
         ) : (
           <>
@@ -109,11 +116,12 @@ export default function HorizontalCard({
                 size="2rem"
               />
             ) : type === "spielplatz" ? (
-              <img
-                loading="lazy"
+              <Image
                 src={`/assets/spielplatz${parseInt(`${id}`) % 2 ? "" : "2"}.webp`}
                 alt={title}
-                className={`w-full h-full ${imgSize || "object-contain"}`}
+                fill
+                className={`object-cover"}`}
+                sizes="(max-width: 400px) 100vw, 33vw"
               />
             ) : (
               <CardLogo />
