@@ -131,8 +131,7 @@ export type MetadataInput = {
   image?: string;
   bezirk?: string;
   stadtteil?: string;
-  url: string;
-  siteName: string;
+  pathname: string;
   robots?: boolean;
   keywords?: string[];
 };
@@ -143,8 +142,7 @@ export function createMetadata({
   image,
   bezirk,
   stadtteil,
-  url,
-  siteName,
+  pathname,
   robots,
   keywords,
 }: MetadataInput): Metadata {
@@ -155,7 +153,8 @@ export function createMetadata({
   const fullTitle = location ? `${title} – ${location}` : title;
 
   const imageUrl = image || fallbackImage;
-
+  const siteName = "Kinder in Hamburg";
+  const fullUrl = "https://www.kinder-in-hamburg.de" + pathname;
   return {
     metadataBase: new URL(baseUrl),
 
@@ -164,7 +163,7 @@ export function createMetadata({
     icons: "/favicon.ico",
 
     alternates: {
-      canonical: url,
+      canonical: fullUrl,
     },
 
     robots: {
@@ -179,7 +178,7 @@ export function createMetadata({
 
     openGraph: {
       type: "website",
-      url,
+      url: fullUrl,
       title: fullTitle,
       description,
       siteName,
@@ -198,7 +197,7 @@ export function createMetadata({
       title: fullTitle,
       description: description,
       creator: siteName,
-      site: url,
+      site: baseUrl,
       images: [
         {
           url: imageUrl,

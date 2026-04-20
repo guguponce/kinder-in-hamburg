@@ -55,7 +55,7 @@ export default async function BezirkeScrollableEvents({
     <div
       id="bezirke-scrollable-events"
       className={cn(
-        "w-full h-fit flex items-stretch flex-wrap gap-4 scroll-mt-20 hover:bg-hh-700 hover:bg-opacity-20 outline outline-2 outline-offset-2 outline-transparent hover:outline-hh-950 transition-colors duration-500 rounded",
+        "w-full h-fit flex items-stretch flex-wrap gap-4 scroll-mt-20 bg-transparent hover:bg-white hover:bg-opacity-50 border-2 border-transparent hover:border-hh-950 p-2 md:p-4 transition-all duration-500 rounded",
         todayFlohmaerkteLength < 3
           ? "md:flex-nowrap"
           : todayFlohmaerkteLength < 4
