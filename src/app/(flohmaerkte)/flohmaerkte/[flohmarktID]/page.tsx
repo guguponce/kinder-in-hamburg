@@ -14,7 +14,11 @@ import { PROXIMATE_STADTTEILE_FROM_OTHER_BEZIRK } from "@app/utils/constants";
 import SpielplaetzeNearby from "./SpielplaetzeNearby";
 import AdminEditButtons from "@components/@Buttons/AdminEditButtons";
 import OldFlohmarktSign from "./OldFlohmarktSign";
-import { parseDescriptionWithTags } from "@app/utils/functions";
+import {
+  createMetadata,
+  getDate,
+  parseDescriptionWithTags,
+} from "@app/utils/functions";
 import { redirect } from "next/navigation";
 import FlohmaerkteSameLocation from "./FlohmaerkteSameLocation";
 
@@ -31,41 +35,54 @@ export async function generateMetadata({
       title: "Flohmarkt nicht gefunden",
       description: "Der Flohmarkt wurde nicht gefunden.",
     };
-  const {
-    title,
-    optionalComment: description,
+  const { title, optionalComment, image, stadtteil, bezirk, date } =
+    flohmarktInfo;
+  const description = parseDescriptionWithTags(optionalComment?.slice(0, 200));
+  const fullDescription = `Flohmarkt in ${stadtteil || ""}${bezirk ? `, ${bezirk}. ` : ". "}${
+    description
+  }`;
+  const fullTitle =
+    title ||
+    `Flohmarkt in ${stadtteil || bezirk || "Hamburg"}${date ? ` am ${getDate(date, "short", false, false)}` : ""}`;
+  return createMetadata({
+    title: fullTitle,
+    description: fullDescription,
     image,
-    stadtteil,
-  } = flohmarktInfo;
-  return {
-    title: title,
-    description:
-      "Flohmarkt in " + (stadtteil || "") + " " + (description || ""),
-    openGraph: {
-      type: "website",
-      url: `https://www.kinder-in-hamburg.de/flohmaerkte/${flohmarktID}`,
-      title: title,
-      description: parseDescriptionWithTags(description?.slice(0, 100)),
-      images: [
-        {
-          url:
-            flohmarktInfo.image ||
-            process.env.BASE_URL + "/opengraph-image.png",
-          width: 1200,
-          height: 630,
-        },
-      ],
-      siteName: "Kinder in Hamburg",
-    },
-    twitter: {
-      description: parseDescriptionWithTags(description?.slice(0, 100)),
-      title: title,
-      images:
-        flohmarktInfo.image || process.env.BASE_URL + "/opengraph-image.png",
-      site: "https://www.kinder-in-hamburg.de/flohmaerkte/" + flohmarktID,
-      card: "summary_large_image",
-    },
-  };
+    pathname: `/flohmaerkte/${flohmarktID}`,
+    robots: flohmarktInfo.status === "approved",
+    keywords: [
+      title || "Flohmarkt in Hamburg",
+      "Flohmarkt Hamburg",
+      "Flohmärkte Hamburg",
+      "Trödelmarkt Hamburg",
+      "Flohmarkt Schleswig-Holstein",
+      "Flohmarkt in der Nähe",
+      "Flohmarkt heute Hamburg",
+      "Flohmarkt dieses Wochenende Hamburg",
+      "Flohmarkt Termine Hamburg",
+      "Flohmarkt Öffnungszeiten Hamburg",
+      "Flohmarkt Datum Hamburg",
+      "Flohmarkt Standort Hamburg",
+      "Flohmarkt Adresse Hamburg",
+      "wann ist Flohmarkt in Hamburg",
+      "wo ist Flohmarkt in Hamburg",
+      "welcher Flohmarkt ist heute in Hamburg",
+      "Flohmarkt am Wochenende Hamburg",
+      "beste Flohmärkte in Hamburg",
+      "Familien Flohmarkt Hamburg",
+      "Kinder Flohmarkt Hamburg",
+      "Outdoor Flohmarkt Hamburg",
+      "Indoor Flohmarkt Hamburg",
+      "Flohmarkt Veranstaltung Hamburg",
+      "Flohmarkt Event Hamburg",
+      "Antik und Trödel Hamburg",
+      "Second Hand Markt Hamburg",
+      "Flohmarkt besuchen Hamburg",
+      "Flohmarkt Tipps Hamburg",
+      "Flohmarkt in Hamburg heute geöffnet",
+      "Flohmarkt planen Hamburg",
+    ],
+  });
 }
 
 export default async function FlohmarktPage({

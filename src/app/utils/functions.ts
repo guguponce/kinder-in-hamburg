@@ -19,6 +19,7 @@ import type {
   iListsFPS,
   iEventType,
 } from "./types";
+import type { Metadata } from "next";
 import {
   ausruestungList,
   bezirke,
@@ -123,6 +124,91 @@ export const getDescription = (text: string) => {
     ? text.split(" ").slice(0, 10).join(" ") + "..."
     : splittedText.join(" ");
 };
+
+export type MetadataInput = {
+  title: string;
+  description: string;
+  image?: string;
+  bezirk?: string;
+  stadtteil?: string;
+  url: string;
+  siteName: string;
+  robots?: boolean;
+  keywords?: string[];
+};
+
+export function createMetadata({
+  title,
+  description,
+  image,
+  bezirk,
+  stadtteil,
+  url,
+  siteName,
+  robots,
+  keywords,
+}: MetadataInput): Metadata {
+  const baseUrl = process.env.BASE_URL || "";
+  const fallbackImage = `${baseUrl}/opengraph-image.png`;
+
+  const location = [stadtteil, bezirk].filter(Boolean).join(", ");
+  const fullTitle = location ? `${title} – ${location}` : title;
+
+  const imageUrl = image || fallbackImage;
+
+  return {
+    metadataBase: new URL(baseUrl),
+
+    title: fullTitle,
+    description,
+    icons: "/favicon.ico",
+
+    alternates: {
+      canonical: url,
+    },
+
+    robots: {
+      index: !!robots,
+      follow: !!robots,
+    },
+
+    keywords,
+
+    authors: [{ name: siteName }],
+    creator: siteName,
+
+    openGraph: {
+      type: "website",
+      url,
+      title: fullTitle,
+      description,
+      siteName,
+      locale: "de_DE",
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 1200,
+        },
+      ],
+    },
+
+    twitter: {
+      card: "summary_large_image",
+      title: fullTitle,
+      description: description,
+      creator: siteName,
+      site: url,
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 1200,
+        },
+      ],
+    },
+  };
+}
 
 export const getPlainText = (text: string | TypeAndText[], max?: number) => {
   if (!text || !text.length) {

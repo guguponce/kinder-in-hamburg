@@ -1116,7 +1116,7 @@ export const getEventMetadata = async (
     if (error) {
       return false;
     }
-    const { title, bezirk, optionalComment, image, stadtteil, status } =
+    const { title, bezirk, optionalComment, image, stadtteil, status, date } =
       data as Partial<iFlohmarkt>;
     return {
       title,
@@ -1125,6 +1125,7 @@ export const getEventMetadata = async (
       image,
       stadtteil,
       status,
+      date,
     };
   } catch (error) {
     return false;

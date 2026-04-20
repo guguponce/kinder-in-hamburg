@@ -5,6 +5,7 @@ import HorizontalCard from "@components/@Cards/HorizontalCard";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import {
+  createMetadata,
   parseDescriptionWithTags,
   separateInBezirke,
 } from "@app/utils/functions";
@@ -14,63 +15,57 @@ import type { Metadata } from "next";
 import URLFilteredListSuspense from "@app/components/Filters/URLFilteredListSuspense";
 import ErrorComponent from "@app/components/ErrorComponent";
 import { unstable_cache } from "next/cache";
+import MainIntroductionText from "@app/components/@Templates/MainIntroductionText";
 
 const URLFilteredList = dynamic(
   () => import("@components/Filters/URLFilteredSpielplaetzeList"),
-  { ssr: false, loading: () => <URLFilteredListSuspense /> }
+  { ssr: false, loading: () => <URLFilteredListSuspense /> },
 );
 
 export async function generateMetadata(): Promise<Metadata> {
-  return {
-    title: "Spielplätze",
-    icons: "/favicon.ico",
+  return createMetadata({
+    title: "Spielplätze in Hamburg",
     description:
-      "Hier findet ihr Spielplätze aus verschiedenen Orten in Hamburg zusammengestellt.",
+      "Hier findet ihr eine Übersicht von Spielplätzen aus verschiedenen Orten in Hamburg. Ihr könnt nach verschiedenen Kategorien, Bezirken, Altersempfehlungen und Spielgeräten filtern, um den perfekten Ort für eure Kinder oder eure Familie zu finden.",
+    pathname: "/spielplaetze",
+    image: process.env.BASE_URL + "opengraph-image.png",
     keywords: [
-      "hamburg mit kinder",
-      "hamburg familie spielplatz",
-      "hamburg kinder spielplatz",
-      "hamburg spielplaetze",
-      "hamburg spielplatz",
-      "hamburg kinder spielplaetze",
-      "kinder in hamburg",
-      "kinder hamburg",
-      "spielplaetze",
-      "spielplätze",
-      "spielplatz",
-      "kinder",
-      "familie",
-      "spielplaetze hamburg",
-      "spielplaetze kinder",
-      "spielplaetze familie",
-      "spielplaetze hamburg kinder",
-      "spielplaetze hamburg familie",
-      "spielplatz hamburg",
-      "spielplatz kinder",
-      "spielplatz familie",
-      "spielplatz hamburg kinder",
-      "spielplatz hamburg familie",
-      "playground hamburg",
-      "playgrounds hamburg",
+      "Spielplätze Hamburg",
+      "Spielplatz Hamburg",
+      "Spielplätze in Hamburg",
+      "Spielplatz in der Nähe Hamburg",
+      "beste Spielplätze Hamburg",
+      "Kinder Spielplätze Hamburg",
+      "Ausflugsziele Spielplatz Hamburg",
+      "Outdoor Spielplatz Hamburg",
+      "Indoor Spielplatz Hamburg",
+      "Abenteuerspielplatz Hamburg",
+      "Waldspielplatz Hamburg",
+      "Wasserspielplatz Hamburg",
+      "Planschbecken Hamburg",
+      "Skatepark Hamburg",
+      "Sportplatz für Kinder Hamburg",
+      "Tierpark für Kinder Hamburg",
+      "Abenteuerspielplätze für Kinder",
+      "Natur Spielplätze",
+      "Wald Spielplätze für Kinder",
+      "Wasser Spielplätze für Kinder",
+      "Spielplätze mit Wasser Hamburg",
+      "Spielplätze mit Schatten Hamburg",
+      "ruhige Spielplätze Hamburg",
+      "große Spielplätze Hamburg",
+      "kleinkind Spielplätze Hamburg",
+      "Spielplätze für kleine Kinder",
+      "was sind die besten Spielplätze in Hamburg",
+      "schöne Spielplätze für Kinder in Hamburg",
+      "Spielplätze zum Ausfliegen Hamburg",
+      "wo gibt es Spielplätze in Hamburg",
+      "Kinder Ausflüge Spielplatz Hamburg",
+      "Wochenend Ausflug Spielplatz Hamburg",
+      "Spielplätze für Familien Hamburg",
     ],
-    openGraph: {
-      type: "website",
-      url: "https://www.kinder-in-hamburg.de/spielplaetze/",
-      title: "Spielplätze",
-      description:
-        "Hier findet ihr Spielplätze aus verschiedenen Orten in Hamburg zusammengestellt.",
-      images: process.env.BASE_URL + "opengraph-image.png",
-      siteName: "Kinder in Hamburg",
-    },
-    twitter: {
-      title: "Spielplätze",
-      description:
-        "Hier findet ihr Spielplätze aus verschiedenen Orten in Hamburg zusammengestellt.",
-      images: process.env.BASE_URL + "opengraph-image.png",
-      site: "https://www.kinder-in-hamburg.de/spielplaetze/",
-      card: "summary_large_image",
-    },
-  };
+    robots: true,
+  });
 }
 
 const cachedSpielplaetze = unstable_cache(getAllSpielplaetze, ["posts"], {
@@ -85,7 +80,7 @@ export default async function SpielplaeztePage() {
   const distributedSP = separateInBezirke(spList);
   Object.entries(distributedSP).forEach(
     ([bezirk, list]) =>
-      (distributedSP[bezirk] = list.sort((a) => (a.pinnedSpielplatz ? -1 : 1)))
+      (distributedSP[bezirk] = list.sort((a) => (a.pinnedSpielplatz ? -1 : 1))),
   );
   return (
     <AdminRoute>
@@ -109,7 +104,8 @@ export default async function SpielplaeztePage() {
           {spList
             .filter(
               ({ tags, type }) =>
-                tags?.includes("sport") && !type.includes("sportplatz")
+                tags?.some((tag) => tag.includes("sport")) &&
+                !type.includes("sportplatz"),
             )
             .map(({ title, id, type }) => (
               <React.Fragment key={title}>
@@ -119,10 +115,21 @@ export default async function SpielplaeztePage() {
               </React.Fragment>
             ))}
         </div>
+        <MainIntroductionText
+          title="Spielplätze"
+          variant="light"
+          text={`Hier findet ihr eine Übersicht von Spielplätzen aus verschiedenen Orten in Hamburg.<br>
+Ihr könnt nach verschiedenen Kategorien, Bezirken, Altersempfehlungen und Spielgeräten filtern, um den perfekten Ort für eure Kinder oder eure Familie zu finden.<br>
+
+Außerdem sind auch Sportplätze aufgeführt, die sich ebenfalls gut für Jugendliche und Erwachsene eignen.<br>
+
+Wenn ihr einen Spielplatz kennt, der noch nicht aufgelistet ist, gebt uns gerne Bescheid!`}
+        />
+
         <URLFilteredList spielplaetzeList={spList}></URLFilteredList>
         <div className="flex flex-wrap items-start justify-center gap-2">
           {/* <DynamicSielplaetzeMap spielplaetze={spList} /> */}
-          <section className="flex-grow flex flex-wrap  gap-4 items-stretch mx-auto justify-around">
+          <section className="flex-grow flex flex-wrap gap-4 items-stretch mx-auto justify-around">
             {Object.entries(distributedSP)
               .sort(([_, alist], [__, blist]) => blist.length - alist.length)
               .map(([bezirk, list]) => (
@@ -163,7 +170,7 @@ export default async function SpielplaeztePage() {
                                 title={sp.title}
                                 description={parseDescriptionWithTags(
                                   sp.text,
-                                  100
+                                  100,
                                 )}
                                 stadtteil={sp.stadtteil}
                               />
