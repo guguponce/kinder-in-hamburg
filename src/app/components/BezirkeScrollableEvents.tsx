@@ -1,19 +1,155 @@
+"use client";
 import React from "react";
 import ScrollableContainer from "./ScrollableContainer";
 import { iBezirk, iFlohmarkt } from "@app/utils/types";
 import FlohmarktPoster from "./@Cards/FlohmarktPoster";
-import PaperPlane from "./@Icons/PaperPlane";
 import { bezirke } from "@app/utils/constants";
 import { cn, getDate, separateInBezirke } from "@app/utils/functions";
 import ScrollableCardList from "./@Cards/ScrollableCardList";
-import Link from "next/link";
-import Button from "./@Buttons/Button";
+import NoEventsBanner from "./NoEventsBanner";
 
-export default async function BezirkeScrollableEvents({
+const SingleBezirkEvents = ({
+  displayBezirke,
+  eventsByBezirke,
+  horizontalCards,
+  heute,
+  heuteMilisec,
+  bezirk,
+}: {
+  displayBezirke: iBezirk[];
+  eventsByBezirke: Record<string, iFlohmarkt[]>;
+  horizontalCards?: boolean;
+  heute: string;
+  heuteMilisec: number;
+  bezirk?: iBezirk;
+}) => {
+  const [expanded, setExpanded] = React.useState<Array<string>>([]);
+  return displayBezirke.map((currentBezirk) => {
+    const currentBezirkEvents = eventsByBezirke[currentBezirk];
+
+    return (
+      <div
+        id={currentBezirk.toLowerCase().replace(/\s/g, "-")}
+        key={currentBezirk}
+        className={cn(
+          "min-w-[250px] max-w-full h-fit flex items-center flex-col rounded mx-2 mb-2 shadow-md outline outline-2 outline-hh-800",
+          currentBezirkEvents.length > 4 || displayBezirke.length === 1
+            ? "w-fit"
+            : "w-fit lg:max-w-[calc(50%-1rem)]",
+          currentBezirkEvents.length === 1 && "pb-4",
+          expanded.includes(currentBezirk) && "min-w-fit p",
+        )}
+      >
+        {!bezirk && (
+          <div
+            className={cn(
+              "relative w-full flex items-center p-2 pb-0 justify-between",
+            )}
+          >
+            <h3
+              className={`${
+                currentBezirkEvents.length > 1 ? "ml-2" : "ml-2"
+              } text-xl font-semibold text-hh-800 text-center self-start`}
+            >
+              {currentBezirk}
+            </h3>
+            {currentBezirkEvents.length > 1 && (
+              <button
+                className={cn(
+                  "mx-2 p-1 rounded bg-hh-800 bg-opacity-25 text-xs leading-tight text-white font-semibold border border-hh-200 hover:bg-opacity-50 transition",
+                  expanded.includes(currentBezirk)
+                    ? "bg-opacity-50 hover:bg-opacity-75"
+                    : "rounded-full aspect-square w-6",
+                )}
+                onClick={() => {
+                  if (expanded.includes(currentBezirk)) {
+                    setExpanded(expanded.filter((b) => b !== currentBezirk));
+                  } else {
+                    setExpanded([...expanded, currentBezirk]);
+                  }
+                }}
+              >
+                {expanded.includes(currentBezirk) ? "× Weniger anzeigen" : "+"}
+              </button>
+            )}
+          </div>
+        )}
+        {horizontalCards ? (
+          <ScrollableCardList
+            color="800"
+            linkPrefix="/flohmaerkte/"
+            posts={currentBezirkEvents}
+            size="small"
+            withDate
+            cardType="horizontal"
+          />
+        ) : (
+          <ScrollableContainer
+            color="300"
+            paddingForButtons={false}
+            showButtons={currentBezirkEvents.length > 1}
+            containerStyle={expanded.includes(currentBezirk) ? "max-w-fit" : ""}
+          >
+            {currentBezirkEvents.map(
+              (
+                {
+                  id,
+                  title,
+                  date,
+                  image,
+                  address,
+                  bezirk: flohBezirk,
+                  stadtteil,
+                  type: eventType,
+                  endDate,
+                },
+                i,
+              ) => {
+                const evDate = getDate(date, false, true);
+                const offenHeute =
+                  evDate === heute || (endDate && endDate > heuteMilisec);
+                return (
+                  <article
+                    key={id}
+                    className={`relative flex flex-col items-center overflow-hidden h-[275px] min-w-[180px] gap-1 ${offenHeute && "outline-2  outline outline-offset-2 rounded outline-positive-700 bg-positive-700 bg-opacity-20"}`}
+                  >
+                    <div className="overflow-hidden h-[250px] min-w-[180px]">
+                      <FlohmarktPoster
+                        bezirk={flohBezirk}
+                        id={id}
+                        index={i}
+                        title={title}
+                        date={date}
+                        endDate={endDate}
+                        image={image}
+                        prefixLink={`/${eventType === "flohmarkt" ? "flohmaerkte" : "events"}/`}
+                        eventType={eventType || "flohmarkt"}
+                      />
+                    </div>
+                    <h3 className="text-hh-800 text-center pb-0  self-start-between items-center h-[20px] w-full font-semibold text-sm truncate-1">
+                      <span className="font-bold mr-4">
+                        {offenHeute ? "Heute" : evDate}
+                      </span>
+                      <span className="text-xs">
+                        {stadtteil === "Andere Orte"
+                          ? address.match(/,\s*\d+\s+(.+)$/)?.[1] || stadtteil
+                          : stadtteil}
+                      </span>{" "}
+                    </h3>
+                  </article>
+                );
+              },
+            )}
+          </ScrollableContainer>
+        )}
+      </div>
+    );
+  });
+};
+export default function BezirkeScrollableEvents({
   events,
   bezirk,
   title,
-  type = "flohmaerkte",
   verticalTitle,
   titleShadow,
   className,
@@ -131,24 +267,7 @@ export default async function BezirkeScrollableEvents({
               </h2>
             </div>
           ) : (
-            <div className="max-w-full flex flex-col items-center">
-              <h2 className="text-xl sm:text-2xl font-semibold text-white text-center p-1 lg:p-2">
-                Keine{" "}
-                {type === "flohmaerkte" ? "Flohmärkte" : "Veranstaltungen"}{" "}
-                gefunden
-              </h2>
-              <p className="text-hh-100">
-                Wenn ihr einen veranstaltet oder kennt, schreibt uns gerne eine
-                E-Mail.
-              </p>
-              <a
-                href="mailto:admin@kinder-in-hamburg.de"
-                className="flex items-center gap-2 self-center p-4 bg-hh-800 text-hh-100 font-semibold rounded-lg mt-4 w-max hover:bg-hh-700 transition-colors duration-300 ease-in-out mb-2"
-              >
-                <PaperPlane />
-                admin@kinder-in-hamburg.de
-              </a>
-            </div>
+            <NoEventsBanner type="flohmaerkte" />
           ))}
         {!!displayBezirke.length && (
           <ScrollableContainer
@@ -156,100 +275,14 @@ export default async function BezirkeScrollableEvents({
             color="800"
             showButtons={false}
           >
-            {displayBezirke.map((currentBezirk) => (
-              <div
-                id={currentBezirk.toLowerCase().replace(/\s/g, "-")}
-                key={currentBezirk}
-                className={cn(
-                  "min-w-[250px] max-w-full h-fit flex items-center flex-col rounded px-2 pb-2 shadow-md outline outline-2 outline-hh-800",
-                  eventsByBezirke[currentBezirk].length > 4 ||
-                    displayBezirke.length === 1
-                    ? "w-fit"
-                    : "w-fit lg:max-w-[calc(50%-1rem)]",
-                  eventsByBezirke[currentBezirk].length === 1 && "pb-4",
-                )}
-              >
-                {!bezirk && (
-                  <h3
-                    className={`${
-                      eventsByBezirke[currentBezirk].length > 1
-                        ? "ml-4"
-                        : "mx-auto"
-                    } text-xl font-semibold text-hh-800 text-center p-2 pb-0  self-start`}
-                  >
-                    {currentBezirk}
-                  </h3>
-                )}
-                {horizontalCards ? (
-                  <ScrollableCardList
-                    color="800"
-                    linkPrefix="/flohmaerkte/"
-                    posts={eventsByBezirke[currentBezirk]}
-                    size="small"
-                    withDate
-                  />
-                ) : (
-                  <ScrollableContainer
-                    color="300"
-                    paddingForButtons={false}
-                    showButtons={eventsByBezirke[currentBezirk].length > 1}
-                  >
-                    {eventsByBezirke[currentBezirk].map(
-                      (
-                        {
-                          id,
-                          title,
-                          date,
-                          image,
-                          address,
-                          bezirk: flohBezirk,
-                          stadtteil,
-                          type: eventType,
-                          endDate,
-                        },
-                        i,
-                      ) => {
-                        const evDate = getDate(date, false, true);
-                        const offenHeute =
-                          evDate === heute ||
-                          (endDate && endDate > heuteMilisec);
-                        return (
-                          <article
-                            key={id}
-                            className={`relative flex flex-col items-center overflow-hidden h-[275px] min-w-[180px] gap-1 ${offenHeute && "outline-2  outline outline-offset-2 rounded outline-positive-700 bg-positive-700 bg-opacity-20"}`}
-                          >
-                            <div className="overflow-hidden h-[250px] min-w-[180px]">
-                              <FlohmarktPoster
-                                bezirk={flohBezirk}
-                                id={id}
-                                index={i}
-                                title={title}
-                                date={date}
-                                endDate={endDate}
-                                image={image}
-                                prefixLink={`/${type}/`}
-                                eventType={eventType || "flohmarkt"}
-                              />
-                            </div>
-                            <h3 className="text-hh-800 text-center pb-0  self-start-between items-center h-[20px] w-full font-semibold text-sm truncate-1">
-                              <span className="font-bold mr-4">
-                                {offenHeute ? "Heute" : evDate}
-                              </span>
-                              <span className="text-xs">
-                                {stadtteil === "Andere Orte"
-                                  ? address.match(/,\s*\d+\s+(.+)$/)?.[1] ||
-                                    stadtteil
-                                  : stadtteil}
-                              </span>{" "}
-                            </h3>
-                          </article>
-                        );
-                      },
-                    )}
-                  </ScrollableContainer>
-                )}
-              </div>
-            ))}
+            <SingleBezirkEvents
+              displayBezirke={displayBezirke}
+              eventsByBezirke={eventsByBezirke}
+              horizontalCards={horizontalCards}
+              heute={heute}
+              heuteMilisec={heuteMilisec}
+              bezirk={bezirk}
+            />
           </ScrollableContainer>
         )}
         {/* {events.length > 3 && displayBezirke.length > 1 && (

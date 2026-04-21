@@ -28,7 +28,7 @@ export default function BezirkableList({
   const bezirkeList = useMemo(
     () =>
       bezirke.filter((bezirk) => list.some((event) => event.bezirk === bezirk)),
-    [list]
+    [list],
   );
   const filteredList = useMemo(
     () =>
@@ -36,7 +36,7 @@ export default function BezirkableList({
         | iPost[]
         | iFlohmarkt[]
         | iSpielplatz[],
-    [bezirk, list]
+    [bezirk, list],
   );
   const containerStyle = useMemo(() => {
     switch (variant) {
@@ -70,9 +70,9 @@ export default function BezirkableList({
   return (
     <section
       className={cn(
-        "bezirkablelist max-w-full rounded sm:px-2 md:px-4 py-2 my-2 flex flex-col",
+        "bezirkablelist max-w-full rounded sm:px-2 md:px-4 py-2 my-2 flex flex-col transition-all",
         containerStyle,
-        containerClassname
+        containerClassname,
       )}
     >
       {title && title !== "" && (
@@ -102,6 +102,7 @@ export default function BezirkableList({
           descriptions
           linkPrefix={`/${type}/`}
           withDate={withDate}
+          showButtons={filteredList.length > 3}
         />
       </div>
     </section>

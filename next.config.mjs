@@ -8,10 +8,6 @@ const nextConfig = {
         pathname: "/storage/v1/object/public/**",
       },
     ],
-    domains: [
-      "nnozdpexhclustqdgdwh.supabase.co",
-      "buergerbeteiligung.rellingen.de",
-    ],
   },
   compiler: {
     removeConsole: process.env.NODE_ENV === "production",

@@ -18,7 +18,6 @@ export default function ScrollableContainerButtons({
       const scrollContainer = scrollRef.current?.parentElement;
       const parent = scrollContainer?.firstElementChild;
 
-      // Determine if the content overflows in either direction
       const isScrollableHorizontally =
         (parent?.scrollWidth || 0) >
         (parent?.clientWidth ? parent.clientWidth + 32 : 0);
@@ -26,12 +25,11 @@ export default function ScrollableContainerButtons({
         (parent?.scrollHeight || 0) > (parent?.clientHeight || 0);
 
       setIsScrollable(
-        vertical ? isScrollableVertically : isScrollableHorizontally
+        vertical ? isScrollableVertically : isScrollableHorizontally,
       );
     }
   }, [vertical]);
 
-  // Run check when component mounts or window is resized
   useEffect(() => {
     checkIfScrollable();
     const handleResize = () => {

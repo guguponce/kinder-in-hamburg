@@ -138,7 +138,7 @@ export default async function FlohmarktPage() {
             </div>
           ))}
       </MainIntroductionText>
-      <section className="rounded bg-gradient-to-b w-full lg:w-fit max-w-[1400px] p-2 flex flex-col items-center gap-2">
+      <section className="rounded bg-gradient-to-b w-full lg:w-fit lg:max-w-full 2xl:max-w-[1400px] md:p-2 flex flex-col items-center gap-2">
         <BezirkeScrollableEvents
           title="Diese Woche"
           events={thisWeekFlohmaerkte}
