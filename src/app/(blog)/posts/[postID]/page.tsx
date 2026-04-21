@@ -11,7 +11,7 @@ import AdminEditButtons from "@components/@Buttons/AdminEditButtons";
 import { redirect } from "next/navigation";
 import { getServerUser } from "@app/api/auth/supabaseAuth";
 import type { Metadata } from "next";
-import { getPlainText } from "@app/utils/functions";
+import { createMetadata, getPlainText } from "@app/utils/functions";
 interface PostPageProps {
   params: { postID: string };
 }
@@ -29,37 +29,16 @@ export async function generateMetadata({
   const description = `Empfehlung in ${stadtteil || ""}${bezirk ? `, ${bezirk}. ` : ". "}${
     plainTextDescription ? plainTextDescription.slice(0, 150) : ""
   }`;
-  return {
-    title: title,
+  return createMetadata({
+    title,
     description,
-    openGraph: {
-      type: "website",
-      url: "https://www.kinder-in-hamburg.de/posts/" + params.postID,
-      title: title,
-      description,
-      images: [
-        {
-          url: image || process.env.BASE_URL + "opengraph-image.png",
-          width: 1200,
-          height: 1200,
-        },
-      ],
-      siteName: "Kinder in Hamburg",
-    },
-    twitter: {
-      description,
-      title: title,
-      images: [
-        {
-          url: image || process.env.BASE_URL + "opengraph-image.png",
-          width: 1200,
-          height: 1200,
-        },
-      ],
-      site: "https://www.kinder-in-hamburg.de/posts/" + params.postID,
-      card: "summary_large_image",
-    },
-  };
+    image,
+    bezirk,
+    stadtteil,
+    pathname: `/posts/${params.postID}`,
+    robots: false,
+    keywords: [title, bezirk, stadtteil].filter(Boolean), //--------------------------------------------------------
+  });
 }
 export default async function CurrentPostPage({
   params,
