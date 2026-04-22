@@ -6,11 +6,8 @@ import { cn, getDate, separateAddress } from "@app/utils/functions";
 import { iEventType } from "@app/utils/types";
 import LaterneImage from "../@Index/laternenumzug/LaterneImage";
 import DateIcon from "../@Icons/@PostLogo/DateIcon";
-import HamburgIcon from "../@Icons/@PostLogo/HamburgIcon";
-import HamburgFilledIcon from "../@Icons/@BezirkIcon/HamburgFilledIcon";
 import StandortIcon from "../@Icons/StandortIcon";
 import ClockIcon from "../@Icons/@PostLogo/ClockIcon";
-import Image from "next/image";
 
 const SpielplatzgeraeteBackground = dynamic(
   () => import("./SpielplatzgeraeteBackground"),
@@ -56,21 +53,20 @@ export default function HorizontalCard({
       >
         {!!image || type === "flohmarkt" ? (
           <>
-            <Image
+            {/* Background (blurred) */}
+            <img
               src={image || "/assets/icons/market.svg"}
               alt={title}
-              fill
-              className="object-cover blur-sm"
-              sizes="(max-width: 400px) 100vw, 33vw"
+              loading="lazy"
+              className="absolute inset-0 h-full w-full object-cover blur-sm"
             />
 
             {/* Foreground image */}
-            <Image
+            <img
               src={image || "/assets/icons/market.svg"}
               alt={title}
-              fill
-              className={`object-cover"}`}
-              sizes="(max-width: 400px) 100vw, 33vw"
+              loading="lazy"
+              className="absolute inset-0 h-full w-full object-cover"
             />
           </>
         ) : "laterne" === type ? (
@@ -80,15 +76,14 @@ export default function HorizontalCard({
             />
           </div>
         ) : "laternewerkstatt" === type ? (
-          <Image
+          <img
             src={"/assets/icons/laterne/basteln.svg"}
             alt={title}
-            fill
-            className={`object-cover"}`}
-            sizes="(max-width: 400px) 100vw, 33vw"
+            loading="lazy"
+            className="absolute inset-0 h-full w-full object-cover"
           />
         ) : ["weihnachtsmarkt", "adventsevent"].includes(type) ? (
-          <Image
+          <img
             src={
               title.toLocaleLowerCase().includes("weihnachtsmann")
                 ? "/assets/wmann.webp"
@@ -103,9 +98,7 @@ export default function HorizontalCard({
                         : "/assets/weihnachtsmarkt.webp"
             }
             alt={title}
-            fill
-            className={`object-cover"}`}
-            sizes="(max-width: 400px) 100vw, 33vw"
+            className="absolute inset-0 h-full w-full object-cover"
           />
         ) : (
           <>
@@ -116,12 +109,11 @@ export default function HorizontalCard({
                 size="2rem"
               />
             ) : type === "spielplatz" ? (
-              <Image
+              <img
                 src={`/assets/spielplatz${parseInt(`${id}`) % 2 ? "" : "2"}.webp`}
                 alt={title}
-                fill
-                className={`object-cover"}`}
-                sizes="(max-width: 400px) 100vw, 33vw"
+                loading="lazy"
+                className="absolute inset-0 h-full w-full object-cover"
               />
             ) : (
               <CardLogo />

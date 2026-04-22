@@ -4,7 +4,6 @@ import React from "react";
 import FlohmarktBackground from "../@Icons/@Flohmarkt/FlohmarktBackground";
 import { iEventType } from "@app/utils/types";
 import LaterneImage from "../@Index/laternenumzug/LaterneImage";
-import Image from "next/image";
 
 const FlohmarktBackgroundMemo = React.memo(FlohmarktBackground);
 
@@ -103,30 +102,23 @@ export default function FlohmarktPoster({
         )
       )}
       {!!image && !["adventsevent", "weihnachtsmarkt"].includes(eventType) ? (
-        <Image
+        <img
           src={image}
           alt={title}
-          fill
-          placeholder="blur"
-          blurDataURL="/public/assets/logo/KiHLogo.png"
-          className={`rounded ${contain ? "object-contain" : "object-cover"}`}
-          sizes="(max-width: 400px) 100vw, 33vw"
+          loading="lazy"
+          className={`w-full h-full absolute inset-0 rounded ${contain ? "object-contain" : "object-cover"}`}
         />
       ) : (
         <>
           {image ? (
-            <Image
+            <img
               src={image}
               alt={title}
-              fill
-              placeholder="blur"
-              blurDataURL="/public/assets/logo/KiHLogo.png"
-              className={`absolute rounded ${contain ? "object-contain" : "object-cover"}`}
-              sizes="(max-width: 400px) 100vw, 33vw"
+              className={`w-full h-full absolute inset-0 rounded ${contain ? "object-contain" : "object-cover"}`}
             />
           ) : eventType === "adventsevent" ||
             eventType === "weihnachtsmarkt" ? (
-            <Image
+            <img
               src={
                 title.toLocaleLowerCase().includes("weihnachtsmann")
                   ? "/assets/wmann.webp"
@@ -141,11 +133,7 @@ export default function FlohmarktPoster({
                           : "/assets/weihnachtsmarkt.webp"
               }
               alt={title}
-              fill
-              placeholder="blur"
-              blurDataURL="/public/assets/logo/KiHLogo.png"
-              className={`absolute rounded object-contain`}
-              sizes="(max-width: 400px) 100vw, 33vw"
+              className="w-full h-full absolute inset-0 rounded object-contain"
             />
           ) : null}
           <div

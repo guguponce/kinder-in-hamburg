@@ -5,7 +5,6 @@ import BurgerMenu from "./BurgerMenu";
 import UserButtons from "./UserButtons";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
 import NavLinks from "./NavLinks";
-import Image from "next/image";
 
 export default async function Header() {
   return (
@@ -23,23 +22,17 @@ export default async function Header() {
         className="h-full overflow-hidden px-4 flex-grow rounded-sm flex items-center justify-center lg:justify-start gap-4"
         id="main-logo-link"
       >
-        <Image
+        <img
           src="/assets/logo/WhiteLogo-NoText.png"
+          loading="eager"
+          className="hidden lg:flex w-[120px] h-[80px] object-contain text-sm brightness-105"
           alt="Kinder in Hamburg"
-          width={120}
-          height={80}
-          priority
-          quality={100}
-          className="hidden lg:flex object-contain text-sm brightness-105"
         />
-        <Image
-          src="/assets/logo/WhiteLogo-Transparent.png"
+        <img
+          src="/assets/logo/WhiteLogo-NoText.png"
+          loading="eager"
+          className="hidden lg:flex w-[120px] h-[80px] object-contain text-sm brightness-105"
           alt="Kinder in Hamburg"
-          width={120}
-          height={80}
-          quality={100}
-          priority
-          className="max-h-full lg:hidden object-contain text-sm brightness-105"
         />
 
         <h1
@@ -52,6 +45,7 @@ export default async function Header() {
       <div className="hidden lg:flex">
         <NavLinks />
       </div>
+      {/* <SharingButton /> */}
       <AdminServerComponent>
         <UserButtons />
       </AdminServerComponent>
