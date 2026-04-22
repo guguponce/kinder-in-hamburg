@@ -3,7 +3,7 @@ import { getApprovedSpielplaetze } from "@app/api/spActions";
 import AdminRoute from "@app/providers/AdminRoute";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { createMetadata } from "@app/utils/functions";
+import { createMetadata, spielplaetzeMetadata } from "@app/utils/metadata";
 import type { Metadata } from "next";
 import URLFilteredListSuspense from "@app/components/Filters/URLFilteredListSuspense";
 import ErrorComponent from "@app/components/ErrorComponent";
@@ -22,41 +22,7 @@ export async function generateMetadata(): Promise<Metadata> {
       "Hier findet ihr eine Übersicht von Spielplätzen aus verschiedenen Orten in Hamburg. Ihr könnt nach verschiedenen Kategorien, Bezirken, Altersempfehlungen und Spielgeräten filtern, um den perfekten Ort für eure Kinder oder eure Familie zu finden.",
     pathname: "/spielplaetze",
     image: process.env.BASE_URL + "opengraph-image.png",
-    keywords: [
-      "Spielplätze Hamburg",
-      "Spielplatz Hamburg",
-      "Spielplätze in Hamburg",
-      "Spielplatz in der Nähe Hamburg",
-      "beste Spielplätze Hamburg",
-      "Kinder Spielplätze Hamburg",
-      "Ausflugsziele Spielplatz Hamburg",
-      "Outdoor Spielplatz Hamburg",
-      "Indoor Spielplatz Hamburg",
-      "Abenteuerspielplatz Hamburg",
-      "Waldspielplatz Hamburg",
-      "Wasserspielplatz Hamburg",
-      "Planschbecken Hamburg",
-      "Skatepark Hamburg",
-      "Sportplatz für Kinder Hamburg",
-      "Tierpark für Kinder Hamburg",
-      "Abenteuerspielplätze für Kinder",
-      "Natur Spielplätze",
-      "Wald Spielplätze für Kinder",
-      "Wasser Spielplätze für Kinder",
-      "Spielplätze mit Wasser Hamburg",
-      "Spielplätze mit Schatten Hamburg",
-      "ruhige Spielplätze Hamburg",
-      "große Spielplätze Hamburg",
-      "kleinkind Spielplätze Hamburg",
-      "Spielplätze für kleine Kinder",
-      "was sind die besten Spielplätze in Hamburg",
-      "schöne Spielplätze für Kinder in Hamburg",
-      "Spielplätze zum Ausfliegen Hamburg",
-      "wo gibt es Spielplätze in Hamburg",
-      "Kinder Ausflüge Spielplatz Hamburg",
-      "Wochenend Ausflug Spielplatz Hamburg",
-      "Spielplätze für Familien Hamburg",
-    ],
+    keywords: spielplaetzeMetadata,
     robots: true,
   });
 }

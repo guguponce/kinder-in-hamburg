@@ -7,7 +7,7 @@ import URLFilteredListSuspense from "@components/Filters/URLFilteredListSuspense
 import PageTitle from "@components/PageTitle";
 import type { Metadata } from "next";
 import ErrorComponent from "@app/components/ErrorComponent";
-import { createMetadata } from "@app/utils/functions";
+import { createMetadata, postsMetadata } from "@app/utils/metadata";
 
 export const revalidate = 20;
 
@@ -25,52 +25,7 @@ export async function generateMetadata(): Promise<Metadata> {
     image: process.env.BASE_URL + "opengraph-image.png",
 
     robots: true,
-    keywords: [
-      "Kinder Aktivitäten",
-      "Familien Aktivitäten",
-      "Ausflüge mit Kindern",
-      "Freizeit mit Kindern",
-      "Was tun mit Kindern",
-      "Aktivitäten für Teenager",
-      "Jugend Aktivitäten",
-      "Indoor Aktivitäten Kinder",
-      "Outdoor Aktivitäten Kinder",
-      "kostenlose Aktivitäten Kinder",
-      "Wochenend Ausflüge Familie",
-      "Spielplätze",
-      "Museen für Kinder",
-      "Tiere erleben Kinder",
-      "Sport Aktivitäten Kinder",
-      "Kindergeburtstag Ideen",
-      "Kinder Café",
-      "Indoor Spielhaus",
-      "Badeplätze mit Kindern",
-      "Freizeit Ideen Familie Wochenende",
-      "Badeplätze Hamburg",
-      "Kinder Aktivitäten Hamburg",
-      "Familien Aktivitäten Hamburg",
-      "Ausflüge mit Kindern Hamburg",
-      "Freizeit mit Kindern Hamburg",
-      "Spielplätze Hamburg",
-      "Museen für Kinder Hamburg",
-      "Indoor Aktivitäten Hamburg",
-      "Outdoor Aktivitäten Hamburg",
-      "kostenlose Aktivitäten Hamburg",
-      "Wochenend Ausflüge Hamburg",
-      "Kindergeburtstag Hamburg",
-      "Ausflugsziele Hamburg mit Kindern",
-      "Dinge für Kinder in Hamburg",
-      "was tun mit Kindern in Hamburg",
-      "Freizeit Hamburg Kinder",
-      "Freizeit Ideen Familie Wochenende",
-      "kids activities hamburg",
-      "things to do with kids hamburg",
-      "family activities hamburg",
-      "things to do in Hamburg with kids",
-      "free things to do with kids hamburg",
-      "playgrounds near me hamburg",
-      "family weekend activities hamburg",
-    ],
+    keywords: postsMetadata,
   });
 }
 const cachedPosts = unstable_cache(getAllApprovedPosts, ["posts"], {

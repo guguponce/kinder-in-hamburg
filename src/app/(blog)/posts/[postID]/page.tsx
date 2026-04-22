@@ -11,7 +11,8 @@ import AdminEditButtons from "@components/@Buttons/AdminEditButtons";
 import { redirect } from "next/navigation";
 import { getServerUser } from "@app/api/auth/supabaseAuth";
 import type { Metadata } from "next";
-import { createMetadata, getPlainText } from "@app/utils/functions";
+import { getPlainText } from "@app/utils/functions";
+import { createMetadata } from "@app/utils/metadata";
 interface PostPageProps {
   params: { postID: string };
 }

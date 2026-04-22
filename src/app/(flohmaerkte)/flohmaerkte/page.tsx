@@ -11,6 +11,7 @@ import AdminServerComponent from "@app/providers/AdminServerComponents";
 import MainIntroductionText from "@app/components/@Templates/MainIntroductionText";
 import StandortIcon from "@components/@Icons/StandortIcon";
 import OtherEventsHorizontalCards from "./OtherEventsHorizontalCards";
+import { createMetadata, flohmaerkteMetadata } from "@app/utils/metadata";
 
 const DynamicFlohmarktMap = dynamic(
   () => import("../../components/@Map/DynamicEventsMap"),
@@ -29,62 +30,15 @@ const DynamicFlohmarktMap = dynamic(
 );
 
 export async function generateMetadata(): Promise<Metadata> {
-  return {
-    title: "Flohmärkte",
-    icons: "/favicon.ico",
+  return createMetadata({
+    title: "Flohmärkte in Hamburg",
     description:
       "Hier findet ihr Aktivitäten und Flohmärkte für die ganze Familie aus verschiedenen Orten in Hamburg zusammengestellt.",
-    keywords: [
-      "Flohmärkte Hamburg",
-      "Flohmarkt Hamburg",
-      "Kinder Flohmarkt Hamburg",
-      "Baby Flohmarkt Hamburg",
-      "Familien Flohmarkt Hamburg",
-      "Flohmarkt für Kinder Hamburg",
-      "Spielzeug Flohmarkt Hamburg",
-      "Kinderbasar Hamburg",
-      "Babybasar Hamburg",
-      "Kindersachen Flohmarkt Hamburg",
-      "Flohmarkt Kinderkleidung Hamburg",
-      "Second Hand Kinder Hamburg",
-      "Kinderkleidung Flohmarkt Hamburg",
-      "Flohmarkt Spielzeug gebraucht Hamburg",
-      "Flohmarkt heute Hamburg",
-      "Flohmarkt Wochenende Hamburg",
-      "Flohmarkt Termine Hamburg",
-      "Flohmarkt in der Nähe Hamburg",
-      "Flohmarkt Hamburg Sonntag",
-      "Familienmarkt Hamburg",
-      "Baby Sachen gebraucht Hamburg",
-      "Kinder Sachen günstig Hamburg",
-      "Tauschmarkt Kinder Hamburg",
-      "Flohmarkt Schule Kindergarten Hamburg",
-      "Kinderflohmarkt Schleswig-Holstein",
-      "Flohmarkt für Familien Schleswig-Holstein",
-      "Babyartikel Flohmarkt Hamburg",
-      "Kinderbedarf Flohmarkt Hamburg",
-      "Flohmarkt Outdoor Kinder Hamburg",
-      "Kinder Events Hamburg Flohmarkt",
-      "Flohmarkt für Eltern Hamburg",
-    ],
-    openGraph: {
-      type: "website",
-      url: "https://www.kinder-in-hamburg.de/flohmaerkte/",
-      title: "Flohmärkte",
-      description:
-        "Hier findet ihr Flohmärkte für die ganze Familie aus verschiedenen Orten in Hamburg zusammengestellt.",
-      images: "https://www.kinder-in-hamburg.de/og/opengraph-image.png",
-      siteName: "Kinder in Hamburg",
-    },
-    twitter: {
-      title: "Flohmärkte",
-      description:
-        "Hier findet ihr Flohmärkte für die ganze Familie aus verschiedenen Orten in Hamburg zusammengestellt.",
-      images: "https://www.kinder-in-hamburg.de/og/opengraph-image.png",
-      site: "https://www.kinder-in-hamburg.de/flohmaerkte/",
-      card: "summary_large_image",
-    },
-  };
+    pathname: "/flohmaerkte",
+    image: process.env.BASE_URL + "opengraph-image.png",
+    keywords: flohmaerkteMetadata,
+    robots: true,
+  });
 }
 export default async function FlohmarktPage() {
   const flohmaerkte = await getApprovedEvents();

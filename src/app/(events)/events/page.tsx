@@ -12,6 +12,7 @@ import type { iFlohmarkt } from "@app/utils/types";
 import GeneralContainer from "@components/GeneralContainer";
 import PageTitle from "@app/components/PageTitle";
 import { unstable_cache } from "next/cache";
+import { createMetadata, eventsMetadata } from "@app/utils/metadata";
 
 const DynamicEventsMap = dynamic(
   () => import("../../components/@Map/DynamicEventsMap"),
@@ -30,39 +31,15 @@ const DynamicEventsMap = dynamic(
 );
 export const revalidate = 120;
 
-export const metadata: Metadata = {
-  title: "Veranstaltungen für Kinder",
-  description: "Veranstaltungen für Kinder in Hamburg",
-  keywords: [
-    "kinder events hamburg",
-    "kinder events",
-    "kinder veranstaltungen hamburg",
-    "kinder veranstaltungen",
-    "kinder veranstaltung",
-    "kinder veranstaltung hamburg",
-    "Veranstaltungen für Kinder, Hamburg",
-    "Kinderveranstaltung, Hamburg",
-    "Hamburg Kinderveranstaltung",
-    "Hamburg Veranstaltungen für Kinder",
-    "Hamburg Kinderveranstaltung",
-    "Hamburg Kinderveranstaltungen",
-    "Veranstaltungen für Kinder",
-    "Veranstaltungen für Kinder",
-    "Veranstaltungen für Kinder Hamburg",
-    "Veranstaltungen für Kinder Hamburg",
-    "Events für Kinder, Hamburg",
-    "Event, Hamburg",
-    "Hamburg Event",
-    "Hamburg Events für Kinder",
-    "Hamburg Kinder Event",
-    "Hamburg Kinder Events",
-    "Events für Kinder",
-    "Events für Kinder",
-    "Events für Kinder Hamburg",
-    "Events für Kinder Hamburg",
-  ],
-};
-
+export async function generateMetadata(): Promise<Metadata> {
+  return createMetadata({
+    title: "Veranstaltungen für Kinder",
+    description: "Veranstaltungen für Kinder in Hamburg",
+    pathname: "/events",
+    keywords: eventsMetadata,
+    robots: true,
+  });
+}
 const getEventsAndFlohmaerkte = unstable_cache(
   getApprovedEventsAndFlohmaerkte,
   ["flohmaerkte", "events"],

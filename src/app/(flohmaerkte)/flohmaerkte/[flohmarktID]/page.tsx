@@ -14,13 +14,10 @@ import { PROXIMATE_STADTTEILE_FROM_OTHER_BEZIRK } from "@app/utils/constants";
 import SpielplaetzeNearby from "./SpielplaetzeNearby";
 import AdminEditButtons from "@components/@Buttons/AdminEditButtons";
 import OldFlohmarktSign from "./OldFlohmarktSign";
-import {
-  createMetadata,
-  getDate,
-  parseDescriptionWithTags,
-} from "@app/utils/functions";
+import { getDate, parseDescriptionWithTags } from "@app/utils/functions";
 import { redirect } from "next/navigation";
 import FlohmaerkteSameLocation from "./FlohmaerkteSameLocation";
+import { createMetadata, singleFlohmarktMetadata } from "@app/utils/metadata";
 
 interface FlohmarktPageProps {
   params: { flohmarktID: string };
@@ -50,38 +47,7 @@ export async function generateMetadata({
     image,
     pathname: `/flohmaerkte/${flohmarktID}`,
     robots: flohmarktInfo.status === "approved",
-    keywords: [
-      title || "Flohmarkt in Hamburg",
-      "Flohmarkt Hamburg",
-      "Flohmärkte Hamburg",
-      "Trödelmarkt Hamburg",
-      "Flohmarkt Schleswig-Holstein",
-      "Flohmarkt in der Nähe",
-      "Flohmarkt heute Hamburg",
-      "Flohmarkt dieses Wochenende Hamburg",
-      "Flohmarkt Termine Hamburg",
-      "Flohmarkt Öffnungszeiten Hamburg",
-      "Flohmarkt Datum Hamburg",
-      "Flohmarkt Standort Hamburg",
-      "Flohmarkt Adresse Hamburg",
-      "wann ist Flohmarkt in Hamburg",
-      "wo ist Flohmarkt in Hamburg",
-      "welcher Flohmarkt ist heute in Hamburg",
-      "Flohmarkt am Wochenende Hamburg",
-      "beste Flohmärkte in Hamburg",
-      "Familien Flohmarkt Hamburg",
-      "Kinder Flohmarkt Hamburg",
-      "Outdoor Flohmarkt Hamburg",
-      "Indoor Flohmarkt Hamburg",
-      "Flohmarkt Veranstaltung Hamburg",
-      "Flohmarkt Event Hamburg",
-      "Antik und Trödel Hamburg",
-      "Second Hand Markt Hamburg",
-      "Flohmarkt besuchen Hamburg",
-      "Flohmarkt Tipps Hamburg",
-      "Flohmarkt in Hamburg heute geöffnet",
-      "Flohmarkt planen Hamburg",
-    ],
+    keywords: [title || "", ...singleFlohmarktMetadata],
   });
 }
 
