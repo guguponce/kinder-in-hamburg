@@ -52,7 +52,9 @@ export default function DeleteButton({
             ? "Post"
             : type === "event"
               ? "Event"
-              : "Flohmarkt"}
+              : type === "spielplatz"
+                ? "Spielplatz"
+                : "Flohmarkt"}
         {deleteFrom === "all" ? " Forever" : ""}
       </button>
     </>

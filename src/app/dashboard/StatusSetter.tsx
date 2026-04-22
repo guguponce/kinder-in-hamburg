@@ -14,13 +14,14 @@ export default function StatusSetter({
 }: {
   target: iPost | iFlohmarkt | iSpielplatz;
   status: "pending" | "approved" | "rejected" | "old";
-  type?: "post" | "flohmarkt" | "event";
+  type?: "post" | "flohmarkt" | "event" | "spielplatz";
   horizontal?: boolean;
 }) {
   const typeCorrection = {
     event: "events",
     flohmarkt: "flohmaerkte",
     post: "posts",
+    spielplatz: "spielplaetze",
   };
   const [currentStatus, setCurrentStatus] = useState(status);
   const handleSetStatus = async () => {
@@ -31,7 +32,7 @@ export default function StatusSetter({
       await updateEventStatus(
         target.id.toString(),
         currentStatus,
-        typeCorrection[type]
+        typeCorrection[type],
       ).then((res) => {
         console.log(res);
       });
@@ -45,7 +46,7 @@ export default function StatusSetter({
   return (
     <>
       <div
-        className={`flex-grow h-full flex flex-wrap justify-around gap-4 ${horizontal ? "flex-row" : "flex-col"}`}
+        className={`flex-grow w-full h-full flex flex-wrap justify-around gap-4 ${horizontal ? "flex-row" : "flex-col"}`}
       >
         <div
           className={`flex items-center gap-4  ${horizontal ? "flex-row w-fit" : "flex-col w-full"}`}
@@ -63,7 +64,7 @@ export default function StatusSetter({
             value={currentStatus}
             onChange={(e) =>
               setCurrentStatus(
-                e.target.value as "pending" | "approved" | "rejected" | "old"
+                e.target.value as "pending" | "approved" | "rejected" | "old",
               )
             }
           >

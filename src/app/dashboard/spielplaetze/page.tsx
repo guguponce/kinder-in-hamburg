@@ -4,6 +4,7 @@ import React from "react";
 import StatusSetter from "../StatusSetter";
 import AdminRoute from "@app/providers/AdminRoute";
 import { getAllSpielplaetzeSeparatedByStatus } from "@app/api/spActions";
+import { parseDescriptionWithTags } from "@app/utils/functions";
 
 export default async function AllSpielplaetzePage() {
   const allSpielplaetze = await getAllSpielplaetzeSeparatedByStatus();
@@ -18,7 +19,7 @@ export default async function AllSpielplaetzePage() {
             className="w-full gap-2 bg-hh-400 text-white rounded-md p-4"
           >
             <h2 className="font-semibold text-center text-2xl p-2 capitalize">
-              {status}
+              {status} ({spielplaetze.length})
             </h2>
             <article className="flex flex-wrap gap-2 justify-center">
               {spielplaetze.map((sp) => (
@@ -32,25 +33,25 @@ export default async function AllSpielplaetzePage() {
                         : "bg-hh-300"
                   } p-2 rounded-md flex justify-around flex-wrap gap-4 items-center min-w-[350px] max-w-[450px] w-2/5 lg:w-[600px]`}
                 >
-                  <div className="min-w-[275px] lg:max-w-[450px] h-[160px] flex-grow">
-                    <HorizontalCard
-                      type="spielplatz"
-                      id={sp.id}
+                  <HorizontalCard
+                    type="spielplatz"
+                    id={sp.id}
+                    title={sp.title}
+                    link={`/${"spielplaetze"}/${sp.id}`}
+                    image={(sp.image && sp.image[0]) || ""}
+                  >
+                    <HorizontalCard.PostInfo
                       title={sp.title}
-                      link={`/${"spielplaetze"}/${sp.id}`}
-                      image={(sp.image && sp.image[0]) || ""}
-                    >
-                      <HorizontalCard.PostInfo
-                        title={sp.title}
-                        description={sp.text?.slice(0, 100) + "..."}
-                        stadtteil={sp.stadtteil}
-                      />
-                    </HorizontalCard>
-                  </div>
-                  <div className="border border-hh-800 rounded p-2 flex flex-wrap items-center justify-center gap-4 text-hh-800 min-w-[100px]">
+                      description={parseDescriptionWithTags(sp.text || "", 100)}
+                      stadtteil={sp.stadtteil}
+                    />
+                  </HorizontalCard>
+                  <div className="border border-hh-800 rounded p-2 flex flex-wrap items-center justify-center gap-4 text-hh-800 w-full">
                     <StatusSetter
+                      horizontal
                       status={sp.status || "pending"}
                       target={sp}
+                      type="spielplatz"
                     ></StatusSetter>
                   </div>
                 </div>
