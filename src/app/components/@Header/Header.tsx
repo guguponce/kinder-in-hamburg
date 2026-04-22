@@ -29,9 +29,9 @@ export default async function Header() {
           alt="Kinder in Hamburg"
         />
         <img
-          src="/assets/logo/WhiteLogo-NoText.png"
+          src="/assets/logo/WhiteLogo-Transparent.png"
           loading="eager"
-          className="hidden lg:flex w-[120px] h-[80px] object-contain text-sm brightness-105"
+          className="lg:hidden w-[120px] h-[80px] object-contain text-sm brightness-105"
           alt="Kinder in Hamburg"
         />
 
