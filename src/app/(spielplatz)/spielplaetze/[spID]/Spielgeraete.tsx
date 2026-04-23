@@ -2,6 +2,7 @@
 import SpielgeraeteIcon from "@components/@Icons/@Spielplatz/SpielgeraeteIcon";
 import { spielgeraeteList } from "@app/utils/constants";
 import React, { useLayoutEffect, useState } from "react";
+import style from "./spielplatzSyle.module.scss";
 
 export default function Spielgeraete({
   spielgeraete,
@@ -32,7 +33,7 @@ export default function Spielgeraete({
     }
   }, [spielgeraete]);
   const spielgeraeteOrder = spielgeraeteList.filter((spielgeraet) =>
-    spielgeraete.includes(spielgeraet)
+    spielgeraete.includes(spielgeraet),
   );
   return (
     <section
@@ -49,7 +50,7 @@ export default function Spielgeraete({
         {spielgeraeteOrder.map((spielgeraet) => (
           <div
             key={spielgeraet}
-            className={`spielgeraet bg-hh-50 bg-opacity-75 p-2 rounded-md capitalize flex items-center gap-2 font-semibold text-hh-900  h-10`}
+            className={`${style.spielgeraet} bg-hh-50 bg-opacity-75 p-2 rounded-md capitalize flex items-center gap-2 font-semibold text-hh-900  h-10`}
           >
             <div className="iconContainer h-full aspect-square">
               <SpielgeraeteIcon

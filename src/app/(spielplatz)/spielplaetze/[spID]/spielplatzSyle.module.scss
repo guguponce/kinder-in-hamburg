@@ -1,8 +1,10 @@
+.spielplatzGrid,
 #spielplatz-grid {
   display: grid;
   height: fit-content;
   grid-template-columns: 1fr;
   gap: 0.5rem;
+  width: 100%;
   grid-template-areas:
     "data"
     "spielgeraete"
@@ -22,22 +24,28 @@
   }
 }
 
-#spielplatz-spielgeraete-box {
+#spielplatz-spielgeraete-box,
+.spielgeraeteBox {
   grid-area: spielgeraete;
 }
-#spielplatz-map-container {
+#spielplatz-map-container,
+.mapContainer {
   grid-area: map;
 }
-#spielplatz-data {
+#spielplatz-data,
+.dataContainer {
   grid-area: data;
-  #image-container {
+  #image-container,
+  .imageContainer {
     grid-area: image;
   }
-  #description-container {
+  #description-container,
+  .descriptionContainer {
     grid-area: description;
   }
 }
-#flohmaerkte-nearby {
+#flohmaerkte-nearby,
+.flohmaerkteNearby {
   grid-area: flohmaerkte;
 }
 

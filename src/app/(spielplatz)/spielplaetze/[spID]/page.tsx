@@ -2,7 +2,7 @@ import { getSpielplatzMetadata, getSpielplatzWithID } from "@app/api/spActions";
 import NotFound from "@components/@NotFound/NotFound";
 import React from "react";
 import SPBezirkMap from "./SPBezirkMapContainer";
-import FlohmaerkteNearby from "../FlohmaerkteNearby";
+import FlohmaerkteNearby from "./FlohmaerkteNearby";
 import dynamic from "next/dynamic";
 import ImagesModalGallery from "@components/ImagesModalGallery";
 import type { Metadata } from "next";
@@ -15,6 +15,7 @@ import { parseDescriptionWithTags } from "@app/utils/functions";
 import Spielgeraete from "./Spielgeraete";
 import Link from "next/link";
 import { getUser } from "@app/api/auth/supabaseAuth";
+import style from "./spielplatzSyle.module.scss";
 
 interface SpielplatzPageProps {
   params: { spID: string };
@@ -160,11 +161,17 @@ export default async function SpielplatzPage({
           </div>
         )}
       </div>
-      <div id="spielplatz-grid" className="w-full xs:px-2 sm:px-4">
+      <div
+        id="spielplatz-grid"
+        className={style.spielplatzGrid + " xs:px-2 sm:px-4"}
+      >
         {spielgeraete && <Spielgeraete spielgeraete={spielgeraete} />}
         <section
           id="spielplatz-map-container"
-          className="flex flex-col gap-2 p-2 bg-hh-50 bg-opacity-50 rounded-md w-full lg:h-fit lg:max-w-[400px] mb-2"
+          className={
+            style.mapContainer +
+            " flex flex-col gap-2 p-2 bg-hh-50 bg-opacity-50 rounded-md w-full lg:h-fit lg:max-w-[400px] mb-2"
+          }
         >
           <div className="flex justify-center gap-2 w-full max-w-[800px] mx-auto min-h-32 rounded">
             <LocationBox
@@ -178,7 +185,10 @@ export default async function SpielplatzPage({
         </section>
         <section
           id="spielplatz-data"
-          className="flex flex-col justify-start items-center gap-2 w-full h-fit lg:h-fit overflow-hidden flex-grow mb-2"
+          className={
+            style.dataContainer +
+            " flex flex-col justify-start items-center gap-2 w-full h-fit lg:h-fit overflow-hidden flex-grow mb-2"
+          }
         >
           <SpielplatzgeraeteBackground
             small={false}
@@ -190,7 +200,10 @@ export default async function SpielplatzPage({
             {!!image?.length && (
               <section
                 id="image-container"
-                className="w-full h-72 bg-hh-950 bg-opacity-10 flex gap-2 p-2 pb-4 justify-center items-center"
+                className={
+                  style.imageContainer +
+                  " w-full h-72 bg-hh-950 bg-opacity-10 flex gap-2 p-2 pb-4 justify-center items-center"
+                }
               >
                 <ImagesModalGallery images={image} title={title} />
               </section>
@@ -199,7 +212,10 @@ export default async function SpielplatzPage({
             {!!text && (
               <section
                 id="description-container"
-                className="w-full h-fit rounded-md p-4 z-10"
+                className={
+                  style.descriptionContainer +
+                  " w-full h-fit rounded-md p-4 z-10"
+                }
               >
                 <DisplayTypeText text={text} type="paragraph" />
               </section>

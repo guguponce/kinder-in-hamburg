@@ -15,6 +15,7 @@ import AdminServerComponent from "@app/providers/AdminServerComponents";
 import FlohmarktBackground from "./@Icons/@Flohmarkt/FlohmarktBackground";
 import Image from "next/image";
 import PageTitle from "./PageTitle";
+import { SharingButton } from "./@Buttons/SharingButtons/SharingButton";
 
 function LocationDate({
   address,
@@ -233,6 +234,7 @@ export default function FlohmarktTemplate({
               >
                 {bezirk}
               </Link>
+              <SharingButton />
             </AdminServerComponent>
           </div>
         </aside>

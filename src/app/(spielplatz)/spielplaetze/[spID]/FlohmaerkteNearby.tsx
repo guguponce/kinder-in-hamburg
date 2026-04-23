@@ -1,10 +1,11 @@
 import { getThisWeekEvents } from "@app/api/dbActions";
 import React from "react";
-import ArrowGalleryContainer from "./ArrowGalleryContainer";
+import ArrowGalleryContainer from "../ArrowGalleryContainer";
 import { PROXIMATE_STADTTEILE_FROM_OTHER_BEZIRK } from "@app/utils/constants";
 import FlohmarktPoster from "@components/@Cards/FlohmarktPoster";
 import ScrollableContainer from "@components/ScrollableContainer";
 import { haversineDistance } from "@app/utils/functions";
+import style from "./spielplatzSyle.module.scss";
 
 export default async function FlohmaerkteNearby({
   bezirk,
@@ -37,7 +38,10 @@ export default async function FlohmaerkteNearby({
     <>
       <div
         id="spielplatz-flohmaerkte-nearby"
-        className="relative h-80 w-fit max-w-full mx-auto flex lg:hidden px-8 lg:px-16"
+        className={
+          style.flohmaerkteNearby +
+          "relative h-80 w-fit max-w-full mx-auto flex lg:hidden px-8 lg:px-16"
+        }
       >
         <h2
           className="absolute z-50 bottom-0 left-4 lg:left-8 -translate-x-1/2 text-xl sm:text-2xl overflow-hidden w-3rem font-bold rotate-180 text-hh-800"
@@ -49,9 +53,9 @@ export default async function FlohmaerkteNearby({
           <ArrowGalleryContainer list={list} />
         </div>
       </div>
-      <div className="hidden lg:flex min-w-[50%] max-w-full mx-auto text-center justify-center bg-hh-600 bg-opacity-100 p-2 mt-auto mb-2 rounded shadow-lg">
+      <div className="hidden lg:flex min-w-[50%] max-w-full h-[250px] mx-auto text-center justify-center bg-hh-700 bg-opacity-100 p-2 mt-automb-2 rounded shadow-lg">
         <h2
-          className="text-xl overflow-hidden max-w-full rotate-180  flex flex-col font-bold  text-hh-50"
+          className="min-w-fit text-xl overflow-hidden max-w-full rotate-180  flex flex-col font-bold  text-hh-50"
           style={{ writingMode: "vertical-rl", textOrientation: "revert" }}
         >
           Flohmärkte in der Nähe
@@ -60,7 +64,7 @@ export default async function FlohmaerkteNearby({
           {/* <span className="text-sm block font-bold  text-hh-50">
             Innerhalb 2 km von diesem Spielplatz:
           </span> */}
-          <ScrollableContainer>
+          <ScrollableContainer boxStyle="gap-1 lg:gap-2" color="800">
             {list.map(
               (
                 { id, title, date, image, bezirk: flohBezirk, stadtteil },
@@ -68,9 +72,9 @@ export default async function FlohmaerkteNearby({
               ) => (
                 <article
                   key={id + Math.random()}
-                  className="relative flex flex-col items-center overflow-hidden h-[225px] min-w-[180px] gap-1"
+                  className="relative flex flex-col items-center min-w-[144px] pt-1 hover:outline outline-2 outline-hh-50-25 rounded hover:shadow"
                 >
-                  <div className="overflow-hidden h-[200px] min-w-[144px]">
+                  <div className="w-fit aspect-[3/4] overflow-hidden mb-1 shadow group-hover:shadow-none">
                     <FlohmarktPoster
                       bezirk={flohBezirk}
                       id={id}
@@ -82,7 +86,7 @@ export default async function FlohmaerkteNearby({
                       size="small"
                     />
                   </div>
-                  <h3 className="text-white text-center h-[20px] w-full font-semibold text-sm truncate-1">
+                  <h3 className="text-white text-center h-[20px] w-full font-semibold text-xs truncate-1">
                     <span>
                       {new Date(date).toLocaleDateString("de-DE", {
                         day: "numeric",
