@@ -66,7 +66,11 @@ export default function ScrollableContainer({
         {children}
       </div>
       {showButtons && (
-        <ScrollableContainerButtons vertical={vertical} color={color} />
+        <ScrollableContainerButtons
+          vertical={vertical}
+          color={color}
+          targetRef={scrollbar}
+        />
       )}
     </div>
   );
