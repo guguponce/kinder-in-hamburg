@@ -26,18 +26,20 @@ const SingleBezirkEvents = ({
   const [expanded, setExpanded] = React.useState<Array<string>>([]);
   return displayBezirke.map((currentBezirk) => {
     const currentBezirkEvents = eventsByBezirke[currentBezirk];
-
     return (
       <div
         id={currentBezirk.toLowerCase().replace(/\s/g, "-")}
         key={currentBezirk}
         className={cn(
-          "min-w-[250px] max-w-full h-fit flex items-center flex-col rounded mx-2 mb-2 shadow-md outline outline-2 outline-hh-800",
+          "min-w-[250px] max-w-full h-[350px] flex items-center flex-col rounded ml-1 shadow-md outline outline-2 outline-hh-800 hover:bg-white",
           currentBezirkEvents.length > 4 || displayBezirke.length === 1
             ? "w-fit"
             : "w-fit lg:max-w-[calc(50%-1rem)]",
-          currentBezirkEvents.length === 1 && "pb-4",
-          expanded.includes(currentBezirk) && "min-w-fit p",
+          expanded.includes(currentBezirk)
+            ? "min-w-fit "
+            : currentBezirkEvents.length > 1
+              ? "pb-1"
+              : "",
         )}
       >
         {!bezirk && (
@@ -88,7 +90,8 @@ const SingleBezirkEvents = ({
             color="300"
             paddingForButtons={false}
             showButtons={currentBezirkEvents.length > 1}
-            containerStyle={expanded.includes(currentBezirk) ? "max-w-fit" : ""}
+            containerStyle={`px-1 ${expanded.includes(currentBezirk) ? "max-w-fit" : ""}`}
+            boxStyle="px-0"
           >
             {currentBezirkEvents.map(
               (
@@ -113,7 +116,7 @@ const SingleBezirkEvents = ({
                     key={id}
                     className={`relative flex flex-col items-center overflow-hidden h-[275px] min-w-[180px] gap-1 ${offenHeute && "outline-2  outline outline-offset-2 rounded outline-positive-700 bg-positive-700 bg-opacity-20"}`}
                   >
-                    <div className="overflow-hidden h-[250px] min-w-[180px]">
+                    <div className="overflow-hidden h-[250px] min-w-[180px] shadow shadow-[#00000033]">
                       <FlohmarktPoster
                         bezirk={flohBezirk}
                         id={id}
@@ -126,7 +129,7 @@ const SingleBezirkEvents = ({
                         eventType={eventType || "flohmarkt"}
                       />
                     </div>
-                    <h3 className="text-hh-800 text-center pb-0  self-start-between items-center h-[20px] w-full font-semibold text-sm truncate-1">
+                    <h3 className="text-hh-800 text-center self-start-between items-center h-[20px] w-full font-semibold text-sm truncate-1">
                       <span className="font-bold mr-4">
                         {offenHeute ? "Heute" : evDate}
                       </span>
@@ -191,7 +194,7 @@ export default function BezirkeScrollableEvents({
     <div
       id="bezirke-scrollable-events"
       className={cn(
-        "w-full h-fit flex items-stretch flex-wrap gap-4 scroll-mt-20 bg-transparent hover:bg-white hover:bg-opacity-50 border-2 border-transparent hover:border-hh-950 p-2 md:p-4 transition-all duration-500 rounded",
+        "w-full h-fit flex items-stretch flex-wrap gap-4 scroll-mt-20 bg-transparent hover:bg-white hover:bg-opacity-50 border-2 border-transparent hover:border-hh-950 md:p-2 transition-all duration-500 rounded",
         todayFlohmaerkteLength < 3
           ? "md:flex-nowrap"
           : todayFlohmaerkteLength < 4
@@ -202,7 +205,7 @@ export default function BezirkeScrollableEvents({
       {todaysFlohmaerkte && (
         <div
           className={cn(
-            "md:mt-auto md:mb-8 relative flex  flex-col rounded-md bg-hh-900 hover:shadow-lg transition-all  min-w-[220px] w-fit max-w-full p-2 pt-0 shadow-sm h-fit pb-3",
+            "md:mt-auto md:mb-8 relative flex  flex-col rounded-md bg-hh-900 hover:shadow-lg transition-all  min-w-[220px] w-fit max-w-full p-2 pt-0 shadow-sm h-fit",
             todayFlohmaerkteLength > 3 && "md:mb-0",
           )}
         >
@@ -211,7 +214,7 @@ export default function BezirkeScrollableEvents({
           </h2>
 
           <ScrollableContainer
-            containerStyle=" self-center h-fit"
+            containerStyle="self-center h-fit"
             color="300"
             showButtons={todayFlohmaerkteLength > 2}
           >
@@ -257,7 +260,7 @@ export default function BezirkeScrollableEvents({
                 className={
                   verticalTitle
                     ? "-rotate-90 w-full tracking-wide text-2xl sm:text-4xl font-bold lg:py-4"
-                    : "text-2xl sm:text-3xl font-bold text-start self-start pb-2 sm:pb-4 px-3"
+                    : "text-2xl sm:text-3xl font-bold text-start self-start pb-2 sm:pb-3 px-3"
                 }
                 style={
                   titleShadow ? { textShadow: "#33404D 2px 2px 12px" } : {}
@@ -271,7 +274,8 @@ export default function BezirkeScrollableEvents({
           ))}
         {!!displayBezirke.length && (
           <ScrollableContainer
-            containerStyle="max-h-[400px] mb-4"
+            containerStyle="max-h-[400px] mb-4 px-1"
+            boxStyle="px-0 pb-3 gap-1 lg:gap-2"
             color="800"
             showButtons={false}
           >
