@@ -74,7 +74,7 @@ export default async function FlohmaerkteNearby({
                   key={id + Math.random()}
                   className="relative flex flex-col items-center min-w-[144px] pt-1 hover:outline outline-2 outline-hh-50-25 rounded hover:shadow"
                 >
-                  <div className="w-fit aspect-[3/4] overflow-hidden mb-1 shadow group-hover:shadow-none">
+                  <div className="w-fit aspect-[3/4] overflow-hidden mb-1 shadow group-hover:shadow-none rounded-sm">
                     <FlohmarktPoster
                       bezirk={flohBezirk}
                       id={id}
@@ -82,7 +82,6 @@ export default async function FlohmaerkteNearby({
                       title={title}
                       date={date}
                       image={image}
-                      prefixLink={`/flohmaerkte/`}
                       size="small"
                     />
                   </div>

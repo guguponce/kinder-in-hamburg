@@ -112,20 +112,13 @@ export default async function FlohmaerkteContainer() {
               />
             </div>
 
-            <div className="flex flex-grow w-full justify-center mb-4">
+            <div className="flex flex-grow w-full justify-center">
               <BezirkeScrollableEvents
                 todaysFlohmaerkte={
                   !!todayFlohmaerkteLength && !isSunday
                     ? todayFlohmaerkte
                     : undefined
                 }
-                // title={
-                //   !isSunday && todayFlohmaerkteLength && futureFlohmaerkteLength
-                //     ? `Diese Woche gibt es außerdem ${futureFlohmaerkteLength} ${futureFlohmaerkteLength > 1 ? "weitere Veranstaltungen" : "Veranstaltung"}`
-                //     : isSunday && todayFlohmaerkteLength
-                //       ? `Heute gibt es ${todayFlohmaerkteLength} ${todayFlohmaerkteLength > 1 ? "Veranstaltungen" : "Veranstaltung"} in dieser Woche`
-                //       : `Diese Woche gibt es ${futureFlohmaerkteLength} ${futureFlohmaerkteLength > 1 ? "weitere Veranstaltungen" : "Veranstaltung"}`
-                // }
                 events={!onlyToday || isSunday ? futureFlohmaerkte : []}
                 titleShadow
                 className="text-hh-50"

@@ -251,8 +251,11 @@ form {
   border-radius: 1rem;
   height: 0.5rem;
   transition: all 1s ease-in-out;
-  background-color: hsl(60, 0%, 95%);
+  background-color: #f2f2f2;
   cursor: pointer;
+  &:hover {
+    border: 1px solid $hh-500;
+  }
 
   @media screen and (min-width: 768px) {
     height: 0.6rem;
@@ -274,6 +277,9 @@ form {
   width: 0.5rem;
   transition: all 1s ease-in-out;
   background-color: hsl(60, 0%, 95%);
+  &:hover {
+    border: 1px solid $hh-500;
+  }
   @media screen and (min-width: 768px) {
     width: 0.75rem;
   }
@@ -285,6 +291,17 @@ form {
   &:active {
     cursor: grabbing;
   }
+}
+.scrollbarThumb300::-webkit-scrollbar {
+  background-color: #f2f2f2;
+}
+
+.scrollbarThumb500::-webkit-scrollbar {
+  background-color: $hh-100;
+}
+
+.scrollbarThumb800::-webkit-scrollbar {
+  background-color: $hh-200;
 }
 
 .scrollbarThumb500::-webkit-scrollbar-thumb {

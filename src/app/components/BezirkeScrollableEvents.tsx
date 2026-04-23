@@ -31,7 +31,7 @@ const SingleBezirkEvents = ({
         id={currentBezirk.toLowerCase().replace(/\s/g, "-")}
         key={currentBezirk}
         className={cn(
-          "min-w-[250px] max-w-full h-[350px] flex items-center flex-col rounded ml-1 shadow-md outline outline-2 outline-hh-800 hover:bg-white",
+          "min-w-[250px] max-w-full h-[350px] flex items-center flex-col rounded shadow-md outline outline-2 outline-hh-800 hover:bg-white",
           currentBezirkEvents.length > 4 || displayBezirke.length === 1
             ? "w-fit"
             : "w-fit lg:max-w-[calc(50%-1rem)]",
@@ -125,8 +125,7 @@ const SingleBezirkEvents = ({
                         date={date}
                         endDate={endDate}
                         image={image}
-                        prefixLink={`/${eventType === "flohmarkt" ? "flohmaerkte" : "events"}/`}
-                        eventType={eventType || "flohmarkt"}
+                        prefixLink={`/${!eventType || eventType === "flohmarkt" ? "flohmaerkte" : "events"}/`}
                       />
                     </div>
                     <h3 className="text-hh-800 text-center self-start-between items-center h-[20px] w-full font-semibold text-sm truncate-1">
@@ -194,7 +193,7 @@ export default function BezirkeScrollableEvents({
     <div
       id="bezirke-scrollable-events"
       className={cn(
-        "w-full h-fit flex items-stretch flex-wrap gap-4 scroll-mt-20 bg-transparent hover:bg-white hover:bg-opacity-50 border-2 border-transparent hover:border-hh-950 md:p-2 transition-all duration-500 rounded",
+        "w-full h-fit py-1 flex items-stretch flex-wrap gap-2 lg:gap-4 scroll-mt-20 bg-transparent hover:bg-white hover:bg-opacity-50 border-2 border-transparent lg:hover:border-hh-950 md:p-2 transition-all duration-500 rounded",
         todayFlohmaerkteLength < 3
           ? "md:flex-nowrap"
           : todayFlohmaerkteLength < 4
@@ -205,7 +204,7 @@ export default function BezirkeScrollableEvents({
       {todaysFlohmaerkte && (
         <div
           className={cn(
-            "md:mt-auto md:mb-8 relative flex  flex-col rounded-md bg-hh-900 hover:shadow-lg transition-all  min-w-[220px] w-fit max-w-full p-2 pt-0 shadow-sm h-fit",
+            "mt-1 md:mt-auto md:mb-8 relative flex  flex-col rounded-md bg-hh-900 hover:shadow-lg transition-all  min-w-[220px] w-fit max-w-full p-2 pt-0 shadow-sm h-fit",
             todayFlohmaerkteLength > 3 && "md:mb-0",
           )}
         >
@@ -237,6 +236,7 @@ export default function BezirkeScrollableEvents({
                     date={floh.date}
                     image={floh.image}
                     id={floh.id}
+                    prefixLink={`/${floh.type === "flohmarkt" || !floh.type ? "flohmaerkte" : "events"}/`}
                   />
                 </div>
               </article>
@@ -274,8 +274,8 @@ export default function BezirkeScrollableEvents({
           ))}
         {!!displayBezirke.length && (
           <ScrollableContainer
-            containerStyle="max-h-[400px] mb-4 px-1"
-            boxStyle="px-0 pb-3 gap-1 lg:gap-2"
+            containerStyle="max-h-[400px] mb-1"
+            boxStyle="pb-3 px-[2px] gap-2"
             color="800"
             showButtons={false}
           >
@@ -289,19 +289,6 @@ export default function BezirkeScrollableEvents({
             />
           </ScrollableContainer>
         )}
-        {/* {events.length > 3 && displayBezirke.length > 1 && (
-          <div className="flex flex-wrap items-center gap-2 ">
-            {bezirke.map((bez) => (
-              <Link
-                key={bez}
-                className="w-fit rounded-full text-sm text-hh-950 bg-hh-100 px-2"
-                href={`#${bez.toLowerCase().replace(/\s/g, "-")}`}
-              >
-                {bez}
-              </Link>
-            ))}
-          </div>
-        )} */}
       </div>
     </div>
   );
