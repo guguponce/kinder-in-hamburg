@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import { MapContainer, Marker, TileLayer } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
 import { divIcon } from "leaflet";
 import { iAddress, iFlohmarkt, iPost, iSpielplatz } from "@app/utils/types";
 import {
@@ -70,8 +69,14 @@ const GeneralMap = ({
         className={"relative " + rounded ? "rounded" : ""}
       >
         <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+
+          // url="https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.png"
+          // attribution="&copy; OpenStreetMap contributors"
+
+          // attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          // url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         {/* {showUserLocation && userLocation && (
           <Marker

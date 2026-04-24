@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Script from "next/script";
 
 import localFont from "next/font/local";
+import "leaflet/dist/leaflet.css";
 import "./styles/globals.scss";
 import Header from "@components/@Header/Header";
 import Footer from "./components/@Footer/Footer";

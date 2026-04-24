@@ -1,7 +1,6 @@
 "use client";
 import React, { useMemo, useRef } from "react";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
 import { Icon } from "leaflet";
 import { iBezirk, iSpielplatz } from "@app/utils/types";
 import Link from "next/link";
@@ -29,11 +28,11 @@ const SpielplaetzeMap = ({
   spielplaetzeList: iSpielplatz[];
 }) => {
   const bezirke = useRef(
-    Array.from(new Set(spielplaetzeList.map((p) => p.bezirk).flat()))
+    Array.from(new Set(spielplaetzeList.map((p) => p.bezirk).flat())),
   );
 
   const spielplaetzeBezirke = useRef(
-    Array.from(new Set(spielplaetzeList.map(({ bezirk }) => bezirk)))
+    Array.from(new Set(spielplaetzeList.map(({ bezirk }) => bezirk))),
   );
   const [selectedSpielplatz, setSelectedSpielplatz] = React.useState<
     number | undefined
@@ -43,7 +42,7 @@ const SpielplaetzeMap = ({
   >();
   const displayedMarkers = useMemo(() => {
     const restSpielplaetze = spielplaetzeList.filter(
-      ({ id }) => id.toString() !== spID
+      ({ id }) => id.toString() !== spID,
     );
     return selectedBezirk
       ? restSpielplaetze.filter((p) => p.bezirk === selectedBezirk)
@@ -121,7 +120,7 @@ const SpielplaetzeMap = ({
                   </Popup>
                 </Marker>
               </React.Fragment>
-            )
+            ),
           )}
         </MapContainer>
       </article>

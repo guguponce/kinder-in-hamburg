@@ -24,12 +24,15 @@ interface iDynamicEventsMap {
   showMapIndexes?: boolean;
   cluster?: boolean;
   zoom?: number;
+
+  outline?: boolean;
 }
 export default function DynamicEventsMap({
   today,
   zoom,
   thisWeek,
   future = [],
+  outline = false,
   square = true,
   darkBackground = false,
   showEventType = true,
@@ -131,7 +134,13 @@ export default function DynamicEventsMap({
       )}
     >
       <section
-        className={`max-h-[60vh] min-h-[250px] flex-grow xs:min-w-[300px] sm:max-w-[800px] aspect-square sm:aspect-[3/2] md:aspect-auto md:mx-auto ${square ? "w-full lg:aspect-square  lg:max-w-full" : "md:aspect-video lg:aspect-auto lg:h-[50vh] lg:max-w-full"} flex justify-center rounded overflow-hidden`}
+        className={cn(
+          "max-h-[60vh] min-h-[250px] flex justify-center rounded overflow-hidden flex-grow xs:min-w-[300px] sm:max-w-[800px] aspect-square sm:aspect-[3/2] md:aspect-auto md:mx-auto",
+          square
+            ? "w-full lg:aspect-square  lg:max-w-full"
+            : "md:aspect-video lg:aspect-auto lg:h-[50vh] lg:max-w-full",
+          outline ? "outline outline-2 outline-hh-800-50" : "",
+        )}
       >
         <GeneralMap zoom={zoom || 11} currentTarget={singleEvent}>
           {children}
