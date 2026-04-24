@@ -85,9 +85,9 @@ export default async function FlohmaerkteContainer() {
         </h2>
       )}
       {!!futureFlohmaerkteLength && (
-        <h2 className="text-lg sm:text-2xl font-bold text-hh-800 pb-2 sm:pb-4 px-3 text-nowrap max-w-full">
+        <h2 className="text-lg sm:text-2xl font-bold text-hh-800 pb-2 sm:pb-4 px-3 max-w-full">
           {!isSunday && todayFlohmaerkteLength && futureFlohmaerkteLength
-            ? `Diese Woche gibt es außerdem ${futureFlohmaerkteLength} ${futureFlohmaerkteLength > 1 ? "weitere Veranstaltungen" : "Veranstaltung"}`
+            ? `Diese Woche gibt es ${futureFlohmaerkteLength} ${futureFlohmaerkteLength > 1 ? "weitere Veranstaltungen" : "Veranstaltung"}`
             : isSunday && todayFlohmaerkteLength
               ? `Heute gibt es ${todayFlohmaerkteLength} ${todayFlohmaerkteLength > 1 ? "Veranstaltungen" : "Veranstaltung"} in dieser Woche`
               : `Diese Woche gibt es ${futureFlohmaerkteLength} ${futureFlohmaerkteLength > 1 ? "Veranstaltungen" : "Veranstaltung"}`}
@@ -104,6 +104,7 @@ export default async function FlohmaerkteContainer() {
               className={`flex max-w-[1000px] ${onlyToday ? "flex-row w-full justify-center flex-wrap md:flex-nowrap" : "w-full flex-col"} gap-4 items-center rounded bg-hh-200 bg-opacity-50 p-2 shadow-md`}
             >
               <DynamicEventsMap
+                outline
                 showTermine={!onlyToday}
                 thisWeek={[...todayFlohmaerkte, ...futureFlohmaerkte].filter(
                   (floh) => floh.lat && floh.lon,
