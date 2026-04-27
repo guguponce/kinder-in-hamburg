@@ -9,10 +9,9 @@ import {
   STADTTEILE_TO_BEZIRK,
 } from "@app/utils/constants";
 import { iBezirk } from "@app/utils/types";
-import { haversineDistance } from "@app/utils/functions";
 import { fetchLocationData } from "./mapUtils/constants";
+import UserStandortIcon from "../@Icons/UserStandortIcon";
 
-const MemoGeneralMap = React.memo(GeneralMap);
 // Type definitions for the props and location object
 interface Location {
   lat: number;
@@ -20,16 +19,13 @@ interface Location {
 }
 
 const LocationModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
+  const modalBox = React.useRef<HTMLDivElement>(null);
   const [selectedBezirk, setSelectedBezirk] = useState<iBezirk | null>(
-    "Hamburg-Mitte"
+    "Hamburg-Mitte",
   );
   const [selectedStadtteil, setSelectedStadtteil] = useState<string | null>(
-    null
+    null,
   );
-  const [locationInfo, setLocationInfo] = useState<{
-    bezirk: string;
-    stadtteil: string;
-  } | null>(null);
   const {
     getUserLocation,
     handleUserLocation,
@@ -37,7 +33,7 @@ const LocationModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     removeUserLocation,
   } = useUserLocation();
   const [currentLocation, setCurrentLocation] = useState<Location | null>(
-    userLocation
+    userLocation,
   );
   const [acceptedLocationUse, setAcceptedLocationUse] =
     useState<boolean>(!!userLocation);
@@ -51,12 +47,14 @@ const LocationModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         .catch((err) => {});
     }
   }, [getUserLocation, userLocation]);
+  const [loc, setLoc] = useState<Location | null>(null);
+  const [count, setCount] = useState(0);
   const getStadtteilCoordinates = useCallback(
     async (stadtteil: string) => {
       const location = handleUserLocation(null, stadtteil);
       setCurrentLocation(location);
     },
-    [handleUserLocation]
+    [handleUserLocation],
   );
   const handleRemoveLocation = useCallback(() => {
     removeUserLocation();
@@ -68,8 +66,29 @@ const LocationModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
       setCurrentLocation(location);
       handleUserLocation(location);
     },
-    [handleUserLocation]
+    [handleUserLocation],
   );
+
+  const handleClickOutside = useCallback(
+    (event: MouseEvent) => {
+      event.stopPropagation();
+
+      if (
+        modalBox.current &&
+        !modalBox.current.contains(event.target as Node)
+      ) {
+        onClose();
+      }
+    },
+    [onClose],
+  );
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [handleClickOutside]);
 
   useEffect(() => {
     if (currentLocation) {
@@ -82,26 +101,44 @@ const LocationModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
               setSelectedStadtteil(stadtteil);
             }
           }
-        }
+        },
       );
     }
   }, [currentLocation]);
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-[500] p-2">
-      <div className="bg-hh-50 p-6 rounded-lg text-center min-w-80 w-full max-w-full sm:max-w-[600px] max-h-[80vh] flex flex-col items-center gap-1">
+    <div
+      id="user-location-modal-container"
+      className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-[400] p-2"
+    >
+      <div
+        id="user-location-modal-box"
+        ref={modalBox}
+        className="bg-hh-50 p-6 rounded-lg text-center min-w-80 w-full max-w-full sm:max-w-[600px] max-h-[80vh] flex flex-col items-center gap-1 text-hh-800"
+      >
         <div>
           <h2 className="text-xl mb-1 font-semibold">
             Möchtest du deinen Standort nutzen?
           </h2>
-          <p className="text-xs text-hh-600">
+          {/* <p className="text-xs text-hh-600">
             Deine Position wird nur im Browser gespeichert und nicht an den
             Server gesendet.
           </p>
           <p className="text-xs text-hh-600">
             Sie wird verwendet, um dir relevante Informationen anzuzeigen und
             wird nach 7 Tagen gelöscht.
-          </p>
+          </p> */}
+          <button
+            className="mt-2 bg-hh-500 text-white py-2 px-4 rounded-md hover:bg-hh-600"
+            onClick={async () => {
+              const location = await getUserLocation();
+              console.log("Got location:", location);
+              setLoc(location);
+              setCount((prev) => prev + 1);
+            }}
+          >
+            Get Location {loc ? `(${loc.lat}, ${loc.lon})` : "null"} {count}
+          </button>
         </div>
         {acceptedLocationUse && (
           <div className="bg-hh-100 bg-opacity-25 text-hh-50 flex items-center gap-x-2 gap-y-1 justify-center flex-wrap">
@@ -160,14 +197,14 @@ const LocationModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
         {currentLocation && (
           <div className="w-full aspect-square max-h-[60vh] bg-hh-800 rounded-lg p-1 sm:py-2 my-2 flex flex-col gap-2 overflow-hidden">
-            <MemoGeneralMap centerUserLocation>
+            <GeneralMap>
               {currentLocation && (
                 <DraggableMarker
                   pos={currentLocation}
                   onChangePosition={onChangePosition}
                 />
               )}
-            </MemoGeneralMap>
+            </GeneralMap>
           </div>
         )}
         <div className="flex flex-wrap items-stretch justify-around gap-1">
@@ -179,7 +216,9 @@ const LocationModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
           </button>
           <button
             className="max-w-[40%] bg-negative-500 text-white py-2 px-4 rounded-md hover:bg-negative-600"
-            onClick={currentLocation ? handleRemoveLocation : onClose}
+            onClick={() => {
+              currentLocation ? handleRemoveLocation() : onClose();
+            }}
           >
             {currentLocation ? "Standort entfernen" : "Abbrechen"}
           </button>
@@ -198,13 +237,25 @@ const UserLocationButton: React.FC = () => {
   return (
     <div>
       <button
-        className="bg-hh-500 text-hh-50 py-2 px-4 rounded-md hover:bg-hh-600"
-        onClick={() => handleModal(true)}
+        className="group userLocationButton bg-hh-800 text-hh-50 min-w-8 py-2 px-4 rounded-md hover:bg-hh-900 flex hover:gap-1 items-center text-sm transition-all duration-500 shadow-lg"
+        onClick={(e) => {
+          e.stopPropagation();
+          handleModal(true);
+        }}
       >
-        {userLocation ? "Standort ändern" : "Standort verwenden"}
+        <span className="userLocationButtonText overflow-hidden whitespace-nowrap w-0 max-w-0 group-hover:w-auto group-hover:max-w-[200px] transition-all duration-1000">
+          {userLocation ? "Standort ändern" : "In der Nähe"}
+        </span>
+        <UserStandortIcon color="#f0f1f2 " size="1rem" />{" "}
       </button>
 
-      {isModalOpen && <LocationModal onClose={() => handleModal(false)} />}
+      {isModalOpen && (
+        <LocationModal
+          onClose={() => {
+            handleModal(false);
+          }}
+        />
+      )}
     </div>
   );
 };

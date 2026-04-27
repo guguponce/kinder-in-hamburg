@@ -5,6 +5,7 @@ import BurgerMenu from "./BurgerMenu";
 import UserButtons from "./UserButtons";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
 import NavLinks from "./NavLinks";
+import UserLocationButton from "../@Map/UserLocationModal";
 
 export default async function Header() {
   return (
@@ -47,6 +48,7 @@ export default async function Header() {
       </div>
       {/* <SharingButton /> */}
       <AdminServerComponent>
+        <UserLocationButton />
         <UserButtons />
       </AdminServerComponent>
     </header>

@@ -454,14 +454,14 @@ export default function UserLocationProvider({
           localStorage.setItem("locationTimestamp", Date.now().toString());
           localStorage.setItem(
             "userLocation",
-            JSON.stringify(locations[stadtteil])
+            JSON.stringify(locations[stadtteil]),
           );
           return locations[stadtteil];
         }
         localStorage.setItem("locationTimestamp", Date.now().toString());
         localStorage.setItem(
           "userLocation",
-          JSON.stringify(locations["Hamburg-Altstadt"])
+          JSON.stringify(locations["Hamburg-Altstadt"]),
         );
         return locations["Hamburg-Altstadt"];
       });
@@ -471,10 +471,38 @@ export default function UserLocationProvider({
         locations["Hamburg-Altstadt"]
       );
     },
-    []
+    [],
   );
 
   const getUserLocation = useCallback(() => {
+    return new Promise((resolve, reject) => {
+      if (!navigator.geolocation) {
+        reject(new Error("Geolocation not supported"));
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          alert(
+            `Got location: (${position.coords.latitude}, ${position.coords.longitude})`,
+          );
+          resolve({
+            lat: position.coords.latitude,
+            lon: position.coords.longitude,
+          });
+        },
+        (error) => {
+          alert(error.message);
+          reject(error);
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 0,
+        },
+      );
+    });
+
     return new Promise<{ lat: number; lon: number } | null>(
       (resolve, reject) => {
         if (navigator.geolocation) {
@@ -495,13 +523,14 @@ export default function UserLocationProvider({
               }
             },
             (error) => {
+              alert(error.message);
               reject(null);
-            }
+            },
           );
         } else {
           reject(null);
         }
-      }
+      },
     );
   }, [handleUserLocation]);
   const removeUserLocation = useCallback(() => {
@@ -538,7 +567,7 @@ export const useUserLocation: () => {
       lat: number;
       lon: number;
     } | null,
-    stadtteil?: string
+    stadtteil?: string,
   ) => {
     lat: number;
     lon: number;
