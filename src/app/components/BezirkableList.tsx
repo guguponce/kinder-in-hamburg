@@ -85,7 +85,7 @@ export default function BezirkableList({
     >
       {title && title !== "" && (
         <h2 className="text-2xl font-semibold text-start self-start p-2">
-          {title} {list.length}
+          {title}
         </h2>
       )}
       <select
@@ -117,7 +117,7 @@ export default function BezirkableList({
         >
           {maxDisplayed < filteredList.length && (
             <button
-              className="self-center min-w-fit h-fit px-4 py-2 rounded-md bg-hh-700 hover:bg-hh-800 hover:outline outline-2 outline-offset-2 outline-hh-800 text-white flex flex-col items-center font-semibold transition-colors duration-300"
+              className="self-center min-w-fit h-fit px-4 py-2 mr-4 rounded-md bg-hh-700 hover:bg-hh-800 hover:outline outline-2 outline-offset-2 outline-hh-800 text-white flex flex-col items-center font-semibold transition-colors duration-300"
               onClick={() => setMaxDisplayed((prev) => prev + 10)}
             >
               <span className="text-3xl font-bold">+</span>
