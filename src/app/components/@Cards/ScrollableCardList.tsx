@@ -27,7 +27,9 @@ export default function ScrollableCardList({
   cardClassname,
   color,
   showButtons,
+  children,
 }: {
+  children?: React.ReactNode;
   showButtons?: boolean;
   cardClassname?: string;
   key?: string;
@@ -193,6 +195,7 @@ export default function ScrollableCardList({
               ),
             )
           : null}
+      {children}
     </ScrollableContainer>
   );
 }

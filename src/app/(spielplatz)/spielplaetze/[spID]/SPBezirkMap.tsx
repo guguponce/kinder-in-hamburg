@@ -1,8 +1,6 @@
 "use client";
 import { iSpielplatz } from "@app/utils/types";
 import React, { useMemo, useRef } from "react";
-
-import "leaflet/dist/leaflet.css";
 import { Marker } from "react-leaflet";
 import { divIcon } from "leaflet";
 import TriangleIcon from "@components/@Icons/TriangleIcon";
@@ -36,14 +34,14 @@ export default function SPBezirkMap({
 }) {
   const [selectedIndex, setSelectedIndex] = React.useState<number>(0);
   const { current: currentSpielplatz } = useRef(
-    spList.find((sp) => sp.id === currentSP)
+    spList.find((sp) => sp.id === currentSP),
   );
   const displayedSpList = useMemo(() => {
     if (!currentSpielplatz?.lat && !currentSpielplatz?.lon) return spList;
     const veryNearSpielplaetze = distanceFilter(
       spList,
       currentSpielplatz,
-      maxDistance
+      maxDistance,
     );
 
     const nearSpielplaetze = !!veryNearSpielplaetze.length
@@ -51,13 +49,13 @@ export default function SPBezirkMap({
       : distanceFilter(spList, currentSpielplatz, maxDistance + 1000);
 
     return (nearSpielplaetze as { sp: iSpielplatz; distance: number }[]).map(
-      ({ sp }) => sp
+      ({ sp }) => sp,
     );
   }, [spList, currentSpielplatz, maxDistance]);
 
   const otherSpielplaetzeList = useMemo(
     () => displayedSpList.filter((sp) => sp.id !== currentSP),
-    [displayedSpList, currentSP]
+    [displayedSpList, currentSP],
   );
   const { selectedSP, otherSP } = useMemo(() => {
     return {
@@ -98,7 +96,7 @@ export default function SPBezirkMap({
                   {title}
                 </h2>
               </div>
-            ) : null
+            ) : null,
           )}
         </div>
         <div className="w-full h-full rounded-[0_0_2px_2px] overflow-hidden">
