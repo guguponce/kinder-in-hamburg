@@ -9,7 +9,7 @@ import type { Metadata } from "next";
 import ErrorComponent from "@app/components/ErrorComponent";
 import { createMetadata, postsMetadata } from "@app/utils/metadata";
 
-export const revalidate = 20;
+export const revalidate = 300;
 
 const URLFilteredList = dynamic(
   () => import("@components/Filters/URLFilteredList"),

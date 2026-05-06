@@ -21,6 +21,8 @@ import { createMetadata, singleFlohmarktMetadata } from "@app/utils/metadata";
 import StatusSetter from "@app/dashboard/StatusSetter";
 import { unstable_cache } from "next/cache";
 
+export const revalidate = 300;
+
 interface FlohmarktPageProps {
   params: { flohmarktID: string };
 }

@@ -14,6 +14,8 @@ import OtherEventsHorizontalCards from "./OtherEventsHorizontalCards";
 import { createMetadata, flohmaerkteMetadata } from "@app/utils/metadata";
 import { unstable_cache } from "next/cache";
 
+export const revalidate = 300;
+
 const DynamicFlohmarktMap = dynamic(
   () => import("../../components/@Map/DynamicEventsMap"),
   {

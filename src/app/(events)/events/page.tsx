@@ -29,7 +29,7 @@ const DynamicEventsMap = dynamic(
     ),
   },
 );
-export const revalidate = 120;
+export const revalidate = 300;
 
 export async function generateMetadata(): Promise<Metadata> {
   return createMetadata({
