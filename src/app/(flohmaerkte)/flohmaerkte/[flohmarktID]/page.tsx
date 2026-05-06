@@ -19,6 +19,7 @@ import { redirect } from "next/navigation";
 import FlohmaerkteSameLocation from "./FlohmaerkteSameLocation";
 import { createMetadata, singleFlohmarktMetadata } from "@app/utils/metadata";
 import StatusSetter from "@app/dashboard/StatusSetter";
+import { unstable_cache } from "next/cache";
 
 interface FlohmarktPageProps {
   params: { flohmarktID: string };
@@ -52,10 +53,14 @@ export async function generateMetadata({
   });
 }
 
+const getFlohmarkt = unstable_cache(getEventWithID, ["flohmaerkte"], {
+  revalidate: 300,
+});
+
 export default async function FlohmarktPage({
   params: { flohmarktID },
 }: FlohmarktPageProps) {
-  const flohmarkt = await getEventWithID(flohmarktID);
+  const flohmarkt = await getFlohmarkt(flohmarktID);
   if (flohmarkt === false) {
     const eventID = await checkIfEventOrFlohmarktExists(flohmarktID, "events");
     if (!!eventID) {
@@ -81,13 +86,16 @@ export default async function FlohmarktPage({
       <FlohmarktTemplate flohmarkt={flohmarkt}>
         <OldFlohmarktSign status={flohmarkt.status || ""} date={flohmarkt.date}>
           <AdminServerComponent>
-            <p>Today: {getDate(new Date().getTime())}</p>
-            <p>Flohmarkt date: {getDate(flohmarkt.date)}</p>
-            <StatusSetter
-              type="flohmarkt"
-              status={flohmarkt.status || "pending"}
-              target={flohmarkt}
-            />
+            <div className="flex flex-col items-center justify-center p-2 rounded bg-hh-800 text-hh-50">
+              <p>Today: {getDate(new Date().getTime())}</p>
+              <p>Flohmarkt date: {getDate(flohmarkt.date)}</p>
+              <StatusSetter
+                horizontal
+                type="flohmarkt"
+                status={flohmarkt.status || "pending"}
+                target={flohmarkt}
+              />
+            </div>
           </AdminServerComponent>
         </OldFlohmarktSign>
         <AdminServerComponent>

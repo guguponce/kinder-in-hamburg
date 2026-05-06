@@ -1,6 +1,4 @@
-import StatusSetter from "@app/dashboard/StatusSetter";
-import AdminServerComponent from "@app/providers/AdminServerComponents";
-import { getDate, getTodayNexMonday } from "@app/utils/functions";
+import { getTodayNexMonday } from "@app/utils/functions";
 import Link from "next/link";
 import React from "react";
 
@@ -14,12 +12,13 @@ export default function OldFlohmarktSign({
   children?: React.ReactNode;
 }) {
   const { yesterdayEvening } = getTodayNexMonday();
-  const isOld = date < yesterdayEvening || status === "old";
+  const isOld = date < yesterdayEvening || status === "rejected";
   if (!isOld) return null;
   return (
     <aside className="flex flex-col items-center justify-center p-6 rounded bg-negative-100 bg-opacity-75 border-4 border-negative-300 w-[500px] max-w-full m-2 gap-4">
       <h2 className="text-lg font-bold text-negative-950">
-        Dieser Flohmarkt ist bereits vorbei.
+        Dieser Flohmarkt ist bereits vorbei
+        {status === "rejected" ? " (oder abgelehnt)" : ""}.
       </h2>
       <h3 className="text-base text-negative-600 italic">
         ({new Date(date).toLocaleDateString("de-DE", { dateStyle: "long" })})

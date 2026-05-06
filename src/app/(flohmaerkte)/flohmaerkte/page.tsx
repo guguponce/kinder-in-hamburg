@@ -12,6 +12,7 @@ import MainIntroductionText from "@app/components/@Templates/MainIntroductionTex
 import StandortIcon from "@components/@Icons/StandortIcon";
 import OtherEventsHorizontalCards from "./OtherEventsHorizontalCards";
 import { createMetadata, flohmaerkteMetadata } from "@app/utils/metadata";
+import { unstable_cache } from "next/cache";
 
 const DynamicFlohmarktMap = dynamic(
   () => import("../../components/@Map/DynamicEventsMap"),
@@ -40,8 +41,13 @@ export async function generateMetadata(): Promise<Metadata> {
     robots: true,
   });
 }
+
+const getFlohmaerkte = unstable_cache(getApprovedEvents, ["flohmaerkte"], {
+  revalidate: 300,
+});
+
 export default async function FlohmarktPage() {
-  const flohmaerkte = await getApprovedEvents();
+  const flohmaerkte = await getFlohmaerkte();
   if (!flohmaerkte) return <NotFound multiples={true} type="flohmarkt" />;
   if (flohmaerkte.length === 0)
     return (
