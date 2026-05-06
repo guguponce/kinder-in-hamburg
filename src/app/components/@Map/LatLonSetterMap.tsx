@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import { MapContainer, Marker, TileLayer } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
 import { divIcon } from "leaflet";
 import { createStandortMapIcon } from "./functions";
 

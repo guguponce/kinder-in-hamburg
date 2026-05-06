@@ -13,7 +13,7 @@ const SuggestedFlohmarktMap = dynamic(
   () => import("@components/@Map/GeneralMap"),
   {
     ssr: false,
-  }
+  },
 );
 
 export default async function FlohmarktSuggestionPage({
@@ -91,7 +91,9 @@ export default async function FlohmarktSuggestionPage({
             }
           />
           {suggestion.lat && suggestion.lon && (
-            <SuggestedFlohmarktMap currentTarget={suggestion} zoom={13} />
+            <div className="w-full h-[200px] mt-4">
+              <SuggestedFlohmarktMap currentTarget={suggestion} zoom={13} />
+            </div>
           )}
         </FlohmarktTemplate>
       </>

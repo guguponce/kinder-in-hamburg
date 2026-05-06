@@ -106,14 +106,10 @@ const SharingModal = () => {
   const backdropRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      console.log("clicked", event.target);
-      console.log("contentRef", contentRef.current);
-      console.log(!contentRef.current?.contains(event.target as Node));
       if (
         contentRef.current &&
         !contentRef.current.contains(event.target as Node)
       ) {
-        console.log("outside");
         closeModal();
       }
     };
