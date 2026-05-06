@@ -18,6 +18,7 @@ import { getDate, parseDescriptionWithTags } from "@app/utils/functions";
 import { redirect } from "next/navigation";
 import FlohmaerkteSameLocation from "./FlohmaerkteSameLocation";
 import { createMetadata, singleFlohmarktMetadata } from "@app/utils/metadata";
+import StatusSetter from "@app/dashboard/StatusSetter";
 
 interface FlohmarktPageProps {
   params: { flohmarktID: string };
@@ -78,10 +79,17 @@ export default async function FlohmarktPage({
   return (
     <>
       <FlohmarktTemplate flohmarkt={flohmarkt}>
-        <OldFlohmarktSign
-          status={flohmarkt.status || ""}
-          date={flohmarkt.date}
-        />
+        <OldFlohmarktSign status={flohmarkt.status || ""} date={flohmarkt.date}>
+          <AdminServerComponent>
+            <p>Today: {getDate(new Date().getTime())}</p>
+            <p>Flohmarkt date: {getDate(flohmarkt.date)}</p>
+            <StatusSetter
+              type="flohmarkt"
+              status={flohmarkt.status || "pending"}
+              target={flohmarkt}
+            />
+          </AdminServerComponent>
+        </OldFlohmarktSign>
         <AdminServerComponent>
           <AdminEditButtons
             updateButton={{
