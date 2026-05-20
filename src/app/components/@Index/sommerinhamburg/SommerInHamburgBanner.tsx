@@ -14,20 +14,20 @@ export default async function SommerInHamburgBanner() {
   const weather = await getWeatherData();
   const badeplaetze = (await getPostsWithCat(["Badeplatz"])) || [];
   const freibaeder = badeplaetze.filter(
-    (post) => !post.title.toLocaleLowerCase().includes("see")
+    (post) => !post.title.toLocaleLowerCase().includes("see"),
   );
   const badeseen = badeplaetze.filter((post) =>
-    post.title.toLocaleLowerCase().includes("see")
+    post.title.toLocaleLowerCase().includes("see"),
   );
   const wasserspielplaetze =
     (await getTypeSpielplaetze("wasserspielplatz")) || [];
   const wasserspiele = wasserspielplaetze.filter(
-    (sp) => sp.spielgeraete && sp.spielgeraete.includes("wasserspiel")
+    (sp) => sp.spielgeraete && sp.spielgeraete.includes("wasserspiel"),
   );
   const planschbecken = (await getTypeSpielplaetze("planschbecken")) || [];
   const bannerText = getBannerContentByMonth();
   return (
-    <section className="relative p-4 rounded-lg bg-gradient-to-br from-hh-500 to-[#759EB8] w-full flex gap-4 flex-col items-center max-w-[420px] sm:max-w-[800px] text-white shadow-xl bg-opacity-10 transition-all overflow-hidden">
+    <section className="relative p-4 rounded-lg bg-gradient-to-bl from-hh-300 to-hh-600 w-full flex gap-4 flex-col items-center max-w-[420px] sm:max-w-[800px] text-white shadow-xl bg-opacity-10 transition-all overflow-hidden">
       <div
         className="w-96 h-96 absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 opacity-50 rounded-full bg-sun-400 z-0"
         style={{
