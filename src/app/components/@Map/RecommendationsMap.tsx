@@ -45,7 +45,7 @@ type iGetList = {
 async function getItemsNearby(
   type: iItemTypes,
   bezirk: iBezirk,
-  stadtteile: string[]
+  stadtteile: string[],
 ) {
   switch (type) {
     case "flohmaerkte":
@@ -68,7 +68,7 @@ async function getList(
   bezirk: iBezirk,
   stadtteile: string[],
   recommendationsList: iListsFPS = {},
-  avoid?: Array<iItemTypes>
+  avoid?: Array<iItemTypes>,
 ) {
   let acc: iGetList = {
     list: recommendationsList,
@@ -157,7 +157,7 @@ export default async function RecommendationsMap({
       showFlohmaerkte ? null : "flohmaerkte",
       showPosts ? null : "posts",
       showSpielplaetze ? null : "spielplaetze",
-    ].filter((item): item is iItemTypes => item !== null)
+    ].filter((item): item is iItemTypes => item !== null),
   );
   if (
     !currentItem ||
@@ -178,7 +178,7 @@ export default async function RecommendationsMap({
       spielplaetze: spielplaetzeNearby || [],
       events: eventsNearby || [],
     },
-    maxDistance
+    maxDistance,
   );
   const defList = !!(
     Object.values(lists).filter((list) => !!list?.length).length > 1
@@ -194,17 +194,17 @@ export default async function RecommendationsMap({
           posts: postsNearby || [],
           spielplaetze: spielplaetzeNearby || [],
         },
-        maxDistance
+        maxDistance,
       );
   if (currentType === "flohmarkt")
     defList.flohmaerkte = defList.flohmaerkte?.filter(
-      (flohmarkt) => flohmarkt.id !== id
+      (flohmarkt) => flohmarkt.id !== id,
     );
   if (currentType === "post")
     defList.posts = defList.posts?.filter((post) => post.id !== id);
   if (currentType === "spielplatz")
     defList.spielplaetze = defList.spielplaetze?.filter(
-      (spielplatz) => spielplatz.id !== id
+      (spielplatz) => spielplatz.id !== id,
     );
   if (currentType === "event") {
     defList.events = defList.events?.filter((event) => event.id !== id);
@@ -212,7 +212,7 @@ export default async function RecommendationsMap({
   defList.flohmaerkte =
     currentType === "flohmarkt"
       ? recommendationsList?.flohmaerkte?.filter(
-          ({ id: flohID }) => flohID !== id
+          ({ id: flohID }) => flohID !== id,
         )
       : defList.flohmaerkte?.filter((sp) => sp.id !== id);
 
@@ -224,7 +224,7 @@ export default async function RecommendationsMap({
       show: showFlohmaerkte,
     },
     posts: {
-      color: "#33404D",
+      color: "#2e4c5e",
       singular: "Empfohlener Ort",
       plural: "Empfohlene Orte",
       show: showPosts,
@@ -248,7 +248,7 @@ export default async function RecommendationsMap({
       id="map"
       className={cn(
         "w-full max-w-[800px] min-h-[400px] rounded bg-hh-100 bg-opacity-20 flex flex-col gap-2 p-2 mx-auto text-hh-50",
-        containerClassName
+        containerClassName,
       )}
     >
       <div className="w-full h-[400px] flex-grow flex flex-col">
@@ -318,7 +318,7 @@ export default async function RecommendationsMap({
                       </div>
                     )
                   );
-                }
+                },
               )}
             </div>
           )}

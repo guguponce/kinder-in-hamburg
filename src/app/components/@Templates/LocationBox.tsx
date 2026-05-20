@@ -33,14 +33,14 @@ export default async function LocationBox({
       className={cn(
         "relative flex xs:min-w-72 w-fit max-w-full h-fit mx-auto rounded p-2 gap-2",
         dark ? "text-hh-50" : "text-hh-800",
-        className
+        className,
       )}
     >
       <div className="flex flex-col justify-between flex-grow max-w-[66%] break-words">
         <h2 className="text-lg font-semibold">Standort:</h2>
         {bezirk && (
           <div className="flex gap-1 items-center">
-            <PostLogo logo="hamburg" color={dark ? "#fefefe" : "#33404d"} />
+            <PostLogo logo="hamburg" color={dark ? "#fefefe" : "#2e4c5e"} />
             {!!user ? (
               <Link
                 href={`/bezirke/${encodeURIComponent(bezirk)}`}
@@ -56,7 +56,7 @@ export default async function LocationBox({
         )}
         {!!stadtteil && (
           <div className="ml-6 flex gap-1 items-center">
-            {/* <PostLogo logo="stadtteil" color="#343b3e" /> */}
+            {/* <PostLogo logo="stadtteil" color="#2a4150" /> */}
             <p id="stadtteil" className="ml-1 block font-semibold italic">
               {stadtteil}
             </p>
@@ -67,7 +67,7 @@ export default async function LocationBox({
           <div className="min-w-5 mt-1">
             <PostLogo
               logo="map"
-              color={dark ? "#fefefe" : "#33404d"}
+              color={dark ? "#fefefe" : "#2e4c5e"}
               size="20px"
             />
           </div>
@@ -94,7 +94,7 @@ export default async function LocationBox({
         <div
           className={`hidden xs:flex absolute right-0 h-full aspect-square -translate-y-1/2 top-1/2 w-28 justify-center items-center`}
         >
-          <BezirkIcon bezirk={bezirk} color={dark ? "#fefefe" : "#33404D"} />
+          <BezirkIcon bezirk={bezirk} color={dark ? "#fefefe" : "#2e4c5e"} />
         </div>
       )}
     </div>

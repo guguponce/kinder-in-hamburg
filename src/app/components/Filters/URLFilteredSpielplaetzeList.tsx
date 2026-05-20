@@ -62,28 +62,28 @@ export default function URLFilteredSpielplaetzeList({
 
   const searchParams = useSearchParams();
   const [searchQuery, setSearchQuery] = useState(
-    searchParams.get("searchQuery") || ""
+    searchParams.get("searchQuery") || "",
   );
   const [bezirkeFilter, setBezirkeFilter] = useState<Array<string>>(
-    searchParams.getAll("bezirke").map((b) => decodeURIComponent(b))
+    searchParams.getAll("bezirke").map((b) => decodeURIComponent(b)),
   );
   const [stadtteileFilter, setStadtteileFilter] = useState<Array<string>>(
-    searchParams.getAll("stadtteile").map((b) => decodeURIComponent(b))
+    searchParams.getAll("stadtteile").map((b) => decodeURIComponent(b)),
   );
   const [typeFilter, setTypeFilter] = useState<Array<string>>(
     searchParams.getAll("categories").map((b) => {
       return decodeURIComponent(b);
-    })
+    }),
   );
   const [queryAlter, setQueryAlter] = useState(searchParams.get("alter") || "");
   const [spielgeraeteFilter, setSpielgeraeteFilter] = useState<Array<string>>(
-    searchParams.getAll("spielgeraete").map((b) => decodeURIComponent(b))
+    searchParams.getAll("spielgeraete").map((b) => decodeURIComponent(b)),
   );
   const [showMap, setShowMap] = useState(false);
   const { current: orderParam } = useRef(
     isTypeOrder(searchParams.get("order"))
       ? (searchParams.get("order") as orderType)
-      : "neueste"
+      : "neueste",
   );
   const [order, setOrder] = useState<orderType>(orderParam || "neueste");
   const [categoriesFilteringTogether, setCategoriesFilteringTogether] =
@@ -94,37 +94,37 @@ export default function URLFilteredSpielplaetzeList({
   // MEMOIZED VALUES
   const orderedList = useMemo(
     () => orderSpielplaetzeListFx(spielplaetzeListRef, order),
-    [spielplaetzeListRef, order]
+    [spielplaetzeListRef, order],
   );
   const filteredBySearch = useMemo(
     () => filteredBySearchFX(orderedList, searchQuery),
-    [orderedList, searchQuery]
+    [orderedList, searchQuery],
   );
   const filteredByAlter = useMemo(
     () => filterAlterFX(filteredBySearch, queryAlter),
-    [filteredBySearch, queryAlter]
+    [filteredBySearch, queryAlter],
   );
   const filteredByBezirke = useMemo(
     () => filterBezirkeFX(filteredByAlter, bezirkeFilter),
-    [filteredByAlter, bezirkeFilter]
+    [filteredByAlter, bezirkeFilter],
   );
   const filteredByStadtteile = useMemo(
     () => filterStadtteileFX(filteredByBezirke, stadtteileFilter),
-    [filteredByBezirke, stadtteileFilter]
+    [filteredByBezirke, stadtteileFilter],
   );
   const filteredBySpielgeraete = useMemo(
     () =>
       filterSpielgeraeteFX(
         filteredByStadtteile,
         spielgeraeteFilter,
-        spielgeraeteFilteringTogether
+        spielgeraeteFilteringTogether,
       ),
-    [filteredByStadtteile, spielgeraeteFilter, spielgeraeteFilteringTogether]
+    [filteredByStadtteile, spielgeraeteFilter, spielgeraeteFilteringTogether],
   );
   const filteredByType = filterTypesFX(
     filteredBySpielgeraete,
     typeFilter,
-    categoriesFilteringTogether
+    categoriesFilteringTogether,
   );
   const displayList = useMemo(() => {
     return [...filteredByType].slice(0, maxDisplay);
@@ -135,13 +135,13 @@ export default function URLFilteredSpielplaetzeList({
   }, [filteredByType]);
 
   const { current: availableBezirke } = useRef(
-    getAvailableBezirke(spielplaetzeListRef)
+    getAvailableBezirke(spielplaetzeListRef),
   );
   const availableStadtteile = useMemo(() => {
     if (!!bezirkeFilter.length)
       return getAvailableStadtteile(
         spielplaetzeListRef,
-        bezirkeFilter as iBezirk[]
+        bezirkeFilter as iBezirk[],
       );
 
     setStadtteileFilter([]);
@@ -149,7 +149,7 @@ export default function URLFilteredSpielplaetzeList({
       "stadtteile",
       "",
       [],
-      new URLSearchParams(searchParams.toString())
+      new URLSearchParams(searchParams.toString()),
     );
     return {};
   }, [bezirkeFilter, spielplaetzeListRef, searchParams]);
@@ -158,9 +158,9 @@ export default function URLFilteredSpielplaetzeList({
     () =>
       getAvailableTypes(
         // categoriesFilteringTogether ? filteredByType :
-        spielplaetzeListRef
+        spielplaetzeListRef,
       ),
-    [spielplaetzeListRef]
+    [spielplaetzeListRef],
   );
   const resetFilters = useCallback(() => {
     setTypeFilter([]);
@@ -179,7 +179,7 @@ export default function URLFilteredSpielplaetzeList({
       !!typeFilter.length ||
       !!queryAlter ||
       !!spielgeraeteFilter.length,
-    [searchQuery, bezirkeFilter, typeFilter, queryAlter, spielgeraeteFilter]
+    [searchQuery, bezirkeFilter, typeFilter, queryAlter, spielgeraeteFilter],
   );
 
   if (!spielplaetzeListRef)
@@ -234,9 +234,9 @@ export default function URLFilteredSpielplaetzeList({
                   createQueryString(
                     "order",
                     val,
-                    new URLSearchParams(searchParams.toString())
+                    new URLSearchParams(searchParams.toString()),
                   ),
-                { scroll: false }
+                { scroll: false },
               );
             }}
           >
@@ -390,13 +390,13 @@ export default function URLFilteredSpielplaetzeList({
               onClick={() => setShowMap(false)}
               className={`${showMap ? "bg-opacity-10 -outline-offset-2 text-hh-900 active:bg-opacity-29 hover:bg-opacity-40 focus:bg-opacity-40 focus-visible:bg-opacity-40 focus:outline-hh-50 focus-visible:outline-hh-50 outline-2 outline outline-hh-900" : "text-hh-50 bg-opacity-75 active:bg-opacity-70 hover:bg-opacity-90 focus:bg-opacity-90 focus-visible:bg-opacity-90 focus:outline-hh-50 focus-visible:outline-hh-50"} flex-grow h-10 w-fit max-w-full p-2 bg-hh-800 hover:bg-hh-800 active:bg-hh-800 font-semibold rounded flex items-center justify-center gap-1`}
             >
-              <CardsIcon color="#e1e4e5" size="1.5rem" /> Liste
+              <CardsIcon color="#e9f0f5" size="1.5rem" /> Liste
             </Button>
             <Button
               onClick={() => setShowMap(true)}
               className={`${!showMap ? "bg-opacity-10 -outline-offset-2 text-hh-900 active:bg-opacity-20 hover:bg-opacity-40 focus:bg-opacity-40 focus-visible:bg-opacity-40 focus:outline-hh-50 focus-visible:outline-hh-50 outline-2 outline outline-hh-900" : "text-hh-50 bg-opacity-75 active:bg-opacity-70 hover:bg-opacity-90 focus:bg-opacity-90 focus-visible:bg-opacity-90 focus:outline-hh-50 focus-visible:outline-hh-50"} flex-grow h-10 w-fit max-w-full p-2 bg-hh-800 hover:bg-hh-800 active:bg-hh-800 font-semibold rounded flex items-center justify-center gap-2`}
             >
-              <MapIcon color={showMap ? "#e1e4e5" : undefined} size="1.5rem" />{" "}
+              <MapIcon color={showMap ? "#e9f0f5" : undefined} size="1.5rem" />{" "}
               Karte
             </Button>
           </div>

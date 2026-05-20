@@ -40,7 +40,7 @@ export default function StackedCards({
           style={{
             backgroundImage: post.image
               ? `url(${post.image[0]})`
-              : "linear-gradient(to bottom, #33404D, #343b3e)",
+              : "linear-gradient(to bottom, #2e4c5e, #2a4150)",
           }}
         >
           <div className={classnames.body}>

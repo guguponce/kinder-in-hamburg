@@ -51,7 +51,7 @@ export default function PostTemplate({
         <PageTitle
           title={title}
           className="text-hh-50 lg:mb-2"
-          textShadow="0 0 16px #60788480, 0px 0px 16px #607884db, 2px 2px 8px #607884db, 2px 2px 4px #607884db"
+          textShadow="0 0 16px #40607a80, 0px 0px 16px #40607adb, 2px 2px 8px #40607adb, 2px 2px 4px #40607adb"
         />
         {!!image?.length && (
           <section

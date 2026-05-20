@@ -55,7 +55,7 @@ export default function Spielgeraete({
             <div className="iconContainer h-full aspect-square">
               <SpielgeraeteIcon
                 logo={spielgeraet}
-                color="#33404D"
+                color="#2e4c5e"
                 size="1.5rem"
               />
             </div>

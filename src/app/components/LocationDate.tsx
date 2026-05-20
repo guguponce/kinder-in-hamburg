@@ -55,7 +55,7 @@ export default function LocationDate({
         <h2 className="text-lg font-semibold">Datum:</h2>
         <div className="flex flex-col gap-1">
           <div className="flex gap-1 flex-wrap">
-            <PostLogo logo="date" color="#343b3e" />
+            <PostLogo logo="date" color="#2a4150" />
             <time
               dateTime={new Date(date).toLocaleDateString()}
               className="block font-semibold"
@@ -67,7 +67,7 @@ export default function LocationDate({
           {!openHours && time && (
             <div className="flex gap-1 items-center">
               <div className="px-[2px]">
-                <PostLogo logo="clock" color="#343b3e" size="1.25rem" />
+                <PostLogo logo="clock" color="#2a4150" size="1.25rem" />
               </div>
               <h3 className="block font-semibold">
                 {startTime && <span>{startTime}</span>}
@@ -85,7 +85,7 @@ export default function LocationDate({
         <h2 className="text-lg font-semibold">Standort:</h2>
         {bezirk && (
           <div className="flex gap-1">
-            <PostLogo logo="hamburg" color="#343b3e" />
+            <PostLogo logo="hamburg" color="#2a4150" />
             <div className="flex flex-wrap flex-grow gap-x-1">
               {!!stadtteil && stadtteil !== "Andere Orte" && (
                 <p id="stadtteil" className="ml-1 block font-semibold italic">
@@ -105,7 +105,7 @@ export default function LocationDate({
         {!!address && (
           <div className="flex gap-[6px] ml-[2px]">
             <div className="min-w-5 mt-1">
-              <PostLogo logo="map" color="#343b3e" size="20px" />
+              <PostLogo logo="map" color="#2a4150" size="20px" />
             </div>
             {Object.values(separated).some(Boolean) ? (
               <Link

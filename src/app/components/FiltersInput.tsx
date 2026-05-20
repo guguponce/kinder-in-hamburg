@@ -31,7 +31,7 @@ export default function FiltersInput({
       >
         <span className="leading-none">{inputLabel}</span>
         <span className={isOpen ? "" : "rotate-180"}>
-          <PostLogo color="#33404D" size="0.75rem" logo="triangle" />
+          <PostLogo color="#2e4c5e" size="0.75rem" logo="triangle" />
         </span>
       </button>
       {isOpen && <div className="w-full p-2">{children}</div>}

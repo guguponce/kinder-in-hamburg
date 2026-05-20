@@ -57,7 +57,7 @@ export default function FlohmarktPoster({
           ? ""
           : ["laterne", "laternewerkstatt"].includes(eventType)
             ? "bg-hh-900"
-            : "bg-gradient-to-b from-[#e1e4e59f] to-[#d0d7da9f] p-2",
+            : "bg-gradient-to-b from-[#e9f0f59f] to-[#cedfe99f] p-2",
         size === "small" ? "min-w-[144px]" : "min-w-[180px]",
       )}
     >

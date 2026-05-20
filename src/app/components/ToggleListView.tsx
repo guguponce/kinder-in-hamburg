@@ -17,7 +17,7 @@ export default function ToggleListView({
   classname?: string;
 }) {
   const [selectedCategory, setSelectedCategory] = React.useState<categoryName>(
-    firstDisplayCategory || "Indoor"
+    firstDisplayCategory || "Indoor",
   );
   const { current: availableCategories } = useRef(Object.keys(postsList));
   return (
@@ -35,13 +35,13 @@ export default function ToggleListView({
             >
               {category === "Indoor" ? (
                 <IndoorIcon
-                  color={selectedCategory === category ? "#e1e4e5" : "#33404d"}
+                  color={selectedCategory === category ? "#e9f0f5" : "#2e4c5e"}
                 />
               ) : (
                 category === "Outdoor" && (
                   <OutdoorIcon
                     color={
-                      selectedCategory === category ? "#e1e4e5" : "#33404d"
+                      selectedCategory === category ? "#e9f0f5" : "#2e4c5e"
                     }
                   />
                 )

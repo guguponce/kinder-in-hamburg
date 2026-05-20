@@ -22,7 +22,7 @@ focus-visible:border-transparent capitalize"
       <span>
         {filterType}: {filterValue}
       </span>
-      <CloseIcon2 color="#33404d" size="20" />
+      <CloseIcon2 color="#2e4c5e" size="20" />
     </button>
   );
 };

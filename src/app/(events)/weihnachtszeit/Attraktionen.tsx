@@ -33,25 +33,25 @@ export default function Attraktionen({ attraktionen }: AttraktionenProps) {
   const bezirke = useMemo(
     () =>
       Array.from(
-        new Set(attraktionen[selectedAttraktion].map(({ bezirk }) => bezirk))
+        new Set(attraktionen[selectedAttraktion].map(({ bezirk }) => bezirk)),
       ).sort((a, b) => {
         if (a === "Umland Hamburg") return 1;
         if (b === "Umland Hamburg") return -1;
         return a.localeCompare(b);
       }),
-    [selectedAttraktion, attraktionen]
+    [selectedAttraktion, attraktionen],
   );
   const displayList = useMemo(
     () =>
       !selectedBezirk
         ? attraktionen[selectedAttraktion]
         : attraktionen[selectedAttraktion].filter(
-            ({ bezirk }) => bezirk === selectedBezirk
+            ({ bezirk }) => bezirk === selectedBezirk,
           ),
-    [selectedAttraktion, selectedBezirk, attraktionen]
+    [selectedAttraktion, selectedBezirk, attraktionen],
   );
   return (
-    <section className="w-full max-w-full rounded-lg bg-gradient-to-br from-[#7896a550] to-[#7896a525] p-2 shadow-xl text-hh-800">
+    <section className="w-full max-w-full rounded-lg bg-gradient-to-br from-[#4a749050] to-[#4a749025] p-2 shadow-xl text-hh-800">
       <h2 className="text-2xl font-bold ml-2">Weihnachtsmärkte mit</h2>
       <div className="flex items-center gap-2 ml-2 max-w-full">
         {attTypes.map((attType) => (
@@ -121,7 +121,7 @@ export default function Attraktionen({ attraktionen }: AttraktionenProps) {
                 }
               />
             </React.Fragment>
-          )
+          ),
         )}
       </ScrollableContainer>
       {!!bezirke.length && (

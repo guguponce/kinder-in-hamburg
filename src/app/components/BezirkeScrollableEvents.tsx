@@ -263,7 +263,7 @@ export default function BezirkeScrollableEvents({
                     : "text-2xl sm:text-3xl font-bold text-start self-start pb-2 sm:pb-3 px-3"
                 }
                 style={
-                  titleShadow ? { textShadow: "#33404D 2px 2px 12px" } : {}
+                  titleShadow ? { textShadow: "#2e4c5e 2px 2px 12px" } : {}
                 }
               >
                 {title}

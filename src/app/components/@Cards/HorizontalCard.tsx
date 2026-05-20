@@ -105,7 +105,7 @@ export default function HorizontalCard({
             {spielgeraete ? (
               <SpielplatzgeraeteBackground
                 spList={spielgeraete}
-                color="#343b3e"
+                color="#2a4150"
                 size="2rem"
               />
             ) : type === "spielplatz" ? (
@@ -154,9 +154,9 @@ HorizontalCard.FlohmarktInfo = function FlohmarktInfo({
             <p className="font-semibold italic text-sm lg:text-base text-hh-800 leading-4">
               <span className="float-left flex justify-center items-center h-4 lg:h-6">
                 {!!date ? (
-                  <DateIcon size="0.8rem" color="#33404d" />
+                  <DateIcon size="0.8rem" color="#2e4c5e" />
                 ) : (
-                  <ClockIcon size="0.8rem" color="#33404d" />
+                  <ClockIcon size="0.8rem" color="#2e4c5e" />
                 )}
               </span>
               {!!date && getDate(date)}{" "}
@@ -176,7 +176,7 @@ HorizontalCard.FlohmarktInfo = function FlohmarktInfo({
           ))}
         <small className="text-xs font-semibold max-w-full">
           <span className="float-left flex justify-center items-center">
-            <StandortIcon size="0.8rem" color="#33404d" />
+            <StandortIcon size="0.8rem" color="#2e4c5e" />
           </span>
           <span>
             {stadtteil === "Andere Orte"

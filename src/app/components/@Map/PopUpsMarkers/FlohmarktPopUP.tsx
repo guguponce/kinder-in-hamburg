@@ -44,7 +44,7 @@ export default function FlohmarktPopUP({
             {title}
           </Link>
           <div className="flex gap-1 items-center font-sans">
-            {/* <PostLogo logo="date" color="#343b3e" /> */}
+            {/* <PostLogo logo="date" color="#2a4150" /> */}
             <small className="font-semibold italic">
               <span className="not-italic">📅 </span>
               {endDate ? "Vom " : "Am "}
@@ -53,7 +53,7 @@ export default function FlohmarktPopUP({
             </small>
           </div>
           <div className="flex gap-1 items-center font-sans">
-            <StandortIcon size="1rem" color="#343b3e" />
+            <StandortIcon size="1rem" color="#2a4150" />
             <p className="text-xs">{address}</p>
             {distance && (
               <h4 className="text-sm font-semibold flex flex-col items-center px-1 border-2 border-[#0078A8] rounded-sm min-w-fit">

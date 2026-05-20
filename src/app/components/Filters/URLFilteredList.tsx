@@ -64,25 +64,25 @@ export default function URLFilteredList({
 
   const searchParams = useSearchParams();
   const [searchQuery, setSearchQuery] = useState(
-    searchParams.get("searchQuery") || ""
+    searchParams.get("searchQuery") || "",
   );
   const [bezirkeFilter, setBezirkeFilter] = useState<Array<string>>(
-    searchParams.getAll("bezirke").map((b) => decodeURIComponent(b))
+    searchParams.getAll("bezirke").map((b) => decodeURIComponent(b)),
   );
   const [stadtteileFilter, setStadtteileFilter] = useState<Array<string>>(
-    searchParams.getAll("stadtteile").map((b) => decodeURIComponent(b))
+    searchParams.getAll("stadtteile").map((b) => decodeURIComponent(b)),
   );
   const [categoriesFilter, setCategoriesFilter] = useState<Array<string>>(
     searchParams.getAll("categories").map((b) => {
       return decodeURIComponent(b);
-    })
+    }),
   );
   const [queryAlter, setQueryAlter] = useState(searchParams.get("alter") || "");
   const [showMap, setShowMap] = useState(false);
   const { current: orderParam } = useRef(
     isTypeOrder(searchParams.get("order"))
       ? (searchParams.get("order") as orderType)
-      : "neueste"
+      : "neueste",
   );
 
   const [order, setOrder] = useState<orderType>(orderParam || "neueste");
@@ -95,28 +95,28 @@ export default function URLFilteredList({
   // MEMOIZED VALUES
   const orderedList = useMemo(
     () => orderPostsListFx(postsListRef, order),
-    [postsListRef, order]
+    [postsListRef, order],
   );
   const filteredBySearch = useMemo(
     () => filteredBySearchFX(orderedList, searchQuery),
-    [orderedList, searchQuery]
+    [orderedList, searchQuery],
   );
   const filteredByAlter = useMemo(
     () => filterAlterFX(filteredBySearch, queryAlter),
-    [filteredBySearch, queryAlter]
+    [filteredBySearch, queryAlter],
   );
   const filteredByBezirke = useMemo(
     () => filterBezirkeFX(filteredByAlter, bezirkeFilter),
-    [filteredByAlter, bezirkeFilter]
+    [filteredByAlter, bezirkeFilter],
   );
   const filteredByStadtteile = useMemo(
     () => filterStadtteileFX(filteredByBezirke, stadtteileFilter),
-    [filteredByBezirke, stadtteileFilter]
+    [filteredByBezirke, stadtteileFilter],
   );
   const filteredByCategories = filterCategoriesFX(
     filteredByStadtteile,
     categoriesFilter,
-    categoriesFilteringTogether
+    categoriesFilteringTogether,
   );
   const displayList = useMemo(() => {
     return [...filteredByCategories].slice(0, maxDisplay);
@@ -127,7 +127,7 @@ export default function URLFilteredList({
   }, [filteredByCategories]);
 
   const { current: availableBezirke } = useRef(
-    getAvailableBezirke(postsListRef)
+    getAvailableBezirke(postsListRef),
   );
   const availableStadtteile = useMemo(() => {
     if (!!bezirkeFilter.length)
@@ -138,7 +138,7 @@ export default function URLFilteredList({
       "stadtteile",
       "",
       [],
-      new URLSearchParams(searchParams.toString())
+      new URLSearchParams(searchParams.toString()),
     );
     return {};
   }, [bezirkeFilter, postsListRef, searchParams]);
@@ -146,9 +146,9 @@ export default function URLFilteredList({
   const availableCategories = useMemo(
     () =>
       getAvailableCategories(
-        categoriesFilteringTogether ? filteredByCategories : postsListRef
+        categoriesFilteringTogether ? filteredByCategories : postsListRef,
       ),
-    [filteredByCategories, categoriesFilteringTogether, postsListRef]
+    [filteredByCategories, categoriesFilteringTogether, postsListRef],
   );
   const resetFilters = useCallback(() => {
     setCategoriesFilter([]);
@@ -165,7 +165,7 @@ export default function URLFilteredList({
       !!bezirkeFilter.length ||
       !!categoriesFilter.length ||
       !!queryAlter,
-    [searchQuery, bezirkeFilter, categoriesFilter, queryAlter]
+    [searchQuery, bezirkeFilter, categoriesFilter, queryAlter],
   );
   const { mapPosts, buecherhallenPosts } = useMemo(() => {
     let mapPosts: iPost[] = [];
@@ -226,9 +226,9 @@ export default function URLFilteredList({
                   createQueryString(
                     "order",
                     val,
-                    new URLSearchParams(searchParams.toString())
+                    new URLSearchParams(searchParams.toString()),
                   ),
-                { scroll: false }
+                { scroll: false },
               );
             }}
           >
@@ -362,13 +362,13 @@ export default function URLFilteredList({
               onClick={() => setShowMap(false)}
               className={`${showMap ? "bg-opacity-10 -outline-offset-2 text-hh-900 active:bg-opacity-29 hover:bg-opacity-40 focus:bg-opacity-40 focus-visible:bg-opacity-40 focus:outline-hh-50 focus-visible:outline-hh-50 outline-2 outline outline-hh-900" : "text-hh-50 bg-opacity-75 active:bg-opacity-70 hover:bg-opacity-90 focus:bg-opacity-90 focus-visible:bg-opacity-90 focus:outline-hh-50 focus-visible:outline-hh-50"} flex-grow h-10 w-fit max-w-full p-2 bg-hh-800 hover:bg-hh-800 active:bg-hh-800 font-semibold rounded flex items-center justify-center gap-2`}
             >
-              <CardsIcon color="#e1e4e5" size="1.5rem" /> Liste
+              <CardsIcon color="#e9f0f5" size="1.5rem" /> Liste
             </Button>
             <Button
               onClick={() => setShowMap(true)}
               className={`${!showMap ? "bg-opacity-10 -outline-offset-2 text-hh-900 active:bg-opacity-20 hover:bg-opacity-40 focus:bg-opacity-40 focus-visible:bg-opacity-40 focus:outline-hh-50 focus-visible:outline-hh-50 outline-2 outline outline-hh-900" : "text-hh-50 bg-opacity-75 active:bg-opacity-70 hover:bg-opacity-90 focus:bg-opacity-90 focus-visible:bg-opacity-90 focus:outline-hh-50 focus-visible:outline-hh-50"} flex-grow h-10 w-fit max-w-full p-2 bg-hh-800 hover:bg-hh-800 active:bg-hh-800 font-semibold rounded flex items-center justify-center gap-2`}
             >
-              <MapIcon color={showMap ? "#e1e4e5" : undefined} size="1.5rem" />{" "}
+              <MapIcon color={showMap ? "#e9f0f5" : undefined} size="1.5rem" />{" "}
               Karte
             </Button>
           </div>

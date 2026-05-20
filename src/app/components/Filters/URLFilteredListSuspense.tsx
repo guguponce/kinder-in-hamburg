@@ -17,7 +17,7 @@ export default function URLFilteredListSuspense() {
             className="transition-all  shadow items-center duration-150 ease-in transform overflow-hidden relative text-hh-200 hover:text-hh-50 bg-hh-800 hover:bg-hh-700 rounded text-sm h-10 px-2 py-1 opacity-100"
           >
             <span className="filterButtonIcon transition-opacity duration-75 ease-in-out">
-              <FilterIcon rotate={90} color="#d0d7da" size="16" />
+              <FilterIcon rotate={90} color="#cedfe9" size="16" />
             </span>
 
             <span className="transition-opacity duration-75 ease-in-out mx-2 font-bold">
@@ -66,7 +66,7 @@ export default function URLFilteredListSuspense() {
         <div className="flex flex-col md:flex-row items-center justify-end px-2 gap-2 w-full">
           <div className="flex items-center justify-center gap-2 w-full md:w-fit  md:flex-row">
             <Button className="text-hh-50 bg-opacity-75 active:bg-opacity-70 hover:bg-opacity-90 focus:bg-opacity-90 focus-visible:bg-opacity-90 focus:outline-hh-50 focus-visible:outline-hh-50 flex-grow h-10 w-fit max-w-full p-2 bg-hh-800 hover:bg-hh-800 active:bg-hh-800 font-semibold rounded flex items-center justify-center gap-2">
-              <CardsIcon color="#e1e4e5" size="1.5rem" /> Liste
+              <CardsIcon color="#e9f0f5" size="1.5rem" /> Liste
             </Button>
             <Button className="bg-opacity-10 -outline-offset-2 text-hh-900 active:bg-opacity-29 hover:bg-opacity-40 focus:bg-opacity-40 focus-visible:bg-opacity-40 focus:outline-hh-50 focus-visible:outline-hh-50 outline-2 outline outline-hh-900 flex-grow h-10 w-fit max-w-full p-2 bg-hh-800 hover:bg-hh-800 active:bg-hh-800 font-semibold rounded flex items-center justify-center gap-2">
               <MapIcon size="1.5rem" /> Karte

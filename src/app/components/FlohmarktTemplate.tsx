@@ -3,17 +3,8 @@ import Link from "next/link";
 import React from "react";
 import DisplayTypeText from "./@PostForm/DisplayTypeText";
 import PostLogo from "./@Icons/@PostLogo/PostLogo";
-import UserAvatar from "./UserAvatar";
-import {
-  cn,
-  getDate,
-  getEndTime,
-  getStartTime,
-  separateAddress,
-} from "@app/utils/functions";
 import AdminServerComponent from "@app/providers/AdminServerComponents";
 import FlohmarktBackground from "./@Icons/@Flohmarkt/FlohmarktBackground";
-import Image from "next/image";
 import PageTitle from "./PageTitle";
 import { SharingButton } from "./@Buttons/SharingButtons/SharingButton";
 import LocationDate from "./LocationDate";
@@ -133,11 +124,10 @@ export default function FlohmarktTemplate({
             {" "}
             {type && ["laterne", "laternewerkstatt"].includes(type) && (
               <div className="absolute top-0 left-2 w-full h-full opacity-50 -z-1">
-                <Image
-                  style={{ left: "-6px" }}
-                  fill
-                  src={"/assets/icons/laterne/stars.svg"}
-                  alt="stars"
+                <img
+                  src="/assets/icons/laterne/stars.svg"
+                  alt="*"
+                  style={{ left: "-6px", position: "absolute" }}
                   className="min-w-[1200px] max-h-[150px] bg-opacity-25 rounded-lg opacity-50 -z-1"
                 />
               </div>
@@ -159,7 +149,7 @@ export default function FlohmarktTemplate({
             <PageTitle
               title={title}
               className="text-hh-50 lg:mb-2"
-              textShadow="0 0 16px #60788480, 0px 0px 16px #607884db, 2px 2px 8px #607884db, 2px 2px 4px #607884db"
+              textShadow="0 0 16px #40607a80, 0px 0px 16px #40607adb, 2px 2px 8px #40607adb, 2px 2px 4px #40607adb"
             />
             <div
               id="location-date"
@@ -199,7 +189,7 @@ export default function FlohmarktTemplate({
             {openHours && (
               <div className="relative border-2 border-hh-800 rounded p-2 md:px-4 mx-auto min-w-[280px] max-w-full">
                 <div className="absolute right-2 top-2">
-                  <PostLogo logo="clock" color="#343b3e" size="1.25rem" />
+                  <PostLogo logo="clock" color="#2a4150" size="1.25rem" />
                 </div>
                 <h3 className="font-semibold">Öffnungszeiten:</h3>
                 <DisplayTypeText text={openHours} type="paragraph" />

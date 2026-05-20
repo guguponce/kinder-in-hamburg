@@ -1,8 +1,7 @@
 "use client";
-import { DivIcon, divIcon } from "leaflet";
+import { DivIcon } from "leaflet";
 import { Marker, Popup } from "react-leaflet";
-import { createStandortMapIcon, createUserMapIcon } from "./functions";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef } from "react";
 import { UserLocationIcon } from "./MarkerIcons";
 
 export default function DraggableMarker({
@@ -28,16 +27,18 @@ export default function DraggableMarker({
         }
       },
     }),
-    [onChangePosition]
+    [onChangePosition],
   );
   if (!pos) return null;
   return (
     <Marker
       draggable
+      attribution="z-index: 300"
       eventHandlers={eventHandlers}
       position={[pos.lat, pos.lon]}
       ref={markerRef}
       icon={icon || UserLocationIcon}
+      zIndexOffset={1000}
     >
       <Popup minWidth={90}>{children}</Popup>
     </Marker>

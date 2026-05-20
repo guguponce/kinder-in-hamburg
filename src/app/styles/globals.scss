@@ -8,18 +8,29 @@
   --background-end-rgb: 255, 255, 255;
   --main-text-color: $hh-100;
 }
+$hh-50: #f5f8fa;
+$hh-100: #e9f0f5;
+$hh-200: #cedfe9;
+$hh-300: #9dbfd2;
+$hh-400: #73a4bd;
+$hh-500: #5f8ba7;
+$hh-600: #4a7490;
+$hh-700: #40607a;
+$hh-800: #2e4c5e;
+$hh-900: #2a4150;
+$hh-950: #1c2a35;
 
-$hh-50: #f0f1f2;
-$hh-100: #e1e4e5;
-$hh-200: #d0d7da;
-$hh-300: #becad0;
-$hh-400: #abbec7;
-$hh-500: #97b2bf;
-$hh-600: #7896a5;
-$hh-700: #607884;
-$hh-800: #33404d;
-$hh-900: #343b3e;
-$hh-950: #1b1d1e;
+// $hh-50: #f2f8f9;
+// $hh-100: #d5e8eb;
+// $hh-200: #c0dce1;
+// $hh-300: #95c2cb;
+// $hh-400: #62a0ae;
+// $hh-500: #478493;
+// $hh-600: #3e6d7c;
+// $hh-700: #375a67;
+// $hh-800: #334d57;
+// $hh-900: #2e424b;
+// $hh-950: #1b2a31;
 
 @media (prefers-color-scheme: dark) {
   :root {
@@ -55,12 +66,12 @@ body {
   min-height: 100dvh;
   margin: 0;
   color: $hh-900;
-  background-color: $hh-600;
+  background-color: $hh-500;
   background-image:
-    radial-gradient(at 91% 88%, $hh-300 0px, transparent 50%),
-    radial-gradient(at 17% 87%, $hh-400 0px, transparent 50%),
-    radial-gradient(at 94% 8%, $hh-300 0px, transparent 50%),
-    radial-gradient(at 0% 0%, $hh-500 0px, transparent 50%);
+    radial-gradient(at 91% 88%, $hh-200 0px, transparent 50%),
+    radial-gradient(at 17% 87%, $hh-300 0px, transparent 50%),
+    radial-gradient(at 94% 8%, $hh-200 0px, transparent 50%),
+    radial-gradient(at 0% 0%, $hh-300 0px, transparent 50%);
   // background: linear-gradient(
   //     to bottom,
   //     transparent,
@@ -351,9 +362,9 @@ form {
   }
 }
 .clusterIconPost {
-  background: radial-gradient(circle, #33404d, #33404d 50%, #33404d80 50%);
+  background: radial-gradient(circle, $hh-800, $hh-800 50%, #2e4c5e80 50%);
   &:hover {
-    background: radial-gradient(circle, #33404d, #33404d 50%, #33404db9 50%);
+    background: radial-gradient(circle, $hh-800, $hh-800 50%, #2e4c5eb9 50%);
   }
 }
 

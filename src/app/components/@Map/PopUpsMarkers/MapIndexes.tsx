@@ -64,7 +64,7 @@ export const MapIndexes = ({
           {children && <MarkerIndexBox>{children}</MarkerIndexBox>}
           {kommendeEvents && (
             <MarkerIndexBox>
-              <StandortIcon size="1rem" color="#343b3e" stroke="#fff" />
+              <StandortIcon size="1rem" color="#2a4150" stroke="#fff" />
               <p>Kommende Events</p>
             </MarkerIndexBox>
           )}

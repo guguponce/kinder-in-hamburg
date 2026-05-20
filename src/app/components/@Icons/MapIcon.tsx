@@ -2,7 +2,7 @@ import React from "react";
 
 export default function MapIcon({
   size = "24",
-  color = "#343b3e",
+  color = "#2a4150",
   className,
 }: {
   size?: string;

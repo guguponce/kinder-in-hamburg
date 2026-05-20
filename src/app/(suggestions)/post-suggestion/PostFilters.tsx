@@ -59,7 +59,7 @@ const FiltersBox = ({
       tabIndex={-1}
       className={cn(
         `mb-2 w-full flex flex-col gap-1 pb-1 cursor-default overflow-hidden text-hh-800 focus-visible:outline-2 focus-visible:outline-hh-950 focus-visible:outline-offset-2 rounded-lg ${isOpen && !disabled ? "h-fit outline-hh-800 outline outline-2 -outline-offset-1" : "h-10"}`,
-        boxStyle
+        boxStyle,
       )}
     >
       <button
@@ -72,10 +72,10 @@ const FiltersBox = ({
                 disabled
                   ? "bg-opacity-20 opacity-75 text-hh-800 flex-wrap py-0"
                   : "hover:bg-opacity-100"
-              } rounded-lg`
+              } rounded-lg`,
         )}
         style={{
-          outlineColor: isOpen ? "#d0d7da" : "#33404D",
+          outlineColor: isOpen ? "#cedfe9" : "#2e4c5e",
           outlineOffset: isOpen ? "-4px" : "-2px",
         }}
         onClick={() => setIsOpen(!isOpen)}
@@ -160,7 +160,7 @@ export default function PostFilters({
   const { push } = useRouter();
   const modifyURL = useCallback(
     (queries: string) => push(params + "?" + queries, { scroll: false }),
-    [params, push]
+    [params, push],
   );
   const searchParams = useSearchParams();
   const [isOpen, setIsOpen] = React.useState(false);
@@ -215,7 +215,7 @@ export default function PostFilters({
             className="filterButtonIcon transition-opacity duration-75 ease-in-out"
             style={{ opacity: isOpen ? "0" : "1" }}
           >
-            <FilterIcon rotate={90} color="#d0d7da" size="16" />
+            <FilterIcon rotate={90} color="#cedfe9" size="16" />
           </span>
 
           <span
@@ -250,7 +250,7 @@ export default function PostFilters({
           <button onClick={() => setIsOpen(!isOpen)} tabIndex={isOpen ? 0 : -1}>
             <CloseIcon
               size="16"
-              color="#33404D"
+              color="#2e4c5e"
               className="rounded overflow-hidden hover:fill-hh-900"
             />
           </button>
@@ -283,8 +283,8 @@ export default function PostFilters({
                               "categories",
                               cat,
                               categoriesFilter,
-                              new URLSearchParams(searchParams.toString())
-                            )
+                              new URLSearchParams(searchParams.toString()),
+                            ),
                           );
                           setCategoriesFilter((prev) => {
                             if (prev.includes(cat)) {
@@ -301,7 +301,7 @@ export default function PostFilters({
                       >
                         {cat}
                       </button>
-                    )
+                    ),
                   )}
                 </div>
               </div>
@@ -322,7 +322,7 @@ export default function PostFilters({
                         "bg-hh-100 rounded-full w-4 h-4 absolute top-1/2  -translate-y-1/2 transition-all duration-300",
                         categoriesFilteringTogether
                           ? "translate-x-1/4 left-0"
-                          : "-translate-x-full left-[calc(100%-0.25rem)]"
+                          : "-translate-x-full left-[calc(100%-0.25rem)]",
                       )}
                     />
                   </button>
@@ -354,8 +354,8 @@ export default function PostFilters({
                           "bezirke",
                           bz,
                           bezirkeFilter,
-                          new URLSearchParams(searchParams.toString())
-                        )
+                          new URLSearchParams(searchParams.toString()),
+                        ),
                       );
                       setBezirkeFilter((prev) => {
                         if (prev.includes(bz)) {
@@ -402,8 +402,8 @@ export default function PostFilters({
                                   "stadtteile",
                                   stadtteil,
                                   stadtteileFilter,
-                                  new URLSearchParams(searchParams.toString())
-                                )
+                                  new URLSearchParams(searchParams.toString()),
+                                ),
                               );
                               setStadtteileFilter((prev) => {
                                 if (prev.includes(stadtteil)) {
@@ -427,7 +427,7 @@ export default function PostFilters({
                       ))}
                     </FiltersCheckBox>
                   </React.Fragment>
-                )
+                ),
               )}
             </div>
           </FiltersBox>
@@ -467,8 +467,8 @@ export default function PostFilters({
                       createQueryString(
                         "alter",
                         e.target.value,
-                        new URLSearchParams(searchParams.toString())
-                      )
+                        new URLSearchParams(searchParams.toString()),
+                      ),
                     );
                     setIsAlleAlterChecked(false);
                     setQueryAlter(e.target.value);
@@ -507,7 +507,9 @@ export default function PostFilters({
                       key={key}
                       className={cn(
                         "flex flex-col gap-2 p-1 border-hh-800 rounded w-full",
-                        i % 2 ? "bg-hh-800 bg-opacity-25 items-end" : "border-2"
+                        i % 2
+                          ? "bg-hh-800 bg-opacity-25 items-end"
+                          : "border-2",
                       )}
                     >
                       {val.map((spg) =>
@@ -541,7 +543,7 @@ export default function PostFilters({
                           >
                             {spg}
                           </button>
-                        )
+                        ),
                       )}
                     </div>
                   ))}
@@ -564,7 +566,7 @@ export default function PostFilters({
                           "bg-hh-100 rounded-full w-4 h-4 absolute top-1/2  -translate-y-1/2 transition-all duration-300",
                           spielgeraeteFilteringTogether
                             ? "translate-x-1/4 left-0"
-                            : "-translate-x-full left-[calc(100%-0.25rem)]"
+                            : "-translate-x-full left-[calc(100%-0.25rem)]",
                         )}
                       />
                     </button>

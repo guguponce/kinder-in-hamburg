@@ -47,7 +47,7 @@ export default function ImgPriorityCard({
           aspectRatio ? `aspect-[${aspectRatio}]` : "aspect-[0.66]"
         } w-full rounded-md shadow-md hover:shadow-2xl flex flex-col items-center  bg-hh-50 overflow-hidden hover:scale-[1.01] transition-transform duration-300`,
         classname.container,
-        cardContainerClassname
+        cardContainerClassname,
       )}
       role="link"
       title={title}
@@ -68,8 +68,8 @@ export default function ImgPriorityCard({
         ) : (
           spielgeraete && (
             <SpielplatzgeraeteBackground
-              bgColor="#33404D"
-              color="#343b3e"
+              bgColor="#2e4c5e"
+              color="#2a4150"
               spList={spielgeraete}
             />
           )

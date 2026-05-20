@@ -19,7 +19,7 @@ export default function LinksBox({ igAccounts, link }: iLinksBox) {
           {igAccounts.map(({ name, description }, i) => (
             <div key={i} className="flex flex-col">
               <div className="flex gap-1 items-center">
-                <PostLogo logo="instagram" color="#343b3e" />
+                <PostLogo logo="instagram" color="#2a4150" />
                 <Link
                   className="hover:underline hover:underline-offset-4 max-w-full break-words font-semibold text-hh-900 italic hover:text-hh-700 active:text-hh-900 visited:text-hh-700"
                   href={`https://instagram.com/${name}`}
@@ -35,7 +35,7 @@ export default function LinksBox({ igAccounts, link }: iLinksBox) {
       {!!link && (
         <div className="flex gap-1 mt-1">
           <div className="min-w-6 mt-1 flex justify-center">
-            <PostLogo logo="link" color="#343b3e" size="1rem" />
+            <PostLogo logo="link" color="#2a4150" size="1rem" />
           </div>
           <Link
             className="underline underline-offset-2 max-w-full break-words text-hh-800 italic hover:text-hh-700 active:text-hh-900 visited:text-hh-700"

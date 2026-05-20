@@ -221,7 +221,7 @@ export const getDailyForecastAccuWeather = async () => {
   try {
     const response = await fetch(
       `http://dataservice.accuweather.com/forecasts/v1/daily/5day/178556?apikey=${process.env.ACCUWEATHER_API}&language=de-de&metric=true`,
-      // { next: { tags: ["weather"], revalidate: 14000 } }
+      { next: { tags: ["weather"], revalidate: 14000 } },
     );
     const data = (await response.json()) as iDailyAccuWeather;
     const {
