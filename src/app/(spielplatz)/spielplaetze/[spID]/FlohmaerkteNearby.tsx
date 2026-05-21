@@ -6,6 +6,7 @@ import FlohmarktPoster from "@components/@Cards/FlohmarktPoster";
 import ScrollableContainer from "@components/ScrollableContainer";
 import { haversineDistance } from "@app/utils/functions";
 import style from "./spielplatzSyle.module.scss";
+import Link from "next/link";
 
 export default async function FlohmaerkteNearby({
   bezirk,
@@ -43,23 +44,25 @@ export default async function FlohmaerkteNearby({
           "relative h-80 w-fit max-w-full mx-auto flex lg:hidden px-8 lg:px-16"
         }
       >
-        <h2
-          className="absolute z-50 bottom-0 left-4 lg:left-8 -translate-x-1/2 text-xl sm:text-2xl overflow-hidden w-3rem font-bold rotate-180 text-hh-800"
+        <Link
+          href="/flohmaerkte"
+          className="absolute z-50 bottom-0 left-4 lg:left-8 -translate-x-1/2 text-xl sm:text-2xl overflow-hidden  hover:text-hh-900 hover:scale-[1.01] font-bold rotate-180 text-hh-800"
           style={{ writingMode: "vertical-rl", textOrientation: "revert" }}
         >
           Flohmärkte in der Nähe
-        </h2>
+        </Link>
         <div className="w-full max-h-full">
           <ArrowGalleryContainer list={list} />
         </div>
       </div>
       <div className="hidden lg:flex min-w-[50%] max-w-full h-[250px] mx-auto text-center justify-center bg-hh-700 bg-opacity-100 p-2 mt-automb-2 rounded shadow-lg">
-        <h2
-          className="min-w-fit text-xl overflow-hidden max-w-full rotate-180  flex flex-col font-bold  text-hh-50"
+        <Link
+          href="/flohmaerkte"
+          className="min-w-fit text-xl overflow-hidden max-w-full rotate-180  flex flex-col font-bold hover:text-white hover:scale-[1.01] text-hh-50"
           style={{ writingMode: "vertical-rl", textOrientation: "revert" }}
         >
           Flohmärkte in der Nähe
-        </h2>
+        </Link>
         <div className="w-fit flex flex-col items-center">
           {/* <span className="text-sm block font-bold  text-hh-50">
             Innerhalb 2 km von diesem Spielplatz:

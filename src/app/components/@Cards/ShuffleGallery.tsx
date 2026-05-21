@@ -74,13 +74,13 @@ export default function ShuffleGallery({
         `relative flex flex-col items-center rounded-md min-w-full bg-opacity-25 h-full gap-2 p-2
         ${transparent ? "" : dark ? "bg-hh-700" : "bg-hh-400"}
         ${shuffle ? "pb-12" : ""}`,
-        shuffleContainerClassName
+        shuffleContainerClassName,
       )}
     >
       <article
         className={cn(
           "h-full w-full md:aspect-square shadow rounded bg-hh-400 bg-opacity-25 flex flex-col items-center gap-2 relative hover:shadow-2xl overflow-hidden",
-          posterClassname
+          posterClassname,
         )}
       >
         {isTypeFlohmarkt(currentArticle) ? (
@@ -184,7 +184,7 @@ export default function ShuffleGallery({
               onClick={() => {
                 const availableIndexes = Array.from(
                   { length: originalList.length },
-                  (_, i) => i
+                  (_, i) => i,
                 ).filter((i) => i !== currentIndex);
                 const randomIndex =
                   availableIndexes[

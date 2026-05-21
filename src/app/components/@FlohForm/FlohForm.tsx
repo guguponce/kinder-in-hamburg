@@ -110,7 +110,7 @@ export default function FlohForm({
     handleSubmit,
     setValue,
     getValues,
-    formState: { errors, isSubmitSuccessful, isDirty, isSubmitting, isLoading },
+    formState: { errors, isSubmitting, isLoading },
   } = useForm({
     defaultValues: {
       status: ["new-flohmarkt", "new-event"].includes(flohFormType)

@@ -6,7 +6,7 @@ const DynamicIcon = dynamic(
   () => import("../@Icons/@Spielplatz/SpielgeraeteIcon"),
   {
     ssr: false,
-  }
+  },
 );
 
 export default function SpielplatzPoster({
@@ -32,8 +32,8 @@ export default function SpielplatzPoster({
         titleUnder ? "flex-col-reverse" : "flex-col"
       }  items-center`}
     >
-      <h3 className="font-bold text-xl text-hh-50 p-2 text-center rounded-sm bg-hh-900 bg-opacity-25 backdrop-blur-sm absolute z-10 flex flex-col">
-        {title}
+      <h3 className="w-full font-bold text-xl text-hh-50 p-2 text-center rounded-sm bg-hh-900 bg-opacity-25 backdrop-blur-[1px] backdrop-brightness-75 absolute z-10 flex flex-col items-center">
+        <span className="block max-w-[calc(100%-3rem)]">{title}</span>
         {stadtteil && (
           <span className="block text-xs">
             ({stadtteil}, {bezirk})

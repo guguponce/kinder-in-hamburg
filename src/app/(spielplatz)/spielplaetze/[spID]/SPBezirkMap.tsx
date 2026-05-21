@@ -132,7 +132,7 @@ export default function SPBezirkMap({
       </article>
       {selector && !!otherSpielplaetzeList.length && (
         <article className="relative w-full sm:w-1/2 lg:w-full  aspect-[4/3] sm:aspect-auto sm:h-full lg:h-1/2 min-h-fit border-4 border-orange-300 rounded-md">
-          <div className="w-8 aspect-square absolute top-4 left-4 z-[500]">
+          <div className="w-6 aspect-square absolute top-4 left-4 z-[500]">
             <StandortIcon size="100%" color="#fdba74" stroke="#fff" />
           </div>
           <ShuffleGallery
