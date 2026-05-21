@@ -1,8 +1,6 @@
 "use client";
 import { useUserLocation } from "@app/utils/context/UserLocationContext";
-import React, { use, useCallback, useEffect, useState } from "react";
-import GeneralMap from "./GeneralMap";
-import DraggableMarker from "./DraggableMarker";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   BEZIRK_TO_STADTTEILE,
   bezirke,
@@ -11,8 +9,20 @@ import {
 import { iBezirk } from "@app/utils/types";
 import { fetchLocationData } from "./mapUtils/constants";
 import UserStandortIcon from "../@Icons/UserStandortIcon";
+import StandortDeniedIcon from "../@Icons/StandortDeniedIcon";
+import dynamic from "next/dynamic";
 
-// Type definitions for the props and location object
+const GeneralMap = dynamic(() => import("@components/@Map/GeneralMap"), {
+  ssr: false,
+});
+
+const DraggableMarker = dynamic(
+  () => import("@components/@Map/DraggableMarker"),
+  {
+    ssr: false,
+  },
+);
+
 interface Location {
   lat: number;
   lon: number;
@@ -28,49 +38,43 @@ const LocationModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   );
   const {
     getUserLocation,
-    handleUserLocation,
+    getStadtteilLocation,
+    handleUserLocationStorage,
     userLocation,
     removeUserLocation,
   } = useUserLocation();
   const [currentLocation, setCurrentLocation] = useState<Location | null>(
     userLocation,
   );
-  const [acceptedLocationUse, setAcceptedLocationUse] =
-    useState<boolean>(!!userLocation);
+  const [searchingLocation, setSearchingLocation] = useState<boolean>(false);
+  const [useDefaultPosition, setUseDefaultPosition] = useState<boolean>(true);
+  const [geolocationDenied, setGeolocationDenied] = useState<boolean>(false);
   const handleGetLocation = useCallback(() => {
-    setAcceptedLocationUse(true);
-    if (!userLocation) {
-      getUserLocation()
-        .then((location: Location | null) => {
-          setCurrentLocation(location);
-        })
-        .catch((err) => {});
-    }
-  }, [getUserLocation, userLocation]);
-  const [loc, setLoc] = useState<Location | null>(null);
-  const [count, setCount] = useState(0);
-  const getStadtteilCoordinates = useCallback(
-    async (stadtteil: string) => {
-      const location = handleUserLocation(null, stadtteil);
-      setCurrentLocation(location);
-    },
-    [handleUserLocation],
-  );
+    setSearchingLocation(true);
+    getUserLocation()
+      .then((location: Location | null) => {
+        setCurrentLocation(location);
+        setSearchingLocation(false);
+      })
+      .catch((err) => {
+        setGeolocationDenied(true);
+        setSearchingLocation(false);
+      });
+  }, [getUserLocation]);
+
   const handleRemoveLocation = useCallback(() => {
     removeUserLocation();
+    setUseDefaultPosition(false);
     setCurrentLocation(null);
-  }, [removeUserLocation]);
+    onClose();
+  }, [removeUserLocation, onClose]);
 
-  const onChangePosition = useCallback(
-    (location: Location) => {
-      setCurrentLocation(location);
-      handleUserLocation(location);
-    },
-    [handleUserLocation],
-  );
+  const onChangePosition = useCallback((location: Location) => {
+    setCurrentLocation(location);
+  }, []);
 
-  const handleClickOutside = useCallback(
-    (event: MouseEvent) => {
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
       event.stopPropagation();
 
       if (
@@ -79,16 +83,19 @@ const LocationModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
       ) {
         onClose();
       }
-    },
-    [onClose],
-  );
-
-  useEffect(() => {
+    };
     document.addEventListener("mousedown", handleClickOutside);
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [handleClickOutside]);
+  }, [onClose]);
 
   useEffect(() => {
     if (currentLocation) {
@@ -103,8 +110,17 @@ const LocationModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
           }
         },
       );
+    } else if (useDefaultPosition) {
+      setCurrentLocation(
+        getStadtteilLocation(selectedStadtteil || "Hamburg-Altstadt"),
+      );
     }
-  }, [currentLocation]);
+  }, [
+    getStadtteilLocation,
+    selectedStadtteil,
+    currentLocation,
+    useDefaultPosition,
+  ]);
 
   return (
     <div
@@ -114,139 +130,159 @@ const LocationModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
       <div
         id="user-location-modal-box"
         ref={modalBox}
-        className="bg-hh-50 p-6 rounded-lg text-center min-w-80 w-full max-w-full sm:max-w-[600px] max-h-[80vh] flex flex-col items-center gap-1 text-hh-800"
+        className="relative bg-hh-50 p-6 rounded-lg text-center min-w-80 w-full max-w-full sm:max-w-[600px] max-h-[80vh] flex flex-col items-center gap-1 text-hh-800"
       >
+        <button
+          className="w-4 h-4 hover:text-white flex justify-center items-center rounded-full hover:bg-hh-800 hover:font-bold absolute top-2 right-2 font-semibold transition-colors duration-500"
+          onClick={onClose}
+        >
+          ×
+        </button>
         <div>
-          <h2 className="text-xl mb-1 font-semibold">
-            Möchtest du deinen Standort nutzen?
+          <h2 className="text-xl mb-1 font-semibold px-4 leading-none">
+            {userLocation
+              ? "Möchtest du deinen Standort ändern?"
+              : "Wähle einen Standort aus"}
           </h2>
-          {/* <p className="text-xs text-hh-600">
-            Deine Position wird nur im Browser gespeichert und nicht an den
-            Server gesendet.
-          </p>
-          <p className="text-xs text-hh-600">
-            Sie wird verwendet, um dir relevante Informationen anzuzeigen und
-            wird nach 7 Tagen gelöscht.
-          </p> */}
-          <button
-            className="mt-2 bg-hh-500 text-white py-2 px-4 rounded-md hover:bg-hh-600"
-            onClick={async () => {
-              const location = await getUserLocation();
-              console.log("Got location:", location);
-              setLoc(location);
-              setCount((prev) => prev + 1);
-            }}
-          >
-            Get Location {loc ? `(${loc.lat}, ${loc.lon})` : "null"} {count}
-          </button>
         </div>
-        {acceptedLocationUse && (
-          <div className="bg-hh-100 bg-opacity-25 text-hh-50 flex items-center gap-x-2 gap-y-1 justify-center flex-wrap">
-            <div>
-              <label
-                htmlFor="bezirk"
-                className="block text-sm font-semibold text-hh-700"
-              >
-                Bezirk
-              </label>
-              <select
-                id="bezirk"
-                name="bezirk"
-                value={selectedBezirk || "Hamburg-Mitte"}
-                className="block w-full border-hh-800 bg-hh-700 rounded-md shadow-sm focus:ring-hh-500 focus:border-hh-500 p-1"
-                onChange={(e) => {
-                  setSelectedBezirk(e.target.value as iBezirk);
-                }}
-              >
-                {bezirke.map((bezirk) => (
-                  <option key={bezirk} value={bezirk}>
-                    {bezirk}
+        <div className="bg-hh-100 bg-opacity-25 text-hh-50 flex items-center gap-x-2 gap-y-1 justify-center flex-wrap">
+          <div>
+            <label
+              htmlFor="bezirk"
+              className="block text-sm font-semibold text-hh-700"
+            >
+              Bezirk
+            </label>
+            <select
+              id="bezirk"
+              name="bezirk"
+              value={selectedBezirk || "Hamburg-Mitte"}
+              className="block w-full border-hh-800 bg-hh-700 rounded-md shadow-sm focus:ring-hh-500 focus:border-hh-500 p-1"
+              onChange={(e) => {
+                setSelectedBezirk(e.target.value as iBezirk);
+              }}
+            >
+              {bezirke.map((bezirk) => (
+                <option key={bezirk} value={bezirk}>
+                  {bezirk}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label
+              htmlFor="stadtteil"
+              className="block text-sm font-semibold text-hh-700"
+            >
+              Stadtteil
+            </label>
+            <select
+              disabled={!selectedBezirk}
+              id="stadtteil"
+              name="stadtteil"
+              value={selectedStadtteil || "Hamburg-Altstadt"}
+              className="block w-full border-hh-800 bg-hh-700 rounded-md shadow-sm focus:ring-hh-500 focus:border-hh-500 p-1"
+              onChange={(e) => {
+                setSelectedStadtteil(e.target.value);
+                setCurrentLocation(getStadtteilLocation(e.target.value));
+              }}
+            >
+              {selectedBezirk &&
+                BEZIRK_TO_STADTTEILE[selectedBezirk].map((stadtteil) => (
+                  <option key={stadtteil} value={stadtteil}>
+                    {stadtteil}
                   </option>
                 ))}
-              </select>
-            </div>
-
-            <div>
-              <label
-                htmlFor="stadtteil"
-                className="block text-sm font-semibold text-hh-700"
-              >
-                Stadtteil
-              </label>
-              <select
-                disabled={!selectedBezirk}
-                id="stadtteil"
-                name="stadtteil"
-                value={selectedStadtteil || "Hamburg-Altstadt"}
-                className="block w-full border-hh-800 bg-hh-700 rounded-md shadow-sm focus:ring-hh-500 focus:border-hh-500 p-1"
-                onChange={(e) => {
-                  setSelectedStadtteil(e.target.value);
-                  getStadtteilCoordinates(e.target.value);
-                }}
-              >
-                {selectedBezirk &&
-                  BEZIRK_TO_STADTTEILE[selectedBezirk].map((stadtteil) => (
-                    <option key={stadtteil} value={stadtteil}>
-                      {stadtteil}
-                    </option>
-                  ))}
-              </select>
-            </div>
+            </select>
           </div>
-        )}
+        </div>
+        <button
+          className={`flex items-center gap-2 text-sm px-2 py-1 bg-hh-800 text-hh-50 rounded-md hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${geolocationDenied ? "disabled:bg-red-600 disabled:text-white disabled:hover:bg-red-600" : ""}`}
+          disabled={searchingLocation || geolocationDenied}
+          onClick={() => handleGetLocation()}
+        >
+          {geolocationDenied ? (
+            <StandortDeniedIcon color="#f0f1f2 " size="1rem" />
+          ) : (
+            <UserStandortIcon color="#f0f1f2 " size="1rem" />
+          )}
+          <span>
+            {searchingLocation
+              ? "Standort wird gesucht..."
+              : geolocationDenied
+                ? "Standortzugriff verweigert"
+                : "Aktuellen Standort verwenden"}
+          </span>
+        </button>
 
-        {currentLocation && (
-          <div className="w-full aspect-square max-h-[60vh] bg-hh-800 rounded-lg p-1 sm:py-2 my-2 flex flex-col gap-2 overflow-hidden">
-            <GeneralMap>
-              {currentLocation && (
-                <DraggableMarker
-                  pos={currentLocation}
-                  onChangePosition={onChangePosition}
-                />
-              )}
-            </GeneralMap>
-          </div>
-        )}
-        <div className="flex flex-wrap items-stretch justify-around gap-1">
+        <div className="w-full aspect-square max-h-[60vh] bg-hh-800 rounded-lg p-1 sm:p-2 my-2 flex flex-col gap-2 overflow-hidden">
+          <GeneralMap showUserLocation={false}>
+            {currentLocation && (
+              <DraggableMarker
+                pos={currentLocation}
+                onChangePosition={onChangePosition}
+              />
+            )}
+          </GeneralMap>
+        </div>
+        <div className="w-full flex flex-wrap items-stretch justify-around gap-1">
           <button
-            className="max-w-[40%] bg-hh-500 text-white py-2 px-4 rounded-md hover:bg-hh-600"
-            onClick={currentLocation ? onClose : handleGetLocation}
-          >
-            {currentLocation ? "Speichern" : "Standort verwenden"}{" "}
-          </button>
-          <button
-            className="max-w-[40%] bg-negative-500 text-white py-2 px-4 rounded-md hover:bg-negative-600"
+            className="text-sm font-semibold max-w-[40%] bg-positive-600 text-white py-2 px-4 rounded-md hover:bg-positive-700"
             onClick={() => {
-              currentLocation ? handleRemoveLocation() : onClose();
+              handleUserLocationStorage(currentLocation);
+              onClose();
             }}
           >
-            {currentLocation ? "Standort entfernen" : "Abbrechen"}
+            Speichern
+          </button>
+          <button
+            className="text-sm font-semibold max-w-[40%] bg-negative-600 text-white py-2 px-4 rounded-md hover:bg-negative-700 leading-none"
+            onClick={() => {
+              handleRemoveLocation();
+            }}
+          >
+            {userLocation ? "Standort löschen" : "Abbrechen"}
           </button>
         </div>
+        <p className="text-xs text-hh-600">
+          Dein Standort {userLocation ? "wird" : "ist"} nur lokal in deinem
+          Browser gespeichert und nicht geteilt.
+        </p>
       </div>
     </div>
   );
 };
 
-const UserLocationButton: React.FC = () => {
+const UserLocationButton: React.FC<{ dark?: boolean; minimal?: boolean }> = ({
+  dark,
+  minimal,
+}) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const handleModal = useCallback((open: boolean) => {
     setIsModalOpen(open);
   }, []);
   const { userLocation } = useUserLocation();
   return (
-    <div>
+    <>
       <button
-        className="group userLocationButton bg-hh-800 text-hh-50 min-w-8 py-2 px-4 rounded-md hover:bg-hh-900 flex hover:gap-1 items-center text-sm transition-all duration-500 shadow-lg"
+        className={`max-w-28 h-8 flex gap-1 userLocationButton bg-hh-800 text-hh-50 ${dark ? "bg-opacity-75 hover:bg-opacity-80" : "bg-opacity-25  hover:bg-opacity-30"} hover:shadow-xl active:bg-opacity-40 min-w-8 py-1 px-2 rounded-md hover:gap-1 items-center text-sm transition-all duration-500 shadow-lg`}
         onClick={(e) => {
           e.stopPropagation();
           handleModal(true);
         }}
       >
-        <span className="userLocationButtonText overflow-hidden whitespace-nowrap w-0 max-w-0 group-hover:w-auto group-hover:max-w-[200px] transition-all duration-1000">
-          {userLocation ? "Standort ändern" : "In der Nähe"}
+        <span className="min-w-4 h-4">
+          <UserStandortIcon color="#f0f1f2 " size="1rem" />
         </span>
-        <UserStandortIcon color="#f0f1f2 " size="1rem" />{" "}
+
+        {!userLocation && (
+          <span
+            className={`text-xs font-semibold leading-none ${minimal ? "hidden sm:block" : ""}`}
+          >
+            Standort auswählen
+          </span>
+        )}
       </button>
 
       {isModalOpen && (
@@ -256,7 +292,7 @@ const UserLocationButton: React.FC = () => {
           }}
         />
       )}
-    </div>
+    </>
   );
 };
 

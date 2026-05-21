@@ -17,6 +17,7 @@ import { createStandortMapIcon } from "./functions";
 import { UserLocationIcon } from "./MarkerIcons";
 import { useUserLocation } from "@app/utils/context/UserLocationContext";
 import UserLocationButton from "./UserLocationModal";
+import AdminClientComponent from "@app/providers/AdminClientComponents";
 
 const MainLocationIcon = divIcon({
   html: createStandortMapIcon("#b72f1e", 35, "#b72f1e80", true),
@@ -40,28 +41,32 @@ const GeneralMap = ({
   showUserLocation?: boolean;
   centerUserLocation?: boolean;
 }) => {
-  // const { userLocation } = useUserLocation();
+  const { userLocation } = useUserLocation();
   return (
     <div className="relative w-full h-full">
-      {/* <div className="userbutton absolute bottom-2 right-2 z-[500] m-2">
-        <UserLocationButton />
-      </div> */}
+      {showUserLocation && (
+        <AdminClientComponent>
+          <div className="absolute bottom-2 right-2 z-[300] m-2">
+            <UserLocationButton dark />
+          </div>
+        </AdminClientComponent>
+      )}
       <MapContainer
         key={
-          // centerUserLocation && userLocation
-          //   ? `${userLocation.lat},${userLocation.lon}`
-          currentTarget?.lat && currentTarget?.lon
-            ? `${currentTarget.lat},${currentTarget.lon}`
-            : "default"
+          centerUserLocation && userLocation
+            ? `${userLocation.lat},${userLocation.lon}`
+            : currentTarget?.lat && currentTarget?.lon
+              ? `${currentTarget.lat},${currentTarget.lon}`
+              : "default"
         }
         style={{ height: "100%", width: "100%", zIndex: 10 }}
         center={[
-          // centerUserLocation && userLocation
-          //   ? userLocation?.lat:
-          currentTarget?.lat || 53.5511,
-          // centerUserLocation && userLocation
-          //   ? userLocation.lon
-          currentTarget?.lon || 9.9937,
+          centerUserLocation && userLocation
+            ? userLocation?.lat
+            : currentTarget?.lat || 53.5511,
+          centerUserLocation && userLocation
+            ? userLocation.lon
+            : currentTarget?.lon || 9.9937,
         ]}
         zoom={zoom}
         scrollWheelZoom={true}
@@ -71,20 +76,14 @@ const GeneralMap = ({
         <TileLayer
           url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-
-          // url="https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.png"
-          // attribution="&copy; OpenStreetMap contributors"
-
-          // attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          // url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {/* {showUserLocation && userLocation && (
+        {showUserLocation && userLocation && (
           <Marker
             position={[userLocation.lat, userLocation.lon]}
             icon={UserLocationIcon}
             zIndexOffset={1000}
           />
-        )} */}
+        )}
 
         {currentTarget?.lat && currentTarget?.lon && (
           <Marker

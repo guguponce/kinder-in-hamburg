@@ -437,30 +437,40 @@ export default function UserLocationProvider({
     lon: number;
   } | null>(null);
   useEffect(() => {
-    const storedLocation = localStorage.getItem("userLocation");
+    const storedLocation = localStorage.getItem("selectedLocation");
+    const locationTimestamp = localStorage.getItem("locationTimestamp");
     if (storedLocation) {
+      const now = Date.now();
+      const timestamp = locationTimestamp ? parseInt(locationTimestamp) : 7;
+      const over7DaysOld = now - timestamp > 7 * 24 * 60 * 60 * 1000;
+      if (over7DaysOld) {
+        localStorage.removeItem("selectedLocation");
+        localStorage.removeItem("locationTimestamp");
+        setUserLocation(null);
+        return;
+      }
       setUserLocation(JSON.parse(storedLocation));
     }
   }, []);
-  const handleUserLocation = useCallback(
+  const handleUserLocationStorage = useCallback(
     (pos: { lat: number; lon: number } | null, stadtteil?: string) => {
       setUserLocation(() => {
         if (pos) {
           localStorage.setItem("locationTimestamp", Date.now().toString());
-          localStorage.setItem("userLocation", JSON.stringify(pos));
+          localStorage.setItem("selectedLocation", JSON.stringify(pos));
           return pos;
         }
         if (stadtteil && locations[stadtteil]) {
           localStorage.setItem("locationTimestamp", Date.now().toString());
           localStorage.setItem(
-            "userLocation",
+            "selectedLocation",
             JSON.stringify(locations[stadtteil]),
           );
           return locations[stadtteil];
         }
         localStorage.setItem("locationTimestamp", Date.now().toString());
         localStorage.setItem(
-          "userLocation",
+          "selectedLocation",
           JSON.stringify(locations["Hamburg-Altstadt"]),
         );
         return locations["Hamburg-Altstadt"];
@@ -473,6 +483,10 @@ export default function UserLocationProvider({
     },
     [],
   );
+  const getStadtteilLocation = useCallback(
+    (stadtteil: string) => locations[stadtteil] || null,
+    [],
+  );
 
   const getUserLocation = useCallback(() => {
     return new Promise((resolve, reject) => {
@@ -483,16 +497,12 @@ export default function UserLocationProvider({
 
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          alert(
-            `Got location: (${position.coords.latitude}, ${position.coords.longitude})`,
-          );
           resolve({
             lat: position.coords.latitude,
             lon: position.coords.longitude,
           });
         },
         (error) => {
-          alert(error.message);
           reject(error);
         },
         {
@@ -502,50 +512,20 @@ export default function UserLocationProvider({
         },
       );
     });
-
-    return new Promise<{ lat: number; lon: number } | null>(
-      (resolve, reject) => {
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(
-            (position) => {
-              const lat = position.coords.latitude;
-              const lon = position.coords.longitude;
-              if (lat && lon) {
-                const location = {
-                  lat: lat,
-                  lon: lon,
-                };
-                handleUserLocation(location);
-                resolve(location);
-              } else {
-                setUserLocation(null);
-                reject(null);
-              }
-            },
-            (error) => {
-              alert(error.message);
-              reject(null);
-            },
-          );
-        } else {
-          reject(null);
-        }
-      },
-    );
-  }, [handleUserLocation]);
+  }, []);
   const removeUserLocation = useCallback(() => {
     localStorage.removeItem("locationTimestamp");
-    localStorage.removeItem("userLocation");
+    localStorage.removeItem("selectedLocation");
     setUserLocation(null);
   }, []);
-  // return an HTML page for the user to check their location
   return (
     <UserLocationContext.Provider
       value={{
         userLocation,
         getUserLocation,
         removeUserLocation,
-        handleUserLocation,
+        handleUserLocationStorage,
+        getStadtteilLocation,
       }}
     >
       {children}
@@ -561,8 +541,11 @@ export const useUserLocation: () => {
     lat: number;
     lon: number;
   } | null>;
+  getStadtteilLocation: (
+    stadtteil: string,
+  ) => { lat: number; lon: number } | null;
   removeUserLocation: () => void;
-  handleUserLocation: (
+  handleUserLocationStorage: (
     pos: {
       lat: number;
       lon: number;

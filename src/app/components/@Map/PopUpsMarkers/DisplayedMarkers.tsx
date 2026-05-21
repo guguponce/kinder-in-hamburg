@@ -8,6 +8,7 @@ import {
   futureLaterneIcon,
   futureLaternewerkstattMarkerIcon,
   adventsEventIcon,
+  nextWeekIcon,
 } from "../mapUtils/constants";
 import { Marker } from "react-leaflet";
 import { iBezirk, iEventType, iFlohmarkt } from "@app/utils/types";
@@ -31,9 +32,9 @@ export const DisplayedMarkers = ({
   selectedEvent: iEventType | undefined;
 }) => {
   return eventsList.map(
-    ({ id, lat, lon, address, date, endDate, title, bezirk, type, image }) => {
-      return (selectedBezirk && bezirk !== selectedBezirk) ||
-        (selectedEvent && selectedEvent !== type) ? null : (
+    ({ id, lat, lon, address, date, endDate, title, bezirk, type, image }) =>
+      (selectedBezirk && bezirk !== selectedBezirk) ||
+      (selectedEvent && selectedEvent !== type) ? null : (
         <React.Fragment key={id}>
           <Marker
             icon={
@@ -57,11 +58,13 @@ export const DisplayedMarkers = ({
                             : futureLaternewerkstattMarkerIcon
                           : type === "flohmarkt"
                             ? flohmarktIcon
-                            : date < nextMonday
-                              ? type
-                                ? eventIcon
-                                : flohmarktIcon
-                              : futureIcon
+                            : type
+                              ? eventIcon
+                              : date < nextMonday
+                                ? flohmarktIcon
+                                : date < nextMonday + 7 * 24 * 60 * 60 * 1000
+                                  ? nextWeekIcon
+                                  : futureIcon
             }
             key={id}
             position={[lat || 53.5511, lon || 9.9937]}
@@ -76,7 +79,6 @@ export const DisplayedMarkers = ({
             />
           </Marker>
         </React.Fragment>
-      );
-    }
+      ),
   );
 };
