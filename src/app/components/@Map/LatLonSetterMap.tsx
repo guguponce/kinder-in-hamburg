@@ -1,8 +1,9 @@
 "use client";
 import React from "react";
-import { MapContainer, Marker, TileLayer } from "react-leaflet";
+import { Marker } from "react-leaflet";
 import { divIcon } from "leaflet";
 import { createStandortMapIcon } from "./functions";
+import GeneralMap from "./GeneralMap";
 
 const MainLocationIcon = divIcon({
   html: createStandortMapIcon("#b72f1e", 35),
@@ -30,19 +31,17 @@ const LatLonSetterMap = ({
   const [mapLatLon, setMapLatLon] = React.useState({ lat, lon });
   const [confirmed, setConfirmed] = React.useState(false);
   return (
-    <section className="w-full max-w-[800px] flex flex-col gap-2 items-center rounded">
+    <section
+      id="latlon-setter-map"
+      className="w-full max-w-[800px] flex flex-col gap-2 items-center rounded"
+    >
       <article className="h-[60vh] w-full max-w-[400px] flex justify-center rounded overflow-hidden">
-        <MapContainer
-          style={{ height: "100%", width: "100%", zIndex: 10 }}
-          center={[lat, lon]}
+        <GeneralMap
+          centerUserLocation={false}
+          showUserLocation={false}
           zoom={18}
-          scrollWheelZoom={true}
-          touchZoom={true}
+          currentTarget={{ lat, lon }}
         >
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
           <Marker
             position={[mapLatLon.lat, mapLatLon.lon]}
             icon={MainLocationIcon}
@@ -57,7 +56,7 @@ const LatLonSetterMap = ({
               },
             }}
           ></Marker>
-        </MapContainer>
+        </GeneralMap>
       </article>
       {lat !== mapLatLon.lat && lon !== mapLatLon.lon && (
         <button

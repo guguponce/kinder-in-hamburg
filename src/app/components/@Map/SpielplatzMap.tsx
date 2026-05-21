@@ -5,6 +5,7 @@ import { Icon } from "leaflet";
 import { iBezirk, iSpielplatz } from "@app/utils/types";
 import Link from "next/link";
 import { getDate, joinAddress } from "@app/utils/functions";
+import GeneralMap from "./GeneralMap";
 
 const stadtteilLocationIcon = new Icon({
   iconUrl: "/assets/icons/stadtteilLocation.svg",
@@ -27,52 +28,41 @@ const SpielplaetzeMap = ({
   currentTarget?: iSpielplatz;
   spielplaetzeList: iSpielplatz[];
 }) => {
-  const bezirke = useRef(
-    Array.from(new Set(spielplaetzeList.map((p) => p.bezirk).flat())),
-  );
+  // const bezirke = useRef(
+  //   Array.from(new Set(spielplaetzeList.map((p) => p.bezirk).flat())),
+  // );
 
-  const spielplaetzeBezirke = useRef(
-    Array.from(new Set(spielplaetzeList.map(({ bezirk }) => bezirk))),
-  );
-  const [selectedSpielplatz, setSelectedSpielplatz] = React.useState<
-    number | undefined
-  >(currentTarget?.id);
-  const [selectedBezirk, setSelectedBezirk] = React.useState<
-    iBezirk | undefined
-  >();
+  // const spielplaetzeBezirke = useRef(
+  //   Array.from(new Set(spielplaetzeList.map(({ bezirk }) => bezirk))),
+  // );
+  // const [selectedSpielplatz, setSelectedSpielplatz] = React.useState<
+  //   number | undefined
+  // >(currentTarget?.id);
+  // const [selectedBezirk, setSelectedBezirk] = React.useState<
+  //   iBezirk | undefined
+  // >();
   const displayedMarkers = useMemo(() => {
     const restSpielplaetze = spielplaetzeList.filter(
       ({ id }) => id.toString() !== spID,
     );
-    return selectedBezirk
-      ? restSpielplaetze.filter((p) => p.bezirk === selectedBezirk)
-      : restSpielplaetze;
-  }, [selectedBezirk, spielplaetzeList, spID]);
+    return restSpielplaetze;
+    // return selectedBezirk
+    //   ? restSpielplaetze.filter((p) => p.bezirk === selectedBezirk)
+    //   : restSpielplaetze;
+  }, [spielplaetzeList, spID]);
   const centralSpielplatz = currentTarget || displayedMarkers[0];
 
   return (
     <section className="w-full sm:w-[calc(100%-2rem)] md:max-w-[800px] flex flex-col gap-2 sm:gap-4 items-center rounded">
       <article className="h-[60vh] w-full max-w-[800px] flex justify-center rounded overflow-hidden">
-        <MapContainer
-          style={{ height: "100%", width: "100%", zIndex: 10 }}
-          center={[
-            centralSpielplatz?.lat || 53.5511,
-            centralSpielplatz?.lon || 9.9937,
-          ]}
-          zoom={
-            // spielplaetzeBezirke.current.length === 1
-            //   ? 15
-            //   : spielplaetzeBezirke.current.includes("Wandsbek")
-            //   ? 10
-            //   : 11
-            15
-          }
-          scrollWheelZoom={false}
+        <GeneralMap
+          showUserLocation
+          zoom={18}
+          currentTarget={{
+            lat: centralSpielplatz?.lat || 53.5511,
+            lon: centralSpielplatz?.lon || 9.9937,
+          }}
         >
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
           {currentTarget && (
             <Marker
               position={[currentTarget.lat, currentTarget.lon]}
@@ -122,7 +112,7 @@ const SpielplaetzeMap = ({
               </React.Fragment>
             ),
           )}
-        </MapContainer>
+        </GeneralMap>
       </article>
     </section>
   );

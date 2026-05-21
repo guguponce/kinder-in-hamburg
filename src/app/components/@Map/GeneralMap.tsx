@@ -37,7 +37,11 @@ const GeneralMap = ({
   zoom?: number;
   rounded?: boolean;
   children?: React.ReactNode;
-  currentTarget?: iPost | iFlohmarkt | iSpielplatz;
+  currentTarget?:
+    | iPost
+    | iFlohmarkt
+    | iSpielplatz
+    | { lat: number; lon: number; title?: string };
   showUserLocation?: boolean;
   centerUserLocation?: boolean;
 }) => {
@@ -85,7 +89,7 @@ const GeneralMap = ({
           />
         )}
 
-        {currentTarget?.lat && currentTarget?.lon && (
+        {currentTarget?.lat && currentTarget?.lon && currentTarget?.title && (
           <Marker
             position={[currentTarget.lat, currentTarget.lon]}
             icon={MainLocationIcon}

@@ -27,7 +27,7 @@ const createClusterGroupIcon =
       iconSize: point(32, 32, true),
     });
 const flohmarktIcon = createNormalSizeIcon("#7B3E5E");
-const postIcon = createNormalSizeIcon("#33404D");
+const postIcon = createNormalSizeIcon("#2e4c5e");
 const spielplatzIcon = createNormalSizeIcon("#405b3a", undefined, "#2d3d2a");
 const eventIcon = createNormalSizeIcon("#de6c13");
 const weihnachtsmarktIcon = createWeihnachtsmarktIcon(24);
@@ -111,7 +111,7 @@ export default function MarkersLists({
           : customIcon === "flohmarkt"
             ? createMarktIcon()
             : undefined,
-    [customIcon]
+    [customIcon],
   );
   return (
     <>
@@ -132,7 +132,7 @@ export default function MarkersLists({
                           currentLocation.lon,
                           currentLocation.lat,
                           lon!,
-                          lat!
+                          lat!,
                         )
                       : undefined
                   }
@@ -181,7 +181,7 @@ export default function MarkersLists({
                             currentLocation.lon,
                             currentLocation.lat,
                             lon!,
-                            lat!
+                            lat!,
                           )
                         : undefined
                     }
@@ -194,7 +194,7 @@ export default function MarkersLists({
                     type={!type ? "flohmaerkte" : "events"}
                   />
                 </Marker>
-              )
+              ),
             )}
         </ConditionalCluster>
       )}
@@ -217,7 +217,7 @@ export default function MarkersLists({
                   stadtteil,
                   bezirk,
                 },
-                i
+                i,
               ) => (
                 <React.Fragment key={"marker" + id}>
                   {customPostMarker ? (
@@ -247,7 +247,7 @@ export default function MarkersLists({
                                 currentLocation.lon,
                                 currentLocation.lat,
                                 lon!,
-                                lat!
+                                lat!,
                               )
                             : undefined
                         }
@@ -261,7 +261,7 @@ export default function MarkersLists({
                     </Marker>
                   )}
                 </React.Fragment>
-              )
+              ),
             )}
         </ConditionalCluster>
       )}
@@ -284,7 +284,7 @@ export default function MarkersLists({
                             currentLocation.lon,
                             currentLocation.lat,
                             lon!,
-                            lat!
+                            lat!,
                           )
                         : undefined
                     }
@@ -296,7 +296,7 @@ export default function MarkersLists({
                     image={image?.[0]}
                   />
                 </Marker>
-              )
+              ),
             )}
         </ConditionalCluster>
       )}
