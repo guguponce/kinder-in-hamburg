@@ -5,7 +5,7 @@ import { cn } from "@app/utils/functions";
 import { useSharingModal } from "./SharingModal";
 import { usePathname } from "next/navigation";
 
-const shareSVG = (color: string | undefined = "#33404D") => (
+const shareSVG = (color: string | undefined = "#2e4c5e") => (
   <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
     <g

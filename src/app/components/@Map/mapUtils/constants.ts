@@ -525,7 +525,7 @@ export const futureLaternewerkstattMarkerIcon = divIcon({
   className: "laternewerkstattIcon saturate-50 z-10",
 });
 export const flohmarktIcon = createNormalSizeIcon("#7B3E5E", 25, "#361b29");
-export const nextWeekIcon = createNormalSizeIcon("#7B3E5E50", 25, "#361b29");
+export const nextWeekIcon = createNormalSizeIcon("#ffcb7d", 25, "#f88d29");
 
 export const futureIcon = createNormalSizeIcon(
   "#2a415090",

@@ -4,7 +4,7 @@ import SpielgeraeteIcon from "../@Icons/@Spielplatz/SpielgeraeteIcon";
 
 export default function SpielplatzgeraeteBackground({
   spList,
-  color = "#33404D",
+  color = "#2e4c5e",
   bgColor,
   size = "3rem",
   small = true,
@@ -18,7 +18,7 @@ export default function SpielplatzgeraeteBackground({
   const randomNumber = useRef(
     Array(10)
       .fill("")
-      .map(() => Math.random())
+      .map(() => Math.random()),
   );
   const spielgeraete = useMemo(
     () =>
@@ -29,7 +29,7 @@ export default function SpielplatzgeraeteBackground({
         .map((a) => a[0])
         .flat()
         .slice(0, small ? 20 : -1),
-    [spList, small]
+    [spList, small],
   );
   return (
     <div

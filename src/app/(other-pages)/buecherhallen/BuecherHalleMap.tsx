@@ -19,7 +19,7 @@ const MarkersLists = dynamic(
   () => import("@components/@Map/PopUpsMarkers/MarkersLists"),
   {
     ssr: false,
-  }
+  },
 );
 export default function BuecherhallenMap({
   buecherhallenPosts,

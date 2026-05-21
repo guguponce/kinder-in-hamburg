@@ -31,7 +31,7 @@ const SingleBezirkEvents = ({
         id={currentBezirk.toLowerCase().replace(/\s/g, "-")}
         key={currentBezirk}
         className={cn(
-          "min-w-[250px] max-w-full h-[350px] flex items-center flex-col rounded shadow-md outline outline-2 outline-hh-800 hover:bg-white",
+          "min-w-[250px] max-w-full h-[350px] bg-gradient-to-b from-hh-200-50 to-transparent flex items-center flex-col rounded shadow-md outline outline-2 outline-hh-800 hover:bg-white",
           currentBezirkEvents.length > 4 || displayBezirke.length === 1
             ? "w-fit"
             : "w-fit lg:max-w-[calc(50%-1rem)]",
