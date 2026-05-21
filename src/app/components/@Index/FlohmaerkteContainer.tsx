@@ -17,19 +17,15 @@ function sortByFlohmaerkteDate(list: iFlohmarkt[], todayEvening: number) {
       (acc, floh) => {
         if (floh.date < todayEvening) {
           acc.todayFlohmaerkte.push(floh);
-          acc.thisWeekFlohmaerkte.push(floh);
         } else {
-          acc.thisWeekFlohmaerkte.push(floh);
           acc.futureFlohmaerkte.push(floh);
         }
         return acc;
       },
       {
         todayFlohmaerkte: [],
-        thisWeekFlohmaerkte: [],
         futureFlohmaerkte: [],
       } as {
-        thisWeekFlohmaerkte: iFlohmarkt[];
         todayFlohmaerkte: iFlohmarkt[];
         futureFlohmaerkte: iFlohmarkt[];
       },
@@ -38,7 +34,7 @@ function sortByFlohmaerkteDate(list: iFlohmarkt[], todayEvening: number) {
 const DynamicEventsMap = dynamic(() => import("../@Map/DynamicEventsMap"), {
   ssr: false,
   loading: () => (
-    <article className="w-full max-w-[800px] aspect-square sm:aspect-video max-h-[60vh]">
+    <article className="w-full aspect-square sm:aspect-video max-h-[60vh]">
       <img
         src="/assets/bezirke/hamburg.webp"
         alt="Hamburg"

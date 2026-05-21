@@ -9,6 +9,7 @@ import MarkerClusterGroup from "react-leaflet-cluster";
 import { eventTypesNames } from "@app/utils/constants";
 import { DisplayedMarkers } from "./PopUpsMarkers/DisplayedMarkers";
 import { MapIndexes } from "./PopUpsMarkers/MapIndexes";
+import StandortIcon from "../@Icons/StandortIcon";
 
 interface iDynamicEventsMap {
   children?: React.ReactNode;
@@ -18,6 +19,7 @@ interface iDynamicEventsMap {
   today: number;
   darkBackground?: boolean;
   thisWeek: iFlohmarkt[];
+  nextWeek?: iFlohmarkt[];
   future?: iFlohmarkt[];
   square?: boolean;
   className?: string;
@@ -27,10 +29,17 @@ interface iDynamicEventsMap {
 
   outline?: boolean;
 }
+
+const lightButtonStyle =
+  "bg-hh-50 text-hh-800  hover:bg-hh-200 focus:outline-0 outline outline-1 outline-hh-200 outline-offset-1";
+const darkButtonStyle =
+  "bg-hh-800 text-hh-50  hover:bg-hh-700 focus:outline-0 outline outline-1 outline-hh-200 outline-offset-1";
+
 export default function DynamicEventsMap({
   today,
   zoom,
   thisWeek,
+  nextWeek = [],
   future = [],
   outline = false,
   square = true,
@@ -49,14 +58,15 @@ export default function DynamicEventsMap({
   const [selectedBezirk, setSelectedBezirk] = React.useState<
     iBezirk | undefined
   >();
-  const [futureSelected, setFutureSelected] = React.useState(false);
-
   const [selectedEvent, setSelectedEvent] = React.useState<
     iEventType | undefined
   >();
+
   const { current: bezirke } = useRef(
     Array.from(
-      new Set([...thisWeek, ...future].map((p) => p.bezirk).flat()),
+      new Set(
+        [...thisWeek, ...nextWeek, ...future].map((p) => p.bezirk).flat(),
+      ),
     ).sort((a, b) =>
       a === "Umland Hamburg"
         ? 1
@@ -96,38 +106,34 @@ export default function DynamicEventsMap({
           : parseInt(a) - parseInt(b),
     ),
   );
-
+  const allEvents = [...thisWeek, ...nextWeek, ...future];
   const { current: eventTypes } = useRef(
     Array.from(
-      new Set([...future, ...thisWeek].map(({ type }) => type).filter(Boolean)),
+      new Set(allEvents.map(({ type }) => type).filter(Boolean)),
     ) as iEventType[],
   );
 
-  const { nextMonday } = getTodayNexMonday();
-  const { current: todayString } = useRef(getDate(today));
+  const { nextMonday } = useMemo(() => getTodayNexMonday(), []);
+  const todayString = useMemo(() => getDate(today), [today]);
 
   const filteredBySelectedDate = useMemo(() => {
-    if (selectedDate) {
+    if (
+      selectedDate &&
+      selectedDate !== "nextWeek" &&
+      selectedDate !== "future"
+    ) {
       return { [selectedDate]: eventsByDate[selectedDate] };
     }
     return eventsByDate;
   }, [selectedDate, eventsByDate]);
-  const isToday = useMemo(() => {
-    const todayString = getDate(today);
-    const selectedDateString =
-      !selectedDate ||
-      getDate(
-        selectedDate === "currentEvents" ? today : (selectedDate as number),
-      );
-    return todayString === selectedDateString;
-  }, [today, selectedDate]);
-  const singleEvent =
-    [...future, ...thisWeek].length === 1
-      ? [...future, ...thisWeek][0]
-      : undefined;
+  const singleEvent = allEvents.length === 1 ? allEvents[0] : undefined;
+  const futureSelected = selectedDate === "future";
+  const nextWeekSelected = selectedDate === "nextWeek";
+  const currentEventsSelected = selectedDate === "currentEvents";
 
   return (
     <div
+      id="dynamic-events-map-container"
       className={cn(
         "w-full sm:w-full flex flex-col md:flex-row md:flex-wrap items-stretch gap-1 rounded",
         className,
@@ -144,71 +150,71 @@ export default function DynamicEventsMap({
       >
         <GeneralMap zoom={zoom || 11} currentTarget={singleEvent}>
           {children}
-          {!futureSelected &&
-            Object.entries(filteredBySelectedDate).map(([day, events]) => (
-              <React.Fragment key={day}>
-                <DisplayedMarkers
-                  eventsList={events}
-                  selectedBezirk={selectedBezirk}
-                  selectedEvent={selectedEvent}
-                  todayString={todayString}
-                  nextMonday={nextMonday}
-                />
-              </React.Fragment>
-            ))}
-          {(!selectedDate || !selectedEvent) && (
+
+          {!selectedDate ? (
+            <React.Fragment>
+              <DisplayedMarkers
+                eventsList={
+                  cluster
+                    ? [...thisWeek, ...nextWeek]
+                    : [...thisWeek, ...nextWeek, ...future]
+                }
+                selectedBezirk={selectedBezirk}
+                selectedEvent={selectedEvent}
+                todayString={todayString}
+                nextMonday={nextMonday}
+              />
+              {cluster && (
+                <MarkerClusterGroup
+                  chunkedLoading
+                  zoomToBoundsOnClick
+                  maxClusterRadius={10}
+                  iconCreateFunction={(cluster: any) =>
+                    divIcon({
+                      html: `<div class="clusterIcon clusterIconPost">${cluster.getChildCount()}</div>`,
+                      className: "custom-marker-cluster",
+                      iconSize: point(32, 32, true),
+                    })
+                  }
+                >
+                  <DisplayedMarkers
+                    eventsList={future}
+                    selectedBezirk={selectedBezirk}
+                    selectedEvent={selectedEvent}
+                    todayString={todayString}
+                    nextMonday={nextMonday}
+                  />
+                </MarkerClusterGroup>
+              )}
+            </React.Fragment>
+          ) : futureSelected || nextWeekSelected || currentEventsSelected ? (
             <DisplayedMarkers
               eventsList={
-                eventsByDate["currentEvents"]?.filter(
-                  ({ closedDates }) =>
-                    !closedDates?.find((c) => getDate(c) === todayString),
-                ) || []
+                futureSelected
+                  ? future
+                  : nextWeekSelected
+                    ? nextWeek
+                    : eventsByDate["currentEvents"] || []
               }
               selectedBezirk={selectedBezirk}
               selectedEvent={selectedEvent}
               todayString={todayString}
               nextMonday={nextMonday}
             />
-          )}
-          {!selectedDate ? (
-            cluster ? (
-              <MarkerClusterGroup
-                chunkedLoading
-                iconCreateFunction={(cluster: any) =>
-                  divIcon({
-                    html: `<div class="clusterIcon clusterIconPost">${cluster.getChildCount()}</div>`,
-                    className: "custom-marker-cluster",
-                    iconSize: point(32, 32, true),
-                  })
-                }
-              >
-                <DisplayedMarkers
-                  eventsList={future}
-                  selectedBezirk={selectedBezirk}
-                  selectedEvent={selectedEvent}
-                  todayString={todayString}
-                  nextMonday={nextMonday}
-                />
-              </MarkerClusterGroup>
-            ) : (
-              <DisplayedMarkers
-                eventsList={future}
-                selectedBezirk={selectedBezirk}
-                selectedEvent={selectedEvent}
-                todayString={todayString}
-                nextMonday={nextMonday}
-              />
-            )
           ) : (
-            futureSelected && (
-              <DisplayedMarkers
-                eventsList={future}
-                selectedBezirk={selectedBezirk}
-                selectedEvent={selectedEvent}
-                todayString={todayString}
-                nextMonday={nextMonday}
-              />
-            )
+            Object.entries(filteredBySelectedDate).map(([day, events]) => {
+              return (
+                <React.Fragment key={day}>
+                  <DisplayedMarkers
+                    eventsList={events}
+                    selectedBezirk={selectedBezirk}
+                    selectedEvent={selectedEvent}
+                    todayString={todayString}
+                    nextMonday={nextMonday}
+                  />
+                </React.Fragment>
+              );
+            })
           )}
         </GeneralMap>
       </section>
@@ -216,7 +222,10 @@ export default function DynamicEventsMap({
         <MapIndexes
           eventTypes={eventTypes}
           today={thisWeek.some(({ date }) => getDate(date) === getDate(today))}
-        />
+        >
+          <StandortIcon size="1rem" color="#7B3E5E50" />
+          <p>Flohmärkte</p>
+        </MapIndexes>
       )}
       {(!!showBezirke || !!showTermine || !showEventType) && (
         <aside
@@ -237,7 +246,6 @@ export default function DynamicEventsMap({
                       <button
                         key={date}
                         onClick={() => {
-                          setFutureSelected(false);
                           setSelectedDate((prev) =>
                             prev + "" === date
                               ? undefined
@@ -249,15 +257,15 @@ export default function DynamicEventsMap({
                         className={`text-sm p-1 border-2  border-hh-600 rounded-md ${
                           darkBackground
                             ? selectedDate === parseInt(date) ||
-                              (selectedDate === "currentEvents" &&
+                              (currentEventsSelected &&
                                 date === "currentEvents")
-                              ? "bg-hh-50 text-hh-800  hover:bg-hh-600 hover:text-hh-50 outline outline-1 outline-hh-200 outline-offset-1 "
-                              : "bg-hh-800 text-hh-50  hover:bg-hh-600 hover:text-hh-50"
+                              ? lightButtonStyle
+                              : darkButtonStyle
                             : selectedDate === parseInt(date) ||
-                                (selectedDate === "currentEvents" &&
+                                (currentEventsSelected &&
                                   date === "currentEvents")
-                              ? "bg-hh-800 text-hh-50  hover:bg-hh-600 hover:text-hh-50"
-                              : "bg-hh-50 text-hh-800  hover:bg-hh-600 hover:text-hh-50"
+                              ? darkButtonStyle
+                              : lightButtonStyle
                         } transition-all`}
                       >
                         {date === "currentEvents" ? (
@@ -276,20 +284,41 @@ export default function DynamicEventsMap({
                         )}
                       </button>
                     ))}
+                    {!!nextWeek?.length && (
+                      <button
+                        onClick={() => {
+                          setSelectedDate((prev) =>
+                            prev === "nextWeek" ? undefined : "nextWeek",
+                          );
+                        }}
+                        className={`text-sm p-1 w-fit border-2 border-hh-600 rounded-md ${
+                          darkBackground
+                            ? nextWeekSelected
+                              ? lightButtonStyle
+                              : darkButtonStyle
+                            : nextWeekSelected
+                              ? darkButtonStyle
+                              : lightButtonStyle
+                        } transition-all`}
+                      >
+                        Nächste Woche
+                      </button>
+                    )}
                     {!!future.length && (
                       <button
                         onClick={() => {
-                          setSelectedDate(undefined);
-                          setFutureSelected((prev) => !prev);
+                          setSelectedDate((prev) =>
+                            prev === "future" ? undefined : "future",
+                          );
                         }}
                         className={`text-sm p-1 w-fit border-2 border-hh-600 rounded-md ${
                           darkBackground
                             ? futureSelected
-                              ? "bg-hh-50 text-hh-800  hover:bg-hh-600 hover:text-hh-50  outline outline-1 outline-hh-200 outline-offset-1"
-                              : "bg-hh-800 text-hh-50  hover:bg-hh-600 hover:text-hh-50"
+                              ? lightButtonStyle
+                              : darkButtonStyle
                             : futureSelected
-                              ? "bg-hh-800 text-hh-50  hover:bg-hh-600 hover:text-hh-50"
-                              : "bg-hh-50 text-hh-800  hover:bg-hh-600 hover:text-hh-50"
+                              ? darkButtonStyle
+                              : lightButtonStyle
                         } transition-all`}
                       >
                         Zukünftige Veranstaltungen
@@ -316,11 +345,11 @@ export default function DynamicEventsMap({
                         className={`text-sm p-1 border-2 border-hh-600 rounded-md ${
                           darkBackground
                             ? selectedBezirk === item
-                              ? "bg-hh-50 text-hh-800  hover:bg-hh-600 hover:text-hh-50 outline outline-1 outline-hh-200 outline-offset-1"
-                              : "bg-hh-800 text-hh-50  hover:bg-hh-600 hover:text-hh-50"
+                              ? lightButtonStyle
+                              : darkButtonStyle
                             : selectedBezirk === item
-                              ? "bg-hh-800 text-hh-50  hover:bg-hh-600 hover:text-hh-50"
-                              : "bg-hh-50 text-hh-800  hover:bg-hh-600 hover:text-hh-50"
+                              ? darkButtonStyle
+                              : lightButtonStyle
                         } transition-all`}
                       >
                         {item}
@@ -347,11 +376,11 @@ export default function DynamicEventsMap({
                         className={`text-sm p-1 border-2 border-hh-600 rounded-md ${
                           darkBackground
                             ? selectedEvent === item
-                              ? "bg-hh-50 text-hh-800  hover:bg-hh-600 hover:text-hh-50 outline outline-1 outline-hh-200 outline-offset-1"
-                              : "bg-hh-800 text-hh-50  hover:bg-hh-600 hover:text-hh-50"
+                              ? lightButtonStyle
+                              : darkButtonStyle
                             : selectedEvent === item
-                              ? "bg-hh-800 text-hh-50  hover:bg-hh-600 hover:text-hh-50"
-                              : "bg-hh-50 text-hh-800  hover:bg-hh-600 hover:text-hh-50"
+                              ? darkButtonStyle
+                              : lightButtonStyle
                         } transition-all`}
                       >
                         {eventTypesNames[item]}
