@@ -2,7 +2,7 @@ import React from "react";
 
 export default function TriangleIcon({
   size = "24px",
-  color = "#33404D",
+  color = "#2e4c5e",
   rotate = 0,
 }: {
   size?: string;

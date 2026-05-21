@@ -3,7 +3,7 @@ import React from "react";
 
 export default function CloseIcon({
   size = "24px",
-  color = "#33404D",
+  color = "#2e4c5e",
   rotate = 0,
   className,
 }: {
@@ -16,7 +16,7 @@ export default function CloseIcon({
     <svg
       className={cn(
         color === "#fefefe" ? "hover:fill-gray-300" : `hover:fill-hh-700`,
-        className
+        className,
       )}
       fill={color}
       width={size}

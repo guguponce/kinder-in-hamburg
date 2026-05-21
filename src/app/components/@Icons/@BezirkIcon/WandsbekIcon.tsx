@@ -1,6 +1,6 @@
 export default function WandsbekIcon({
   size = "100%",
-  color = "#33404D",
+  color = "#2e4c5e",
 }: {
   size?: string;
   color?: string;

@@ -3,7 +3,7 @@ import React from "react";
 
 export default function LoadingIcon({
   size = "24px",
-  color = "#33404D",
+  color = "#2e4c5e",
   className,
 }: {
   className?: string;

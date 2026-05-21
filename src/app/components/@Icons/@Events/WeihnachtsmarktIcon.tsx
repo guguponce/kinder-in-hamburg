@@ -2,7 +2,7 @@ import React from "react";
 
 export default function WeihnachtsmarktIcon({
   size = "24px",
-  color = "#33404D",
+  color = "#2e4c5e",
   desaturate = false,
 }: {
   size?: string;

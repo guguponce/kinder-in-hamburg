@@ -11,7 +11,7 @@ const HamburgIcon = lazy(() => import("./HamburgIcon"));
 const HamburgFilledIcon = lazy(() => import("./HamburgFilledIcon"));
 
 export default function BezirkIcon({
-  color = "#33404D",
+  color = "#2e4c5e",
   size = "100%",
   bezirk,
 }: {

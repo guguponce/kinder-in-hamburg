@@ -2,7 +2,7 @@ import React from "react";
 
 export default function KarussellBigIcon({
   size = "24px",
-  color = "#33404D",
+  color = "#2e4c5e",
 }: {
   size?: string;
   color?: string;
