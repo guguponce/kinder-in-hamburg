@@ -83,6 +83,7 @@ const SpielplatzMarkers = ({
         .map(({ lon, lat, address, id, title, type, spielgeraete, image }) => (
           <Marker key={id} position={[lat!, lon!]} icon={icon}>
             <SpielplatzPopUP
+              image={image && image[0]}
               address={joinAddress(address!)}
               title={title}
               id={id}

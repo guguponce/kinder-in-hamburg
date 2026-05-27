@@ -156,6 +156,7 @@ export const getCurrentAccuWeather = async () => {
       { next: { tags: ["weather"], revalidate: 3000 } },
     );
     const data = (await response.json())[0] as iCurrentAccu;
+    if (!data) return false;
     const {
       WeatherText,
       Temperature: {
@@ -258,18 +259,31 @@ export const getDailyForecastAccuWeather = async () => {
 
 export const getWeatherData = async () => {
   const lastHourData = await getLastHourData();
+
   const currentHour = await utcTime();
   const fourHoursSinceLastForecast =
     !lastHourData || currentHour - lastHourData.lastForecast > 3600000 * 4;
-
   if (fourHoursSinceLastForecast) {
     const currentWeather = await getCurrentAccuWeather();
+    if (!currentWeather) {
+      if (
+        !!lastHourData &&
+        lastHourData.lastForecast > currentHour - 24 * 60 * 60 * 1000
+      )
+        return lastHourData;
+      return false;
+    }
     const forecastHourly = await getHourlyForecastAccuWeather();
     const nextDays = await getDailyForecastAccuWeather();
     const lastForecast = currentHour;
 
     if (!currentWeather || !forecastHourly || !nextDays || !lastForecast) {
-      if (!!lastHourData) return lastHourData;
+      if (
+        !!lastHourData &&
+        lastHourData.lastForecast < currentHour - 24 * 60 * 60 * 1000
+      ) {
+        return false;
+      }
       return false;
     }
     setNewWeatherRow({
@@ -287,6 +301,10 @@ export const getWeatherData = async () => {
       nextDays,
     } as iWeatherData;
   } else {
+    if (!lastHourData) return false;
+    if (lastHourData.lastForecast < currentHour - 24 * 60 * 60 * 1000) {
+      return false;
+    }
     return lastHourData;
   }
 };
