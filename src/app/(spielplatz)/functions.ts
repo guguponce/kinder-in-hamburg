@@ -10,10 +10,10 @@ export const submitNewSpielplatz = async (
   ausruestungList: string[],
   typeList: string[],
   newID: number,
-  images: string[]
+  images: string[],
 ) => {
   const latlon = await getLatLong(
-    [data.street, data.number, data.PLZ, data.city].join(" ")
+    [data.street, data.number, data.PLZ, data.city].join(" "),
   );
   if (!latlon.lat || !latlon.lon)
     return alert("Could not find the location of the Spielplatz");
@@ -53,10 +53,10 @@ export const submitUpdateSpielplatz = async (
   spielgaereteList: string[],
   ausruestungList: string[],
   typeList: string[],
-  images: string[]
+  images: string[],
 ) => {
   const latlon = await getLatLong(
-    [data.street, data.number, data.PLZ, data.city].join(" ")
+    [data.street, data.number, data.PLZ, data.city].join(" "),
   );
   if (!latlon.lat || !latlon.lon)
     return alert("Could not find the location of the Spielplatz");

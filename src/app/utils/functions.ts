@@ -399,7 +399,11 @@ export const getLatLong = async (address: string) => {
   try {
     const addressQuery = address.match(/[a-zA-ZßäüöÄÜÖ]+|\d+/g)!.join("+");
     const url = `https://nominatim.openstreetmap.org/search?q=${addressQuery}&format=json`;
-    const response = await fetch(url);
+    const response = await fetch(url, {
+      headers: {
+        "User-Agent": "Kinder in Hamburg App - https://kinder-in-hamburg.de",
+      },
+    });
     const data = await response.json();
     return (data[0] as iLatLonResult) || { lat: "0", lon: "0" };
   } catch (e) {
@@ -420,14 +424,6 @@ export const addLatLongToPost = async (post: iPost) => {
     lat: parseFloat(lat),
     lon: parseFloat(lon),
   };
-};
-
-export const getAllLatLong = async (posts: iPost[]) => {
-  return Promise.all(
-    posts.map((post) =>
-      getLatLong(post.address ? joinAddress(post.address) : ""),
-    ),
-  );
 };
 
 export const parseSpielplatz = (spielplatz: iStringifiedSpielplatz) => {

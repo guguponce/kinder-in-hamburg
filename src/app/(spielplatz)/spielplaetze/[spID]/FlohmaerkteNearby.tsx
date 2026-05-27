@@ -20,8 +20,11 @@ export default async function FlohmaerkteNearby({
   lat: number;
   lon: number;
 }) {
-  const flohmaerkte = await getThisWeekEvents("flohmaerkte", true);
-  if (!flohmaerkte) return null;
+  const flohmaerkte = (
+    (await getThisWeekEvents("flohmaerkte", true)) || []
+  ).sort((a, b) => a.date - b.date);
+
+  if (!flohmaerkte.length) return null;
   const list = flohmaerkte
     .filter(
       ({ bezirk: flohBezirk, stadtteil: flohStadtteil }) =>

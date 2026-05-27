@@ -1,5 +1,5 @@
 import { getPostWithBezirk } from "@app/api/dbActions";
-import { addLatLongToPost, getLatLong } from "@app/utils/functions";
+import { addLatLongToPost } from "@app/utils/functions";
 import { iBezirk, iPost } from "@app/utils/types";
 import dynamic from "next/dynamic";
 import MarkersLists from "./PopUpsMarkers/MarkersLists";
@@ -19,7 +19,7 @@ export default async function DynamicMap({
     await Promise.all(bezirkPosts.map(async (post) => addLatLongToPost(post)))
   ).filter(Boolean) as iPost[];
   const currentTarget = postsWithCoordinates.find(
-    (p) => p.id === parseInt(postID)
+    (p) => p.id === parseInt(postID),
   );
   if (!currentTarget) return <></>;
   return (
