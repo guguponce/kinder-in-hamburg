@@ -61,7 +61,7 @@ export default function ImgPriorityCard({
         {image ? (
           <img
             loading="lazy"
-            className="object-cover w-full rounded-[6px_6px_0_0] h-full flex justify-center items-center"
+            className="object-cover w-full rounded-[6px_6px_0_0] h-full flex justify-center items-center bg-hh-700"
             src={image}
             alt={title}
           />

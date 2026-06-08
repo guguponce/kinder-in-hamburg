@@ -45,7 +45,7 @@ export default function CardsListDisplay({
                         ? card.id % 2
                           ? "/assets/spielplatz.webp"
                           : "/assets/spielplatz2.webp"
-                        : "/assets/icons/spielplatz/spielplatz.svg"
+                        : "/assets/logo/KiHLogo.png"
               }
               description={description}
               link={isTypePost(card) ? `/posts/${id}` : `/spielplaetze/${id}`}
