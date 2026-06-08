@@ -1,6 +1,5 @@
 "use client";
 import { GetUserHook } from "@app/api/auth/supabaseClient";
-import { useSupabaseSession } from "@app/providers/SessionContext";
 import React from "react";
 
 function AdminFetchedClientComponent({
